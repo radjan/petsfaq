@@ -1,0 +1,112 @@
+a {
+    text-decoration: none;
+    color: blue;}
+body > header {font-size: 36px;}
+body > header ul {
+    display: inline;
+    list-style: none}
+body > header li {
+    font-size: 24px;
+    display: inline;
+    padding: 5px 50px;
+    text-align: center;}
+body > header .curr {background: #F80;}
+#member {
+    font-size: 16px;
+    float: right;}
+
+.crumb {
+    background: #F80;
+    width: 90%;
+    padding: 5px;
+    text-align: center;
+    margin: 0 auto;}
+
+.faq_menu {
+    float: left;
+    width: 120px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.faq_menu li {
+    padding: 5px;
+    font-size: 18px;
+    border-top: 1px dotted #CCC;
+}
+
+.qa_pad {
+    float: left;
+    padding: 5px 10px;
+    margin-right: 300px;
+}
+
+.adsense {
+    width: 300px;
+    height: 250px;
+    margin: 5px 0;
+    padding: 0;
+    position: absolute;
+    right: 10px;
+    border: 1px dotted #CCC;
+}
+
+.qa_pad header {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+.qa_pad .qa {
+    margin-left: 16px;
+    padding: 5px 0 10px;
+    width: 99%;
+}
+
+.qa_pad .qa summary {
+    color: blue;
+    display: block;
+    width: 240px;
+}
+
+.qa_pad .edit {
+    font-size: 12px;
+    border-bottom: 1px dotted #CCC;
+}
+
+.qa_pad .qa > detail {
+    display: none;
+}
+
+.qa_pad .qa:hover {
+    background: #EFF;
+}
+.qa_pad .qa:hover > detail {
+    display: block;
+    width: 35%;
+    height: 99%;
+    position: fixed;
+    top: 110px;
+    left: 400px;
+    padding: 5px;
+    background: #EFF;
+}
+
+.qa_pad .info {
+    border-bottom: 1px dotted #CCC;
+    padding: 10px 0 2px;
+}
+.qa_pad .provider {
+    width: 99%;
+    text-align: right;
+    font-size: 12px;
+}
+
+
+/* vets */
+
+.er {
+    background: red;
+    color: white;
+    font-weight: bolder;
+}
