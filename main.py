@@ -21,7 +21,7 @@ import os
 from google.appengine.api import users
 
 from common import share
-from view import faq, login
+from view import base, faq, login
 
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
@@ -29,7 +29,6 @@ share.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR
 
 
 DEBUG = True
-
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -43,8 +42,11 @@ class MainHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/login', login.LoginPage),
+    ('/login_google', login.GoogleLogin),
+    ('/logout', login.LogoutPage),
     ('/register', login.RegisterPage),
     ('/register_idpwd', login.IdPwdRegister),
     ('/register_google', login.GoogleRegister),
     ('/faq', faq.BoardPage),
-], debug=DEBUG)
+], config = base.myconfig, debug=DEBUG)

@@ -6,11 +6,13 @@ GOOGLE = account_model.ACCOUNT_GOOGLE
 ID_PWD = account_model.ACCOUNT_ID_PWD
 
 class AccountService():
-    def exist(self, userid, user_type):
-        print 'AccountService.exist', userid, user_type
-        return dao.exist(userid, user_type)
+    def exist(self, acc_id, acc_type):
+        return dao.exist(acc_id, acc_type)
 
-    def create_google_account(self, userid, gmail):
-        return dao.create_google_account(userid, gmail)
+    def create(self, acc):
+        return dao.create(acc)
+
+    def get(self, acc_id, acc_type):
+        return dao.get(acc_id, acc_type)
 
 account_service = AccountService()

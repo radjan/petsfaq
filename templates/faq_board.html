@@ -14,7 +14,14 @@
         <li class="curr">寵物FAQ</li>
         <li>獸醫列表</li>
     </ul>
-    <div id="member">登入</div>
+    <div id="member">
+        {% if login %}
+        Welcome, {{ name }}, 
+        <a href="{{ logout }}">logout</a>
+        {% else %}
+        Welcome, <a href="/login">登入</a>
+        {% endif %}
+    </div>
 </header
 <div class="crumb">貓</div>
 <ul class="faq_menu">
