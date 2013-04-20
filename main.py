@@ -21,7 +21,8 @@ import os
 from google.appengine.api import users
 
 from common import share
-from view import base, faq, login
+from view import base, faq, login, create
+from admin import data as adm_data
 
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
@@ -32,21 +33,19 @@ DEBUG = True
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        user = users.get_current_user()
-        msg = ''
-        if user:
-            msg = 'Hi, ' + user.nickname() + ', '
-        #else:
-        #    self.redirect(users.create_login_url(self.request.uri))
-        self.response.write(msg + 'Hello world!')
+        self.response.write('Hello world!')
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
     ('/login', login.LoginPage),
     ('/login_google', login.GoogleLogin),
     ('/logout', login.LogoutPage),
     ('/register', login.RegisterPage),
     ('/register_idpwd', login.IdPwdRegister),
     ('/register_google', login.GoogleRegister),
+    ('/reg_step1', create.CreatePersonPage),
     ('/faq', faq.BoardPage),
+
+    ('/adm/.*', adm_data.ListDataPage),
+
+    ('/.*', MainHandler),
 ], config = base.myconfig, debug=DEBUG)
