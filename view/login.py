@@ -7,10 +7,11 @@ from view import base
 from common import share
 from thirdparty import hashing_passwords
 
-GOOGLE = 'g'
-IDPWD = 'id'
+GOOGLE = share.VIEW_GOOGLE
+IDPWD = share.VIEW_IDPWD
 
-HOME = '/faq'
+HOME = share.HOME
+REG_STEP1 = share.REG_STEP1
 
 class LoginPage(base.BaseSessionHandler):
     def get(self):
@@ -77,9 +78,8 @@ class IdPwdRegister(base.BaseSessionHandler):
             acc = account.IDPWD(userid=userid,
                                 password=hashing_passwords.make_hash(pwd1))
             acc_service.create(acc)
-            #TODO: next step
             self.session['user'] = make_idpwd_user(userid)
-            self.redirect(HOME)
+            self.redirect(REG_STEP1)
         else:
             self.response.out.write(userid + ", this id already exists")
 
@@ -92,17 +92,18 @@ class GoogleRegister(base.BaseSessionHandler):
                 acc = account.Google(userid=user.user_id(),
                                      gmail=user.email())
                 acc_service.create(acc)
-            #TODO: next step
             self.session['user'] = make_google_user(user)
-            self.redirect(HOME)
+            self.redirect(REG_STEP1)
         else:
             self.redirect(gusers.create_login_url(self.request.uri))
 
 
 def make_idpwd_user(userid):
-    return {'name': userid,
+    return {'userid': userid,
+            'name': userid,
             'type': IDPWD}
 
 def make_google_user(user):
-    return {'name': user.nickname(),
+    return {'userid': user.user_id(),
+            'name': user.nickname(),
             'type': GOOGLE}
