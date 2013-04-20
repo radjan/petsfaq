@@ -1,11 +1,11 @@
 from google.appengine.ext import db
 
-from model import account as model
+from model import account as acc_model
 
 from common import share
 
-GOOGLE = model.ACCOUNT_GOOGLE
-ID_PWD = model.ACCOUNT_ID_PWD
+GOOGLE = acc_model.ACCOUNT_GOOGLE
+ID_PWD = acc_model.ACCOUNT_ID_PWD
 
 get_root_key = share.party_root_key
 
@@ -15,9 +15,9 @@ class AccountDao():
 
     def _get_type(self, acc):
         cls = type(acc)
-        if cls is model.Google:
+        if cls is acc_model.Google:
             return GOOGLE
-        elif cls is model.IDPWD:
+        elif cls is acc_model.IDPWD:
             return ID_PWD
         else:
             raise Exception("unknow type")
@@ -28,19 +28,25 @@ class AccountDao():
 
     def get(self, acc_id, acc_type):
         if acc_type == GOOGLE:
-            q = model.Google.all()
+            q = acc_model.Google.all()
         elif acc_type == ID_PWD:
-            q = model.IDPWD.all()
+            q = acc_model.IDPWD.all()
         else:
             # XXX exception type
             raise Exception("Unsupported Account Type")
         q.filter("userid =", acc_id)
         rets = list(q.run())
-        print rets
         if rets:
             if len(rets) >= 2:
-                raise Exception("user is not unique! " + acc_type + ": " + acc_id)
+                raise Exception("user is not unique! " +
+                                    acc_type + ": " + acc_id)
             return rets[0]
         return None
+
+    def update(self, acc):
+        acc.put()
+
+    def list(self):
+        return acc_model.Account.all()
 
 account_dao = AccountDao()
