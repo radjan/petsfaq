@@ -1,13 +1,13 @@
 from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
 
-from model import hospital
-from model import specialty
+from model import hospital, person
 
 class Role(polymodel.PolyModel):
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
     verified = db.BooleanProperty(default=False)
+    person = db.ReferenceProperty(person.Person, colloection_name='roles', required=True)
 
 class User(Role):
     pass
@@ -17,7 +17,8 @@ class Moderator(Role):
 
 class Vet(Role):
     hospital = db.RederenceProperty(hospital.Hospital, collection_name='vets')
-    specialties = db.ListProperty(specialty.Specialty)
+    specialty = db.TextProperty()
+    #specialties = db.ListProperty(specialty.Specialty)
     education = db.ListProperty(str)
     experience = db.ListProperty(str)
 
