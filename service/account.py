@@ -1,9 +1,10 @@
 from model import account as account_model
 
 from dao.account import account_dao as dao
+from common import share
 
-GOOGLE = account_model.ACCOUNT_GOOGLE
-ID_PWD = account_model.ACCOUNT_ID_PWD
+GOOGLE = share.ACCOUNT_GOOGLE
+ID_PWD = share.ACCOUNT_ID_PWD
 
 class AccountService():
     def list(self):
@@ -14,6 +15,9 @@ class AccountService():
 
     def create(self, acc):
         return dao.create(acc)
+
+    def update(self, acc):
+        return dao.update(acc)
 
     def get(self, acc_id, acc_type):
         return dao.get(acc_id, acc_type)

@@ -4,8 +4,8 @@ from model import account as acc_model
 
 from common import share
 
-GOOGLE = acc_model.ACCOUNT_GOOGLE
-ID_PWD = acc_model.ACCOUNT_ID_PWD
+GOOGLE = share.ACCOUNT_GOOGLE
+ID_PWD = share.ACCOUNT_ID_PWD
 
 get_root_key = share.party_root_key
 
