@@ -6,6 +6,9 @@ GOOGLE = account_model.ACCOUNT_GOOGLE
 ID_PWD = account_model.ACCOUNT_ID_PWD
 
 class AccountService():
+    def list(self):
+        return dao.list()
+
     def exist(self, acc_id, acc_type):
         return dao.exist(acc_id, acc_type)
 
