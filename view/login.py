@@ -58,7 +58,7 @@ class LogoutPage(base.BaseSessionHandler):
         for k in self.session.keys():
             del self.session[k]
 
-class RegisterPage(webapp2.RequestHandler):
+class RegisterPage(base.BaseSessionHandler):
     def get(self):
         self.render_template('register.html')
 
