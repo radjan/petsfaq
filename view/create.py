@@ -33,3 +33,21 @@ class CreatePersonPage(base.BaseSessionHandler):
         account_service.update(acc)
         self.redirect(share.REG_STEP2)
 
+class CreateRolePage(base.BaseSessionHandler):
+    @base.login_required
+    def get(self):
+        role_type = self.request.get('t')
+        template_name = None
+        if role_type is None or role_type == "":
+            template_name = 'c2_role.html'
+        elif role_type == share.VIEW_ROLE_ADM:
+            template_name = 'c2_adm.html'
+        elif role_type == share.VIEW_ROLE_VET:
+            template_name = 'c2_vet.html'
+        elif role_type == share.VIEW_ROLE_USER:
+            self.redirect(share.HOME)
+            return
+        else:
+            self.response.out.write("unsupported role type")
+            return
+        self.render_template(template_name)
