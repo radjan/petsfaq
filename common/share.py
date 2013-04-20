@@ -7,6 +7,10 @@ WEBAPP2_SESSION_KEY = 'my-little-secret_change-this-before-deploy'
 VIEW_GOOGLE = 'g'
 VIEW_IDPWD = 'id'
 
+VIEW_ROLE_ADM = 'a'
+VIEW_ROLE_VET = 'v'
+VIEW_ROLE_USER = 'u'
+
 # -----
 # web urls
 HOME = '/faq'
