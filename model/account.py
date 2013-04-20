@@ -10,6 +10,8 @@ from common import share
 
 
 class Account(polymodel.PolyModel):
+    created = db.DateTimeProperty(auto_now_add=True)
+    last_modified = db.DateTimeProperty(auto_now=True)
     login_type = db.StringProperty(required=True,
                                    choices=[share.ACCOUNT_GOOGLE,
                                             share.ACCOUNT_ID_PWD,
