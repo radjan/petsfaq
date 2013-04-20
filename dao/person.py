@@ -12,4 +12,7 @@ class PersonDao():
     def update(self, p):
         p.put()
 
+    def list(self):
+        return p_model.Person.all()
+
 person_dao = PersonDao()

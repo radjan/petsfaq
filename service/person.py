@@ -2,9 +2,12 @@
 from dao.person import person_dao
 class PersonService:
     def create(self, p):
-        person_dao.create(p)
+        return person_dao.create(p)
 
     def update(self, p):
-        person_dao.update(p)
+        return person_dao.update(p)
+
+    def list(self):
+        return person_dao.list()
 
 person_service = PersonService()

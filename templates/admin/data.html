@@ -6,19 +6,32 @@
 <body>
 
 <div>
-    <header>帳號</header>
+    <header>account</header>
     <ul>
     {% for acc in accounts %}
         <li>
-            {{ acc.userid }},
-            {{ acc.login_type }},
-            {{ acc.gmail }}
+            <div>
+            userid={{ acc.userid }},
+            login_type={{ acc.login_type }}{% if acc.gmail %},
+            gmail={{ acc.gmail }} {% endif %}
+            </div>
+            {% if acc.person %}
+            <div style="margin-left:10px">Person Name: {{ acc.person.name }}</div>
+            {% endif %} 
         </li>
     {% endfor %}
     </ul>
 </div>
 
 <div>
-
+    <header>person</header>
+    <ul>
+    {% for p in people %}
+        <li>
+            name={{ p.name }}, gender={{ p.gender }}, email={{ p.email }}, phone={{ p.phone }}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
 </body>
 </html>
