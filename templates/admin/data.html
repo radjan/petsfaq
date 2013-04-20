@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<div>
+    <header>帳號</header>
+    <ul>
+    {% for acc in accounts %}
+        <li>
+            {{ acc.userid }},
+            {{ acc.login_type }},
+            {{ acc.gmail }}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div>
+
+</body>
+</html>
