@@ -8,14 +8,12 @@ from model import person
 
 from common import share
 
-ACCOUNT_GOOGLE = 'google'
-ACCOUNT_ID_PWD = 'id_pwd'
-ACCOUNT_FACEBOOK = 'facebook'
-
 
 class Account(polymodel.PolyModel):
     login_type = db.StringProperty(required=True,
-                                   choices=[ACCOUNT_GOOGLE, ACCOUNT_ID_PWD, ACCOUNT_FACEBOOK])
+                                   choices=[share.ACCOUNT_GOOGLE,
+                                            share.ACCOUNT_ID_PWD,
+                                            share.ACCOUNT_FACEBOOK])
     userid = db.StringProperty(required=True)
     person = db.ReferenceProperty(person.Person,
                                   collection_name='accounts')
@@ -25,7 +23,7 @@ class Google(Account):
     gmail = db.EmailProperty(required=True)
 
     def __init__(self, *args, **kwargs):
-        kwargs['login_type'] = ACCOUNT_GOOGLE
+        kwargs['login_type'] = share.ACCOUNT_GOOGLE
         Account.__init__(self, *args, **kwargs)
 
 class IDPWD(Account):
@@ -33,7 +31,7 @@ class IDPWD(Account):
     activated = db.BooleanProperty(default=False)
 
     def __init__(self, *args, **kwargs):
-        kwargs['login_type'] = ACCOUNT_ID_PWD
+        kwargs['login_type'] = share.ACCOUNT_ID_PWD
         Account.__init__(self, *args, **kwargs)
 
 # https://exyr.org/2011/hashing-passwords/
