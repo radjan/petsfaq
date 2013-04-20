@@ -17,9 +17,7 @@ class LoginPage(base.BaseSessionHandler):
         if 'user' in self.session:
             self.redirect(HOME)
             return
-        params = {}
-        template = share.jinja_env.get_template('login.html')
-        self.response.out.write(template.render(params))
+        self.render_template('login.html')
 
     def post(self):
         userid = self.request.get("userid")
@@ -62,9 +60,7 @@ class LogoutPage(base.BaseSessionHandler):
 
 class RegisterPage(webapp2.RequestHandler):
     def get(self):
-        params = {}
-        template = share.jinja_env.get_template('register.html')
-        self.response.out.write(template.render(params))
+        self.render_template('register.html')
 
 class IdPwdRegister(base.BaseSessionHandler):
     def post(self):
