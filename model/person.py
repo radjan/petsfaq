@@ -10,4 +10,4 @@ class Person(db.Model):
     gender = db.StringProperty(required=True, choices=[MALE, FEMALE])
     email = db.EmailProperty(required=True)
     phone = db.PhoneNumberProperty()
-
+    mark = db.IntegerProperty(default=0)
