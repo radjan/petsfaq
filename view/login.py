@@ -4,11 +4,8 @@ from google.appengine.api import users as gusers
 from model import account
 from service.account import account_service as acc_service
 from view import base
-from common import share
+from common import share, util
 from thirdparty import hashing_passwords
-
-GOOGLE = share.VIEW_GOOGLE
-IDPWD = share.VIEW_IDPWD
 
 HOME = share.HOME
 REG_STEP1 = share.REG_STEP1
@@ -27,8 +24,7 @@ class LoginPage(base.BaseSessionHandler):
         if acc:
             if hashing_passwords.check_hash(password, acc.password):
                 #login
-                self.session['user'] = {'name': acc.userid,
-                                        'type': IDPWD}
+                self.session['user'] = util.get_user(acc)
                 self.redirect(HOME)
             else:
                 self.response.out.write("Wrong password")
@@ -41,7 +37,7 @@ class GoogleLogin(base.BaseSessionHandler):
         if user:
             acc = acc_service.get(user.user_id(), share.ACCOUNT_GOOGLE)
             if acc:
-                self.session['user'] = make_google_user(user)
+                self.session['user'] = util.get_user(acc)
                 self.redirect(HOME)
             else:
                 self.redirect('register_google')
@@ -78,7 +74,7 @@ class IdPwdRegister(base.BaseSessionHandler):
             acc = account.IDPWD(userid=userid,
                                 password=hashing_passwords.make_hash(pwd1))
             acc_service.create(acc)
-            self.session['user'] = make_idpwd_user(userid)
+            self.session['user'] = util.temp_idpwd_user(userid)
             self.redirect(REG_STEP1)
         else:
             self.response.out.write(userid + ", this id already exists")
@@ -92,18 +88,9 @@ class GoogleRegister(base.BaseSessionHandler):
                 acc = account.Google(userid=user.user_id(),
                                      gmail=user.email())
                 acc_service.create(acc)
-            self.session['user'] = make_google_user(user)
+            self.session['user'] = util.temp_google_user(user)
             self.redirect(REG_STEP1)
         else:
             self.redirect(gusers.create_login_url(self.request.uri))
 
 
-def make_idpwd_user(userid):
-    return {'userid': userid,
-            'name': userid,
-            'type': IDPWD}
-
-def make_google_user(user):
-    return {'userid': user.user_id(),
-            'name': user.nickname(),
-            'type': GOOGLE}
