@@ -10,6 +10,7 @@ myconfig['webapp2_extras.sessions'] = {
     'secret_key': share.WEBAPP2_SESSION_KEY,
 }
 
+# TODO csrf protect
 class BaseSessionHandler(webapp2.RequestHandler):
     def dispatch(self):
         # Get a session store for this request.
