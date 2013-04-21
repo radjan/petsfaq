@@ -1,14 +1,15 @@
-<!DOCTYPE HTML>
-<html lang="zh">
-<head>
-<title>寵物通</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="">
 
-<!-- <link rel="stylesheet" type="text/css" href="./s/style.css"> -->
-<link href="/s/css/bootstrap.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign in &middot; Twitter Bootstrap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/s/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -49,16 +50,17 @@
     <![endif]-->
 
     <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="/s/ico/favicon.png">
+   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+   <link rel="shortcut icon" href="/s/ico/favicon.png">
 
     <link href="/s/css/myFormat.css" rel="stylesheet">
-</head>
-<body>
+  </head>
 
+  <body>
+    
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -70,8 +72,8 @@
           <a class="brand" href="#">Pet Helper</a>
           <!-- <div class="nav-collapse collapse">
             <ul class="nav">
-              <li><a href="/s/about.html">論壇</a></li>
-              <li class="avtive"><a href="/s/medical_help/hospitals.html">醫療資訊</a></li>
+              <li><a href="../about.html">論壇</a></li>
+              <li class="avtive"><a href="../medical_help/hospitals.html">醫療資訊</a></li>
               <li><a href="#contact">聯絡我們</a></li>
             </ul>
           </div> --><!--/.nav-collapse -->
@@ -79,21 +81,58 @@
       </div>
     </div>
 
-   <div class="container">
-
-      <form id="myForm" class="form-signin" action="/register_idpwd" method="post">
+    <div class="container">
+      <form id="myForm" class="form-signin" action="reg_step1" method="post">
         <div>
-        <h3 class="form-signin-heading">建立帳號</h3>
-        <input name="myEmail" type="text" class="input-block-level" placeholder="電子郵件">
-        <input name="myPassword" type="password" class="input-block-level" placeholder="密碼">
-        <input name="myPassword2" type="password" class="input-block-level" placeholder="確認密碼">
-        </div>
-        <br>
+          <h3>個人資料</h3>
+            <label>姓名</label>
+              <input name="name" type="text" class="input-block-level" placeholder="姓名">
 
+          <div>
+            <label>性別</label>
+              <label class="radio inline">
+                <input type="radio" name="gender" value="M">
+                  男
+              </label>
+              <label class="radio inline">
+                <input type="radio" name="gender" value="F">
+                  女
+              </label>
+          </div>
+
+            <label>生日</label>
+              <input name="birthday" type="text" class="input-block-level" placeholder="西元年/月/日">
+
+            <label>電話</label>
+              <input name="phone" type="text" class="input-block-level" placeholder="電話">
+
+            <label>電子信箱</label>
+              <input name="email" type="text" class="input-block-level" placeholder="電子信箱">
+
+            <label>照片</label>
+              <input name="photo" type="img" class="image" >
+          
+        </div>
+
+        <br>
+        <div>
+           <h3>你是獸醫嗎？</h3>
+            <label class="radio inline">
+              <input type="radio" name="isVet" value="Y">
+                是
+            </label>
+            <label class="radio inline">
+              <input type="radio" name="isVet" value="N">
+                不是
+            </label>
+        </div>
+          <br>
+        
         <hr class="bs-docs-separator">
-        <!-- <button class="btn btn-inverse" type="submit">取消</button> -->
-        <a href="./login.html" role="button" class="btn btn-inverse">取消</a>
+        <!-- <button class="btn" type="submit">上一步</button> -->
         <a href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a>
+        <br>
+        <br>
       
 
       <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -105,15 +144,16 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭修改</button>
-          <!-- <a id="nextStep" href="./reg_step1.html" role="button" class="btn btn-large btn-primary">確認，下一步</a> -->
           <button id="nextStep" class="btn btn-large btn-primary" type="submit">確認，下一步</button>
         </div>
       </div>   <!--/confirmModal div-->
-	</form>
+
+      </form>
     </div> <!-- /container -->
 
 
-        <!-- Le javascript
+
+    <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -133,56 +173,48 @@
     <script src="/s/js/bootstrap-typeahead.js"></script> 
 
     <script>
-    function displayData () {
-      var _email = $("input[name=myEmail]").val();
-      var _password = $("input[name=myPassword]").val();
-      var _password2 = $("input[name=myPassword2]").val();
-
-      var _str1 = "<p>電子郵件："+_email+"</p>";
-      var _str2;
-
+      function displayData () {
+      var _genderVal = $('[name="gender"]:checked').val();
+      var _isVetVal = $('[name="isVet"]:checked').val();
+      var _gender;
+      var _isVet;     
+    
       // check data 
-      $("#nextStep").hide();
-      if (_email == "") {
-        _str2 = "<p class=\"text-error\">請輸入電子郵件</p>";
-        $("#modalBody").html(_str1+_str2);
-      }else if(_password == "" || _password2 == "" || _password != _password2){
-        _str2 = "<p class=\"text-error\">請確認密碼</p>";
-        $("#modalBody").html(_str1+_str2);
+      $("#nextStep").show();
+      $("#modalBody").empty();
+      $("#modalBody").append("姓名："+ $("input[name=name]").val()+"<br>");
+
+      if (_genderVal != null ) {
+        if (_genderVal != "M") {
+          _gender = "女";  
+        }else{
+          _gender = "男";
+        }
       }else{
-        $("#modalBody").html(_str1);
-        $("#nextStep").show();
+        _gender = "請選擇性別";
       }
-      
+
+      $("#modalBody").append("性別："+ _gender +"<br>");
+      $("#modalBody").append("生日："+ $("input[name=birthday]").val()+"<br>");
+      $("#modalBody").append("電話："+ $("input[name=phone]").val()+"<br>");
+      $("#modalBody").append("電子信箱："+ $("input[name=email]").val()+"<br>");
+
+      if (_isVetVal != null ) {
+        if (_isVetVal  != "Y") {
+          _isVet = "不是";  
+        }else{
+          _isVet = "是";
+        }
+      }else{
+        _isVet = "請選擇是否為獸醫？";
+      }
+
+      $("#modalBody").append("是否為獸醫："+ _isVet +"<br>");
+
+      if (_genderVal == null || _roleVal == null) {
+        $("#nextStep").hide();
+      }
     }
     </script> 
-
-<!-- <header id="header">
-    寵物通
-</header>
-
-<div>
-<ul>
-<li>
-    <a href="/register_google">使用 google 帳號登入</a>
-<li>
-    <form action="/register_idpwd" method="post">
-        <div>帳號：<input name="myEmail" type="text"/></div>
-        <div>密碼：<input name="myPassword" type="password"/></div>
-        <div>確認密碼：<input name="myPassword2" type="password"/></div>
-        <input type="submit" value="註冊">
-    </form>
-</li>
-</ul>
-
-</div>
- -->
-
-<div class="adsense">
-廣告
-</div>
-
-<footer>
-</footer>
-</body>
+  </body>
 </html>
