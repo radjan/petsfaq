@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+        <form action="reg_step2" method="post">
+        詳細資料 <br>
+        簡介：<textarea name='description'></textarea><br>
+        專科：<textarea name='specialty'></textarea><br>
+        學歷：
+        <ul>
+            <li><input type='text' name='edu_1'></li>
+            <li><input type='text' name='edu_2'></li>
+            <li><input type='text' name='edu_3'></li>
+        </ul><br>
+        經歷：
+        <ul>
+            <li><input type='text' name='exp_1'></li>
+            <li><input type='text' name='exp_2'></li>
+            <li><input type='text' name='exp_3'></li>
+            <li><input type='text' name='exp_4'></li>
+            <li><input type='text' name='exp_5'></li>
+        </ul><br>
+        <input type='submit' name='submit' value='儲存'>
+        </form>
+        <br>OR<br>醫院已建立好我的資料，下一步直接挑選。<a href='?a=skip'>跳過此步驟</a>
+</body>
+</html>

@@ -41,8 +41,9 @@ app = webapp2.WSGIApplication([
     ('/register', login.RegisterPage),
     ('/register_idpwd', login.IdPwdRegister),
     ('/register_google', login.GoogleRegister),
-    ('/reg_step1', create.CreatePersonPage),
-    ('/reg_step2', create.CreateRolePage),
+    (share.REG_STEP1, create.CreatePersonPage),
+    (share.REG_STEP2, create.VetDetailPage),
+    (share.REG_STEP3, create.WorksForPage),
     ('/faq', faq.BoardPage),
 
     ('/adm/data', adm_data.ListDataPage),

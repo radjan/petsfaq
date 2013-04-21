@@ -4,6 +4,7 @@
     <meta charset="utf-8">
 </head>
 <body>
+        選擇你工作的獸醫院，非醫院員工請<a href='/'>按此</a>離開。
         <form action="reg_step2" method="post">
         建立醫院 <br>
         名稱<input name='name'><br>
@@ -12,11 +13,12 @@
         營業時間：<textarea name='working_hour'></textarea><br>
         地址：<input name='address'><br>
         電話：<input name='phone'><br>
-        電話2：<input name='phone2'><br>
-        預約：<input type='checkbox' name='bookable'><br>
-        急診：<input type='checkbox' name='er'><br>
-        急診條件：<textarea name='er_condition'></textarea><br>
+        可預約：<input type='checkbox' name='bookable'><br>
+        有急診：<input type='checkbox' name='er'><br>
+        急診電話：<input name='er_phone'><br>
+        急診時間：<textarea name='er_hour'></textarea><br>
         <input type='submit' name='submit' value='建立醫院'>
+        <input type='hidden' name='role_type' value='{{ role_type }}'>
         </form>
         <br>OR<br>選擇醫院
 </body>
