@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign in &middot; Twitter Bootstrap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/s/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 500px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+    </style>
+    <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+   <link rel="shortcut icon" href="/s/ico/favicon.png">
+
+    <link href="/s/css/myFormat.css" rel="stylesheet">
+  </head>
+
+  <body>
+    
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Pet Helper</a>
+          <!-- <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="../about.html">論壇</a></li>
+              <li class="avtive"><a href="../medical_help/hospitals.html">醫療資訊</a></li>
+              <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+          </div> --><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <form id="myForm" class="form-signin">
+        <div>
+          <h3>個人資料</h3>
+            <label>姓名</label>
+              <input name="name" type="text" class="input-block-level" placeholder="姓名">
+
+          <div>
+            <label>性別</label>
+              <label class="radio inline">
+                <input type="radio" name="gender" value="M">
+                  男
+              </label>
+              <label class="radio inline">
+                <input type="radio" name="gender" value="F">
+                  女
+              </label>
+          </div>
+
+            <label>生日</label>
+              <input name="birthday" type="text" class="input-block-level" placeholder="西元年/月/日">
+
+            <label>電話</label>
+              <input name="tel" type="text" class="input-block-level" placeholder="電話">
+
+            <label>電子信箱</label>
+              <input name="email" type="text" class="input-block-level" placeholder="電子信箱">
+
+            <label>照片</label>
+              <input name="photo" type="img" class="image" >
+          
+        </div>
+
+        <div>
+           <h3>選擇身份</h3>
+            <label class="radio">
+              <input type="radio" name="role" value="vet">
+                獸醫
+            </label>
+            <label class="radio">
+              <input type="radio" name="role" value="user">
+                一般使用者
+            </label>
+        </div>
+          <br>
+        
+        <hr class="bs-docs-separator">
+        <!-- <button class="btn" type="submit">上一步</button> -->
+        <a href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a>
+        <br>
+        <br>
+      
+
+      <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+            <h3 id="myModalLabel">確認資料</h3>
+        </div>
+        <div id="modalBody" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭修改</button>
+          <a id="nextStep" href="#" role="button" class="btn btn-large btn-primary">確認，下一步</a>
+        </div>
+      </div>   <!--/confirmModal div-->
+
+      </form>
+    </div> <!-- /container -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap-transition.js"></script>
+    <script src="/s/js/bootstrap-alert.js"></script>
+    <script src="/s/js/bootstrap-modal.js"></script>
+    <script src="/s/js/bootstrap-dropdown.js"></script>
+    <script src="/s/js/bootstrap-scrollspy.js"></script>
+    <script src="/s/js/bootstrap-tab.js"></script>
+    <script src="/s/js/bootstrap-tooltip.js"></script>
+    <script src="/s/js/bootstrap-popover.js"></script>
+    <script src="/s/js/bootstrap-button.js"></script>
+    <script src="/s/js/bootstrap-collapse.js"></script>
+    <script src="/s/js/bootstrap-carousel.js"></script>
+    <script src="/s/js/bootstrap-typeahead.js"></script>
+
+    <script>
+      function displayData () {
+      var _genderVal = $('[name="gender"]:checked').val();
+      var _roleVal = $('[name="role"]:checked').val();
+      var _gender;
+      var _role;     
+    
+      // check data 
+      $("#nextStep").show();
+      $("#modalBody").empty();
+      $("#modalBody").append("姓名："+ $("input[name=name]").val()+"<br>");
+
+      if (_genderVal != null ) {
+        if (_genderVal != "M") {
+          _gender = "女";  
+        }else{
+          _gender = "男";
+        }
+      }else{
+        _gender = "請選擇性別";
+      }
+
+      $("#modalBody").append("性別："+ _gender +"<br>");
+      $("#modalBody").append("生日："+ $("input[name=birthday]").val()+"<br>");
+      $("#modalBody").append("電話："+ $("input[name=tel]").val()+"<br>");
+      $("#modalBody").append("電子信箱："+ $("input[name=email]").val()+"<br>");
+
+      if (_roleVal != null ) {
+        if (_roleVal  != "vet") {
+          _role = "一般使用者";  
+        }else{
+          _role = "獸醫";
+        }
+      }else{
+        _role = "請選擇身分";
+      }
+
+      $("#modalBody").append("身份："+ _role +"<br>");
+
+      if (_genderVal == null || _roleVal == null) {
+        $("#nextStep").hide();
+      }
+    }
+    </script> 
+  </body>
+</html>

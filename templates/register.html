@@ -1,14 +1,163 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="zh">
 <head>
 <title>寵物通</title>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="./s/style.css">
-<style>
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- <link rel="stylesheet" type="text/css" href="./s/style.css"> -->
+<link href="/s/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 500px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+    </style>
+    <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/s/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/s/ico/favicon.png">
+
+    <link href="/s/css/myFormat.css" rel="stylesheet">
 </head>
 <body>
-<header id="header">
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Pet Helper</a>
+          <!-- <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/s/about.html">論壇</a></li>
+              <li class="avtive"><a href="/s/medical_help/hospitals.html">醫療資訊</a></li>
+              <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+          </div> --><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+   <div class="container">
+
+      <form id="myForm" class="form-signin" action="/register_idpwd" method="post">
+        <div>
+        <h3 class="form-signin-heading">建立帳號</h3>
+        <input name="myEmail" type="text" class="input-block-level" placeholder="電子郵件">
+        <input name="myPassword" type="password" class="input-block-level" placeholder="密碼">
+        <input name="myPassword2" type="password" class="input-block-level" placeholder="確認密碼">
+        </div>
+        <br>
+
+        <hr class="bs-docs-separator">
+        <!-- <button class="btn btn-inverse" type="submit">取消</button> -->
+        <a href="./login.html" role="button" class="btn btn-inverse">取消</a>
+        <a href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a>
+      
+
+      <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+            <h3 id="myModalLabel">確認資料</h3>
+        </div>
+        <div id="modalBody" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭修改</button>
+          <!-- <a id="nextStep" href="./reg_step1.html" role="button" class="btn btn-large btn-primary">確認，下一步</a> -->
+          <button id="nextStep" class="btn btn-large btn-primary" type="submit">確認，下一步</button>
+        </div>
+      </div>   <!--/confirmModal div-->
+	</form>
+    </div> <!-- /container -->
+
+
+        <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap.js"></script>
+    <script src="/s/js/bootstrap-transition.js"></script>
+    <script src="/s/js/bootstrap-alert.js"></script>
+    <script src="/s/js/bootstrap-modal.js"></script>
+    <script src="/s/js/bootstrap-dropdown.js"></script>
+    <script src="/s/js/bootstrap-scrollspy.js"></script>
+    <script src="/s/js/bootstrap-tab.js"></script>
+    <script src="/s/js/bootstrap-tooltip.js"></script>
+    <script src="/s/js/bootstrap-popover.js"></script>
+    <script src="/s/js/bootstrap-button.js"></script>
+    <script src="/s/js/bootstrap-collapse.js"></script>
+    <script src="/s/js/bootstrap-carousel.js"></script>
+    <script src="/s/js/bootstrap-typeahead.js"></script> 
+
+    <script>
+    function displayData () {
+      var _email = $("input[name=myEmail]").val();
+      var _password = $("input[name=myPassword]").val();
+      var _password2 = $("input[name=myPassword2]").val();
+
+      var _str1 = "<p>電子郵件："+_email+"</p>";
+      var _str2;
+
+      // check data 
+      $("#nextStep").hide();
+      if (_email == "") {
+        _str2 = "<p class=\"text-error\">請輸入電子郵件</p>";
+        $("#modalBody").html(_str1+_str2);
+      }else if(_password == "" || _password2 == "" || _password != _password2){
+        _str2 = "<p class=\"text-error\">請確認密碼</p>";
+        $("#modalBody").html(_str1+_str2);
+      }else{
+        $("#modalBody").html(_str1);
+        $("#nextStep").show();
+      }
+      
+    }
+    </script> 
+
+<!-- <header id="header">
     寵物通
 </header>
 
@@ -27,6 +176,7 @@
 </ul>
 
 </div>
+ -->
 
 <div class="adsense">
 廣告
