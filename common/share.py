@@ -38,6 +38,6 @@ def acc_key_view2model(viewkey):
     return ACC_V2M_MAP.get(viewkey, 'unknown')
 
 ACC_M2V_MAP = {ACCOUNT_GOOGLE: VIEW_GOOGLE,
-               ACCOUNT_IDPWD: VIEW_ID_PWD,}
+               ACCOUNT_ID_PWD: VIEW_IDPWD,}
 def acc_key_model2view(modelkey):
     return ACC_M2V_MAP.get(modelkey, 'unknown')
