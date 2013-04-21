@@ -12,7 +12,7 @@ class CreatePersonPage(base.BaseSessionHandler):
 
     @base.login_required
     def get(self):
-        self.render_template('c1.html')
+        self.render_template('reg_step1.html')
 
     @base.login_required
     def post(self):
