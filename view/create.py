@@ -1,6 +1,6 @@
 import webapp2
 
-from model import person, role
+from model import person, role, hospital
 from service.person import person_service
 from service.account import account_service
 from service.role import role_service
@@ -16,7 +16,7 @@ class CreatePersonPage(base.BaseSessionHandler):
 
     @base.login_required
     def post(self):
-        vet = self.request.get("vet")
+        vet = self.request.get("isVet")
         name = self.request.get("name")
         gender = self.request.get("gender")
         birthday = self.request.get("birthday")
@@ -36,7 +36,7 @@ class CreatePersonPage(base.BaseSessionHandler):
         account_service.update(acc)
         self.session['user'] = util.get_user(acc)
         next_page = share.REG_STEP2
-        if not vet:
+        if vet == 'N':
             next_page = share.REG_STEP3
         self.redirect(next_page)
 
@@ -104,5 +104,24 @@ class WorksForPage(base.BaseSessionHandler):
 class CreateHospitalPage(base.BaseSessionHandler):
     @base.login_required
     def post(self):
-        userid = util.get_userid(self.session)
+        person = util.get_person(self.session)
+        kw = {'name': self.request.get('name'),
+              'description': self.request.get('description'),
+              'specialty': self.request.get('specialty'),
+              'address': self.request.get('address'),
+              'phone': self.request.get('phone'),
+              'emergency': self.request.get('er') != "",
+             }
+        opt_keys = (('working_hour', 'working_hour'),
+                    ('er_phone', 'emergency_phone'),
+                    ('er_hour', 'emergency_hour'),
+                   )
+        for row in opt_keys:
+            util.maybe_add(kw, row[1], self.request.get(row[0]))
+        h = hospital.Hospial(**kw)
+        hospital_service.create(h)
+
+        adm = role.Admin(person=person, hospital=h)
+        role_service.create(adm)
+        self.redirect(share.HOME)
 
