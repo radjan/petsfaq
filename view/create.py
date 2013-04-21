@@ -4,6 +4,7 @@ from model import person, role, hospital
 from service.person import person_service
 from service.account import account_service
 from service.role import role_service
+from service.hospital import hospital_service
 from view import base
 
 from common import share, util
@@ -118,7 +119,7 @@ class CreateHospitalPage(base.BaseSessionHandler):
                    )
         for row in opt_keys:
             util.maybe_add(kw, row[1], self.request.get(row[0]))
-        h = hospital.Hospial(**kw)
+        h = hospital.Hospital(**kw)
         hospital_service.create(h)
 
         adm = role.Admin(person=person, hospital=h)

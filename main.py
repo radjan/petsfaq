@@ -44,6 +44,7 @@ app = webapp2.WSGIApplication([
     (share.REG_STEP1, create.CreatePersonPage),
     (share.REG_STEP2, create.VetDetailPage),
     (share.REG_STEP3, create.WorksForPage),
+    ('/new_hospital', create.CreateHospitalPage),
     ('/faq', faq.BoardPage),
 
     ('/adm/data', adm_data.ListDataPage),

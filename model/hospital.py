@@ -10,7 +10,7 @@ class Hospital(db.Model):
     working_hour = db.TextProperty() # XXX data structure
     address = db.PostalAddressProperty(required=True)
     phone = db.PhoneNumberProperty(required=True)
-    bookable = db.BooleanProperty(required=True, default=False)
+    #bookable = db.BooleanProperty(required=True, default=False)
     emergency = db.BooleanProperty(required=True, default=False)
     emergency_phone = db.PhoneNumberProperty()
     emergency_hour = db.TextProperty()

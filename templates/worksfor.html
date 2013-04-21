@@ -4,21 +4,20 @@
     <meta charset="utf-8">
 </head>
 <body>
-        選擇你工作的獸醫院，非醫院員工請<a href='/'>按此</a>離開。
-        <form action="reg_step2" method="post">
+        建立或選擇你工作的獸醫院，非醫院員工請<a href='/faq'>按此</a>開始使用。
+        <form action="new_hospital" method="post">
         建立醫院 <br>
-        名稱<input name='name'><br>
-        簡介：<textarea name='description'></textarea><br>
-        專科：<textarea name='specialty'></textarea><br>
+        名稱*：<input name='name'><br>
+        簡介*：<textarea name='description'></textarea><br>
+        專科*：<textarea name='specialty'></textarea><br>
         營業時間：<textarea name='working_hour'></textarea><br>
-        地址：<input name='address'><br>
-        電話：<input name='phone'><br>
-        可預約：<input type='checkbox' name='bookable'><br>
+        地址*：<input name='address'><br>
+        電話*：<input name='phone'><br>
+        <!-- 可預約：<input type='checkbox' name='bookable'><br> -->
         有急診：<input type='checkbox' name='er'><br>
         急診電話：<input name='er_phone'><br>
         急診時間：<textarea name='er_hour'></textarea><br>
         <input type='submit' name='submit' value='建立醫院'>
-        <input type='hidden' name='role_type' value='{{ role_type }}'>
         </form>
         <br>OR<br>選擇醫院
 </body>
