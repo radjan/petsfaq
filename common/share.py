@@ -32,8 +32,12 @@ from google.appengine.ext import db
 def party_root_key():
     return db.Key.from_path(PARTY_STORE_KIND, PARTY_STORE_ROOT)
 
-ACC_KEY_MAP = {VIEW_GOOGLE: ACCOUNT_GOOGLE,
+ACC_V2M_MAP = {VIEW_GOOGLE: ACCOUNT_GOOGLE,
                VIEW_IDPWD: ACCOUNT_ID_PWD,}
-
 def acc_key_view2model(viewkey):
-    return ACC_KEY_MAP.get(viewkey, 'unknown')
+    return ACC_V2M_MAP.get(viewkey, 'unknown')
+
+ACC_M2V_MAP = {ACCOUNT_GOOGLE: VIEW_GOOGLE,
+               ACCOUNT_IDPWD: VIEW_ID_PWD,}
+def acc_key_model2view(modelkey):
+    return ACC_M2V_MAP.get(modelkey, 'unknown')
