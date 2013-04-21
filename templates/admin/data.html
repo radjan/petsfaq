@@ -33,5 +33,22 @@
     {% endfor %}
     </ul>
 </div>
+
+<div>
+    <header>roles</header>
+    <ul>
+    {% for r in roles %}
+        <li>
+            <div>
+            {{ r._class }}
+            </div>
+            {% if r.person %}
+            <div style="margin-left:10px">Person Name: {{ r.person.name }}</div>
+            {% endif %} 
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
 </body>
 </html>
