@@ -28,12 +28,11 @@ DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
 share.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
 
-
 DEBUG = True
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        self.response.write('Hello world! <a href="/login">login</a>')
 
 app = webapp2.WSGIApplication([
     ('/login', login.LoginPage),
@@ -46,7 +45,7 @@ app = webapp2.WSGIApplication([
     ('/reg_step2', create.CreateRolePage),
     ('/faq', faq.BoardPage),
 
-    ('/adm/.*', adm_data.ListDataPage),
+    ('/adm/data', adm_data.ListDataPage),
 
     ('/.*', MainHandler),
 ], config = base.myconfig, debug=DEBUG)
