@@ -9,7 +9,7 @@ class Role(polymodel.PolyModel):
     verified = db.BooleanProperty(default=False)
     person = db.ReferenceProperty(person.Person, colloection_name='roles', required=True)
 
-class User(Role):
+class PerOwner(Role):
     pass
 
 class Moderator(Role):
@@ -22,6 +22,8 @@ class Vet(Role):
     education = db.ListProperty(str)
     experience = db.ListProperty(str)
 
+class Employee(Role):
+    hospital = db.RederenceProperty(hospital.Hospital, collection_name='employees')
 
-class Admin(Role):
-    hospital = db.RederenceProperty(hospital.Hospital, collection_name='admins')
+class Admin(Employee):
+    pass
