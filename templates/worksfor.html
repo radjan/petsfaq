@@ -1,10 +1,210 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="zh">
 <head>
-    <meta charset="utf-8">
+<title>寵物通</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- <link rel="stylesheet" type="text/css" href="./s/style.css"> -->
+<link href="/s/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 500px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+    </style>
+    <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/s/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/s/ico/favicon.png">
+
+    <link href="/s/css/myFormat.css" rel="stylesheet">
 </head>
+
 <body>
-        建立或選擇你工作的獸醫院，非醫院員工請<a href='/faq'>按此</a>開始使用。
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Pet Helper</a>
+          <!-- <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/s/about.html">論壇</a></li>
+              <li class="avtive"><a href="/s/medical_help/hospitals.html">醫療資訊</a></li>
+              <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+          </div> --><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+   <div class="container">
+        <form id="myForm" class="form-signin" action="new_hospital" method="post">
+            <div>
+                <h3 class="form-signin-heading">建立醫院</h3>
+                <p>如果您是一般使用者，請按鈕直接使用寵物通！</p>
+                <!-- <button id="nextStep" class="btn btn-small btn-danger right" type="submit">跳過</button> -->
+                <a href="#skipModal" role="button" class="btn btn-small btn-danger right" data-toggle="modal">註冊完成！前往寵物通</a>
+                <br>
+
+                <hr class="bs-docs-separator">
+                
+                <label>醫院名稱</label>
+                <input name="name" type="text" class="input-block-level">
+
+                <label>簡介</label>
+                <textarea name="description" rows="5" class="input-block-level"></textarea>
+
+                <label>專科</label>
+                <textarea name="specialty" rows="5" class="input-block-level"></textarea>
+
+                <label>營業時間</label>
+                <textarea name="working_hour" class="input-block-level"></textarea>
+
+                <label>地址</label>
+                <input name="address" type="text" class="input-block-level"><br>
+
+                <label>電話</label>
+                <input name="phone" type="text" class="input-block-level">
+                <!-- 可預約：<input type='checkbox' name='bookable'><br> -->
+        
+                <label class="checkbox" onclick="displayEr()">
+                    <input name="er" type="checkbox"> 有急診
+                </label>
+
+                <div name="erData" style="display:none">
+                    <label>急診電話</label>
+                    <input name='er_phone' type="text" class="input-block-level">
+
+                    <label>急診時間</label>
+                    <textarea name='er_hour' type="text" class="input-block-level"></textarea>
+                </div>
+            </div>
+        <br>
+
+        <hr class="bs-docs-separator">
+        <!-- <button class="btn btn-inverse" type="submit">取消</button> -->
+        <a href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a>
+        <br>
+        <br>
+
+
+        <div id="skipModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <h3 id="myModalLabel">確認資料</h3>
+            </div>
+        <div class="modal-body">
+            <p>您確定跳過建立簡歷？</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭建立簡歷</button>
+          <button id="skipToNextStep" class="btn btn-large btn-primary" type="submit">確認，下一步</button>
+        </div>
+      </div>   <!--/skipModal div-->
+
+      <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+            <h3 id="myModalLabel">確認資料</h3>
+        </div>
+        <div id="modalBody" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭修改</button>
+          <button id="nextStep" class="btn btn-large btn-primary" type="submit">確認，下一步</button>
+        </div>
+      </div>   <!--/confirmModal div-->
+
+
+   <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap.js"></script>
+    <script src="/s/js/bootstrap-transition.js"></script>
+    <script src="/s/js/bootstrap-alert.js"></script>
+    <script src="/s/js/bootstrap-modal.js"></script>
+    <script src="/s/js/bootstrap-dropdown.js"></script>
+    <script src="/s/js/bootstrap-scrollspy.js"></script>
+    <script src="/s/js/bootstrap-tab.js"></script>
+    <script src="/s/js/bootstrap-tooltip.js"></script>
+    <script src="/s/js/bootstrap-popover.js"></script>
+    <script src="/s/js/bootstrap-button.js"></script>
+    <script src="/s/js/bootstrap-collapse.js"></script>
+    <script src="/s/js/bootstrap-carousel.js"></script>
+    <script src="/s/js/bootstrap-typeahead.js"></script> 
+
+    <script type="text/javascript">
+    function displayEr(){
+        if ($("input[name=er]").is(":checked")) {
+            $("div[name=erData]").slideDown();
+        }else{
+            $("div[name=erData]").slideUp();
+        }
+    }
+
+    function displayData () { 
+        // check data 
+      $("#nextStep").show();
+      $("#modalBody").empty();
+      $("#modalBody").append("醫院名稱："+ $("input[name=name]").val()+"<br>");
+      $("#modalBody").append("簡介："+ $("textarea[name=description]").val()+"<br>");
+      $("#modalBody").append("專科："+ $("textarea[name=specialty]").val()+"<br>");
+      $("#modalBody").append("營業時間："+ $("textarea[name=working_hour]").val()+"<br>");
+      $("#modalBody").append("地址："+ $("input[name=address]").val()+"<br>");
+      $("#modalBody").append("電話："+ $("input[name=phone]").val()+"<br>");
+
+      if ($("input[name=er]").is(":checked")) {
+        $("#modalBody").append("急診時間："+ $("textarea[name=er_hour]").val()+"<br>");
+        $("#modalBody").append("急診電話："+ $("input[name=er_phone]").val()+"<br>");
+      }
+
+    }
+    </script>
+
+        <!-- 建立或選擇你工作的獸醫院，非醫院員工請<a href='/faq'>按此</a>開始使用。
         <form action="new_hospital" method="post">
         建立醫院 <br>
         名稱*：<input name='name'><br>
@@ -12,13 +212,13 @@
         專科*：<textarea name='specialty'></textarea><br>
         營業時間：<textarea name='working_hour'></textarea><br>
         地址*：<input name='address'><br>
-        電話*：<input name='phone'><br>
+        電話*：<input name='phone'><br> -->
         <!-- 可預約：<input type='checkbox' name='bookable'><br> -->
-        有急診：<input type='checkbox' name='er'><br>
+     <!--    有急診：<input type='checkbox' name='er'><br>
         急診電話：<input name='er_phone'><br>
         急診時間：<textarea name='er_hour'></textarea><br>
         <input type='submit' name='submit' value='建立醫院'>
         </form>
-        <br>OR<br>選擇醫院
+        <br>OR<br>選擇醫院 -->
 </body>
 </html>
