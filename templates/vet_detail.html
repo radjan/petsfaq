@@ -1,13 +1,150 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="zh">
 <head>
-    <meta charset="utf-8">
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<title>寵物通</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- <link rel="stylesheet" type="text/css" href="./s/style.css"> -->
+<link href="/s/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 500px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+    </style>
+    <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/s/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/s/ico/favicon.png">
+
+    <link href="/s/css/myFormat.css" rel="stylesheet">
 </head>
+
 <body>
-        <form action="reg_step2" method="post">
-        詳細資料 <br>
-        簡介：<textarea name='description'></textarea><br>
+
+     <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Pet Helper</a>
+          <!-- <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/s/about.html">論壇</a></li>
+              <li class="avtive"><a href="/s/medical_help/hospitals.html">醫療資訊</a></li>
+              <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+          </div> --><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <form id="myForm" class="form-signin" action="reg_step2" method="post">
+            <div>
+                <h3 class="form-signin-heading">建立簡歷</h3>
+                <p>如果您的醫院已經幫您填寫了簡歷，您可跳過此步驟。</p>
+                <!-- <button id="nextStep" class="btn btn-small btn-danger right" type="submit">跳過</button> -->
+                <a href="#skipModal" role="button" class="btn btn-small btn-danger right" data-toggle="modal">跳過</a>
+                <br>
+
+                <hr class="bs-docs-separator">
+                <label>簡介</label>
+                <textarea name="intro" rows="5"></textarea>
+
+                <label>專科</label>
+                <textarea name="profession" rows="5"></textarea>
+
+                <label>學歷</label>
+                <ul>
+                    <li><input name='edu_1' type="text" placeholder="學歷1"></li>
+                    <li><input name='edu_2' type="text" placeholder="學歷2"></li>
+                </ul>
+
+                <label>經歷</label>
+                <ul>
+                    <li><input name="exp_1" type="text" placeholder="經歷1"></li>
+                    <li><input name="exp_2" type="text" placeholder="經歷2"></li>
+                </ul>
+
+            </div>
+        <br>
+
+        <hr class="bs-docs-separator">
+        <!-- <button class="btn btn-inverse" type="submit">取消</button> -->
+        <a href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a>
+        <br>
+        <br>
+
+
+        <div id="skipModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <h3 id="myModalLabel">確認資料</h3>
+            </div>
+        <div class="modal-body">
+            <p>您確定跳過建立簡歷？</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭建立簡歷</button>
+          <button id="skipToNextStep" class="btn btn-large btn-primary" type="submit">確認，下一步</button>
+        </div>
+      </div>   <!--/skipModal div-->
+
+      <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+            <h3 id="myModalLabel">確認資料</h3>
+        </div>
+        <div id="modalBody" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭修改</button>
+          <button id="nextStep" class="btn btn-large btn-primary" type="submit">確認，下一步</button>
+        </div>
+      </div>   <!--/confirmModal div-->
+
+      <!--   簡介：<textarea name='description'></textarea><br>
         專科：<textarea name='specialty'></textarea><br>
         學歷：
         <ul>
@@ -22,9 +159,45 @@
             <li><input type='text' name='exp_3'></li>
             <li><input type='text' name='exp_4'></li>
             <li><input type='text' name='exp_5'></li>
-        </ul><br>
-        <input type='submit' name='submit' value='儲存'>
+        </ul><br> -->
+        <!-- <input type='submit' name='submit' value='儲存'> -->
         </form>
-        <br>OR<br>醫院已建立好我的資料，下一步直接挑選。<a href='?a=skip'>跳過此步驟</a>
+    </div>
+
+        <!-- <br>OR<br>醫院已建立好我的資料，下一步直接挑選。<a href='?a=skip'>跳過此步驟</a> -->
+
+
+   <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap.js"></script>
+    <script src="/s/js/bootstrap-transition.js"></script>
+    <script src="/s/js/bootstrap-alert.js"></script>
+    <script src="/s/js/bootstrap-modal.js"></script>
+    <script src="/s/js/bootstrap-dropdown.js"></script>
+    <script src="/s/js/bootstrap-scrollspy.js"></script>
+    <script src="/s/js/bootstrap-tab.js"></script>
+    <script src="/s/js/bootstrap-tooltip.js"></script>
+    <script src="/s/js/bootstrap-popover.js"></script>
+    <script src="/s/js/bootstrap-button.js"></script>
+    <script src="/s/js/bootstrap-collapse.js"></script>
+    <script src="/s/js/bootstrap-carousel.js"></script>
+    <script src="/s/js/bootstrap-typeahead.js"></script> 
+        
+    <script>
+      function displayData () {
+      
+        // check data 
+      $("#nextStep").show();
+      $("#modalBody").empty();
+      $("#modalBody").append("簡介："+ $("textarea[name=intro]").val()+"<br>");
+      $("#modalBody").append("專科："+ $("textarea[name=profession]").val()+"<br>");
+      $("#modalBody").append("電話："+ $("input[name=edu_1]").val()+"<br>");
+      $("#modalBody").append("電子信箱："+ $("input[name=exp_1]").val()+"<br>");
+
+    }
+    </script> 
 </body>
 </html>
