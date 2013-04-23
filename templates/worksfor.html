@@ -83,13 +83,26 @@
         <form id="myForm" class="form-signin" action="new_hospital" method="post">
             <div>
                 <h3 class="form-signin-heading">建立醫院</h3>
-                <p>如果您是一般使用者，請按鈕直接使用寵物通！</p>
-                <!-- <button id="nextStep" class="btn btn-small btn-danger right" type="submit">跳過</button> -->
-                <a href="#skipModal" role="button" class="btn btn-small btn-danger right" data-toggle="modal">註冊完成！前往寵物通</a>
+                <p>如果您是醫院的員工，請尋找您所屬的動物醫院，協助為我們建立您與動物醫院的連結，謝謝！</p>
+                <!-- <form class="form-search"> -->
+                <input type="text" class="search-query input-large">
+                <button class="btn">Search</button>
+                <!-- </form> -->
+                <br><br>
+                <button class="btn btn-primary" onclick="showCreateHospital()">找不到所屬醫院，建立醫院</button>
                 <br>
-
                 <hr class="bs-docs-separator">
-                
+
+                <div name="normalUser">
+                    <p>如果您是一般使用者，請按鈕直接使用寵物通！</p>
+                    <!-- <button id="nextStep" class="btn btn-small btn-danger right" type="submit">跳過</button> -->
+                    <!-- <a href="#skipModal" role="button" class="btn btn-small btn-danger right" data-toggle="modal">註冊完成！前往寵物通</a> -->
+                    <button class="btn btn btn-success right" type="submit">註冊完成！前往寵物通</button>
+                    <br>
+                </div>
+            </div>
+
+            <div name="createHospital" style="display:none">
                 <label>醫院名稱</label>
                 <input name="name" type="text" class="input-block-level">
 
@@ -120,17 +133,14 @@
                     <label>急診時間</label>
                     <textarea name='er_hour' type="text" class="input-block-level"></textarea>
                 </div>
+                <br>
+                <hr class="bs-docs-separator">
+                <!-- <button class="btn btn-inverse" type="submit">取消</button> -->
+                <a href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a>
+                <br>
+                <br>
             </div>
-        <br>
-
-        <hr class="bs-docs-separator">
-        <!-- <button class="btn btn-inverse" type="submit">取消</button> -->
-        <a href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a>
-        <br>
-        <br>
-
-
-        <div id="skipModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!-- <div id="skipModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
                 <h3 id="myModalLabel">確認資料</h3>
             </div>
@@ -141,7 +151,7 @@
           <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭建立簡歷</button>
           <button id="skipToNextStep" class="btn btn-large btn-primary" type="submit">確認，下一步</button>
         </div>
-      </div>   <!--/skipModal div-->
+      </div>   --> <!--/skipModal div-->
 
       <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
@@ -155,7 +165,9 @@
           <button id="nextStep" class="btn btn-large btn-primary" type="submit">確認，下一步</button>
         </div>
       </div>   <!--/confirmModal div-->
-
+  
+  </form>
+</div>
 
    <!-- Le javascript
     ================================================== -->
@@ -177,6 +189,11 @@
     <script src="/s/js/bootstrap-typeahead.js"></script> 
 
     <script type="text/javascript">
+    function showCreateHospital(){
+        $("div[name=normalUser]").hide();
+        $("div[name=createHospital]").slideDown();
+    }
+
     function displayEr(){
         if ($("input[name=er]").is(":checked")) {
             $("div[name=erData]").slideDown();
