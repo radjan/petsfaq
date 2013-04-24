@@ -7,13 +7,21 @@ from model import *
 from service.hospital import hospital_service
 from common import share, util
 
+from StringIO import StringIO
+
 #TODO: post and delete
 class RestAPI(base.BaseSessionHandler):
 
     def get(self):
 	#TODO: list all hospital
+        hospitals = hospital_service.list()
         result = {}
-        #self.response.write(json.dump(result))
+        for h in hospitals:
+            result[h.name] = str(h)
+
+        io = StringIO()
+        json.dump(result,io)
+        self.response.write(io.getvalue())
 
     def put(self):
         body = self.request.body
