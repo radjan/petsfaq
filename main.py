@@ -23,6 +23,7 @@ from google.appengine.api import users
 from common import share
 from view import base, faq, login, create
 from admin import data as adm_data
+from api import hospital
 
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
@@ -34,6 +35,7 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write('Hello world! <a href="/login">login</a>')
 
+API_PREFIX = '/api/v1'
 app = webapp2.WSGIApplication([
     ('/login', login.LoginPage),
     ('/login_google', login.GoogleLogin),
@@ -48,6 +50,7 @@ app = webapp2.WSGIApplication([
     ('/faq', faq.BoardPage),
 
     ('/adm/data', adm_data.ListDataPage),
+    (API_PREFIX+'/hospital', hospital.RestAPI),
 
     ('/.*', MainHandler),
 ], config = base.myconfig, debug=DEBUG)
