@@ -31,9 +31,9 @@ share.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR
 
 DEBUG = True
 
-class MainHandler(webapp2.RequestHandler):
+class MainHandler(base.BaseSessionHandler):
     def get(self):
-        self.response.write('Hello world! <a href="/login">login</a>')
+        self.render_template('index.html')
 
 API_PREFIX = '/api/v1'
 app = webapp2.WSGIApplication([
