@@ -22,6 +22,7 @@ from google.appengine.api import users
 
 from common import share
 from view import base, faq, login, create
+import view.hospital
 from admin import data as adm_data
 from api import hospital
 
@@ -47,6 +48,8 @@ app = webapp2.WSGIApplication([
     (share.REG_STEP2, create.VetDetailPage),
     (share.REG_STEP3, create.WorksForPage),
     ('/new_hospital', create.CreateHospitalPage),
+
+    ('/hospitals', view.hospital.HospitalList),
     ('/faq', faq.BoardPage),
 
     ('/adm/data', adm_data.ListDataPage),

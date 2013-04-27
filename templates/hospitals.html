@@ -88,16 +88,18 @@
         <div class="span10">
           <!-- <div style="border-style:solid;border-width:1px" class="container-fluid"> -->
           <div class="container-fluid">
+            {% for h in hospitals %}
             <div class="row-fluid">
-            <div class="span2">
-              <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
-            </div>
-            <div class="span8">
-              <h2>Hospital 1</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. </p>
-              <p><a class="btn btn-info" href="./doctors.html">View details &raquo;</a></p>
-            </div><!--/span-->
-          </div><!--/row-->
+                <div class="span2">
+                    <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
+                </div>
+                <div class="span8">
+                <h2>{{ h.name }}</h2>
+                <p>{{ h.description }}</p>
+                <p><a class="btn btn-info" href="./doctors.html">View details &raquo;</a></p>
+                </div><!--/span-->
+            </div><!--/row-->
+            {% endfor %}
           </div><!-- /container -->
           
 
