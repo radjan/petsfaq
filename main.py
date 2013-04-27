@@ -22,6 +22,7 @@ from google.appengine.api import users
 
 from common import share
 from view import base, faq, login, create
+import view.hospital
 from admin import data as adm_data
 from api import hospital
 
@@ -31,9 +32,9 @@ share.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR
 
 DEBUG = True
 
-class MainHandler(webapp2.RequestHandler):
+class MainHandler(base.BaseSessionHandler):
     def get(self):
-        self.response.write('Hello world! <a href="/login">login</a>')
+        self.render_template('index.html')
 
 API_PREFIX = '/api/v1'
 app = webapp2.WSGIApplication([
@@ -47,6 +48,8 @@ app = webapp2.WSGIApplication([
     (share.REG_STEP2, create.VetDetailPage),
     (share.REG_STEP3, create.WorksForPage),
     ('/new_hospital', create.CreateHospitalPage),
+
+    ('/hospitals', view.hospital.HospitalList),
     ('/faq', faq.BoardPage),
 
     ('/adm/data', adm_data.ListDataPage),

@@ -13,7 +13,7 @@ VIEW_ROLE_USER = 'u'
 
 # -----
 # web urls
-HOME = '/faq'
+HOME = '/'
 REG_STEP1 = '/reg_step1'
 REG_STEP2 = '/reg_step2'
 REG_STEP3 = '/reg_step3'
