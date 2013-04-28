@@ -45,47 +45,11 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Pet Helper</a>
-          <div class="nav-collapse collapse">
-            <p class="navbar-text pull-right">
-              Logged in as <a href="#" class="navbar-link">Username</a>
-            </p>
-            <ul class="nav">
-              <li><a href="../about.html">論壇</a></li>
-              <li class="active"><a href="../medical_help/hospitals.html">醫療資訊</a></li>
-              <li><a href="#contact">聯絡我們</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-
+    {% include 'components/navbar.html' %}
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">找醫院</li>
-              <li class="active"><a href="#">ㄅ-ㄌ</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li class="nav-header">找醫生</li>
-              <li><a href="#">頭部</a></li>
-              <li><a href="#">腹部</a></li>
-              <li><a href="#">四肢</a></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-        <div class="span10">
+          {% include 'components/side.html' %}
+                <div class="span10">
           <!-- <div style="border-style:solid;border-width:1px" class="container-fluid"> -->
           <div class="container-fluid">
             {% for h in hospitals %}
@@ -96,7 +60,7 @@
                 <div class="span8">
                 <h2>{{ h.name }}</h2>
                 <p>{{ h.description }}</p>
-                <p><a class="btn btn-info" href="./doctors.html">View details &raquo;</a></p>
+                <p><a class="btn btn-info" href="./hospital_detail?id={{ h.key().id() }}">View details &raquo;</a></p>
                 </div><!--/span-->
             </div><!--/row-->
             {% endfor %}

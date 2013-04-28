@@ -46,46 +46,12 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Pet Helper</a>
-          <div class="nav-collapse collapse">
-            <p class="navbar-text pull-right">
-              Logged in as <a href="../home/login.html" class="navbar-link">Username</a>
-            </p>
-            <ul class="nav">
-              <li><a href="../about.html">論壇</a></li>
-              <li class="active"><a href="./hospitals.html">醫療資訊</a></li>
-              <li><a href="#contact">聯絡我們</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
+ {% include 'components/navbar.html' %}
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">找醫院</li>
-              <li class="active"><a href="#">ㄅ-ㄌ</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li class="nav-header">找醫生</li>
-              <li><a href="#">頭部</a></li>
-              <li><a href="#">腹部</a></li>
-              <li><a href="#">四肢</a></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
+        {% include 'components/side.html' %}
+        
         <div class="span10">
         
         <div class="btn-group">
@@ -138,7 +104,7 @@
           </div> --><!-- /.carousel -->
           
           <div class="hero-unit">
-            <h1>Hospital Info
+            <h1>{{ hospital.name }}
               <small>
                 <!-- <a href="#hospital_info_edit" role="button" class="btn btn-mini btn-danger" data-toggle="modal">編輯</a> -->
                 <!-- Modal -->
@@ -160,7 +126,7 @@
                   </button>
                 </small>
             </h1>
-            <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+            <p>{{ hospital.description }}</p>
             <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
           </div>
           
