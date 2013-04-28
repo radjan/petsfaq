@@ -24,18 +24,22 @@ ACCOUNT_GOOGLE = 'google'
 ACCOUNT_ID_PWD = 'id_pwd'
 ACCOUNT_FACEBOOK = 'facebook'
 
-PARTY_STORE_KIND = 'PARTY'
-PARTY_STORE_ROOT = 'ROOT'
-ORG_STORE_KIND = 'ORG'
-ORG_STORE_ROOT = 'ROOT'
+STORE_ROOT_KIND = 'STORE_ROOT'
+PARTY_STORE_ROOT = 'PARTY'
+ORG_STORE_ROOT = 'STORE'
 BLOG_STORE_ROOT = 'BLOG'
 
+
 from google.appengine.ext import db
+
+class STORE_ROOT(db.Model):
+    pass
+
 def party_root_key():
-    return db.Key.from_path(PARTY_STORE_KIND, PARTY_STORE_ROOT)
+    return db.Key.from_path(STORE_ROOT_KIND, PARTY_STORE_ROOT)
 
 def org_root_key():
-    return db.Key.from_path(ORG_STORE_KIND, ORG_STORE_ROOT)
+    return db.Key.from_path(STORE_ROOT_KIND, ORG_STORE_ROOT)
 
 ACC_V2M_MAP = {VIEW_GOOGLE: ACCOUNT_GOOGLE,
                VIEW_IDPWD: ACCOUNT_ID_PWD,}
@@ -46,3 +50,11 @@ ACC_M2V_MAP = {ACCOUNT_GOOGLE: VIEW_GOOGLE,
                ACCOUNT_ID_PWD: VIEW_IDPWD,}
 def acc_key_model2view(modelkey):
     return ACC_M2V_MAP.get(modelkey, 'unknown')
+
+# XXX init root?
+#if not db.get(party_root_key()):
+#    STORE_ROOT(key=party_root_key()).put()
+#
+#if not db.get(org_root_key()):
+#    STORE_ROOT(key=org_root_key()).put()
+

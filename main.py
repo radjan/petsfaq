@@ -50,6 +50,7 @@ app = webapp2.WSGIApplication([
     ('/new_hospital', create.CreateHospitalPage),
 
     ('/hospitals', view.hospital.HospitalList),
+    ('/hospital_detail', view.hospital.HospitalDetail),
     ('/faq', faq.BoardPage),
 
     ('/adm/data', adm_data.ListDataPage),

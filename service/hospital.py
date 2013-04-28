@@ -1,6 +1,10 @@
 from dao.hospital import hospital_dao as h_dao
 
 class HospitalService:
+
+    def get(self, id):
+        return h_dao.get(id);
+
     def create(self, h):
         return h_dao.create(h)
 
