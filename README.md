@@ -12,6 +12,18 @@
 
 
 3. Notes
-	api/: restapi for easy client integration	
-	test/curl.test.sh: this keeps RestAPI test method
+	3.1 api/: restapi for easy client integration	
+	    	  This largly depends on service/ and model/
 
+		Using a simple restAPI base class, 4 put/get api was done:
+		/api/v1/hospital
+		/api/v1/account
+		/api/v1/person
+		/api/v1/role
+		However, it accepts only simple JSON and require more work on
+		extending structure. (for example, extends role to vets...)
+
+	3.2 test/curl.test.sh: this keeps RestAPI test method
+
+
+	

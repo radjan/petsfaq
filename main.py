@@ -24,7 +24,7 @@ from common import share
 from view import base, faq, login, create
 import view.hospital
 from admin import data as adm_data
-from api import hospital
+from api import restApi
 
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
@@ -53,7 +53,11 @@ app = webapp2.WSGIApplication([
     ('/faq', faq.BoardPage),
 
     ('/adm/data', adm_data.ListDataPage),
-    (API_PREFIX+'/hospital', hospital.RestAPI),
+    (API_PREFIX+'/hospital', restApi.HospitalAPI),
+    (API_PREFIX+'/account', restApi.AccountAPI),
+    (API_PREFIX+'/person', restApi.PersonAPI),
+    (API_PREFIX+'/role', restApi.RoleAPI),
+#    (API_PREFIX+'/hospital', hospital.RestAPI),
 
     ('/.*', MainHandler),
 ], config = base.myconfig, debug=DEBUG)
