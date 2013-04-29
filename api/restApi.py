@@ -13,9 +13,10 @@ from common import share, util
 from StringIO import StringIO
 
 
+# General 
 class RestAPI(base.BaseSessionHandler):
 
-    def get(self):
+    def get(self): # get all model 
 	#TODO: list all hospital
         serviceList = self.service.list()
         result = {}
@@ -31,8 +32,8 @@ class RestAPI(base.BaseSessionHandler):
         io = StringIO()
         json.dump(result,io)
         self.response.write(io.getvalue())
-
-    def put(self):
+    
+    def post(self): # create model
         body = self.request.body
         requestJson = json.loads(body) 
         kw = {}    
