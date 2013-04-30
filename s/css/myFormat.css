@@ -5,3 +5,7 @@
 .left{
 	float:left;
 }
+
+.templates{
+    display: none;
+}

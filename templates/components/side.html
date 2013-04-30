@@ -1,3 +1,4 @@
+        
         <div class="span2">
           <div class="well sidebar-nav">
             
@@ -11,37 +12,134 @@
                 <button class="btn btn-info" type="button"><i class="icon-search icon-white"></i></button>
               </div>    
               <li class="divider"></li>
-                <!-- </form> -->
-                <!-- <li class="nav-header">找醫院</li> -->
-                <div>
-                  <li><button class="btn btn-primary">按地區 <i class="icon-chevron-right icon-white"></i></button></li>
-                  <li class="divider"></li>
-                </div>
+                        
+              <!-- <li><button name="area" class="btn btn-primary" onclick="addSelector(this)">按地區 <i class="icon-chevron-right icon-white"></i></button></li> -->
+              <li name="area"><a type= "button" class="btn-primary" rel="popover">按地區 <i class="icon-chevron-right icon-white"></i></a></li>
+              <div name="div_area"></div>
+              <li class="divider"></li>
 
-                <div>
-                  <li><button class="btn btn-primary">按科別 <i class="icon-chevron-right icon-white"></i></button></li>
-                  <li class="divider"></li>
-                </div>
+              <li name="field"><a type= "button" class="btn-primary" rel="popover">按科別 <i class="icon-chevron-right icon-white"></i></a></li>
+              <!-- <li><button name="field" class="btn btn-primary" onclick="addSelector(this)">按科別 <i class="icon-chevron-right icon-white"></i></button></li> -->
+              <div name="div_field"></div>
+              <li class="divider"></li>
                 
-                <div>
-                  <li><button class="btn btn-primary">按種類 <i class="icon-chevron-right icon-white"></i></button></li>
-                  <li class="divider"></li>
-                </div>
-              <!--   <div>
-                  <li><a class="btn btn-primary" href="#">所有地區 <i class="icon-chevron-right icon-white"></i></a></li>
-                  <li class="divider"></li>
-                </div>
-
-                <div>
-                  <li><a class="btn btn-primary" href="#">科別 <i class="icon-chevron-right icon-white"></i></a></li>
-                  <li class="divider"></li>
-                </div>
-                
-                <div>
-                  <li><a class="btn btn-primary" href="#">動物種類 <i class="icon-chevron-right icon-white"></i></a></li>
-                  <li class="divider"></li>
-                </div> -->
-                
+              <li name="species"><a type= "button" class="btn-primary" rel="popover">按種類 <i class="icon-chevron-right icon-white"></i></a></li>
+              <!-- <li><button name="species" class="btn btn-primary" onclick="addSelector(this)">按種類 <i class="icon-chevron-right icon-white"></i></button></li> -->
+              <div name="div_species"></div>
+              <li class="divider"></li>
+            
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
+
+
+        <div class="templates" name="area_selector">
+          <div name="pop_area">
+            <button class="label label-info" name="area1" onclick="addSelector(this)">area 1</button>
+            <button class="label label-info" name="area2" onclick="addSelector(this)">area 2</button>
+            <button class="label label-info" name="area3" onclick="addSelector(this)">area 3</button>
+          </div>
+        </div>
+
+        <div class="templates" name="field_selector">
+          <div name="pop_field">
+            <button class="label label-info" name="field1" onclick="addSelector(this)">field 1</button>
+            <button class="label label-info" name="field2" onclick="addSelector(this)">field 2</button>
+            <button class="label label-info" name="field3" onclick="addSelector(this)">field 3</button>
+          </div>
+        </div>
+
+        <div class="templates" name="species_selector">
+          <div name="pop_species">
+            <button class="label label-info" name="species1" onclick="addSelector(this)">species 1</button>
+            <button class="label label-info" name="species2" onclick="addSelector(this)">species 2</button>
+            <button class="label label-info" name="species3" onclick="addSelector(this)">species 3</button>
+          </div>
+        </div>
+
+        <div class="templates" name="selector_element">
+            <span class="label label-info" name="label1">Info<button type="button" class="close"><i class="icon-remove"></i></button></span>
+            <br>
+        </div>
+
+
+
+
+<!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap.js"></script>
+    <script src="/s/js/bootstrap-transition.js"></script>
+    <script src="/s/js/bootstrap-alert.js"></script>
+    <script src="/s/js/bootstrap-modal.js"></script>
+    <script src="/s/js/bootstrap-dropdown.js"></script>
+    <script src="/s/js/bootstrap-scrollspy.js"></script>
+    <script src="/s/js/bootstrap-tab.js"></script>
+    <script src="/s/js/bootstrap-tooltip.js"></script>
+    <script src="/s/js/bootstrap-popover.js"></script>
+    <script src="/s/js/bootstrap-button.js"></script>
+    <script src="/s/js/bootstrap-collapse.js"></script>
+    <script src="/s/js/bootstrap-carousel.js"></script>
+    <script src="/s/js/bootstrap-typeahead.js"></script>   
+
+        <script type="text/javascript">
+         $(document).ready(function() {
+            $("li[name=area]").popover({
+                placement: "right", 
+                title: "選擇地區",
+                html: "true",
+                content: function() {
+                   return $("div[name=area_selector]").html();
+                }
+            });
+
+            $("li[name=field]").popover({
+                placement: "right", 
+                title: "選擇科別",
+                html: "true",
+                content: function() {
+                   return $("div[name=field_selector]").html();
+                }
+            });
+
+            $("li[name=species]").popover({
+                placement: "right", 
+                title: "選擇種類",
+                html: "true",
+                content: function() {
+                   return $("div[name=species_selector]").html();
+                }
+            });
+          });
+
+
+
+          function addSelector(_button){
+            var _name = _button.name;
+            if(_name.search("area") != -1){
+              if (_button.parentNode.getAttribute("name") != "div_area") {
+                $("div[name=div_area]").prepend(_button);
+              }else{
+                $("div[name=pop_area]").prepend(_button);
+              }
+              
+            }else if(_name.search("field") != -1){
+              if (_button.parentNode.getAttribute("name") != "div_field") {
+                $("div[name=div_field]").prepend(_button);  
+              }else{
+                $("div[name=pop_field]").prepend(_button); 
+              }
+              
+            }else if(_name.search("species") != -1){
+              if (_button.parentNode.getAttribute("name") != "div_species") {
+                $("div[name=div_species]").prepend(_button);  
+              }else{
+                 $("div[name=pop_species]").prepend(_button);  
+              }
+            }
+          }
+
+
+        </script>
