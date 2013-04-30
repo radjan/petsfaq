@@ -67,6 +67,9 @@
             </div><!--/row-->
             {% endfor %}
           </div><!-- /container -->
+          <div id='fromAJAX' class="container-fluid">
+           當你按了直接搜尋之後 會透過ajax取得所有hospital  name:description 並列在下面：<br />
+          </div><!-- /container -->
           
 
         </div><!--/span-->
@@ -80,5 +83,20 @@
 
     </div><!--/.fluid-container-->
 
+    <script language='JavaScript'>
+   /* Example for Yun-Tai */
+    function showHospitals(){
+        $.ajax({
+            url: "/api/v1/hospital",
+            type: 'GET',
+            cache: false
+        }).done(function( data ) {
+            var hospitals = jQuery.parseJSON(data);
+            for(i in hospitals){
+                $("#fromAJAX").append("<p>"+hospitals[i].name+":"+hospitals[i].description+"</p>");
+            }
+        });
+    }
+    </script>
   </body>
 </html>
