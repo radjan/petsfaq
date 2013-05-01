@@ -1,6 +1,7 @@
 from google.appengine.ext import db
 
 from model import account as acc_model
+from dao import base
 
 from common import share
 
@@ -9,7 +10,10 @@ ID_PWD = share.ACCOUNT_ID_PWD
 
 get_root_key = share.party_root_key
 
-class AccountDao():
+class AccountDao(base.GeneralDao):
+    def __init__(self):
+        self.model_cls = acc_model.Account
+
     def exist(self, acc_id, acc_type):
         return self.get(acc_id, acc_type) != None
 
