@@ -22,7 +22,10 @@ class RestAPI(base.BaseSessionHandler):
         if '_' in params:
             # add by jquery?
             params.pop('_')
-        serviceList = self.service.search(params)
+        if params:
+            serviceList = self.service.search(params)
+        else:
+            serviceList = self.service.list()
         result = {}
         cnt = 1
         for i in serviceList: # list all model
