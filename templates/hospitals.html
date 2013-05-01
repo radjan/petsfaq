@@ -44,7 +44,7 @@
                                    <link rel="shortcut icon" href="/s/ico/favicon.png">
   </head>
 
-  <body onload="showHospital()">
+  <body>
 
     {% include 'components/navbar.html' %}
     <div class="container-fluid">
@@ -114,6 +114,24 @@
             }
         });
     });
+
+    function nameSearch() {
+        $("#hospital_div").html("Searching...");
+        $.ajax({
+            url: "/api/v1/hospital?name=*" + $('#name_search').val() + "*",
+            type: "GET",
+            cache: false
+        }).done(function(data){
+            $("#hospital_div").html("");
+            var hospitals = jQuery.parseJSON(data);
+            for(i in hospitals){
+                var h = $("div[name=hospital_template]").last().clone();
+                h.find("h2[name=name]").text(hospitals[i].name);
+                h.find("p[name=description]").text(hospitals[i].description);
+                $("#hospital_div").append(h);
+            }
+        });
+    }
 
    /* Example for Yun-Tai */
     // function showHospitals(){
