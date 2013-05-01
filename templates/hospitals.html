@@ -109,7 +109,7 @@
                 var h = $("div[name=hospital_template]").last().clone();
                 h.find("h2[name=name]").text(hospitals[i].name);
                 h.find("p[name=description]").text(hospitals[i].description);
-                // h.find("a[name=linkTo]").attr("href", "./hospital_detail?id="+h.id());
+                h.find("a[name=linkTo]").attr("href", "./hospital_detail?id=" + hospitals[i].id);
                 $("#hospital_div").append(h);
             }
         });
@@ -128,6 +128,7 @@
                 var h = $("div[name=hospital_template]").last().clone();
                 h.find("h2[name=name]").text(hospitals[i].name);
                 h.find("p[name=description]").text(hospitals[i].description);
+                h.find("a[name=linkTo]").attr("href", "./hospital_detail?id=" + hospitals[i].id);
                 $("#hospital_div").append(h);
             }
         });
