@@ -18,13 +18,17 @@ class RestAPI(base.BaseSessionHandler):
 
     def get(self): # get all model 
 	#TODO: list all hospital
-        serviceList = self.service.list()
+        params = dict(self.request.params)
+        if '_' in params:
+            # add by jquery?
+            params.pop('_')
+        serviceList = self.service.search(params)
         result = {}
         cnt = 1
         for i in serviceList: # list all model
-            tmp = {} 
+            tmp = {}
             property_keys = i.properties().keys()
-            for key in property_keys: 
+            for key in property_keys:
                 tmp[str(key)] = unicode(i.properties()[key].get_value_for_datastore(i))
             result[cnt] = tmp
             cnt += 1
@@ -32,11 +36,11 @@ class RestAPI(base.BaseSessionHandler):
         io = StringIO()
         json.dump(result,io)
         self.response.write(io.getvalue())
-    
+
     def post(self): # create model
         body = self.request.body
-        requestJson = json.loads(body) 
-        kw = {}    
+        requestJson = json.loads(body)
+        kw = {}
 
         for i in self.model.properties() :
             if requestJson.has_key(i):
@@ -50,8 +54,8 @@ class RestAPI(base.BaseSessionHandler):
 
 class HospitalAPI(RestAPI):
     service = hospital_service
-    model = hospital.Hospital  
-   
+    model = hospital.Hospital
+
 class AccountAPI(RestAPI):
     service = account_service
     model = account.Account

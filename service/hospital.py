@@ -14,4 +14,7 @@ class HospitalService:
     def list(self):
         return h_dao.list()
 
+    def search(self, kw):
+        return h_dao.search(kw)
+
 hospital_service = HospitalService()
