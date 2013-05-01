@@ -9,7 +9,7 @@ KIND = 'Hospital'
 
 class HospitalDao(base.GeneralDao):
     def __init__(self):
-        self.model = h_model.Hospital
+        self.model_cls = h_model.Hospital
 
     def get(slef, id):
         return db.get(db.Key.from_path(KIND, int(id)))

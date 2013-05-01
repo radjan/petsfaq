@@ -8,7 +8,7 @@ class GeneralDao:
         q = self.model_cls.all()
         post_filters = []
         for name, query in kw.items():
-            if base.WILDCARD in query:
+            if WILDCARD in query:
                 post_filters.append(self._post_like_filter(name, query))
             else:
                 q.filter('%s =' % name, query)
