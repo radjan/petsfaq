@@ -9,7 +9,12 @@
           <a class="brand" href="#">Pet Helper</a>
           <div class="nav-collapse collapse">
             <p class="navbar-text pull-right">
-              Logged in as <a href="../home/login.html" class="navbar-link">Username</a>
+              {% if user %}
+                {{ user.name }}, 
+                <a href="/logout" class="navbar-link">Logout</a>
+              {% else %}
+                <a href="/login" class="navbar-link">Login</a>
+              {% endif %}
             </p>
             <ul class="nav">
               <li><a href="../about.html">論壇</a></li>
