@@ -1,12 +1,15 @@
 from google.appengine.ext import db
 
 from model import hospital as h_model
+from dao import base
 from common import share
 
 get_root_key = share.org_root_key
 KIND = 'Hospital'
 
-class HospitalDao:
+class HospitalDao(base.GeneralDao):
+    def __init__(self):
+        self.model = h_model.Hospital
 
     def get(slef, id):
         return db.get(db.Key.from_path(KIND, int(id)))
