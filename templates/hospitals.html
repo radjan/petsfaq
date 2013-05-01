@@ -44,17 +44,17 @@
                                    <link rel="shortcut icon" href="/s/ico/favicon.png">
   </head>
 
-  <body>
+  <body onload="showHospital()">
 
     {% include 'components/navbar.html' %}
     <div class="container-fluid">
       <div class="row-fluid">
           {% include 'components/side.html' %}
-                <div class="span10">
+
         <div class="span10">
-          <!-- <div style="border-style:solid;border-width:1px" class="container-fluid"> -->
-          <div class="container-fluid">
-            {% for h in hospitals %}
+          <div class="container-fluid" id="hospital_div">
+          <!-- ORIGINAL WAY TO CREATE HOSPITALS -->
+            <!-- {% for h in hospitals %}
             <div class="row-fluid">
                 <div class="span2">
                     <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
@@ -62,41 +62,74 @@
                 <div class="span8">
                 <h2>{{ h.name }}</h2>
                 <p>{{ h.description }}</p>
-                <p><a class="btn btn-info" href="./hospital_detail?id={{ h.key().id() }}">View details &raquo;</a></p>
-                </div><!--/span-->
-            </div><!--/row-->
-            {% endfor %}
+                <p><a class="btn btn-info" href="./hospital_detail?id={{ h.key().id() }}">View details &raquo;</a></p> -->
+                <!-- </div> --><!--/span-->
+            <!-- </div> --><!--/row-->
+            <!-- {% endfor %} -->
           </div><!-- /container -->
-          <div id='fromAJAX' class="container-fluid">
+
+          <!--<div id='fromAJAX' class="container-fluid">
            當你按了直接搜尋之後 會透過ajax取得所有hospital  name:description 並列在下面：<br />
-          </div><!-- /container -->
+          </div> --><!-- /container -->
           
 
         </div><!--/span-->
       </div><!--/row-->
-
       <hr>
 
       <footer>
         <p>&copy; Company 2013</p>
       </footer>
 
+      <div class="templates">
+         <div class="row-fluid" name="hospital_template">
+                <div class="span2">
+                    <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
+                </div>
+                <div class="span8">
+                  <h2 name="name">template</h2>
+                  <p name="description">template</p>
+                  <p><a name="linkTo" class="btn btn-info" href="">View details &raquo;</a></p>
+                </div><!--/span-->
+          </div><!--/row-->
+      </div>
+
     </div><!--/.fluid-container-->
 
     <script language='JavaScript'>
-   /* Example for Yun-Tai */
-    function showHospitals(){
+    $(document).ready(
+
+      function showHospital(){
+        //get hospital list
         $.ajax({
-            url: "/api/v1/hospital",
-            type: 'GET',
-            cache: false
-        }).done(function( data ) {
-            var hospitals = jQuery.parseJSON(data);
+          url: "/api/v1/hospital",
+          type: "GET",
+          cache: false
+        }).done(function(data){
+          var hospitals = jQuery.parseJSON(data);
             for(i in hospitals){
-                $("#fromAJAX").append("<p>"+hospitals[i].name+":"+hospitals[i].description+"</p>");
+                var h = $("div[name=hospital_template]").last().clone();
+                h.find("h2[name=name]").text(hospitals[i].name);
+                h.find("p[name=description]").text(hospitals[i].description);
+                // h.find("a[name=linkTo]").attr("href", "./hospital_detail?id="+h.id());
+                $("#hospital_div").append(h);
             }
         });
-    }
+    });
+
+   /* Example for Yun-Tai */
+    // function showHospitals(){
+    //     $.ajax({
+    //         url: "/api/v1/hospital",
+    //         type: 'GET',
+    //         cache: false
+    //     }).done(function( data ) {
+    //         var hospitals = jQuery.parseJSON(data);
+    //         for(i in hospitals){
+    //             $("#fromAJAX").append("<p>"+hospitals[i].name+":"+hospitals[i].description+":"+hospitals[i].specialty+"</p>");
+    //         }
+    //     });
+    // }
     </script>
   </body>
 </html>
