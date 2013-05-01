@@ -18,12 +18,12 @@ class GeneralDao:
     def _post_like_filter(self, property_name, qs):
         sre = re.compile(qs.replace(WILDCARD, '.*'))
         def f(model):
-            if sre.match(model.__getattribute__(proprty_name)):
+            if sre.match(model.__getattribute__(property_name)):
                 return True
             return False
         return f
 
     def _post_query(self, q, filters):
         for f in filters:
-            q = itertools.ifilter(f)
+            q = itertools.ifilter(f, q)
         return q
