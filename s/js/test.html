@@ -1,0 +1,50 @@
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>some javascript test</title>
+
+<script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/js/twzipcode.js" ></script>
+<script >
+
+function testC(){
+
+  for (var county in TW_ZIP) {
+    $('#show').append("<p>"+county+"</p>")
+  }
+};
+function testT(){
+
+  for (var county in TW_ZIP) {
+    for (var town in TW_ZIP[county]){
+    $('#show2').append("<p>"+town+"</p>")
+    }
+  }
+};
+</script>
+</head>
+<body onload="test1();">
+
+只是一些測試...
+<form name=test >
+
+<input type="button" onclick="testC();" value="showAllCounty" />
+<input type="button" onclick="testT();" value="showAllTown" />
+</form>
+<table>
+<tr>
+<td valign="top">
+<div id="show">
+</div>
+
+</td>
+
+<td valign="top">
+<div id="show2">
+</div>
+
+</td>
+</tr></table>
+
+</body>
+</html>
