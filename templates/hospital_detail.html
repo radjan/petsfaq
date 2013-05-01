@@ -44,7 +44,7 @@
 
   </head>
 
-  <body>
+  <body onload="load()">
 
  {% include 'components/navbar.html' %}
 
@@ -59,10 +59,10 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="./doctors_edit.html">修改</a></li>
+            <li><a id="revise_button" type="button">修改</a></li>
             <li><a href="#">新增醫生</a></li>
           </ul>
-          <a class="btn btn-small btn-primary" href="./doctors.html">瀏覽</a>
+          <a id="browse_button" class="btn btn-small btn-primary" type="button">瀏覽</a>
         </div>        
         <!-- carousel -->
           <!-- <div id="myCarousel" class="carousel slide">
@@ -121,7 +121,7 @@
                   <button class="btn btn-primary">Save changes</button>
                 </div>
                 </div> -->
-                  <button type="button" class="btn btn-mini btn-danger">
+                  <button name="edit_button" type="button" class="btn btn-mini btn-danger">
                     編輯
                   </button>
                 </small>
@@ -140,7 +140,7 @@
             <div class="span8">
               <h2>林大明 <small><a href="#">Blog</a></small>  
                 <small>
-                  <button type="button" class="btn btn-mini btn-danger">
+                  <button name="edit_button" type="button" class="btn btn-mini btn-danger">
                     編輯
                   </button>
                 </small>
@@ -191,5 +191,22 @@
 
     </div><!--/.fluid-container-->
 
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#revise_button").click(function(){
+          $("button[name=edit_button]").show();
+        });
+
+        $("#browse_button").click(function(){
+          $("button[name=edit_button]").hide();
+        });
+    });
+
+    $(document).ready(function load(){
+        $("button[name=edit_button]").hide();
+    });
+
+    </script>
   </body>
 </html>
