@@ -29,6 +29,11 @@ def get_person(session):
                               share.acc_key_view2model(session['user']['type']))
     return acc.person
 
+def get_current_user(session):
+    if 'user' in session:
+        return session['user']
+    return None
+
 def maybe_add(d, key, value):
     '''
     add to dict d with key if value is not empty
