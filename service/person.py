@@ -1,13 +1,7 @@
-
 from dao.person import person_dao
-class PersonService:
-    def create(self, p):
-        return person_dao.create(p)
-
-    def update(self, p):
-        return person_dao.update(p)
-
-    def list(self):
-        return person_dao.list()
+from service import base
+class PersonService(base.GeneralService):
+    def __init__(self):
+        self.dao = person_dao
 
 person_service = PersonService()

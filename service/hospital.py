@@ -1,20 +1,8 @@
 from dao.hospital import hospital_dao as h_dao
+from service import base
 
-class HospitalService:
-
-    def get(self, id):
-        return h_dao.get(id);
-
-    def create(self, h):
-        return h_dao.create(h)
-
-    def update(self, h):
-        return h_dao.update(h)
-
-    def list(self):
-        return h_dao.list()
-
-    def search(self, kw):
-        return h_dao.search(kw)
+class HospitalService(base.GeneralService):
+    def __init__(self):
+        self.dao = h_dao
 
 hospital_service = HospitalService()
