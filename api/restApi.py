@@ -25,7 +25,7 @@ class RestAPI(base.BaseSessionHandler):
             tmp = {} 
             property_keys = i.properties().keys()
             for key in property_keys: 
-                tmp[str(key)] = str(i.properties()[key].get_value_for_datastore(i))
+                tmp[str(key)] = unicode(i.properties()[key].get_value_for_datastore(i))
             result[cnt] = tmp
             cnt += 1
 
