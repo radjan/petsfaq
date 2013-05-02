@@ -104,16 +104,11 @@
           type: "GET",
           cache: false
         }).done(function(data){
-          var hospitals = jQuery.parseJSON(data);
-            for(i in hospitals){
-                var h = $("div[name=hospital_template]").last().clone();
-                h.find("h2[name=name]").text(hospitals[i].name);
-                h.find("p[name=description]").text(hospitals[i].description);
-                h.find("a[name=linkTo]").attr("href", "./hospital_detail?id=" + hospitals[i].id);
-                $("#hospital_div").append(h);
-            }
+          createHospitals(data);
         });
     });
+
+    
 
     function nameSearch() {
         $("#hospital_div").html("Searching...");
@@ -122,16 +117,20 @@
             type: "GET",
             cache: false
         }).done(function(data){
-            $("#hospital_div").html("");
-            var hospitals = jQuery.parseJSON(data);
-            for(i in hospitals){
-                var h = $("div[name=hospital_template]").last().clone();
-                h.find("h2[name=name]").text(hospitals[i].name);
-                h.find("p[name=description]").text(hospitals[i].description);
-                h.find("a[name=linkTo]").attr("href", "./hospital_detail?id=" + hospitals[i].id);
-                $("#hospital_div").append(h);
-            }
+          createHospitals(data);
         });
+    }
+
+    function createHospitals(_data){
+      $("#hospital_div").empty();
+      var hospitals = jQuery.parseJSON(_data);
+      for(i in hospitals){
+          var h = $("div[name=hospital_template]").last().clone();
+          h.find("h2[name=name]").text(hospitals[i].name);
+          h.find("p[name=description]").text(hospitals[i].description);
+          h.find("a[name=linkTo]").attr("href", "./hospital_detail?id=" + hospitals[i].id);
+          $("#hospital_div").append(h);
+      }
     }
 
    /* Example for Yun-Tai */
