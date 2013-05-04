@@ -36,6 +36,11 @@ class MainHandler(base.BaseSessionHandler):
     def get(self):
         self.render_template('index.html')
 
+class NotFound(webapp2.RequestHandler):
+    def get(self):
+        self.response.status = '404 Not Found'
+        self.response.write('404 Not Found')
+
 API_PREFIX = '/api/v1'
 app = webapp2.WSGIApplication([
     ('/login', login.LoginPage),
@@ -58,6 +63,7 @@ app = webapp2.WSGIApplication([
     (API_PREFIX+'/account', restApi.AccountAPI),
     (API_PREFIX+'/person', restApi.PersonAPI),
     (API_PREFIX+'/role', restApi.RoleAPI),
+    (API_PREFIX+'/.*', NotFound),
 #    (API_PREFIX+'/hospital', hospital.RestAPI),
 
     ('/.*', MainHandler),
