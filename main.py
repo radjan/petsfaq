@@ -20,7 +20,7 @@ import os
 
 from google.appengine.api import users
 
-from common import share
+from common import share, util
 from view import base, faq, login, create
 import view.hospital
 from admin import data as adm_data
@@ -34,7 +34,8 @@ DEBUG = True
 
 class MainHandler(base.BaseSessionHandler):
     def get(self):
-        self.render_template('index.html')
+        self.render_template('index.html',
+                             {'user': util.get_current_user(self.session)})
 
 class NotFound(webapp2.RequestHandler):
     def get(self):
