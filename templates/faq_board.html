@@ -2,108 +2,25 @@
 <html>
 <head>
 <title>寵物通</title>
-<meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="./s/style.css">
-<style>
-</style>
+<meta charset="utf-8">
+<title>Pet Helper - hospitals</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Le styles -->
+<link href="/s/css/bootstrap.css" rel="stylesheet">
+<link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="/s/css/myFormat.css" rel="stylesheet">
+
 </head>
 <body>
-<header id="header">
-    寵物通
-    <ul>
-        <li class="curr">寵物FAQ</li>
-        <li>獸醫列表</li>
-    </ul>
-    <div id="member">
-        {% if login %}
-        Welcome, {{ name }}, 
-        <a href="{{ logout }}">logout</a>
-        {% else %}
-        Welcome, <a href="/login">登入</a>
-        {% endif %}
-    </div>
-</header
-<div class="crumb">貓</div>
-<ul class="faq_menu">
-    <li><a href="./i.html">首頁</a></li>
-    <li>綜合</li>
-    <li>狗</li>
-    <li><a href="./cat.html">貓</a></li>
-    <li>兔</li>
-    <li>鼠</li>
-    <li>魚</li>
-    <li>鳥</li>
-    <li>哺乳</li>
-    <li>爬蟲</li>
-    <li>昆蟲</li>
-</ul>
 
-<div class="qa_pad"> 
-<section>
-搜尋：<input type="search" name="search" disabled />
-</section>
-<section>
-    <header>關於行為</header>
-    <div class="qa">
-        <summary>貓為什麼會發出呼嚕聲？</summary>
-        <detail>
-        <div class="edit"><a href="#">我要補充</a></div>
-            <div class="info">
-                這是貓放鬆開心時會發出的聲音
-                <div class="provider">回答: <a href="#">Rad</a> (14年養貓經驗)</div>
-            </div>
-            <div class="info">
-                貓想睡覺時的的聲音
-                <div class="provider">回答: <a href="#">Andy</a> (1年養貓經驗)</div>
-            </div>
-        </detail>
-    </div>
-    <div class="qa">
-        <summary>貓吐了怎麼辦？</summary>
-        <detail>
-        <div class="edit"><a href="#">我要補充</a></div>
-            <div class="info">
-                若嘔吐物裡有毛球，不太頻繁的話屬於正常現象。若不想貓咪嘔吐，平時可餵食化毛膏或小麥草。若無毛球且太過頻繁的話，請送至獸醫看診。
-                <br>可能相關的疾病：XXX, XXX(連結)
-                <div class="provider">回答: <a href="#">Rad</a> (14年養貓經驗)</div>
-            </div>
-        </detail>
-    </div>
-</section>
-<section>
-    <header>關於疾病</header>
-    <div class="qa">
-        <summary>弓蟲症</summary>
-        <detail>
-        <div class="edit"><a href="#">我要補充</a></div>
-            <div class="info">
-                弓蟲（Toxoplasma gondii）是一種細胞內寄生的原蟲，貓科動物是「唯一的最終宿主」，但幾乎所有的溫血動物都有可能成為弓蟲的中間宿主，包括人類、犬、囓齒類、豬、羊等，因此，除了貓咪這「唯一的最終宿主」有可能是感染源之外，弓蟲也很有可能經由中間宿主的互食而傳播，人們也可能因為攝食含有弓蟲囊體的生肉而受到感染，尤其是生豬肉，研究顯示經由肉的傳染是美國最常見的傳播模式，所以貓並不是人類感染弓蟲的唯一來源。
-                <br> 參考資料: <a href="http://pianosblog.pixnet.net/blog/post/24974969-%E8%B2%93%E5%92%AA%E8%AA%AA%EF%BC%9A%E4%B8%8D%E8%A6%81%E8%AA%A4%E6%9C%83%E6%88%91%E4%BA%86%E5%95%A6~~%E5%BC%93%E8%9F%B2v.s.%E6%87%B7%E5%AD%95">貓咪說：不要誤會我了啦~~弓蟲v.s.懷孕</a>
-                <div class="provider">回答: <a href="#">Rad</a> (14年養貓經驗)</div>
-            </div>
-       </detail>
-    </div>
-</section>
-<section>
-    <header>關於用品</header>
-    <div class="qa">
-        <summary>貓沙的種類有哪些？</summary>
-        <detail>
-        <div class="edit"><a href="#">我要補充</a></div>
-            <div class="info">
-                常見的貓沙種類有礦物沙(細沙/粗沙)、木屑/松樹沙、水晶沙、豆腐沙、紙沙等等。
-                <div class="provider">回答: <a href="#">Rad</a> (14年養貓經驗)</div>
-            </div>
-       </detail>
-    </div>
-</section>
+{% include 'components/navbar.html' %}
+<div>
+    <br><br><br>
+    Under Construction
 </div>
 
-<div class="adsense">
-廣告
-</div>
-
-<footer>
-</footer>
 </body>
 </html>
