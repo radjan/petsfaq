@@ -9,7 +9,10 @@ class Role(polymodel.PolyModel):
     verified = db.BooleanProperty(default=False)
     person = db.ReferenceProperty(person.Person, collection_name='roles', required=True)
 
-class PerOwner(Role):
+    def get_id(self):
+        return self.key().id()
+
+class PetOwner(Role):
     pass
 
 class Moderator(Role):

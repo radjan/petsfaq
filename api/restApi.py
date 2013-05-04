@@ -69,9 +69,6 @@ class RoleAPI(RestAPI):
 
 class ModelInstanceAPI(base.BaseSessionHandler):
     def get(self, *args, **kw):
-        print '-'*30
-        print args
-        print kw
         model_id = kw.get('id', 0)
         domain_obj = self.service.get(model_id)
         domain_dict = _to_dict(domain_obj)
@@ -92,5 +89,5 @@ def _to_dict(domain_obj):
     for key in property_keys:
         prop = domain_obj.properties()[key]
         tmp[str(key)] = unicode(prop.get_value_for_datastore(domain_obj))
-    tmp['id'] = domain_obj.key().id()
+    tmp['id'] = domain_obj.get_id()
     return tmp

@@ -16,3 +16,5 @@ class Hospital(db.Model):
     emergency_hour = db.TextProperty()
     value_added_tax = db.StringProperty()
 
+    def get_id(self):
+        return self.key().id()

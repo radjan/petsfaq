@@ -12,3 +12,6 @@ class Person(db.Model):
     email = db.EmailProperty()
     phone = db.PhoneNumberProperty()
     mark = db.IntegerProperty(default=0)
+
+    def get_id(self):
+        return self.key().id()

@@ -20,6 +20,8 @@ class Account(polymodel.PolyModel):
     person = db.ReferenceProperty(person.Person,
                                   collection_name='accounts')
 
+    def get_id(self):
+        return self.key().id()
 
 class Google(Account):
     gmail = db.EmailProperty(required=True)
