@@ -35,9 +35,6 @@
 
         <div class="templates" name="area_selector">
           <div name="pop_area">
-            <button class="label label-info" name="area1" onclick="addSelector(this)">area 1</button>
-            <button class="label label-info" name="area2" onclick="addSelector(this)">area 2</button>
-            <button class="label label-info" name="area3" onclick="addSelector(this)">area 3</button>
           </div>
         </div>
 
@@ -83,9 +80,16 @@
     <script src="/s/js/bootstrap-collapse.js"></script>
     <script src="/s/js/bootstrap-carousel.js"></script>
     <script src="/s/js/bootstrap-typeahead.js"></script>   
+    <script src="/s/js/twzipcode.js"></script>
 
         <script type="text/javascript">
          $(document).ready(function() {
+            for (var county in TW_ZIP) {
+                 $("div[name=area_selector]").append(
+'<button class="label label-info" name=area_"'+county+'" onclick="addSelector(this)">'+county+'</button>');
+
+            }
+
             $("li[name=area]").popover({
                 placement: "right", 
                 title: "選擇地區",
