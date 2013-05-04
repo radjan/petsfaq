@@ -64,6 +64,11 @@ app = webapp2.WSGIApplication([
     (API_PREFIX+'/account', restApi.AccountAPI),
     (API_PREFIX+'/person', restApi.PersonAPI),
     (API_PREFIX+'/role', restApi.RoleAPI),
+
+    webapp2.Route(API_PREFIX+'/hospital/<id:\d+>',
+                  restApi.HospitalInstanceAPI,
+                  name='hospital_id'),
+
     (API_PREFIX+'/.*', NotFound),
 #    (API_PREFIX+'/hospital', hospital.RestAPI),
 
