@@ -11,6 +11,7 @@ from service.person import person_service
 from common import share, util
 
 from StringIO import StringIO
+import collections
 
 
 # General 
@@ -68,20 +69,44 @@ class RoleAPI(RestAPI):
 
 
 class ModelInstanceAPI(base.BaseSessionHandler):
-    def get(self, *args, **kw):
+    def _get_obj(self, *args, **kw):
         model_id = kw.get('id', 0)
         domain_obj = self.service.get(model_id)
         domain_dict = _to_dict(domain_obj)
+        return domain_obj, domain_dict
+
+    def get(self, *args, **kw):
+        _, domain_dict = self._get_obj(*args, **kw)
         io = StringIO()
         json.dump(domain_dict, io)
         self.response.write(io.getvalue())
-
 
 class HospitalInstanceAPI(ModelInstanceAPI):
     def __init__(self, *args, **kw):
         self.service = hospital_service
         self.model = hospital.Hospital
         ModelInstanceAPI.__init__(self, *args, **kw)
+
+    def get(self, *args, **kw):
+        h, h_dict = self._get_obj(*args, **kw)
+        h_dict['vets'] = []
+        for v in h.vets:
+            v_dict = _to_dict(v)
+            v_dict['person'] = _to_dict(v.person)
+            h_dict['vets'].append(v_dict)
+        io = StringIO()
+        json.dump(h_dict, io)
+        self.response.write(io.getvalue())
+
+def _out_format(data):
+    ret = None
+    if isinstance(data, collections.Iterable):
+        ret = []
+        for d in data:
+            ret.append(_out_format(d))
+    else:
+        ret = _to_dict(data)
+    return ret
 
 def _to_dict(domain_obj):
     tmp = {}
