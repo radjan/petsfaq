@@ -15,7 +15,7 @@ class AccountDao(base.GeneralDao):
         self.model_cls = acc_model.Account
 
     def exist(self, acc_id, acc_type):
-        return self.get(acc_id, acc_type) != None
+        return self.get_by_userid(acc_id, acc_type) != None
 
     def _get_type(self, acc):
         cls = type(acc)
