@@ -20,7 +20,7 @@ class LoginPage(base.BaseSessionHandler):
     def post(self):
         userid = self.request.get("userid")
         password = self.request.get("password")
-        acc = acc_service.get(userid, share.ACCOUNT_ID_PWD)
+        acc = acc_service.get_by_userid(userid, share.ACCOUNT_ID_PWD)
         if acc:
             if hashing_passwords.check_hash(password, acc.password):
                 #login
@@ -35,7 +35,7 @@ class GoogleLogin(base.BaseSessionHandler):
     def get(self):
         user = gusers.get_current_user()
         if user:
-            acc = acc_service.get(user.user_id(), share.ACCOUNT_GOOGLE)
+            acc = acc_service.get_by_userid(user.user_id(), share.ACCOUNT_GOOGLE)
             if acc:
                 self.session['user'] = util.get_user(acc)
                 self.redirect(HOME)
