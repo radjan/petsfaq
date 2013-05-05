@@ -31,8 +31,8 @@ class CreatePersonPage(base.BaseSessionHandler):
         p = person.Person(**kw)
         person_service.create(p)
         u = self.session['user']
-        acc = account_service.get(u['userid'],
-                                  share.acc_key_view2model(u['type']))
+        acc = account_service.get_by_userid(u['userid'],
+                                            share.acc_key_view2model(u['type']))
         acc.person = p
         account_service.update(acc)
         self.session['user'] = util.get_user(acc)
@@ -65,7 +65,7 @@ class VetDetailPage(base.BaseSessionHandler):
         kw = {'person': person,
               'education': self._gather_list('edu_'),
               'experience': self._gather_list('exp_')}
-        util.maybe_add(kw, 'description', self.request.get('description'))
+        util.maybe_add(kw, 'description', self.request.get('intro'))
         util.maybe_add(kw, 'specialty', self.request.get('specialty'))
         create_role = True
         for r in person.roles:

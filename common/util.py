@@ -25,8 +25,9 @@ def get_userid(session):
     return None
 
 def get_person(session):
-    acc = account_service.get(get_userid(session),
-                              share.acc_key_view2model(session['user']['type']))
+    acc = account_service.get_by_userid(
+                get_userid(session),
+                share.acc_key_view2model(session['user']['type']))
     return acc.person
 
 def get_current_user(session):
