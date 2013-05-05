@@ -56,7 +56,7 @@ app = webapp2.WSGIApplication([
     ('/new_hospital', create.CreateHospitalPage),
 
     ('/hospitals', view.hospital.HospitalList),
-    ('/hospital_detail', view.hospital.HospitalDetail),
+    webapp2.Route('/hospital/<id:\d+>', view.hospital.HospitalDetail, name='view_hospital'),
     ('/faq', faq.BoardPage),
 
     ('/adm/data', adm_data.ListDataPage),

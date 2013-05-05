@@ -44,7 +44,7 @@
 
   </head>
 
-  <body onload="load()">
+  <body>
 
  {% include 'components/navbar.html' %}
 
@@ -104,7 +104,7 @@
           </div> --><!-- /.carousel -->
           
           <div class="hero-unit">
-            <h1>{{ hospital.name }}
+            <h1><span id="hospital_name"><!--hospital name--></span>
               <small>
                 <!-- <a href="#hospital_info_edit" role="button" class="btn btn-mini btn-danger" data-toggle="modal">編輯</a> -->
                 <!-- Modal -->
@@ -126,56 +126,14 @@
                   </button>
                 </small>
             </h1>
-            <p>{{ hospital.description }}</p>
+            <p><span id="hospital_desc"><!-- hospital description --></span></p>
             <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
           </div>
           
           <div class="row-fluid">
 
-          <div class="container-fluid">
-            <div class="row-fluid">
-            <div class="span2">
-              <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
-            </div>
-            <div class="span8">
-              <h2>林大明 <small><a href="#">Blog</a></small>  
-                <small>
-                  <button name="edit_button" type="button" class="btn btn-mini btn-danger">
-                    編輯
-                  </button>
-                </small>
-              </h2> 
-              <p>林大明醫生是本院...</p>
-              <dl>
-                <dt>學經歷</dt>
-                <dd>- 中華民國獸醫xxxx</dd>
-                <dd>- 國立中興大學獸醫系畢業</dd>
-                <dt>專長</dt>
-                <dd>- 貓狗上呼吸道感染...</dd>
-                <dd>- 貓狗腸胃...</dd>
-              </dl>
-              <button type="button" class="btn btn-info" data-target="#demo" data-toggle="collapse">
-                    名片
-              </button>
-             
-              <div id="demo" class="collapse">
-                <address>
-                  <br>
-                  <strong>林大明</strong><br>
-                    <a href="mailto:#">first.last@example.com</a><br>
-                    xx 動物醫院<br>
-                    看診時間：9:00-21:00 <br>
-                    電話： (123) 456-7890<br>
-                    地址：San Francisco, CA 94107<br>
-                    <ul>
-                      <li>可預約、可急診</li>
-                      <li>急診條件：20:00-24:00</li>
-                    </ul>
-                </address>
-
-              </div>
-            </div><!--/span-->
-          </div><!--/row-->
+          <div class="container-fluid" id="vets">
+            <!-- place for vets -->
           </div><!-- /container -->
           <hr class="bs-docs-separator">
 
@@ -191,9 +149,61 @@
 
     </div><!--/.fluid-container-->
 
+    <div class="templates">
+        <div class="row-fluid" name="oneVet">
+            <div class="span2">
+              <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
+            </div>
+            <div class="span8">
+              <h2><span name="vet_name">vet name</span><small><a href="#">Blog</a></small>  
+                <small>
+                  <button name="edit_button" type="button" class="btn btn-mini btn-danger">
+                    編輯
+                  </button>
+                </small>
+              </h2> 
+              <p><span name="vet_desc">vet desc</span></p>
+              <dl>
+                <dt>學經歷</dt>
+                <dd>- 中華民國獸醫xxxx</dd>
+                <dd>- 國立中興大學獸醫系畢業</dd>
+                <dt>專長</dt>
+                <dd>- 貓狗上呼吸道感染...</dd>
+                <dd>- 貓狗腸胃...</dd>
+              </dl>
+              <button type="button" class="btn btn-info" data-target="#demo" data-toggle="collapse">
+                    名片
+              </button>
+             
+              <div id="demo" class="collapse">
+                <address>
+                  <br>
+                  <strong><span name="vet_name">vet name</span></strong><br>
+                    <a href="mailto:#"><span name="vet_mail">vet@mail</span></a><br>
+                    xx 動物醫院<br>
+                    看診時間：9:00-21:00 <br>
+                    電話： (123) 456-7890<br>
+                    地址：San Francisco, CA 94107<br>
+                    <ul>
+                      <li>可預約、可急診</li>
+                      <li>急診條件：20:00-24:00</li>
+                    </ul>
+                </address>
+
+              </div>
+            </div><!--/span-->
+        </div><!--/row-->
+    </div>
 
     <script type="text/javascript">
     $(document).ready(function(){
+        var hid = window.location.pathname.split("/")[2];
+        $.ajax({
+            url: "/api/v1/hospital/" + hid,
+            type: "GET",
+            cache: false
+        }).done(function (data) { putData(data); });
+
         $("#revise_button").click(function(){
           $("button[name=edit_button]").show();
         });
@@ -206,6 +216,21 @@
     $(document).ready(function load(){
         $("button[name=edit_button]").hide();
     });
+
+    function putData(data) {
+      var hospital = jQuery.parseJSON(data);
+      $("#hospital_name").text(hospital.name);
+      $("#hospital_desc").text(hospital.description);
+      var vets = $("#vets");
+      var vs = hospital.vets
+      for (i in vs){
+          var v = $("div[name=oneVet]").last().clone();
+          v.find("span[name=vet_name]").text(vs[i].person.name);
+          v.find("span[name=vet_desc]").text(vs[i].description);
+          v.find("span[name=vet_mail]").text(vs[i].person.email);
+          vets.append(v);
+      }
+    }
 
     </script>
   </body>
