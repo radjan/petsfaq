@@ -77,7 +77,6 @@ class VetDetailPage(base.BaseSessionHandler):
             v = role.Vet(**kw)
             role_service.create(v)
         else:
-            print (dir(v))
             for key, value in kw.items():
                 v.__setattr__(key, value)
             role_service.update(v)
@@ -122,6 +121,10 @@ class CreateHospitalPage(base.BaseSessionHandler):
         h = hospital.Hospital(**kw)
         hospital_service.create(h)
 
+        for r in person.roles:
+            if type(r) is role.Vet:
+                r.hospital = h
+                role_service.update(r)
         adm = role.Admin(person=person, hospital=h)
         role_service.create(adm)
         self.redirect(share.HOME)
