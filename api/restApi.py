@@ -91,6 +91,9 @@ class HospitalInstanceAPI(ModelInstanceAPI):
         h, h_dict = self._get_obj(*args, **kw)
         h_dict['vets'] = []
         for v in h.vets:
+            # XXX Adm in vets too
+            if not isinstance(v, role.Vet):
+                continue
             v_dict = _to_dict(v)
             v_dict['person'] = _to_dict(v.person)
             h_dict['vets'].append(v_dict)
