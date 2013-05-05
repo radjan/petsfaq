@@ -7,6 +7,7 @@ class Role(polymodel.PolyModel):
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
     verified = db.BooleanProperty(default=False)
+    confirmed = db.BooleanProperty(default=False)
     person = db.ReferenceProperty(person.Person, collection_name='roles', required=True)
 
     def get_id(self):
