@@ -30,7 +30,7 @@ class AccountDao(base.GeneralDao):
         acc.parent = get_root_key()
         acc.put()
 
-    def get(self, acc_id, acc_type):
+    def get_by_userid(self, acc_id, acc_type):
         if acc_type == GOOGLE:
             q = acc_model.Google.all()
         elif acc_type == ID_PWD:

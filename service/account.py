@@ -15,4 +15,7 @@ class AccountService(base.GeneralService):
     def exist(self, acc_id, acc_type):
         return acc_dao.exist(acc_id, acc_type)
 
+    def get_by_userid(self, acc_id, acc_type):
+        return acc_dao.get_by_userid(acc_id, acc_type)
+
 account_service = AccountService()
