@@ -178,7 +178,7 @@
                   <br>
                   <strong><span name="vet_name">vet name</span></strong><br>
                     <a href="mailto:#"><span name="vet_mail">vet@mail</span></a><br>
-                    xx 動物醫院<br>
+                    <span name="hospital_name"><!-- hospital name --></span><br>
                     看診時間：9:00-21:00 <br>
                     電話： (123) 456-7890<br>
                     地址：San Francisco, CA 94107<br>
@@ -223,6 +223,7 @@
       var vs = hospital.vets
       for (i in vs){
           var v = $("div[name=oneVet]").last().clone();
+          v.find("span[name=hospital_name]").text(hospital.name);
           v.find("span[name=vet_name]").text(vs[i].person.name);
           v.find("span[name=vet_desc]").text(vs[i].description);
           v.find("span[name=vet_mail]").text(vs[i].person.email);
