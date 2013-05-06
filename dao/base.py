@@ -4,6 +4,19 @@ import itertools
 WILDCARD = '*'
 
 class GeneralDao:
+    def get(slef, id):
+        return db.get(db.Key.from_path(self.kind, int(id)))
+
+    def create(self, m):
+        m.parent = self.get_root_key()
+        m.put()
+
+    def update(self, m):
+        m.put()
+
+    def list(self):
+        return self.model_cls.all()
+
     def search(self, kw):
         q = self.model_cls.all()
         post_filters = []
