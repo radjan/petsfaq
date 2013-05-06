@@ -155,21 +155,19 @@
               <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
             </div>
             <div class="span8">
-              <h2><span name="vet_name">vet name</span><small><a href="#">Blog</a></small>  
+              <h2><span name="vet_name"><!-- vet name --></span><small><a href="#">Blog</a></small>  
                 <small>
                   <button name="edit_button" type="button" class="btn btn-mini btn-danger">
                     編輯
                   </button>
                 </small>
               </h2> 
-              <p><span name="vet_desc">vet desc</span></p>
-              <dl>
+              <p><span name="vet_desc"><!-- vet desc --></span></p>
+              <dl name="exp">
                 <dt>學經歷</dt>
-                <dd>- 中華民國獸醫xxxx</dd>
-                <dd>- 國立中興大學獸醫系畢業</dd>
+              </dl>
+              <dl name="specialty">
                 <dt>專長</dt>
-                <dd>- 貓狗上呼吸道感染...</dd>
-                <dd>- 貓狗腸胃...</dd>
               </dl>
               <button type="button" class="btn btn-info" data-target="#demo" data-toggle="collapse">
                     名片
@@ -228,6 +226,12 @@
           v.find("span[name=vet_name]").text(vs[i].person.name);
           v.find("span[name=vet_desc]").text(vs[i].description);
           v.find("span[name=vet_mail]").text(vs[i].person.email);
+          for (j in vs[i].experience) {
+            v.find("dl[name=exp]").append("<dd>"+vs[i].experience[j]+"</dd>");
+          }
+          for (j in vs[i].education) {
+            v.find("dl[name=exp]").append("<dd>"+vs[i].education[j]+"</dd>");
+          }
           vets.append(v);
       }
     }

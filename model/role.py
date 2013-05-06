@@ -23,9 +23,9 @@ class Vet(Role):
     hospital = db.ReferenceProperty(hospital.Hospital, collection_name='vets')
     description = db.TextProperty()
     specialty = db.TextProperty()
-    #specialties = db.ListProperty(specialty.Specialty)
-    education = db.ListProperty(str)
-    experience = db.ListProperty(str)
+    #specialties = db.ListProperty(db.Key)
+    education = db.StringListProperty()
+    experience = db.StringListProperty(str)
 
 class Employee(Role):
     hospital = db.ReferenceProperty(hospital.Hospital, collection_name='employees')
