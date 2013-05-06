@@ -34,7 +34,7 @@
 
 
         <div class="templates" name="area_selector">
-          <div name="pop_area">
+          <div name="pop_area" class="row-fluid">
           </div>
         </div>
 
@@ -59,6 +59,13 @@
             <br>
         </div>
 
+        <div class="templates">
+          <div name="selector_button">
+            <!-- <button class="label label-info" rel="popover">Template</button> -->
+            <a type= "button" class="label label-info" rel="popover">Template</a>;
+          </div>
+          
+        </div>
 
 
 
@@ -85,10 +92,14 @@
         <script type="text/javascript">
          $(document).ready(function() {
             for (var county in TW_ZIP) {
-                 $("div[name=area_selector]").append(
-'<button class="label label-info" name=area_"'+county+'" onclick="addSelector(this)">'+county+'</button>');
-
+                var b = $("div[name=selector_button]").last().clone();
+                b.text(county);
+                 $("div[name=pop_area]").append(b);
+                    
+// '<button class="label label-info" name=area_"'+county+'" onclick="addSelector(this)">'+county+'</button>'
+                  // );
             }
+            // $("div[name=pop_area]").localScroll();
 
             $("li[name=area]").popover({
                 placement: "right", 
