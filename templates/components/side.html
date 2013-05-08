@@ -33,32 +33,52 @@
         </div><!--/span-->
 
 
-        <div class="templates" name="area_selector">
-          <div name="pop_area">
-          </div>
-        </div>
+      <div class="templates">
 
-        <div class="templates" name="field_selector">
-          <div name="pop_field">
-            <button class="label label-info" name="field1" onclick="addSelector(this)">field 1</button>
-            <button class="label label-info" name="field2" onclick="addSelector(this)">field 2</button>
-            <button class="label label-info" name="field3" onclick="addSelector(this)">field 3</button>
-          </div>
-        </div>
-
-        <div class="templates" name="species_selector">
-          <div name="pop_species">
-            <button class="label label-info" name="species1" onclick="addSelector(this)">species 1</button>
-            <button class="label label-info" name="species2" onclick="addSelector(this)">species 2</button>
-            <button class="label label-info" name="species3" onclick="addSelector(this)">species 3</button>
-          </div>
-        </div>
-
-        <div class="templates" name="selector_element">
+        <!--1. selector_element is the element show in side while choose an area, species or a field. -->
+        <div name="selector_element">
             <span class="label label-info" name="label1">Info<button type="button" class="close"><i class="icon-remove"></i></button></span>
-            <br>
+             <br>
         </div>
 
+        <!--2. XXX_selector to pop over the div for side button -->
+          <div name="area_selector">
+            <div name="pop_area"></div>
+          </div>
+
+          <div name="field_selector">
+            <div name="pop_field">
+              <button class="label label-info" name="field1" onclick="addSelector(this)">field 1</button>
+              <button class="label label-info" name="field2" onclick="addSelector(this)">field 2</button>
+              <button class="label label-info" name="field3" onclick="addSelector(this)">field 3</button>
+            </div>
+          </div>
+
+          <div name="species_selector">
+            <div name="pop_species">
+              <button class="label label-info" name="species1" onclick="addSelector(this)">species 1</button>
+              <button class="label label-info" name="species2" onclick="addSelector(this)">species 2</button>
+              <button class="label label-info" name="species3" onclick="addSelector(this)">species 3</button>
+            </div>
+          </div>
+
+
+          <!--3. selector_button is the button in XXX_selector -->
+          <!-- <a name="selector_button" type= "button" class="btn btn-mini label label-info" rel="popover" style="margin:5px">Template</a> -->
+          <a name="selector_button" type= "button" class="label label-info" rel="popover" style="margin:5px">Template</a>
+
+
+          <!--4.  -->
+           <div name="area_selector2">
+            <div> 
+              <button class="label label-info" name="field1" onclick="addSelector(this)">field 1</button>
+              <button class="label label-info" name="field2" onclick="addSelector(this)">field 2</button>
+              <button class="label label-info" name="field3" onclick="addSelector(this)">field 3</button>
+            </div>
+          </div>
+          
+          
+        </div><!-- End of templates div -->
 
 
 
@@ -82,22 +102,44 @@
     <script src="/s/js/bootstrap-typeahead.js"></script>   
     <script src="/s/js/twzipcode.js"></script>
 
-        <script type="text/javascript">
-         $(document).ready(function() {
-            for (var county in TW_ZIP) {
-                 $("div[name=area_selector]").append(
-'<button class="label label-info" name=area_"'+county+'" onclick="addSelector(this)">'+county+'</button>');
+    <script type="text/javascript">
+         var zipLoaded = false;
 
-            }
+         $(document).ready(function() {
+
+            $("li[name=area]").click(
+              function(){
+                if(!zipLoaded){
+                  for (var county in TW_ZIP) {
+                    // var b = $("a[name=selector_button]").last().clone();
+                    var b = $("a[name=selector_button]").clone();
+                    b.attr("name","county");
+                    b.text(county);
+                    $("div[name=pop_area]").append(b);
+                  }
+                  zipLoaded = true;  
+                }
+            });
+            
+            // $("a[name=基隆市]").click($("a[name=基隆市]").text("CLICK!"));
+            // .popover({
+            //   placement: "right", 
+            //     title: "選擇縣市",
+            //     html: "true",
+            //     content: function() {
+            //        return $("div[name=area_selector2]").html();
+            //     }
+            // });
 
             $("li[name=area]").popover({
                 placement: "right", 
-                title: "選擇地區",
+                title: "選擇縣市",
                 html: "true",
                 content: function() {
                    return $("div[name=area_selector]").html();
                 }
             });
+
 
             $("li[name=field]").popover({
                 placement: "right", 
