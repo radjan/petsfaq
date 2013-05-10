@@ -4,10 +4,12 @@ import json
 
 from view import base
 from model import *
+from model import specialty
 from service.hospital import hospital_service
 from service.account import account_service
 from service.role import role_service
 from service.person import person_service
+from service.specialty import specialty_service
 from common import share, util
 
 from StringIO import StringIO
@@ -67,7 +69,11 @@ class RoleAPI(RestAPI):
     service = role_service
     model = role.Role
 
+class SpecialtyAPI(RestAPI):
+    service = specialty_service
+    model = specialty.Specialty
 
+# single instance
 class ModelInstanceAPI(base.BaseSessionHandler):
     def _get_obj(self, *args, **kw):
         model_id = kw.get('id', 0)
@@ -100,6 +106,12 @@ class HospitalInstanceAPI(ModelInstanceAPI):
         io = StringIO()
         json.dump(h_dict, io)
         self.response.write(io.getvalue())
+
+class SpecialtyInstanceAPI(ModelInstanceAPI):
+    def __init__(self, *args, **kw):
+        self.service = specialty_service
+        self.model = specialty.Specialty
+        ModelInstanceAPI.__init__(self, *args, **kw)
 
 def _out_format(data):
     ret = None

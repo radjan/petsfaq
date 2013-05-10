@@ -1,6 +1,9 @@
 from common import share
 from service.account import account_service
 
+import json
+from StringIO import StringIO
+
 GOOGLE = share.VIEW_GOOGLE
 IDPWD = share.VIEW_IDPWD
 
@@ -40,3 +43,11 @@ def maybe_add(d, key, value):
     add to dict d with key if value is not empty
     '''
     if value: d[key] = value
+
+def jsonify_response(response, data):
+    if isinstance(data, set):
+        data = list(data)
+    io = StringIO()
+    json.dump(data, io)
+    response.write(io.getvalue())
+

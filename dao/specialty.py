@@ -10,6 +10,5 @@ class SpecialtyDao(base.GeneralDao):
         self.model_cls = specialty_model.Specialty
         self.get_root_key = share.party_root_key
         self.kind = 'Specialty'
-        base.GeneralDao.__init__(self, *args, **kw)
 
 specialty_dao = SpecialtyDao()

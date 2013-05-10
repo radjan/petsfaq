@@ -1,9 +1,24 @@
 from dao.specialty import specialty_dao
 from service import base
 
-SpecialtyService(base.GeneralService):
+class SpecialtyService(base.GeneralService):
     def __init__(self, *args, **kw):
         self.dao = specialty_dao
-        base.GeneralService.__init__(self, *args, **kw)
+
+    def list_species(self):
+        specialties = self.dao.list()
+        ret = set()
+        for s in specialties:
+            if s.species:
+                ret.add(s.species)
+        return ret
+
+    def list_categories(self):
+        specialties = self.dao.list()
+        ret = set()
+        for s in specialties:
+            if s.category:
+                ret.add(s.category)
+        return ret
 
 specialty_service = SpecialtyService()
