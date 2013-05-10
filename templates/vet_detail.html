@@ -42,6 +42,7 @@
       }
     </style>
     <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/s/css/myFormat.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -94,7 +95,8 @@
                 <textarea name="intro" rows="5" class="input-block-level"></textarea>
 
                 <label>專科</label>
-                <textarea name="profession" rows="5" class="input-block-level"></textarea>
+                <ul id='specialties'>
+                </ul>
 
                 <label>學歷</label>
                 <ul>
@@ -167,24 +169,25 @@
         <!-- <br>OR<br>醫院已建立好我的資料，下一步直接挑選。<a href='?a=skip'>跳過此步驟</a> -->
 
 
+   <div id='templates' class='templates'>
+     <li name='spec_item'>
+       種類：
+       <select name='species_' class='species'>
+          <option value=''>未選擇</option>
+       </select>
+       專科：
+       <select name='catelogy_' class='category'>
+          <option value=''>一般</option>
+       </select>
+     </li> 
+   </div>
+
    <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
     <script src="/s/js/bootstrap.js"></script>
-    <script src="/s/js/bootstrap-transition.js"></script>
-    <script src="/s/js/bootstrap-alert.js"></script>
-    <script src="/s/js/bootstrap-modal.js"></script>
-    <script src="/s/js/bootstrap-dropdown.js"></script>
-    <script src="/s/js/bootstrap-scrollspy.js"></script>
-    <script src="/s/js/bootstrap-tab.js"></script>
-    <script src="/s/js/bootstrap-tooltip.js"></script>
-    <script src="/s/js/bootstrap-popover.js"></script>
-    <script src="/s/js/bootstrap-button.js"></script>
-    <script src="/s/js/bootstrap-collapse.js"></script>
-    <script src="/s/js/bootstrap-carousel.js"></script>
-    <script src="/s/js/bootstrap-typeahead.js"></script> 
         
     <script>
       function displayData () {
@@ -197,6 +200,52 @@
       $("#modalBody").append("電話："+ $("input[name=edu_1]").val()+"<br>");
       $("#modalBody").append("電子信箱："+ $("input[name=exp_1]").val()+"<br>");
 
+    }
+
+    var ready = false;
+    var species = [];
+    var categories = [];
+    $(document).ready( function () {
+        $.ajax({
+            url: "/api/v1/specialty/species",
+            type: "GET",
+            cache: false
+        }).done(function(_data){
+            species = $.parseJSON(_data);
+            initSpecialties();
+        });
+        $.ajax({
+            url: "/api/v1/specialty/categories",
+            type: "GET",
+            cache: false
+        }).done(function(_data){
+            categories = $.parseJSON(_data);
+            initSpecialties();
+        });
+    });
+
+    function initSpecialties() {
+        if (ready) {
+            for (var i = 1; i <= 3; i++) {
+                addSpecialty(i);
+            }
+        } else {
+            ready = true;
+        }
+    }
+    function addSpecialty(n) {
+        var s = $('#templates').find('li[name=spec_item]').clone();
+        var input_species = s.find('.species');
+        for (i in species) {
+            input_species.append('<option vlaue="' + species[i]+ '">' + species[i] + '</option>');
+        }
+        var input_categories = s.find('.categories');
+        for (i in categories) {
+            input_categories.append('<option vlaue="' + categories[i]+ '">' + categories[i] + '</option>');
+        }
+        input_species.attr('name', input_species.attr('name') + n);
+        input_categories.attr('name', input_categories.attr('name') + n);
+        $('#specialties').append(s);
     }
     </script> 
 </body>
