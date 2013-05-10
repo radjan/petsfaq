@@ -25,6 +25,7 @@ from view import base, faq, login, create
 import view.hospital
 from admin import data as adm_data
 from api import restApi
+from api import specialty as specialtyApi
 
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
@@ -37,13 +38,17 @@ class MainHandler(base.BaseSessionHandler):
         self.render_template('index.html',
                              {'user': util.get_current_user(self.session)})
 
+class BackToMainHandler(webapp2.RequestHandler):
+    def get(self):
+        self.redirect('/')
+
 class NotFound(webapp2.RequestHandler):
     def get(self):
-        self.response.status = '404 Not Found'
-        self.response.write('404 Not Found')
+        self.error(404)
 
 API_PREFIX = '/api/v1'
 app = webapp2.WSGIApplication([
+    ('/', MainHandler),
     ('/login', login.LoginPage),
     ('/login_google', login.GoogleLogin),
     ('/logout', login.LogoutPage),
@@ -64,13 +69,19 @@ app = webapp2.WSGIApplication([
     (API_PREFIX+'/account', restApi.AccountAPI),
     (API_PREFIX+'/person', restApi.PersonAPI),
     (API_PREFIX+'/role', restApi.RoleAPI),
+    (API_PREFIX+'/specialty', restApi.SpecialtyAPI),
 
     webapp2.Route(API_PREFIX+'/hospital/<id:\d+>',
                   restApi.HospitalInstanceAPI,
                   name='hospital_id'),
+    webapp2.Route(API_PREFIX+'/specialty/<id:\d+>',
+                  restApi.SpecialtyInstanceAPI,
+                  name='specialty_id'),
+    webapp2.Route(API_PREFIX+'/specialty/<type:(species|categories)>',
+                  specialtyApi.SpecialtyListAPI),
 
     (API_PREFIX+'/.*', NotFound),
 #    (API_PREFIX+'/hospital', hospital.RestAPI),
 
-    ('/.*', MainHandler),
+    ('/.*', BackToMainHandler),
 ], config = base.myconfig, debug=DEBUG)
