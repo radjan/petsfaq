@@ -96,11 +96,18 @@
 
     </div><!--/.fluid-container-->
 
+    <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
     <script language='JavaScript'>
     $(document).ready(function showHospital(){
+        var q = $.url().param('q');
+        var search_url = "/api/v1/hospital";
+        if (q != undefined) {
+            $('#name_search').val(q);
+            search_url += '?name=*' + q;
+        }
         //get hospital list
         $.ajax({
-          url: "/api/v1/hospital",
+          url: search_url,
           type: "GET",
           cache: false
         }).done(function(data){
