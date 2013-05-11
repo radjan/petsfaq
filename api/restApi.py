@@ -123,7 +123,6 @@ def _out_format(data):
         ret = _to_dict(data)
     return ret
 
-#XXX exposed backend model
 def _to_dict(domain_obj):
     tmp = {}
     property_keys = domain_obj.properties().keys()

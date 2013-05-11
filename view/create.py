@@ -1,10 +1,11 @@
 import webapp2
 
-from model import person, role, hospital
+from model import person, role, hospital, specialty
 from service.person import person_service
 from service.account import account_service
 from service.role import role_service
 from service.hospital import hospital_service
+from service.specialty import specialty_service
 from view import base
 
 from common import share, util
@@ -52,6 +53,7 @@ class VetDetailPage(base.BaseSessionHandler):
                 if isinstance(r, role.Vet):
                     create_role = False
                     break
+            # create an empty role, so we know he/she is a vet
             if create_role:
                 v = role.Vet(person=person)
                 role_service.create(v)
@@ -67,18 +69,45 @@ class VetDetailPage(base.BaseSessionHandler):
               'experience': self._gather_list('exp_')}
         util.maybe_add(kw, 'description', self.request.get('intro'))
         util.maybe_add(kw, 'specialty', self.request.get('specialty'))
-        create_role = True
+        species = self._gather_list('species_')
+        categories = self._gather_list('category_')
+        specialties = []
+        for i in range(len(species)):
+            spe = species[i]
+            cat = categories[i]
+            if not spe and not cat:
+                continue
+            s = specialty_service.get_by_value(species=spe,
+                                               category=cat)
+            if s:
+                specialties.append(s)
+            else:
+                s = specialty.Specialty(species=spe,
+                                        category=cat)
+                specialty_service.create(s)
+                specialties.append(s)
+        v = None
         for r in person.roles:
             if isinstance(r, role.Vet):
                 create_role = False
                 v = r
                 break
-        if create_role:
+
+        if v is None:
             v = role.Vet(**kw)
+            for s in specialties:
+                k = s.key()
+                if k not in v.specialties:
+                    v.specialties.append(k)
             role_service.create(v)
         else:
             for key, value in kw.items():
                 v.__setattr__(key, value)
+                k = s.key()
+            for s in specialties:
+                k = s.key()
+                if k not in v.specialties:
+                    v.specialties.append(k)
             role_service.update(v)
         self.redirect(share.REG_STEP3)
 
@@ -87,8 +116,9 @@ class VetDetailPage(base.BaseSessionHandler):
         i = 1
         ret = []
         while miss < tolerance:
-            v = self.request.get(k + str(i))
-            if v:
+            curr_key = k + str(i)
+            if curr_key in self.request.POST:
+                v = self.request.get(curr_key)
                 miss = 0
                 ret.append(v)
             else:
