@@ -103,26 +103,32 @@
             </div>
 
             <div name="createHospital" style="display:none">
-                <label>醫院名稱</label>
+                <label>醫院名稱*</label>
                 <input name="name" type="text" class="input-block-level">
 
-                <label>簡介</label>
+                <label>簡介*</label>
                 <textarea name="description" rows="5" class="input-block-level"></textarea>
 
-                <label>專科</label>
+                <label>專科*</label>
                 <ul id='specialties'>
                 </ul>
 
-                <label>營業時間</label>
-                <textarea name="working_hour" class="input-block-level"></textarea>
+                <label>地址*</label>
+                郵遞區號：<input name="zipcode" type="text" class="input-block-level"><br>
+                縣市：<input name="county" type="text" class="input-block-level"><br>
+                鄉鎮市區：<input name="area" type="text" class="input-block-level"><br>
+                街號：<input name="address" type="text" class="input-block-level"><br>
 
-                <label>地址</label>
-                <input name="address" type="text" class="input-block-level"><br>
-
-                <label>電話</label>
+                <label>電話*</label>
                 <input name="phone" type="text" class="input-block-level">
                 <!-- 可預約：<input type='checkbox' name='bookable'><br> -->
         
+                <label>營業時間</label>
+                <textarea name="working_hour" class="input-block-level"></textarea>
+
+                <label>統一編號</label>
+                <input name="address" type="text" class="input-block-level"><br>
+
                 <label class="checkbox" onclick="displayEr()">
                     <input name="er" type="checkbox"> 有急診
                 </label>

@@ -6,10 +6,13 @@ class Hospital(db.Model):
 
     name = db.StringProperty(required=True)
     description = db.TextProperty(required=True)
-    specialties = db.ListProperty(db.Key)
-    working_hour = db.TextProperty() # XXX data structure
+    zipcode = db.TextProperty(required=True)
+    county = db.TextProperty(required=True)
+    area = db.TextProperty(required=True)
     address = db.PostalAddressProperty(required=True)
     phone = db.PhoneNumberProperty(required=True)
+    specialties = db.ListProperty(db.Key)
+    working_hour = db.TextProperty() # XXX data structure
     #bookable = db.BooleanProperty(required=True, default=False)
     emergency = db.BooleanProperty(required=True, default=False)
     emergency_phone = db.PhoneNumberProperty()

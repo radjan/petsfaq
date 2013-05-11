@@ -105,18 +105,25 @@ class CreateHospitalPage(base.BaseSessionHandler):
     @base.login_required
     def post(self):
         person = util.get_person(self.session)
-        kw = {'name': self.request.get('name'),
-              'description': self.request.get('description'),
-              'address': self.request.get('address'),
-              'phone': self.request.get('phone'),
-              'emergency': self.request.get('er') != "",
-             }
+        kw = {}
+        primary_keys = (('name', 'name'),
+                        ('description', 'description'),
+                        ('zipcode', 'zipcode'),
+                        ('county', 'county'),
+                        ('area', 'area'),
+                        ('address', 'address'),
+                        ('phone', 'phone'),
+                       )
+        for view_key, model_key in primary_keys:
+            kw[model_key] = self.request.get(view_key)
+        kw['emergency'] = self.request.get('er') != ""
+
         opt_keys = (('working_hour', 'working_hour'),
                     ('er_phone', 'emergency_phone'),
                     ('er_hour', 'emergency_hour'),
                    )
-        for row in opt_keys:
-            util.maybe_add(kw, row[1], self.request.get(row[0]))
+        for view_key, model_key in opt_keys:
+            util.maybe_add(kw, model_key, self.request.get(view_key))
 
         h = hospital.Hospital(**kw)
 
