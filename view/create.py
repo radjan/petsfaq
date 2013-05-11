@@ -65,27 +65,11 @@ class VetDetailPage(base.BaseSessionHandler):
     def post(self):
         person = util.get_person(self.session)
         kw = {'person': person,
-              'education': self._gather_list('edu_'),
-              'experience': self._gather_list('exp_')}
+              'education': _gather_list(self.request, 'edu_'),
+              'experience': _gather_list(self.request, 'exp_')}
         util.maybe_add(kw, 'description', self.request.get('intro'))
         util.maybe_add(kw, 'specialty', self.request.get('specialty'))
-        species = self._gather_list('species_')
-        categories = self._gather_list('category_')
-        specialties = []
-        for i in range(len(species)):
-            spe = species[i]
-            cat = categories[i]
-            if not spe and not cat:
-                continue
-            s = specialty_service.get_by_value(species=spe,
-                                               category=cat)
-            if s:
-                specialties.append(s)
-            else:
-                s = specialty.Specialty(species=spe,
-                                        category=cat)
-                specialty_service.create(s)
-                specialties.append(s)
+        specialties = _get_specialties(self.request)
         v = None
         for r in person.roles:
             if isinstance(r, role.Vet):
@@ -111,20 +95,6 @@ class VetDetailPage(base.BaseSessionHandler):
             role_service.update(v)
         self.redirect(share.REG_STEP3)
 
-    def _gather_list(self, k, tolerance=2):
-        miss = 0
-        i = 1
-        ret = []
-        while miss < tolerance:
-            curr_key = k + str(i)
-            if curr_key in self.request.POST:
-                v = self.request.get(curr_key)
-                miss = 0
-                ret.append(v)
-            else:
-                miss += 1
-            i += 1
-        return ret
 
 class WorksForPage(base.BaseSessionHandler):
     @base.login_required
@@ -137,7 +107,6 @@ class CreateHospitalPage(base.BaseSessionHandler):
         person = util.get_person(self.session)
         kw = {'name': self.request.get('name'),
               'description': self.request.get('description'),
-              'specialty': self.request.get('specialty'),
               'address': self.request.get('address'),
               'phone': self.request.get('phone'),
               'emergency': self.request.get('er') != "",
@@ -148,7 +117,13 @@ class CreateHospitalPage(base.BaseSessionHandler):
                    )
         for row in opt_keys:
             util.maybe_add(kw, row[1], self.request.get(row[0]))
+
         h = hospital.Hospital(**kw)
+
+        specialties = _get_specialties(self.request)
+        for s in specialties:
+            h.specialties.append(s.key())
+
         hospital_service.create(h)
 
         for r in person.roles:
@@ -159,3 +134,37 @@ class CreateHospitalPage(base.BaseSessionHandler):
         role_service.create(adm)
         self.redirect(share.HOME)
 
+def _gather_list(request, k, tolerance=2):
+    miss = 0
+    i = 1
+    ret = []
+    while miss < tolerance:
+        curr_key = k + str(i)
+        if curr_key in request.POST:
+            v = request.get(curr_key)
+            miss = 0
+            ret.append(v)
+        else:
+            miss += 1
+        i += 1
+    return ret
+
+def _get_specialties(request):
+    species = _gather_list(request, 'species_')
+    categories = _gather_list(request, 'category_')
+    specialties = []
+    for i in range(len(species)):
+        spe = species[i]
+        cat = categories[i]
+        if not spe and not cat:
+            continue
+        s = specialty_service.get_by_value(species=spe,
+                                           category=cat)
+        if s:
+            specialties.append(s)
+        else:
+            s = specialty.Specialty(species=spe,
+                                    category=cat)
+            specialty_service.create(s)
+            specialties.append(s)
+    return specialties

@@ -6,7 +6,7 @@ class Hospital(db.Model):
 
     name = db.StringProperty(required=True)
     description = db.TextProperty(required=True)
-    specialty = db.TextProperty(required=True) #XXX data structure
+    specialties = db.ListProperty(db.Key)
     working_hour = db.TextProperty() # XXX data structure
     address = db.PostalAddressProperty(required=True)
     phone = db.PhoneNumberProperty(required=True)

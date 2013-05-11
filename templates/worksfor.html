@@ -110,7 +110,8 @@
                 <textarea name="description" rows="5" class="input-block-level"></textarea>
 
                 <label>專科</label>
-                <textarea name="specialty" rows="5" class="input-block-level"></textarea>
+                <ul id='specialties'>
+                </ul>
 
                 <label>營業時間</label>
                 <textarea name="working_hour" class="input-block-level"></textarea>
@@ -167,6 +168,20 @@
       </div>   <!--/confirmModal div-->
   
   </form>
+
+   <div id='templates' class='templates'>
+     <li name='spec_item'>
+       種類：
+       <select name='species_' class='species'>
+          <option value=''>未選擇</option>
+       </select>
+       專科：
+       <select name='category_' class='category'>
+          <option value=''>一般</option>
+       </select>
+     </li> 
+   </div>
+
 </div>
 
    <!-- Le javascript
@@ -189,9 +204,29 @@
     <script src="/s/js/bootstrap-typeahead.js"></script> 
 
     <script type="text/javascript">
+    var ready = false;
+    var species = [];
+    var categories = [];
+
     function showCreateHospital(){
         $("div[name=normalUser]").hide();
         $("div[name=createHospital]").slideDown();
+        $.ajax({
+            url: "/api/v1/specialty/species",
+            type: "GET",
+            cache: false
+        }).done(function(_data){
+            species = $.parseJSON(_data);
+            initSpecialties();
+        });
+        $.ajax({
+            url: "/api/v1/specialty/categories",
+            type: "GET",
+            cache: false
+        }).done(function(_data){
+            categories = $.parseJSON(_data);
+            initSpecialties();
+        });
     }
 
     function displayEr(){
@@ -218,6 +253,30 @@
         $("#modalBody").append("急診電話："+ $("input[name=er_phone]").val()+"<br>");
       }
 
+    }
+
+    function initSpecialties() {
+        if (ready) {
+            for (var i = 1; i <= 3; i++) {
+                addSpecialty(i);
+            }
+        } else {
+            ready = true;
+        }
+    }
+    function addSpecialty(n) {
+        var s = $('#templates').find('li[name=spec_item]').clone();
+        var input_species = s.find('.species');
+        for (i in species) {
+            input_species.append('<option vlaue="' + species[i]+ '">' + species[i] + '</option>');
+        }
+        var input_categories = s.find('.category');
+        for (i in categories) {
+            input_categories.append('<option vlaue="' + categories[i]+ '">' + categories[i] + '</option>');
+        }
+        input_species.attr('name', input_species.attr('name') + n);
+        input_categories.attr('name', input_categories.attr('name') + n);
+        $('#specialties').append(s);
     }
     </script>
 
