@@ -180,8 +180,8 @@
                     <a href="mailto:#"><span name="vet_mail">vet@mail</span></a><br>
                     <span name="hospital_name"><!-- hospital name --></span><br>
                     看診時間：9:00-21:00 <br>
-                    電話： (123) 456-7890<br>
-                    地址：San Francisco, CA 94107<br>
+                    電話：<span class='phone'><!-- hospital phone --></span><br>
+                    地址：<span class='address'><!-- hopital address --></span><br>
                     <ul>
                       <li>可預約、可急診</li>
                       <li>急診條件：20:00-24:00</li>
@@ -224,6 +224,11 @@
       for (i in vs){
           var v = $("div[name=oneVet]").last().clone();
           v.find("span[name=hospital_name]").text(hospital.name);
+          v.find("span.phone").text(hospital.phone);
+          v.find("span.address").text(hospital.zipcode +
+                                      hospital.county +
+                                      hospital.area +
+                                      hospital.address);
           v.find("span[name=vet_name]").text(vs[i].person.name);
           v.find("span[name=vet_desc]").text(vs[i].description);
           v.find("span[name=vet_mail]").text(vs[i].person.email);
