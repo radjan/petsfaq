@@ -114,9 +114,18 @@
                 </ul>
 
                 <label>地址*</label>
-                郵遞區號：<input name="zipcode" type="text" class="input-block-level"><br>
-                縣市：<input name="county" type="text" class="input-block-level"><br>
-                鄉鎮市區：<input name="area" type="text" class="input-block-level"><br>
+                <!-- 郵遞區號：<input name="zipcode" type="text" class="input-block-level"><br> -->
+                <select id="selector_county" name="county">
+                  <option value=''>選擇縣市</option>
+                <!-- <input name="county" type="text" class="input-block-level"><br> -->
+                </select>
+                <select id="selector_area" name="area">
+                  <option value=''>選擇鄉鎮市區</option>
+                  <!-- 鄉鎮市區：<input name="area" type="text" class="input-block-level"><br> -->
+                </select>
+                
+                <br>
+                <input id="input_zipCode" name="zipcode" type="hidden">
                 街號：<input name="address" type="text" class="input-block-level"><br>
 
                 <label>電話*</label>
@@ -196,23 +205,56 @@
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
     <script src="/s/js/bootstrap.js"></script>
-    <script src="/s/js/bootstrap-transition.js"></script>
-    <script src="/s/js/bootstrap-alert.js"></script>
-    <script src="/s/js/bootstrap-modal.js"></script>
-    <script src="/s/js/bootstrap-dropdown.js"></script>
-    <script src="/s/js/bootstrap-scrollspy.js"></script>
-    <script src="/s/js/bootstrap-tab.js"></script>
-    <script src="/s/js/bootstrap-tooltip.js"></script>
-    <script src="/s/js/bootstrap-popover.js"></script>
-    <script src="/s/js/bootstrap-button.js"></script>
-    <script src="/s/js/bootstrap-collapse.js"></script>
-    <script src="/s/js/bootstrap-carousel.js"></script>
-    <script src="/s/js/bootstrap-typeahead.js"></script> 
+     <!-- <script src="/s/js/bootstrap-transition.js"></script>
+    // <script src="/s/js/bootstrap-alert.js"></script>
+    // <script src="/s/js/bootstrap-modal.js"></script>
+    // <script src="/s/js/bootstrap-dropdown.js"></script>
+    // <script src="/s/js/bootstrap-scrollspy.js"></script>
+    // <script src="/s/js/bootstrap-tab.js"></script>
+    // <script src="/s/js/bootstrap-tooltip.js"></script>
+    // <script src="/s/js/bootstrap-popover.js"></script>
+    // <script src="/s/js/bootstrap-button.js"></script>
+    // <script src="/s/js/bootstrap-collapse.js"></script>
+    // <script src="/s/js/bootstrap-carousel.js"></script>
+    // <script src="/s/js/bootstrap-typeahead.js"></script>  -->
+    <script src="/s/js/twzipcode.js"></script>
 
     <script type="text/javascript">
+    var zipLoaded = false;
     var ready = false;
     var species = [];
     var categories = [];
+    // var chosenCounty;
+
+    $("document").ready(
+      function(){
+        if(!zipLoaded){
+          for (var county in TW_ZIP) {
+             $("#selector_county").append('<option vlaue="' + county+ '">' + county + '</option>');
+            }
+            zipLoaded = true;  
+        }
+
+        $("#selector_county").change(function(){
+            showArea($("#selector_county").val());
+        });
+
+        $("#selector_area").change(function(){
+          var county = $("#selector_county").val();
+          var area = $("#selector_area").val();
+          $("#input_zipCode").val(TW_ZIP[county][area]);
+          
+        });
+      });
+
+    function showArea(chosenCounty){
+      $("#selector_area").empty();
+      $("#selector_area").append('<option value="">請選擇</option>');
+      for (var area in TW_ZIP[chosenCounty]) {
+          var zipCode = TW_ZIP[chosenCounty][area];
+         $("#selector_area").append('<option value="' +area+ '">'+ zipCode+" "+ area + '</option>');
+      };
+    }
 
     function showCreateHospital(){
         $("div[name=normalUser]").hide();
@@ -304,3 +346,4 @@
         <br>OR<br>選擇醫院 -->
 </body>
 </html>
+  
