@@ -166,16 +166,13 @@
         </form>
     </div>
 
-        <!-- <br>OR<br>醫院已建立好我的資料，下一步直接挑選。<a href='?a=skip'>跳過此步驟</a> -->
-
-
    <div id='templates' class='templates'>
      <li name='spec_item'>
-       種類：
+       <label>種類：</label>
        <select name='species_' class='species'>
           <option value=''>未選擇</option>
        </select>
-       專科：
+       <label>專科：</label>
        <select name='category_' class='category'>
           <option value=''>一般</option>
        </select>
@@ -239,6 +236,8 @@
         for (i in species) {
             input_species.append('<option vlaue="' + species[i]+ '">' + species[i] + '</option>');
         }
+        // input_species.append('<option vlaue="new">' + 新增 + '</option>');
+        
         var input_categories = s.find('.category');
         for (i in categories) {
             input_categories.append('<option vlaue="' + categories[i]+ '">' + categories[i] + '</option>');
