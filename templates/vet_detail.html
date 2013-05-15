@@ -171,14 +171,12 @@
        <label>種類：</label>
        <select name='species_' class='species'>
           <option value=''>未選擇</option>
-          <option name="newSpecies" value="newSpecies">找不到合適的種類，新增種類</option>
        </select>
        <label>專科：</label>
        <select name='category_' class='category'>
           <option value=''>一般</option>
-              <option name="createCategory" value="createCategory">找不到合適的專科，新增專科</option>
-              <input name='newCategory' type="text" placeholder="新增專科" class="input-block-level">
        </select>
+       <textarea class="inputNewCategory" rows="1" autofocus></textarea>
      </li> 
    </div>
 
@@ -224,11 +222,6 @@
             initSpecialties();
         });
     
-        
-        // $("option[name=createCategory]").click(function(){
-        //   $("input[name=newCategory]").hide();
-        // });
-
     });
 
     function initSpecialties() {
@@ -244,18 +237,42 @@
         var s = $('#templates').find('li[name=spec_item]').clone();
         var input_species = s.find('.species');
         for (i in species) {
-            input_species.append('<option vlaue="' + species[i]+ '">' + species[i] + '</option>');
+            input_species.append('<option value="' + species[i]+ '">' + species[i] + '</option>');
         }
-        // input_species.append('<option name="new_species" vlaue="new">新增</option>');
+        input_species.append('<option value="newSpecies"> 找不到合適的種類，新增種類</option>');
+        // input_species.append('<option name="new_species" value="new">新增</option>');
         
         var input_categories = s.find('.category');
         for (i in categories) {
-            input_categories.append('<option vlaue="' + categories[i]+ '">' + categories[i] + '</option>');
+            input_categories.append('<option value="' + categories[i]+ '">' + categories[i] + '</option>');
         }
-        // input_categories.append('<option name="new_category" vlaue="new">新增</option>');
+        input_categories.append('<option value="createCategory">找不到合適的專科，新增專科</option>');
+        s.find(".inputNewCategory").hide();
+
+        // input_categories.append('<input name="newCategory" type="text" placeholder="新增專科" class="input-block-level">');
+        // input_categories.find("input[name=newCategory]").hide();
+        // input_categories.append('<option name="new_category" value="new">新增</option>');
+
         input_species.attr('name', input_species.attr('name') + n);
         input_categories.attr('name', input_categories.attr('name') + n);
+
+        input_species.change(function(){
+          // alert(input_species.val());
+          // TODO need to do something !
+        });
+
+        input_categories.change(function(){
+          if (input_categories.val() == "createCategory") {
+            // alert(input_categories.val());  
+            // input_categories.find("input[name=newCategory]").show();
+            s.find(".inputNewCategory").show();
+          }
+          
+          
+        });
+
         $('#specialties').append(s);
+        
     }
     </script> 
 </body>
