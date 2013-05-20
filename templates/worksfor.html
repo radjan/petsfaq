@@ -230,7 +230,7 @@
       function(){
         if(!zipLoaded){
           for (var county in TW_ZIP) {
-             $("#selector_county").append('<option vlaue="' + county+ '">' + county + '</option>');
+             $("#selector_county").append('<option value="' + county+ '">' + county + '</option>');
             }
             zipLoaded = true;  
         }
@@ -316,11 +316,11 @@
         var s = $('#templates').find('li[name=spec_item]').clone();
         var input_species = s.find('.species');
         for (i in species) {
-            input_species.append('<option vlaue="' + species[i]+ '">' + species[i] + '</option>');
+            input_species.append('<option value="' + species[i]+ '">' + species[i] + '</option>');
         }
         var input_categories = s.find('.category');
         for (i in categories) {
-            input_categories.append('<option vlaue="' + categories[i]+ '">' + categories[i] + '</option>');
+            input_categories.append('<option value="' + categories[i]+ '">' + categories[i] + '</option>');
         }
         input_species.attr('name', input_species.attr('name') + n);
         input_categories.attr('name', input_categories.attr('name') + n);
