@@ -186,14 +186,17 @@
 
    <div id='templates' class='templates'>
      <li name='spec_item'>
-       種類：
+       <label>種類：</label>
        <select name='species_' class='species'>
           <option value=''>未選擇</option>
        </select>
-       專科：
+       <input name="newSpecies" type="text" placeholder="新增種類" class="input-block-level inputNewSpecies">
+       <label>專科：</label>
        <select name='category_' class='category'>
-          <option value=''>一般</option>
+          <option value='' class="optionCategory">一般</option>
        </select>
+       <input name="newCategory" type="text" placeholder="新增專科" class="input-block-level inputNewCategory">
+       <!-- <textarea class="inputNewCategory" rows="1" autofocus></textarea> -->
      </li> 
    </div>
 
@@ -205,19 +208,8 @@
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
     <script src="/s/js/bootstrap.js"></script>
-     <!-- <script src="/s/js/bootstrap-transition.js"></script>
-     <script src="/s/js/bootstrap-alert.js"></script>
-     <script src="/s/js/bootstrap-modal.js"></script>
-     <script src="/s/js/bootstrap-dropdown.js"></script>
-     <script src="/s/js/bootstrap-scrollspy.js"></script>
-     <script src="/s/js/bootstrap-tab.js"></script>
-     <script src="/s/js/bootstrap-tooltip.js"></script>
-     <script src="/s/js/bootstrap-popover.js"></script>
-     <script src="/s/js/bootstrap-button.js"></script>
-     <script src="/s/js/bootstrap-collapse.js"></script>
-     <script src="/s/js/bootstrap-carousel.js"></script>
-     <script src="/s/js/bootstrap-typeahead.js"></script>  -->
     <script src="/s/js/twzipcode.js"></script>
+    <script src="/s/js/showNAddSpecialites.js"></script>    
 
     <script type="text/javascript">
     var zipLoaded = false;
@@ -259,22 +251,22 @@
     function showCreateHospital(){
         $("div[name=normalUser]").hide();
         $("div[name=createHospital]").slideDown();
-        $.ajax({
-            url: "/api/v1/specialty/species",
-            type: "GET",
-            cache: false
-        }).done(function(_data){
-            species = $.parseJSON(_data);
-            initSpecialties();
-        });
-        $.ajax({
-            url: "/api/v1/specialty/categories",
-            type: "GET",
-            cache: false
-        }).done(function(_data){
-            categories = $.parseJSON(_data);
-            initSpecialties();
-        });
+        // $.ajax({
+        //     url: "/api/v1/specialty/species",
+        //     type: "GET",
+        //     cache: false
+        // }).done(function(_data){
+        //     species = $.parseJSON(_data);
+        //     initSpecialties();
+        // });
+        // $.ajax({
+        //     url: "/api/v1/specialty/categories",
+        //     type: "GET",
+        //     cache: false
+        // }).done(function(_data){
+        //     categories = $.parseJSON(_data);
+        //     initSpecialties();
+        // });
     }
 
     function displayEr(){
@@ -303,47 +295,31 @@
 
     }
 
-    function initSpecialties() {
-        if (ready) {
-            for (var i = 1; i <= 3; i++) {
-                addSpecialty(i);
-            }
-        } else {
-            ready = true;
-        }
-    }
-    function addSpecialty(n) {
-        var s = $('#templates').find('li[name=spec_item]').clone();
-        var input_species = s.find('.species');
-        for (i in species) {
-            input_species.append('<option value="' + species[i]+ '">' + species[i] + '</option>');
-        }
-        var input_categories = s.find('.category');
-        for (i in categories) {
-            input_categories.append('<option value="' + categories[i]+ '">' + categories[i] + '</option>');
-        }
-        input_species.attr('name', input_species.attr('name') + n);
-        input_categories.attr('name', input_categories.attr('name') + n);
-        $('#specialties').append(s);
-    }
+    // function initSpecialties() {
+    //     if (ready) {
+    //         for (var i = 1; i <= 3; i++) {
+    //             addSpecialty(i);
+    //         }
+    //     } else {
+    //         ready = true;
+    //     }
+    // }
+    // function addSpecialty(n) {
+    //     var s = $('#templates').find('li[name=spec_item]').clone();
+    //     var input_species = s.find('.species');
+    //     for (i in species) {
+    //         input_species.append('<option value="' + species[i]+ '">' + species[i] + '</option>');
+    //     }
+    //     var input_categories = s.find('.category');
+    //     for (i in categories) {
+    //         input_categories.append('<option value="' + categories[i]+ '">' + categories[i] + '</option>');
+    //     }
+    //     input_species.attr('name', input_species.attr('name') + n);
+    //     input_categories.attr('name', input_categories.attr('name') + n);
+    //     $('#specialties').append(s);
+    // }
     </script>
 
-        <!-- 建立或選擇你工作的獸醫院，非醫院員工請<a href='/faq'>按此</a>開始使用。
-        <form action="new_hospital" method="post">
-        建立醫院 <br>
-        名稱*：<input name='name'><br>
-        簡介*：<textarea name='description'></textarea><br>
-        專科*：<textarea name='specialty'></textarea><br>
-        營業時間：<textarea name='working_hour'></textarea><br>
-        地址*：<input name='address'><br>
-        電話*：<input name='phone'><br> -->
-        <!-- 可預約：<input type='checkbox' name='bookable'><br> -->
-     <!--    有急診：<input type='checkbox' name='er'><br>
-        急診電話：<input name='er_phone'><br>
-        急診時間：<textarea name='er_hour'></textarea><br>
-        <input type='submit' name='submit' value='建立醫院'>
-        </form>
-        <br>OR<br>選擇醫院 -->
 </body>
 </html>
   
