@@ -73,7 +73,6 @@ class VetDetailPage(base.BaseSessionHandler):
         v = None
         for r in person.roles:
             if isinstance(r, role.Vet):
-                create_role = False
                 v = r
                 break
 
@@ -87,7 +86,6 @@ class VetDetailPage(base.BaseSessionHandler):
         else:
             for key, value in kw.items():
                 v.__setattr__(key, value)
-                k = s.key()
             for s in specialties:
                 k = s.key()
                 if k not in v.specialties:
@@ -151,6 +149,7 @@ def _gather_list(request, k, tolerance=2):
             v = request.get(curr_key)
             miss = 0
             ret.append(v)
+            print curr_key, ':', len(v)
         else:
             miss += 1
         i += 1
