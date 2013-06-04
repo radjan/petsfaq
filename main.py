@@ -27,6 +27,9 @@ from admin import data as adm_data
 from api import restApi
 from api import specialty as specialtyApi
 
+from api import imageApi
+from view import image
+
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
 share.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
@@ -79,6 +82,11 @@ app = webapp2.WSGIApplication([
                   name='specialty_id'),
     webapp2.Route(API_PREFIX+'/specialty/<type:(species|categories)>',
                   specialtyApi.SpecialtyListAPI),
+
+    #
+    webapp2.Route(API_PREFIX+'/image', imageApi.ImagePost, methods=['POST']),
+    webapp2.Route(API_PREFIX+'/image', imageApi.Image, methods=['GET'], name='getimage'),
+    (API_PREFIX+'/upload', image.upload_img_test),
 
     (API_PREFIX+'/.*', NotFound),
 #    (API_PREFIX+'/hospital', hospital.RestAPI),
