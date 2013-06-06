@@ -77,41 +77,35 @@
         $('#specialties').append(s);
 
         input_species.change(function(){
+          var _inputNewSpecies = s.find(".inputNewSpecies");
           if (input_species.val() == "createSpecies") {
-            s.find(".inputNewSpecies").show();
-            input_categories.hide();
-            s.find(".inputNewCategory").show();
-
-            s.find(".inputNewSpecies").attr("name", input_species.attr("name"));
+            _inputNewSpecies.show();
+            _inputNewSpecies.attr("name", input_species.attr("name"));
             input_species.attr("name", input_species.attr("name")+"_bak");
 
-            s.find(".inputNewCategory").attr("name",input_categories.attr("name"));
-            input_categories.attr("name",input_categories.attr("name")+"_bak");
-
-
           }else{
-            s.find(".inputNewSpecies").hide();
-            input_categories.show();
-            input_categories.val('');
-            s.find(".inputNewCategory").hide();
-
-            input_species.attr("name", s.find(".inputNewSpecies").attr("name"));
-            s.find(".inputNewSpecies").attr("name", "");
-            input_categories.attr("name",s.find(".inputNewCategory").attr("name"));
-            s.find(".inputNewCategory").attr("name","");
+            if(_inputNewSpecies.css("display") != "none"){
+              _inputNewSpecies.hide();
+              input_species.attr("name", _inputNewSpecies.attr("name"));
+              _inputNewSpecies.attr("name", "");
+            }
           }
 
         });
 
         input_categories.change(function(){
+          var _inputNewCategory = s.find(".inputNewCategory");
           if (input_categories.val() == "createCategory") {
-            s.find(".inputNewCategory").show();
-            s.find(".inputNewCategory").attr("name",input_categories.attr("name"));
+            _inputNewCategory.show();
+            _inputNewCategory.attr("name",input_categories.attr("name"));
             input_categories.attr("name",input_categories.attr("name")+"_bak");
           }else{
-            s.find(".inputNewCategory").hide();
-            input_categories.attr("name",s.find(".inputNewCategory").attr("name"));
-            s.find(".inputNewCategory").attr("name","");
+            if (_inputNewCategory.css("display") != "none") {
+              _inputNewCategory.hide();
+              input_categories.attr("name",_inputNewCategory.attr("name"));
+              _inputNewCategory.attr("name","");  
+            }
+            
           }
         });
     }

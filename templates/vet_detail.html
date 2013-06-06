@@ -40,6 +40,15 @@
         margin-bottom: 15px;
         padding: 7px 9px;
       }
+
+      div.container label{
+        display: inline;
+      }
+
+      div.container ul label{
+        display: block;
+      }
+
     </style>
     <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="/s/css/myFormat.css" rel="stylesheet">
@@ -94,9 +103,13 @@
                 <label>簡介</label>
                 <textarea name="intro" rows="5" class="input-block-level"></textarea>
 
-                <label>專科</label>
-                <ul id='specialties'>
-                </ul>
+                <span style="color:red">*</span>
+                  <label>專長</label>
+                <div>
+
+                  <ul id='specialties'>
+                  </ul>
+                </div>
 
                 <label>學歷</label>
                 <ul>
@@ -175,7 +188,7 @@
        <input name="newSpecies" type="text" placeholder="新增種類" class="input-block-level inputNewSpecies">
        <label>專科：</label>
        <select name='category_' class='category'>
-          <option value='' class="optionCategory">一般</option>
+          <option value='一般' class="optionCategory">一般</option>
        </select>
        <input name="newCategory" type="text" placeholder="新增專科" class="input-block-level inputNewCategory">
        <!-- <textarea class="inputNewCategory" rows="1" autofocus></textarea> -->
@@ -191,12 +204,22 @@
     <script src="/s/js/showNAddSpecialites.js"></script>    
     <script>
       function displayData () {
-      
+        
         // check data 
       $("#nextStep").show();
       $("#modalBody").empty();
       $("#modalBody").append("簡介："+ $("textarea[name=intro]").val()+"<br>");
-      $("#modalBody").append("專科："+ $("textarea[name=profession]").val()+"<br>");
+      
+      var _showSpecialty = "<ul>";
+      for (var i = 1; i < 4; i++) {
+        var _species = $("select[name=species_"+i+"]");
+        if(_species.val() != ""){
+          _showSpecialty += "<li>" + _species.val();
+          _showSpecialty += ":" + $("select[name=category_"+i+"]").val() + "</li>";
+        }
+      }
+      _showSpecialty += "</ul>";
+      $("#modalBody").append("專長："+ _showSpecialty);
       $("#modalBody").append("電話："+ $("input[name=edu_1]").val()+"<br>");
       $("#modalBody").append("電子信箱："+ $("input[name=exp_1]").val()+"<br>");
 

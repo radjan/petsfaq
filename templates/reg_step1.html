@@ -41,6 +41,11 @@
         margin-bottom: 15px;
         padding: 7px 9px;
       }
+
+      div.container label{
+        display: inline;
+      }
+
     </style>
     <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -85,11 +90,14 @@
       <form id="myForm" class="form-signin" action="reg_step1" method="post">
         <div>
           <h3>個人資料</h3>
-            <label>姓名</label>
+              <span style="color:red">*</span>
+              <label>姓名</label>
               <input name="name" type="text" class="input-block-level" placeholder="姓名">
 
           <div>
+            <span style="color:red">*</span>
             <label>性別</label>
+            <div>
               <label class="radio inline">
                 <input type="radio" name="gender" value="M">
                   男
@@ -98,16 +106,20 @@
                 <input type="radio" name="gender" value="F">
                   女
               </label>
+            </div>
           </div>
 
+             <br> 
             <label>生日</label>
-              <input name="birthday" type="text" class="input-block-level" placeholder="西元年/月/日">
+            <input name="birthday" type="text" class="input-block-level" placeholder="西元年/月/日">
 
+      
             <label>電話</label>
-              <input name="phone" type="text" class="input-block-level" placeholder="電話">
+            <input name="phone" type="text" class="input-block-level" placeholder="電話">
 
-            <label>電子信箱</label>
-              <input name="email" type="text" class="input-block-level" placeholder="電子信箱">
+            <span style="color:red">*</span>
+            <label style="display:inline">電子信箱</label>
+            <input name="email" type="text" class="input-block-level" placeholder="電子信箱">
 
             <label>照片</label>
               <input name="photo" type="img" class="image" >
@@ -130,7 +142,8 @@
         
         <hr class="bs-docs-separator">
         <!-- <button class="btn" type="submit">上一步</button> -->
-        <a href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a>
+        <!-- <a name="checkdata" href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal" onclick="displayData()">下一步</a> -->
+        <a name="checkdata" href="#confirmModal" role="button" class="btn btn-large btn-primary right" data-toggle="modal">下一步</a>
         <br>
         <br>
       
@@ -159,62 +172,80 @@
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
     <script src="/s/js/bootstrap.js"></script>
-    <script src="/s/js/bootstrap-transition.js"></script>
-    <script src="/s/js/bootstrap-alert.js"></script>
-    <script src="/s/js/bootstrap-modal.js"></script>
-    <script src="/s/js/bootstrap-dropdown.js"></script>
-    <script src="/s/js/bootstrap-scrollspy.js"></script>
-    <script src="/s/js/bootstrap-tab.js"></script>
-    <script src="/s/js/bootstrap-tooltip.js"></script>
-    <script src="/s/js/bootstrap-popover.js"></script>
-    <script src="/s/js/bootstrap-button.js"></script>
-    <script src="/s/js/bootstrap-collapse.js"></script>
-    <script src="/s/js/bootstrap-carousel.js"></script>
-    <script src="/s/js/bootstrap-typeahead.js"></script> 
 
     <script>
-      function displayData () {
-      var _genderVal = $('[name="gender"]:checked').val();
-      var _isVetVal = $('[name="isVet"]:checked').val();
-      var _gender;
-      var _isVet;     
+      $(document).ready(function(){
+
+        $("a[name=checkdata]").click(function(){
+            var _name = $("input[name=name]").val();
+            var _genderVal = $('[name="gender"]:checked').val();
+            var _birthday = $("input[name=birthday]").val();
+            var _tel = $("input[name=phone]").val();
+            var _email = $("input[name=email]").val();
+            var _isVetVal = $('[name="isVet"]:checked').val();
+            
+            var _gender;
+            var _isVet;     
     
-      // check data 
-      $("#nextStep").show();
-      $("#modalBody").empty();
-      $("#modalBody").append("姓名："+ $("input[name=name]").val()+"<br>");
+            // check data 
 
-      if (_genderVal != null ) {
-        if (_genderVal != "M") {
-          _gender = "女";  
-        }else{
-          _gender = "男";
-        }
-      }else{
-        _gender = "請選擇性別";
-      }
+            $("#nextStep").show();
+            $("#modalBody").empty();
 
-      $("#modalBody").append("性別："+ _gender +"<br>");
-      $("#modalBody").append("生日："+ $("input[name=birthday]").val()+"<br>");
-      $("#modalBody").append("電話："+ $("input[name=phone]").val()+"<br>");
-      $("#modalBody").append("電子信箱："+ $("input[name=email]").val()+"<br>");
+            if (_name == "") { 
+              _name = "請填寫名字";
+              $("#nextStep").hide();
+            }
 
-      if (_isVetVal != null ) {
-        if (_isVetVal  != "Y") {
-          _isVet = "不是";  
-        }else{
-          _isVet = "是";
-        }
-      }else{
-        _isVet = "請選擇是否為獸醫？";
-      }
+            if (_genderVal != null ) {
+                if (_genderVal != "M") {
+                  _gender = "女";  
+                }else{
+                  _gender = "男";
+                }
+            }else{
+                _gender = "請選擇性別";
+                $("#nextStep").hide();
+            }
 
-      $("#modalBody").append("是否為獸醫："+ _isVet +"<br>");
+            // if (_birthday == "") {
+            //   _birthday = "請填寫生日";
+            //   $("#nextStep").hide();
+            // }
 
-      if (_genderVal == null || _roleVal == null) {
-        $("#nextStep").hide();
-      }
-    }
+            // if(_tel == ""){
+            //   _tel = "請填寫電話";
+            //   $("#nextStep").hide();
+            // }
+
+            if(_email == ""){
+              _email = "請填寫email";
+              $("#nextStep").hide();
+            }
+            
+            if (_isVetVal != null ) {
+              if (_isVetVal  != "Y") {
+                _isVet = "不是";  
+              }else{
+                _isVet = "是";
+              }
+            }else{
+              _isVet = "請選擇是否為獸醫？";
+              $("#nextStep").hide();
+            }
+
+            $("#modalBody").append("姓名："+ _name +"<br>");
+            $("#modalBody").append("性別："+ _gender +"<br>");
+            $("#modalBody").append("生日："+ _birthday +"<br>");
+            $("#modalBody").append("電話："+ _tel +"<br>");
+            $("#modalBody").append("電子信箱："+ _email +"<br>");
+            $("#modalBody").append("是否為獸醫："+ _isVet +"<br>");
+        });
+
+
+      });
+
+      
     </script> 
   </body>
 </html>

@@ -40,6 +40,14 @@
         margin-bottom: 15px;
         padding: 7px 9px;
       }
+
+      div.container label{
+        display: inline;
+      }
+
+      div.container ul label{
+        display: block;
+      }
     </style>
     <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -103,32 +111,40 @@
             </div>
 
             <div name="createHospital" style="display:none">
-                <label>醫院名稱*</label>
-                <input name="name" type="text" class="input-block-level">
+                  <span style="color:red">*</span>
+                  <label>醫院名稱</label>
+                  <input name="name" type="text" class="input-block-level">
+              
+                  <span style="color:red">*</span>
+                  <label>簡介</label>
+                  <textarea name="description" rows="5" class="input-block-level"></textarea>
 
-                <label>簡介*</label>
-                <textarea name="description" rows="5" class="input-block-level"></textarea>
+                  <span style="color:red">*</span>
+                  <label>專科</label>
+                  <ul id='specialties'>
+                  </ul>
 
-                <label>專科*</label>
-                <ul id='specialties'>
-                </ul>
-
-                <label>地址*</label>
+                  <span style="color:red">*</span>
+                  <label>地址</label>
+                  <div>
                 <!-- 郵遞區號：<input name="zipcode" type="text" class="input-block-level"><br> -->
-                <select id="selector_county" name="county">
+                  <select id="selector_county" name="county">
                   <option value=''>選擇縣市</option>
                 <!-- <input name="county" type="text" class="input-block-level"><br> -->
                 </select>
-                <select id="selector_area" name="area">
+                  <select id="selector_area" name="area">
                   <option value=''>選擇鄉鎮市區</option>
                   <!-- 鄉鎮市區：<input name="area" type="text" class="input-block-level"><br> -->
-                </select>
+                  </select>
                 
-                <br>
-                <input id="input_zipCode" name="zipcode" type="hidden">
-                街號：<input name="address" type="text" class="input-block-level"><br>
-
-                <label>電話*</label>
+                  <br>
+                  <span style="color:red">*</span>
+                  <label>街號</label>
+                  <input id="input_zipCode" name="zipcode" type="hidden">
+                  <input name="address" type="text" class="input-block-level"><br>
+                </div>
+                <span style="color:red">*</span>
+                <label>電話</label>
                 <input name="phone" type="text" class="input-block-level">
                 <!-- 可預約：<input type='checkbox' name='bookable'><br> -->
         
@@ -193,7 +209,7 @@
        <input name="newSpecies" type="text" placeholder="新增種類" class="input-block-level inputNewSpecies">
        <label>專科：</label>
        <select name='category_' class='category'>
-          <option value='' class="optionCategory">一般</option>
+          <option value='一般' class="optionCategory">一般</option>
        </select>
        <input name="newCategory" type="text" placeholder="新增專科" class="input-block-level inputNewCategory">
        <!-- <textarea class="inputNewCategory" rows="1" autofocus></textarea> -->
@@ -237,6 +253,8 @@
           $("#input_zipCode").val(TW_ZIP[county][area]);
           
         });
+
+
       });
 
     function showArea(chosenCounty){
