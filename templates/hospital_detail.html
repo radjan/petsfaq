@@ -55,14 +55,15 @@
         <div class="span10">
         
         <div class="btn-group">
-          <a class="btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown" href="#">編輯
+          <!-- <a class="btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown" href="#">編輯模式
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             <li><a id="revise_button" type="button">修改</a></li>
             <li><a href="#">新增醫生</a></li>
-          </ul>
-          <a id="browse_button" class="btn btn-small btn-primary" type="button">瀏覽</a>
+          </ul> -->
+          <a id="edit_mode" class="btn btn-small btn-danger" type="button">編輯模式</a>
+          <a id="browse_mode" class="btn btn-small btn-primary" type="button">瀏覽模式</a>
         </div>        
         <!-- carousel -->
           <!-- <div id="myCarousel" class="carousel slide">
@@ -102,9 +103,18 @@
             <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
             <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
           </div> --><!-- /.carousel -->
-          
           <div class="hero-unit">
-            <h1><span id="hospital_name"><!--hospital name--></span>
+            <button id="edit_hospital" type="button" class="btn btn-mini btn-danger edit_type edit_button">
+                編輯
+            </button>
+            <button id="save_hospital" type="button" class="btn btn-mini btn-info edit_type">
+                儲存
+            </button>
+            <button id="cancel_hospital" type="button" class="btn btn-mini edit_type">
+                取消
+            </button>
+            <h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
+              <input id="edit_hospital_name" type="text" class="edit_type">
               <small>
                 <!-- <a href="#hospital_info_edit" role="button" class="btn btn-mini btn-danger" data-toggle="modal">編輯</a> -->
                 <!-- Modal -->
@@ -121,22 +131,24 @@
                   <button class="btn btn-primary">Save changes</button>
                 </div>
                 </div> -->
-                  <button name="edit_button" type="button" class="btn btn-mini btn-danger">
-                    編輯
-                  </button>
                 </small>
             </h1>
-            <p><span id="hospital_desc"><!-- hospital description --></span></p>
+            <p>
+              <span id="hospital_desc" class="browse_type"><!-- hospital description --></span>
+              <textarea id="edit_hospital_desc" rows="5" class="input-block-level edit_type"></textarea>
+            </p>
             <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
           </div>
           
-          <div class="row-fluid">
-
-          <div class="container-fluid" id="vets">
-            <!-- place for vets -->
-          </div><!-- /container -->
+          <button id="addVet_button" type="button" class="btn btn-small btn-danger edit_type edit_button">新增醫生</button>
           <hr class="bs-docs-separator">
 
+          <div class="row-fluid">
+
+            <div class="container-fluid" id="vets">
+              <!-- place for vets -->
+            </div><!-- /container -->
+            <hr class="bs-docs-separator">
 
         </div><!--/span-->
       </div><!--/row-->
@@ -150,14 +162,14 @@
     </div><!--/.fluid-container-->
 
     <div class="templates">
-        <div class="row-fluid" name="oneVet">
+        <div class="row-fluid browse_type" name="oneVet">
             <div class="span2">
               <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
             </div>
             <div class="span8">
               <h2><span name="vet_name"><!-- vet name --></span><small><a href="#">Blog</a></small>  
                 <small>
-                  <button name="edit_button" type="button" class="btn btn-mini btn-danger">
+                  <button type="button" class="btn btn-mini btn-danger edit_type edit_button">
                     編輯
                   </button>
                 </small>
@@ -202,17 +214,48 @@
             cache: false
         }).done(function (data) { putData(data); });
 
-        $("#revise_button").click(function(){
-          $("button[name=edit_button]").show();
+        var _inEditMode = false;
+        $("#edit_mode").click(function(){
+          if(!_inEditMode){
+            $(".edit_button").show();
+            _inEditMode = true;
+          }
         });
 
-        $("#browse_button").click(function(){
-          $("button[name=edit_button]").hide();
+        $("#browse_mode").click(function(){
+          if(_inEditMode){
+            $(".edit_type").hide();
+            $(".browse_type").show();
+            _inEditMode = false; 
+          }
         });
-    });
 
-    $(document).ready(function load(){
-        $("button[name=edit_button]").hide();
+        $(".edit_type").hide();
+
+        $("#edit_hospital").click(function(){
+          $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
+          $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
+        });
+
+        
+
+        $("#edit_hospital").click(function(){
+          $("#edit_hospital").hide();
+          $("#save_hospital").show();
+          $("#cancel_hospital").show();
+        });
+
+        $("#save_hospital").click(function(){
+
+        });
+
+        $("#cancel_hospital").click(function(){
+          $("#edit_hospital").show();
+          $("#edit_hospital_name").hide();
+          $("#edit_hospital_desc").hide();
+          $("#save_hospital").hide();
+          $("#cancel_hospital").hide();
+        });
     });
 
     function putData(data) {
