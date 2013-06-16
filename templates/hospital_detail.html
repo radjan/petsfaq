@@ -115,23 +115,6 @@
             </button>
             <h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
               <input id="edit_hospital_name" type="text" class="edit_type">
-              <small>
-                <!-- <a href="#hospital_info_edit" role="button" class="btn btn-mini btn-danger" data-toggle="modal">編輯</a> -->
-                <!-- Modal -->
-               <!--  <div id="hospital_info_edit" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                  <h3 id="myModalLabel">Modal header</h3>
-                </div>
-                <div class="modal-body">
-                  <p>One fine body…</p>
-                </div>
-                <div class="modal-footer">
-                  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                  <button class="btn btn-primary">Save changes</button>
-                </div>
-                </div> -->
-                </small>
             </h1>
             <p>
               <span id="hospital_desc" class="browse_type"><!-- hospital description --></span>
@@ -163,18 +146,20 @@
 
     <div class="templates">
         <div class="row-fluid browse_type" name="oneVet">
+            <button type="button" class="btn btn-mini btn-danger edit_type edit_button" id="editVet_">
+                    編輯
+            </button>
             <div class="span2">
               <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
             </div>
             <div class="span8">
-              <h2><span name="vet_name"><!-- vet name --></span><small><a href="#">Blog</a></small>  
-                <small>
-                  <button type="button" class="btn btn-mini btn-danger edit_type edit_button">
-                    編輯
-                  </button>
-                </small>
+              <h2><span name="vet_name"><!-- vet name --></span>
+                  <input type="text" class="edit_type" name="vet_name">
+                  <small><a href="#">Blog</a></small>
               </h2> 
-              <p><span name="vet_desc"><!-- vet desc --></span></p>
+              <p><span name="vet_desc"><!-- vet desc --></span>
+                  <textarea name="vet_desc" rows="5" class="input-block-level edit_type"></textarea>
+              </p>
               <dl name="exp">
                 <dt>學經歷</dt>
               </dl>
@@ -190,7 +175,9 @@
                 <address>
                   <br>
                   <strong><span name="vet_name">vet name</span></strong><br>
-                    <a href="mailto:#"><span name="vet_mail">vet@mail</span></a><br>
+                    <a href="mailto:#"><span name="vet_mail">vet@mail</span></a>
+                    <input type="text" class="edit_type" name="vet_mail"><br>
+
                     <span name="hospital_name"><!-- hospital name --></span><br>
                     看診時間：9:00-21:00 <br>
                     電話：<span class='phone'><!-- hospital phone --></span><br>
@@ -241,10 +228,6 @@
           v.find("span[name=vet_desc]").text(vs[i].description);
           v.find("span[name=vet_mail]").text(vs[i].person.email);
 
-          var _nameCardBtn = v.find("button[data-target=#nameCard_]");
-          var _nameCard = v.find("#nameCard_");
-          setSlide(_nameCardBtn, _nameCard, i);
-
           for (j in vs[i].experience) {
             v.find("dl[name=exp]").append("<dd>"+vs[i].experience[j]+"</dd>");
           }
@@ -254,13 +237,37 @@
           for (j in vs[i].specialties) {
             v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
           }
+
+          // var _nameCardBtn = v.find("button[data-target=#nameCard_]");
+          // var _nameCard = v.find("#nameCard_");
+          // setSlide(_nameCardBtn, _nameCard, i);
+          setBtn(v, i);
+
+          // var _editVet = v.find("#editVet_");
+          // _editVet.attr("id", "editVet_")
           vets.append(v);
       }
     }
 
-    function setSlide(_nameCardBtn, _nameCard, i) {
+    function setBtn(v, i) {
+      //set name card.
+      var _nameCardBtn = v.find("button[data-target=#nameCard_]");
+      var _nameCard = v.find("#nameCard_");
       _nameCardBtn.attr("data-target", "#nameCard_"+i);
       _nameCard.attr("id", "nameCard_"+i);
+
+      //ser edit
+      var _editVet = v.find("#editVet_");
+      _editVet.attr("id", "editVet_"+i);
+      _editVet.click(function(){
+        v.find("input[name=vet_name]").show();
+        v.find("textarea[name=vet_desc]").show();
+        v.find("input[name=vet_mail]").show();
+        _nameCard.attr("class","");
+        _nameCardBtn.attr("disabled", "true");
+        
+      });
+
     }
 
     function nameSearch() {
