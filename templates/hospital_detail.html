@@ -54,7 +54,7 @@
         
         <div class="span10">
         
-        <div class="btn-group">
+        <div>
           <!-- <a class="btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown" href="#">編輯模式
             <span class="caret"></span>
           </a>
@@ -62,8 +62,8 @@
             <li><a id="revise_button" type="button">修改</a></li>
             <li><a href="#">新增醫生</a></li>
           </ul> -->
-          <a id="edit_mode" class="btn btn-small btn-danger" type="button">編輯模式</a>
-          <a id="browse_mode" class="btn btn-small btn-primary" type="button">瀏覽模式</a>
+          <a id="edit_mode" class="btn btn-small btn-danger" type="button">進入編輯模式</a>
+          <a id="browse_mode" class="btn btn-small btn-primary" type="button">進入瀏覽模式</a>
         </div>        
         <!-- carousel -->
           <!-- <div id="myCarousel" class="carousel slide">
@@ -181,11 +181,12 @@
               <dl name="specialty">
                 <dt>專長</dt>
               </dl>
-              <button type="button" class="btn btn-info" data-target="#demo" data-toggle="collapse">
+              <button type="button" class="btn btn-info" data-target="#nameCard_" data-toggle="collapse">
+              <!-- <button class="btn btn-info" name="nameCardBtn_"> -->
                     名片
               </button>
              
-              <div id="demo" class="collapse">
+              <div id="nameCard_" class="collapse">
                 <address>
                   <br>
                   <strong><span name="vet_name">vet name</span></strong><br>
@@ -207,6 +208,7 @@
 
     <script type="text/javascript">
     $(document).ready(function(){
+        
         var hid = window.location.pathname.split("/")[2];
         $.ajax({
             url: "/api/v1/hospital/" + hid,
@@ -214,48 +216,11 @@
             cache: false
         }).done(function (data) { putData(data); });
 
-        var _inEditMode = false;
-        $("#edit_mode").click(function(){
-          if(!_inEditMode){
-            $(".edit_button").show();
-            _inEditMode = true;
-          }
-        });
-
-        $("#browse_mode").click(function(){
-          if(_inEditMode){
-            $(".edit_type").hide();
-            $(".browse_type").show();
-            _inEditMode = false; 
-          }
-        });
-
+       
+        $("#browse_mode").hide();
         $(".edit_type").hide();
 
-        $("#edit_hospital").click(function(){
-          $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
-          $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
-        });
 
-        
-
-        $("#edit_hospital").click(function(){
-          $("#edit_hospital").hide();
-          $("#save_hospital").show();
-          $("#cancel_hospital").show();
-        });
-
-        $("#save_hospital").click(function(){
-
-        });
-
-        $("#cancel_hospital").click(function(){
-          $("#edit_hospital").show();
-          $("#edit_hospital_name").hide();
-          $("#edit_hospital_desc").hide();
-          $("#save_hospital").hide();
-          $("#cancel_hospital").hide();
-        });
     });
 
     function putData(data) {
@@ -275,19 +240,77 @@
           v.find("span[name=vet_name]").text(vs[i].person.name);
           v.find("span[name=vet_desc]").text(vs[i].description);
           v.find("span[name=vet_mail]").text(vs[i].person.email);
+
+          var _nameCardBtn = v.find("button[data-target=#nameCard_]");
+          var _nameCard = v.find("#nameCard_");
+          setSlide(_nameCardBtn, _nameCard, i);
+
           for (j in vs[i].experience) {
             v.find("dl[name=exp]").append("<dd>"+vs[i].experience[j]+"</dd>");
           }
           for (j in vs[i].education) {
             v.find("dl[name=exp]").append("<dd>"+vs[i].education[j]+"</dd>");
           }
+          for (j in vs[i].specialties) {
+            v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
+          }
           vets.append(v);
       }
+    }
+
+    function setSlide(_nameCardBtn, _nameCard, i) {
+      _nameCardBtn.attr("data-target", "#nameCard_"+i);
+      _nameCard.attr("id", "nameCard_"+i);
     }
 
     function nameSearch() {
         window.location.href = '/hospitals?q=' + $('#name_search').val();
     }
+
+    // $("button[name=nameCardBtn_0]").click(function(){
+    //   alert($(this).attr("name"));
+      // $("div[name^]")
+    // });
+
+    $("#edit_mode").click(function(){
+      $(".edit_button").show();
+      $(".browse_type").show();
+      $("#edit_mode").hide();
+      $("#browse_mode").show();
+    });
+
+    $("#browse_mode").click(function(){
+      $(".edit_type").hide();
+      $(".browse_type").show();
+      $("#edit_mode").show();
+      $("#browse_mode").hide();
+    });
+
+    $("#edit_hospital").click(function(){
+      $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
+      $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
+    });
+
+        
+
+    $("#edit_hospital").click(function(){
+      $("#edit_hospital").hide();
+      $("#save_hospital").show();
+      $("#cancel_hospital").show();
+    });
+
+    $("#save_hospital").click(function(){
+
+    });
+
+    $("#cancel_hospital").click(function(){
+      $("#edit_hospital").show();
+      $("#edit_hospital_name").hide();
+      $("#edit_hospital_desc").hide();
+      $("#save_hospital").hide();
+      $("#cancel_hospital").hide();
+    });
+
     </script>
   </body>
 </html>
