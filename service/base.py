@@ -11,6 +11,6 @@ class GeneralService:
     def list(self):
         return self.dao.list()
 
-    def search(self, kw):
-        return self.dao.search(kw)
+    def search(self, kw, cls=None):
+        return self.dao.search(kw, cls)
 

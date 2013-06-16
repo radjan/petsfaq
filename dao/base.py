@@ -17,9 +17,13 @@ class GeneralDao:
     def list(self):
         return self.model_cls.all()
 
-    def search(self, kw):
+    def search(self, kw, cls=None):
         q = self.model_cls.all()
+
         post_filters = []
+        if cls:
+            post_filters.append(self._class_filter(cls))
+
         for name, query in kw.items():
             if WILDCARD in query:
                 post_filters.append(self._post_like_filter(name, query))
@@ -35,6 +39,9 @@ class GeneralDao:
                 return True
             return False
         return f
+
+    def _class_filter(self, cls):
+        return lambda model: isinstance(model, cls)
 
     def _post_query(self, q, filters):
         for f in filters:
