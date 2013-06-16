@@ -72,7 +72,7 @@
 
         input_species.attr('name', input_species.attr('name') + n);
         input_categories.attr('name', input_categories.attr('name') + n);
-
+        input_categories.val("一般");
 
         $('#specialties').append(s);
 
