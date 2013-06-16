@@ -15,6 +15,7 @@ from common import share, util
 from StringIO import StringIO
 import collections
 
+from google.appengine.ext import db
 
 # General 
 class RestAPI(base.BaseSessionHandler):
@@ -132,9 +133,14 @@ def _to_dict(domain_obj):
         if type(v) is list:
             l = []
             for item in v:
-                l.append(unicode(item))
+                l.append(_to_str(item))
             tmp[str(key)] = l
         else:
-            tmp[str(key)] = unicode(v)
+            tmp[str(key)] = _to_str(v)
     tmp['id'] = domain_obj.get_id()
     return tmp
+
+def _to_str(obj):
+    if isinstance(obj, db.Key):
+        return _to_dict(db.get(obj))
+    return unicode(obj)
