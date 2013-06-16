@@ -26,6 +26,7 @@ import view.hospital
 from admin import data as adm_data
 from api import restApi
 from api import specialty as specialtyApi
+from api import person as personApi
 
 from api import imageApi
 from view import image
@@ -72,6 +73,7 @@ app = webapp2.WSGIApplication([
     (API_PREFIX+'/account', restApi.AccountAPI),
     (API_PREFIX+'/person', restApi.PersonAPI),
     (API_PREFIX+'/role', restApi.RoleAPI),
+    (API_PREFIX+'/person/vet', personApi.VetAPI),
     (API_PREFIX+'/specialty', restApi.SpecialtyAPI),
 
     webapp2.Route(API_PREFIX+'/hospital/<id:\d+>',
