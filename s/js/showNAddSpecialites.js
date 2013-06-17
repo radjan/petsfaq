@@ -39,13 +39,13 @@
             cache: false
         }).done(function(_data){
             categories = $.parseJSON(_data);
-            initSpecialties();
+            initSpecialties(3);
         });
     });
 
-    function initSpecialties() {
+    function initSpecialties(n) {
         if (ready) {
-            for (var i = 1; i <= 3; i++) {
+            for (var i = 1; i <= n; i++) {
                 addSpecialty(i);
             }
         } else {

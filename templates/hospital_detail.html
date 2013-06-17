@@ -146,9 +146,16 @@
 
     <div class="templates">
         <div class="row-fluid browse_type" name="oneVet">
-            <button type="button" class="btn btn-mini btn-danger edit_type edit_button" id="editVet_">
-                    編輯
+            <button id="editVet_" type="button" class="btn btn-mini btn-danger edit_type edit_button">
+                編輯
             </button>
+            <button id="saveVet_" type="button" class="btn btn-mini btn-info edit_type">
+                儲存
+            </button>
+            <button id="cancelVet_" type="button" class="btn btn-mini edit_type">
+                取消
+            </button>
+
             <div class="span2">
               <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
             </div>
@@ -193,6 +200,27 @@
         </div><!--/row-->
     </div>
 
+    <div id='templates' class='templates specialtySelector'>
+     <li name='spec_item'>
+       <label>種類：</label>
+       <select name='species_' class='species'>
+          <option value=''>未選擇</option>
+       </select>
+       <input name="newSpecies" type="text" placeholder="新增種類" class="input-block-level inputNewSpecies">
+       <label>專科：</label>
+       <select name='category_' class='category'>
+          <!-- <option value='一般' class="optionCategory">一般</option> -->
+       </select>
+       <input name="newCategory" type="text" placeholder="新增專科" class="input-block-level inputNewCategory">
+       <!-- <textarea class="inputNewCategory" rows="1" autofocus></textarea> -->
+     </li> 
+   </div>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap.js"></script>
+    <script src="/s/js/showNAddSpecialites.js"></script>
+
     <script type="text/javascript">
     $(document).ready(function(){
         
@@ -234,17 +262,14 @@
           for (j in vs[i].education) {
             v.find("dl[name=exp]").append("<dd>"+vs[i].education[j]+"</dd>");
           }
+          // alert(initSpecialties(1));
           for (j in vs[i].specialties) {
             v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
+            // v.find("dl[name=specialty]").append("<ul id='specialties'></ul>");
           }
 
-          // var _nameCardBtn = v.find("button[data-target=#nameCard_]");
-          // var _nameCard = v.find("#nameCard_");
-          // setSlide(_nameCardBtn, _nameCard, i);
+          
           setBtn(v, i);
-
-          // var _editVet = v.find("#editVet_");
-          // _editVet.attr("id", "editVet_")
           vets.append(v);
       }
     }
@@ -256,18 +281,56 @@
       _nameCardBtn.attr("data-target", "#nameCard_"+i);
       _nameCard.attr("id", "nameCard_"+i);
 
-      //ser edit
+      // for (j in v.experience) {
+      //   v.find("dl[name=exp]").append("<dd>"+v.experience[j]+"</dd>");
+      // }
+      // for (j in v.education) {
+      //   v.find("dl[name=exp]").append("<dd>"+v.education[j]+"</dd>");
+      // }
+      // for (j in v.specialties) {
+      //   v.find("dl[name=specialty]").append("<dd>"+vs.specialties[j].species+": "+v.specialties[j].category+"</dd>");
+      // }   
+
+      //set edit
       var _editVet = v.find("#editVet_");
+      var _saveVet = v.find("#saveVet_");
+      var _cancelVet = v.find("#cancelVet_");
       _editVet.attr("id", "editVet_"+i);
+      _saveVet.attr("id", "saveVet_"+i);
+      _cancelVet.attr("id", "cancelVet_"+i);
+
       _editVet.click(function(){
         v.find("input[name=vet_name]").show();
         v.find("textarea[name=vet_desc]").show();
         v.find("input[name=vet_mail]").show();
-        _nameCard.attr("class","");
-        _nameCardBtn.attr("disabled", "true");
-        
+        _nameCard.removeClass("collapse");
+        _nameCardBtn.attr("disabled", true);
+
+        _editVet.hide();
+        _saveVet.show();
+        _cancelVet.show();
       });
 
+      _saveVet.click(function(){
+        //TODO:
+      });
+
+      _cancelVet.click(function(){
+        v.find("input[name=vet_name]").hide();
+        v.find("textarea[name=vet_desc]").hide();
+        v.find("input[name=vet_mail]").hide();
+
+        v.find("input[name=vet_name]").val("");
+        v.find("textarea[name=vet_desc]").val("");
+        v.find("input[name=vet_mail]").val("");
+        
+        _nameCard.addClass("collapse")
+        _nameCardBtn.attr("disabled", false);
+
+        _editVet.show();
+        _saveVet.hide();
+        _cancelVet.hide();
+      });
     }
 
     function nameSearch() {
@@ -312,10 +375,13 @@
 
     $("#cancel_hospital").click(function(){
       $("#edit_hospital").show();
-      $("#edit_hospital_name").hide();
-      $("#edit_hospital_desc").hide();
       $("#save_hospital").hide();
       $("#cancel_hospital").hide();
+
+      $("#edit_hospital_name").hide();
+      $("#edit_hospital_desc").hide();
+      $("#edit_hospital_name").val("");
+      $("#edit_hospital_desc").val("");      
     });
 
     </script>
