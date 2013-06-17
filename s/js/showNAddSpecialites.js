@@ -1,7 +1,7 @@
     /*** To show specialies and can create new species with select. Use the following HTML template.
     
     ======= HTML template ======
-    <div id='templates' class='templates'>
+    <div class='specialtySelector'>
       <li name='spec_item'>
        <label>種類：</label>
        <select name='species_' class='species'>
@@ -39,13 +39,13 @@
             cache: false
         }).done(function(_data){
             categories = $.parseJSON(_data);
-            initSpecialties();
+            initSpecialties(3);
         });
     });
 
-    function initSpecialties() {
+    function initSpecialties(n) {
         if (ready) {
-            for (var i = 1; i <= 3; i++) {
+            for (var i = 1; i <= n; i++) {
                 addSpecialty(i);
             }
         } else {
@@ -53,7 +53,7 @@
         }
     }
     function addSpecialty(n) {
-        var s = $('#templates').find('li[name=spec_item]').clone();
+        var s = $(".specialtySelector").find('li[name=spec_item]').clone();
         var input_species = s.find('.species');
         for (i in species) {
             input_species.append('<option value="' + species[i]+ '">' + species[i] + '</option>');

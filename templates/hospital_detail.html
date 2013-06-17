@@ -54,7 +54,7 @@
         
         <div class="span10">
         
-        <div class="btn-group">
+        <div>
           <!-- <a class="btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown" href="#">編輯模式
             <span class="caret"></span>
           </a>
@@ -62,8 +62,8 @@
             <li><a id="revise_button" type="button">修改</a></li>
             <li><a href="#">新增醫生</a></li>
           </ul> -->
-          <a id="edit_mode" class="btn btn-small btn-danger" type="button">編輯模式</a>
-          <a id="browse_mode" class="btn btn-small btn-primary" type="button">瀏覽模式</a>
+          <a id="edit_mode" class="btn btn-small btn-danger" type="button">進入編輯模式</a>
+          <a id="browse_mode" class="btn btn-small btn-primary" type="button">進入瀏覽模式</a>
         </div>        
         <!-- carousel -->
           <!-- <div id="myCarousel" class="carousel slide">
@@ -115,23 +115,6 @@
             </button>
             <h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
               <input id="edit_hospital_name" type="text" class="edit_type">
-              <small>
-                <!-- <a href="#hospital_info_edit" role="button" class="btn btn-mini btn-danger" data-toggle="modal">編輯</a> -->
-                <!-- Modal -->
-               <!--  <div id="hospital_info_edit" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                  <h3 id="myModalLabel">Modal header</h3>
-                </div>
-                <div class="modal-body">
-                  <p>One fine body…</p>
-                </div>
-                <div class="modal-footer">
-                  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                  <button class="btn btn-primary">Save changes</button>
-                </div>
-                </div> -->
-                </small>
             </h1>
             <p>
               <span id="hospital_desc" class="browse_type"><!-- hospital description --></span>
@@ -163,33 +146,45 @@
 
     <div class="templates">
         <div class="row-fluid browse_type" name="oneVet">
+            <button id="editVet_" type="button" class="btn btn-mini btn-danger edit_type edit_button">
+                編輯
+            </button>
+            <button id="saveVet_" type="button" class="btn btn-mini btn-info edit_type">
+                儲存
+            </button>
+            <button id="cancelVet_" type="button" class="btn btn-mini edit_type">
+                取消
+            </button>
+
             <div class="span2">
               <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
             </div>
             <div class="span8">
-              <h2><span name="vet_name"><!-- vet name --></span><small><a href="#">Blog</a></small>  
-                <small>
-                  <button type="button" class="btn btn-mini btn-danger edit_type edit_button">
-                    編輯
-                  </button>
-                </small>
+              <h2><span name="vet_name"><!-- vet name --></span>
+                  <input type="text" class="edit_type" name="vet_name">
+                  <small><a href="#">Blog</a></small>
               </h2> 
-              <p><span name="vet_desc"><!-- vet desc --></span></p>
+              <p><span name="vet_desc"><!-- vet desc --></span>
+                  <textarea name="vet_desc" rows="5" class="input-block-level edit_type"></textarea>
+              </p>
               <dl name="exp">
                 <dt>學經歷</dt>
               </dl>
               <dl name="specialty">
                 <dt>專長</dt>
               </dl>
-              <button type="button" class="btn btn-info" data-target="#demo" data-toggle="collapse">
+              <button type="button" class="btn btn-info" data-target="#nameCard_" data-toggle="collapse">
+              <!-- <button class="btn btn-info" name="nameCardBtn_"> -->
                     名片
               </button>
              
-              <div id="demo" class="collapse">
+              <div id="nameCard_" class="collapse">
                 <address>
                   <br>
                   <strong><span name="vet_name">vet name</span></strong><br>
-                    <a href="mailto:#"><span name="vet_mail">vet@mail</span></a><br>
+                    <a href="mailto:#"><span name="vet_mail">vet@mail</span></a>
+                    <input type="text" class="edit_type" name="vet_mail"><br>
+
                     <span name="hospital_name"><!-- hospital name --></span><br>
                     看診時間：9:00-21:00 <br>
                     電話：<span class='phone'><!-- hospital phone --></span><br>
@@ -205,8 +200,30 @@
         </div><!--/row-->
     </div>
 
+    <div id='templates' class='templates specialtySelector'>
+     <li name='spec_item'>
+       <label>種類：</label>
+       <select name='species_' class='species'>
+          <option value=''>未選擇</option>
+       </select>
+       <input name="newSpecies" type="text" placeholder="新增種類" class="input-block-level inputNewSpecies">
+       <label>專科：</label>
+       <select name='category_' class='category'>
+          <!-- <option value='一般' class="optionCategory">一般</option> -->
+       </select>
+       <input name="newCategory" type="text" placeholder="新增專科" class="input-block-level inputNewCategory">
+       <!-- <textarea class="inputNewCategory" rows="1" autofocus></textarea> -->
+     </li> 
+   </div>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap.js"></script>
+    <script src="/s/js/showNAddSpecialites.js"></script>
+
     <script type="text/javascript">
     $(document).ready(function(){
+        
         var hid = window.location.pathname.split("/")[2];
         $.ajax({
             url: "/api/v1/hospital/" + hid,
@@ -214,48 +231,11 @@
             cache: false
         }).done(function (data) { putData(data); });
 
-        var _inEditMode = false;
-        $("#edit_mode").click(function(){
-          if(!_inEditMode){
-            $(".edit_button").show();
-            _inEditMode = true;
-          }
-        });
-
-        $("#browse_mode").click(function(){
-          if(_inEditMode){
-            $(".edit_type").hide();
-            $(".browse_type").show();
-            _inEditMode = false; 
-          }
-        });
-
+       
+        $("#browse_mode").hide();
         $(".edit_type").hide();
 
-        $("#edit_hospital").click(function(){
-          $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
-          $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
-        });
 
-        
-
-        $("#edit_hospital").click(function(){
-          $("#edit_hospital").hide();
-          $("#save_hospital").show();
-          $("#cancel_hospital").show();
-        });
-
-        $("#save_hospital").click(function(){
-
-        });
-
-        $("#cancel_hospital").click(function(){
-          $("#edit_hospital").show();
-          $("#edit_hospital_name").hide();
-          $("#edit_hospital_desc").hide();
-          $("#save_hospital").hide();
-          $("#cancel_hospital").hide();
-        });
     });
 
     function putData(data) {
@@ -275,19 +255,135 @@
           v.find("span[name=vet_name]").text(vs[i].person.name);
           v.find("span[name=vet_desc]").text(vs[i].description);
           v.find("span[name=vet_mail]").text(vs[i].person.email);
+
           for (j in vs[i].experience) {
             v.find("dl[name=exp]").append("<dd>"+vs[i].experience[j]+"</dd>");
           }
           for (j in vs[i].education) {
             v.find("dl[name=exp]").append("<dd>"+vs[i].education[j]+"</dd>");
           }
+          // alert(initSpecialties(1));
+          for (j in vs[i].specialties) {
+            v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
+            // v.find("dl[name=specialty]").append("<ul id='specialties'></ul>");
+          }
+
+          
+          setBtn(v, i);
           vets.append(v);
       }
+    }
+
+    function setBtn(v, i) {
+      //set name card.
+      var _nameCardBtn = v.find("button[data-target=#nameCard_]");
+      var _nameCard = v.find("#nameCard_");
+      _nameCardBtn.attr("data-target", "#nameCard_"+i);
+      _nameCard.attr("id", "nameCard_"+i);
+
+      // for (j in v.experience) {
+      //   v.find("dl[name=exp]").append("<dd>"+v.experience[j]+"</dd>");
+      // }
+      // for (j in v.education) {
+      //   v.find("dl[name=exp]").append("<dd>"+v.education[j]+"</dd>");
+      // }
+      // for (j in v.specialties) {
+      //   v.find("dl[name=specialty]").append("<dd>"+vs.specialties[j].species+": "+v.specialties[j].category+"</dd>");
+      // }   
+
+      //set edit
+      var _editVet = v.find("#editVet_");
+      var _saveVet = v.find("#saveVet_");
+      var _cancelVet = v.find("#cancelVet_");
+      _editVet.attr("id", "editVet_"+i);
+      _saveVet.attr("id", "saveVet_"+i);
+      _cancelVet.attr("id", "cancelVet_"+i);
+
+      _editVet.click(function(){
+        v.find("input[name=vet_name]").show();
+        v.find("textarea[name=vet_desc]").show();
+        v.find("input[name=vet_mail]").show();
+        _nameCard.removeClass("collapse");
+        _nameCardBtn.attr("disabled", true);
+
+        _editVet.hide();
+        _saveVet.show();
+        _cancelVet.show();
+      });
+
+      _saveVet.click(function(){
+        //TODO:
+      });
+
+      _cancelVet.click(function(){
+        v.find("input[name=vet_name]").hide();
+        v.find("textarea[name=vet_desc]").hide();
+        v.find("input[name=vet_mail]").hide();
+
+        v.find("input[name=vet_name]").val("");
+        v.find("textarea[name=vet_desc]").val("");
+        v.find("input[name=vet_mail]").val("");
+        
+        _nameCard.addClass("collapse")
+        _nameCardBtn.attr("disabled", false);
+
+        _editVet.show();
+        _saveVet.hide();
+        _cancelVet.hide();
+      });
     }
 
     function nameSearch() {
         window.location.href = '/hospitals?q=' + $('#name_search').val();
     }
+
+    // $("button[name=nameCardBtn_0]").click(function(){
+    //   alert($(this).attr("name"));
+      // $("div[name^]")
+    // });
+
+    $("#edit_mode").click(function(){
+      $(".edit_button").show();
+      $(".browse_type").show();
+      $("#edit_mode").hide();
+      $("#browse_mode").show();
+    });
+
+    $("#browse_mode").click(function(){
+      $(".edit_type").hide();
+      $(".browse_type").show();
+      $("#edit_mode").show();
+      $("#browse_mode").hide();
+    });
+
+    $("#edit_hospital").click(function(){
+      $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
+      $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
+    });
+
+        
+
+    $("#edit_hospital").click(function(){
+      $("#edit_hospital").hide();
+      $("#save_hospital").show();
+      $("#cancel_hospital").show();
+    });
+
+    $("#save_hospital").click(function(){
+
+    });
+
+    $("#cancel_hospital").click(function(){
+      $("#edit_hospital").show();
+      $("#save_hospital").hide();
+      $("#cancel_hospital").hide();
+
+      $("#edit_hospital_name").hide();
+      $("#edit_hospital_desc").hide();
+      $("#edit_hospital_name").val("");
+      $("#edit_hospital_desc").val("");      
+    });
+
     </script>
   </body>
 </html>
