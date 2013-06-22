@@ -100,19 +100,20 @@
     <script language='JavaScript'>
     $(document).ready(function showHospital(){
         var q = $.url().param('q');
-        var search_url = "/api/v1/hospital";
         if (q != undefined) {
+            // query
             $('#name_search').val(q);
-            search_url += '?name=*' + q;
+            nameSearch();
+        } else {
+            //get hospital list
+            $.ajax({
+                url: "/api/v1/hospital",
+                type: "GET",
+                cache: false
+            }).done(function(data){
+                createHospitals(data);
+            });
         }
-        //get hospital list
-        $.ajax({
-          url: search_url,
-          type: "GET",
-          cache: false
-        }).done(function(data){
-          createHospitals(data);
-        });
     });
 
     function nameSearch() {
