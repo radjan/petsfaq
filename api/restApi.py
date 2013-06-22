@@ -44,7 +44,7 @@ class RestAPI(base.BaseSessionHandler):
         requestJson = json.loads(body)
         kw = {}
 
-        for i in self.model.properties() :
+        for i in self.model.properties():
             if requestJson.has_key(i):
                 kw[i] = requestJson[i]
 
