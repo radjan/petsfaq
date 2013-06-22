@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import webapp2
 
 from model import person, role, hospital, specialty
@@ -162,7 +163,7 @@ def _get_specialties(request):
     for i in range(len(species)):
         spe = species[i]
         cat = categories[i]
-        if not spe and not cat:
+        if not spe or not cat:
             continue
         s = specialty_service.get_by_value(species=spe,
                                            category=cat)
