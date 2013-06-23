@@ -169,7 +169,8 @@
           var v = $("div[name=vet_template]").last().clone();
           v.find("h2[name=name]").text(vet.name);
           v.find("p[name=description]").text(vet.vet.description);
-          //v.find("a[name=linkTo]").attr("href", "./hospital/" + hospitals[i].id);
+          v.find("a[name=linkTo]").attr("href", "./hospital/" + vet.vet.hospital.id);
+          v.find("a[name=linkTo]").html(vet.vet.hospital.name);
           $("#vet_div").append(v);
       }
     }
