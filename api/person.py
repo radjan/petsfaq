@@ -6,6 +6,7 @@ from StringIO import StringIO
 from view import base
 from api import restApi
 from service.person import person_service
+from common import util
 
 
 class VetAPI(base.BaseSessionHandler):
@@ -22,6 +23,4 @@ class VetAPI(base.BaseSessionHandler):
             d['vet'] = restApi._to_dict(p.vet)
             results.append(d)
 
-        io = StringIO()
-        json.dump(results, io)
-        self.response.write(io.getvalue())
+        util.jsonify_response(self.response, results)

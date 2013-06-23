@@ -12,7 +12,6 @@ from service.person import person_service
 from service.specialty import specialty_service
 from common import share, util
 
-from StringIO import StringIO
 import collections
 
 from google.appengine.ext import db
@@ -35,9 +34,7 @@ class RestAPI(base.BaseSessionHandler):
             result[cnt] = _to_dict(i)
             cnt += 1
 
-        io = StringIO()
-        json.dump(result,io)
-        self.response.write(io.getvalue())
+        util.jsonify_response(self.response, result)
 
     def post(self): # create model
         body = self.request.body
@@ -84,9 +81,7 @@ class ModelInstanceAPI(base.BaseSessionHandler):
 
     def get(self, *args, **kw):
         _, domain_dict = self._get_obj(*args, **kw)
-        io = StringIO()
-        json.dump(domain_dict, io)
-        self.response.write(io.getvalue())
+        util.jsonify_response(self.response, domain_object)
 
 class HospitalInstanceAPI(ModelInstanceAPI):
     def __init__(self, *args, **kw):
@@ -104,9 +99,7 @@ class HospitalInstanceAPI(ModelInstanceAPI):
             v_dict = _to_dict(v)
             v_dict['person'] = _to_dict(v.person)
             h_dict['vets'].append(v_dict)
-        io = StringIO()
-        json.dump(h_dict, io)
-        self.response.write(io.getvalue())
+        util.jsonify_response(self.response, h_dict)
 
 class SpecialtyInstanceAPI(ModelInstanceAPI):
     def __init__(self, *args, **kw):
@@ -144,3 +137,4 @@ def _to_str(obj):
     if isinstance(obj, db.Key):
         return _to_dict(db.get(obj))
     return unicode(obj)
+

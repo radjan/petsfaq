@@ -47,6 +47,7 @@ def maybe_add(d, key, value):
 def jsonify_response(response, data):
     if isinstance(data, set):
         data = list(data)
+    response.headers['Content-Type'] = 'application/json'
     io = StringIO()
     json.dump(data, io)
     response.write(io.getvalue())
