@@ -67,6 +67,8 @@
             <!-- </div> --><!--/row-->
             <!-- {% endfor %} -->
           </div><!-- /container -->
+          <div class="container-fluid" id="vet_div">
+          </div>
 
           <!--<div id='fromAJAX' class="container-fluid">
            當你按了直接搜尋之後 會透過ajax取得所有hospital  name:description 並列在下面：<br />
@@ -83,6 +85,18 @@
 
       <div class="templates">
          <div class="row-fluid" name="hospital_template">
+                <div class="span2">
+                    <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
+                </div>
+                <div class="span8">
+                  <h2 name="name">template</h2>
+                  <p name="description">template</p>
+                  <p><a name="linkTo" class="btn btn-info" href="">View details &raquo;</a></p>
+                </div><!--/span-->
+          </div><!--/row-->
+
+         <div class="row-fluid" name="vet_template">
+                <!-- TODO: need a vet template -->
                 <div class="span2">
                     <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
                 </div>
@@ -119,12 +133,21 @@
     function nameSearch() {
         $("#hospital_div").html("Searching...");
         $.ajax({
-            url: "/api/v1/hospital?name=*" + $('#name_search').val() + "*",
+            url: "/api/v1/hospital?name=*" + $("#name_search").val() + "*",
             type: "GET",
             cache: false
         }).done(function(data){
           createHospitals(data);
         });
+
+        $("#vet_div").html("Searching...");
+        $.ajax({
+                url: "/api/v1/person/vet?name=*" + $("#name_search").val() + "*",
+                type: "GET",
+                cache: false
+            }).done(function(data){
+                createVets(data);
+            });
     }
 
     function createHospitals(hospitals) {
@@ -135,6 +158,19 @@
           h.find("p[name=description]").text(hospitals[i].description);
           h.find("a[name=linkTo]").attr("href", "./hospital/" + hospitals[i].id);
           $("#hospital_div").append(h);
+      }
+    }
+
+    function createVets(vets){
+      // XXX put the header into html and add style
+      $("#vet_div").html("<header>醫生</header>");
+      for(i in vets) {
+          var vet = vets[i]
+          var v = $("div[name=vet_template]").last().clone();
+          v.find("h2[name=name]").text(vet.name);
+          v.find("p[name=description]").text(vet.vet.description);
+          //v.find("a[name=linkTo]").attr("href", "./hospital/" + hospitals[i].id);
+          $("#vet_div").append(v);
       }
     }
 
