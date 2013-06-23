@@ -238,8 +238,7 @@
 
     });
 
-    function putData(data) {
-      var hospital = jQuery.parseJSON(data);
+    function putData(hospital) {
       $("#hospital_name").text(hospital.name);
       $("#hospital_desc").text(hospital.description);
       var vets = $("#vets");

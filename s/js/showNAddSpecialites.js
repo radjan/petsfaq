@@ -29,8 +29,8 @@
             type: "GET",
             cache: false
         }).done(function(_data){
-            species = $.parseJSON(_data);
-            initSpecialties();
+            species = _data;
+            initSpecialties(3);
         });
         
         $.ajax({
@@ -38,7 +38,7 @@
             type: "GET",
             cache: false
         }).done(function(_data){
-            categories = $.parseJSON(_data);
+            categories = _data;
             initSpecialties(3);
         });
     });

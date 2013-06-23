@@ -127,9 +127,8 @@
         });
     }
 
-    function createHospitals(_data){
+    function createHospitals(hospitals) {
       $("#hospital_div").empty();
-      var hospitals = jQuery.parseJSON(_data);
       for(i in hospitals){
           var h = $("div[name=hospital_template]").last().clone();
           h.find("h2[name=name]").text(hospitals[i].name);
