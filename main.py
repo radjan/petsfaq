@@ -86,9 +86,12 @@ app = webapp2.WSGIApplication([
                   specialtyApi.SpecialtyListAPI),
 
     #
-    webapp2.Route(API_PREFIX+'/image', imageApi.ImagePost, methods=['POST']),
-    webapp2.Route(API_PREFIX+'/image', imageApi.Image, methods=['GET'], name='getimage'),
-    (API_PREFIX+'/upload', image.upload_img_test),
+    webapp2.Route(API_PREFIX+'/person/<personid>/avatar',   imageApi.AvatarPost, methods=['POST']),
+    webapp2.Route(API_PREFIX+'/person/<personid>/avatar',   imageApi.Avatar,     methods=['GET']),
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid>/logo', imageApi.LogoPost,   methods=['POST']),
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid>/logo', imageApi.Logo,       methods=['GET']),
+    webapp2.Route(API_PREFIX+'/upload/<personid>/avatar',   image.upload_avatar, methods=['GET']),
+    webapp2.Route(API_PREFIX+'/upload/<hospitalid>/logo',   image.upload_logo,   methods=['GET']),
 
     (API_PREFIX+'/.*', NotFound),
 #    (API_PREFIX+'/hospital', hospital.RestAPI),
