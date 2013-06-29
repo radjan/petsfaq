@@ -8,7 +8,8 @@ class Role(polymodel.PolyModel):
     last_modified = db.DateTimeProperty(auto_now=True)
     verified = db.BooleanProperty(default=False)
     confirmed = db.BooleanProperty(default=False)
-    person = db.ReferenceProperty(person.Person, collection_name='roles', required=True)
+    person = db.ReferenceProperty(person.Person, 
+            collection_name='roles', required=True)
 
     def get_id(self):
         return self.key().id()
@@ -20,14 +21,16 @@ class Moderator(Role):
     pass
 
 class Vet(Role):
-    hospital = db.ReferenceProperty(hospital.Hospital, collection_name='vets')
+    hospital = db.ReferenceProperty(hospital.Hospital, 
+            collection_name='vets')
     description = db.TextProperty()
     specialties = db.ListProperty(db.Key)
     education = db.StringListProperty()
     experience = db.StringListProperty(str)
 
 class Employee(Role):
-    hospital = db.ReferenceProperty(hospital.Hospital, collection_name='employees')
+    hospital = db.ReferenceProperty(hospital.Hospital, 
+            collection_name='employees')
 
 class Admin(Employee):
     pass
