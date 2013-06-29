@@ -28,7 +28,7 @@ class RestAPI(base.BaseSessionHandler):
         result = {}
         cnt = 1
         for i in serviceList: # list all model
-            result[cnt] = util.output_format(i)
+            result[cnt] = util.out_format(i)
             cnt += 1
 
         util.jsonify_response(self.response, result)
@@ -44,7 +44,8 @@ class RestAPI(base.BaseSessionHandler):
 
         theOne = self.model(**kw)
         self.service.create(theOne)
-        self.response.write('{result="ok"}')
+        self.response.status = 201
+        util.jsonify_response(self.response, {"result":"ok"})
 
 
 
@@ -78,7 +79,7 @@ class ModelInstanceAPI(base.BaseSessionHandler):
 
     def get(self, *args, **kw):
         _, domain_dict = self._get_obj(*args, **kw)
-        util.jsonify_response(self.response, domain_object)
+        util.jsonify_response(self.response, domain_dict)
 
     def put(self, *args, **kw):
         body = self.request.body
