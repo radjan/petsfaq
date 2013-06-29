@@ -82,6 +82,9 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/specialty/<id:\d+>',
                   restApi.SpecialtyInstanceAPI,
                   name='specialty_id'),
+    webapp2.Route(API_PREFIX+'/role/<id:\d+>',
+                  restApi.RoleInstanceAPI,
+                  name='role_id'),
     webapp2.Route(API_PREFIX+'/specialty/<type:(species|categories)>',
                   specialtyApi.SpecialtyListAPI),
 

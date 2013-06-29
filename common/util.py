@@ -95,6 +95,8 @@ def get_model_properties(model, json_obj):
 
 def _to_proper_type(value, prop):
     # TODO: different type
+    if isinstance(prop, db.ReferenceProperty):
+        return prop.reference_class.get_by_id(int(value))
     return value
 
 def update_model_properties(modelobj, json_obj):

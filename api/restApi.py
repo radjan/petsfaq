@@ -112,3 +112,9 @@ class SpecialtyInstanceAPI(ModelInstanceAPI):
         self.model = specialty.Specialty
         ModelInstanceAPI.__init__(self, *args, **kw)
 
+class RoleInstanceAPI(ModelInstanceAPI):
+    def __init__(self, *args, **kw):
+        self.service = role_service
+        self.model = role.Role
+        ModelInstanceAPI.__init__(self, *args, **kw)
+

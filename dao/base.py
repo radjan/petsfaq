@@ -7,7 +7,7 @@ WILDCARD = '*'
 
 class GeneralDao:
     def get(self, id):
-        return db.get(db.Key.from_path(self.kind, int(id)))
+        return self.model_cls.get_by_id(int(id))
 
     def create(self, m):
         m.parent = self.get_root_key()
