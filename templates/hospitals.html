@@ -86,7 +86,7 @@
       <div class="templates">
          <div class="row-fluid" name="hospital_template">
                 <div class="span2">
-                    <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
+                    <img name="hospital_photo" src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
                 </div>
                 <div class="span8">
                   <h2 name="name">template</h2>
@@ -154,6 +154,7 @@
       $("#hospital_div").empty();
       for(i in hospitals){
           var h = $("div[name=hospital_template]").last().clone();
+          h.find("img[name=hospital_photo]").attr("src","/api/v1/hospital/"+hospitals[i].id+"/logo");
           h.find("h2[name=name]").text(hospitals[i].name);
           h.find("p[name=description]").text(hospitals[i].description);
           h.find("a[name=linkTo]").attr("href", "./hospital/" + hospitals[i].id);
@@ -167,6 +168,7 @@
       for(i in vets) {
           var vet = vets[i]
           var v = $("div[name=vet_template]").last().clone();
+          v.find("img[name=hospital_photo]").attr("src","/api/v1/person/"+v.id+"/avatar");
           v.find("h2[name=name]").text(vet.name);
           v.find("p[name=description]").text(vet.vet.description);
           v.find("a[name=linkTo]").attr("href", "./hospital/" + vet.vet.hospital.id);

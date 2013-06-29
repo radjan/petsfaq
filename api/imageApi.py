@@ -27,8 +27,8 @@ class Avatar(blobstore_handlers.BlobstoreDownloadHandler):
 
             #resize
             img.resize(width=int(imgwidth), height=int(imgheight))
-            self.response.headers['Content-Type'] = 'image/jpeg'
-            self.response.out.write(img.execute_transforms(output_encoding=images.JPEG))
+            self.response.headers['Content-Type'] = 'image/png'
+            self.response.out.write(img.execute_transforms(output_encoding=images.PNG))
 
             #raw size using send_blob
             #self.send_blob(blobstore.BlobInfo.get(key))
@@ -71,14 +71,15 @@ class Logo(blobstore_handlers.BlobstoreDownloadHandler):
 
             #resize
             img.resize(width=int(imgwidth), height=int(imgheight))
-            self.response.headers['Content-Type'] = 'image/jpeg'
-            self.response.out.write(img.execute_transforms(output_encoding=images.JPEG))
+            self.response.headers['Content-Type'] = 'image/png'
+            self.response.out.write(img.execute_transforms(output_encoding=images.PNG))
 
             #raw size using send_blob
             #self.send_blob(blobstore.BlobInfo.get(key))
         except Exception as e:
 
             self.response.write({'Error':'Internal Error%s' % str(e)})
+            raise
 
 class LogoPost(blobstore_handlers.BlobstoreUploadHandler):
     def post(self, hospitalid):
