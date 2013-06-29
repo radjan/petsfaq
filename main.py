@@ -29,7 +29,9 @@ from api import specialty as specialtyApi
 from api import person as personApi
 
 from api import imageApi
+from api import post as postApi
 from view import image
+from view import post
 
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
@@ -50,6 +52,7 @@ class NotFound(webapp2.RequestHandler):
     def get(self):
         self.error(404)
 
+global API_PREFIX
 API_PREFIX = '/api/v1'
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -89,12 +92,19 @@ app = webapp2.WSGIApplication([
                   specialtyApi.SpecialtyListAPI),
 
     #
-    webapp2.Route(API_PREFIX+'/person/<personid>/avatar',   imageApi.AvatarPost, methods=['POST']),
-    webapp2.Route(API_PREFIX+'/person/<personid>/avatar',   imageApi.Avatar,     methods=['GET']),
-    webapp2.Route(API_PREFIX+'/hospital/<hospitalid>/logo', imageApi.LogoPost,   methods=['POST']),
-    webapp2.Route(API_PREFIX+'/hospital/<hospitalid>/logo', imageApi.Logo,       methods=['GET']),
-    webapp2.Route(API_PREFIX+'/upload/<personid>/avatar',   image.upload_avatar, methods=['GET']),
-    webapp2.Route(API_PREFIX+'/upload/<hospitalid>/logo',   image.upload_logo,   methods=['GET']),
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',   imageApi.AvatarPost, methods=['POST']),
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',   imageApi.Avatar,     methods=['GET']),
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo', imageApi.LogoPost,   methods=['POST']),
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo', imageApi.Logo,       methods=['GET']),
+
+    webapp2.Route(API_PREFIX+'/posts', postApi.BlogpostAPI,  methods=['POST']),
+    #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d>', post.Blogpost,  methods=['GET']),
+    #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d>', post.Blogpost,  methods=['GET']),
+
+    webapp2.Route('/test/upload/<personid:\d+>/avatar',   image.upload_avatar, methods=['GET']),
+    webapp2.Route('/test/upload/<hospitalid:\d+>/logo',   image.upload_logo,   methods=['GET']),
+    webapp2.Route('/test/upload/post',   post.upload_post,   methods=['GET']),
+
 
     (API_PREFIX+'/.*', NotFound),
 #    (API_PREFIX+'/hospital', hospital.RestAPI),
