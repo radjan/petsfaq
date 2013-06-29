@@ -86,4 +86,3 @@ def _to_str(obj):
         return _to_dict(db.get(obj))
     return unicode(obj)
 
-def _update_properties(domain, json_obj
