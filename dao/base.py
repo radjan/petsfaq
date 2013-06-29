@@ -1,10 +1,12 @@
 import re
 import itertools
 
+from google.appengine.ext import db
+
 WILDCARD = '*'
 
 class GeneralDao:
-    def get(slef, id):
+    def get(self, id):
         return db.get(db.Key.from_path(self.kind, int(id)))
 
     def create(self, m):
