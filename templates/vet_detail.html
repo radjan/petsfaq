@@ -106,9 +106,7 @@
                 <span style="color:red">*</span>
                   <label>專長</label>
                 <div>
-
-                  <ul id='specialties'>
-                  </ul>
+                  <ul id='vetSpecialties' class="edit_type"></ul>
                 </div>
 
                 <label>學歷</label>
@@ -203,6 +201,10 @@
     <script src="/s/js/bootstrap.js"></script>
     <script src="/s/js/showNAddSpecialites.js"></script>    
     <script>
+      $(document).ready(function(){
+        initSpecialtiesSelection($("#vetSpecialties"), 3, null);
+      });
+
       function displayData () {
         
         // check data 
@@ -212,10 +214,10 @@
       
       var _showSpecialty = "<ul>";
       for (var i = 1; i < 4; i++) {
-        var _species = $("select[name=species_"+i+"]");
+        var _species = $("*[name=species_"+i+"]");
         if(_species.val() != ""){
           _showSpecialty += "<li>" + _species.val();
-          _showSpecialty += ":" + $("select[name=category_"+i+"]").val() + "</li>";
+          _showSpecialty += ":" + $("*[name=category_"+i+"]").val() + "</li>";
         }
       }
       _showSpecialty += "</ul>";

@@ -1,5 +1,6 @@
     /*** To show specialies and can create new species with select. Use the following HTML template.
-    
+     
+     <ul id='specialties'></ul>  <!-- put this to where you want to show the selecotr -->
     ======= HTML template ======
     <div class='specialtySelector'>
       <li name='spec_item'>
@@ -23,14 +24,14 @@
     var species = [];
     var categories = [];
 
-    $(document).ready( function () {
+    function initSpecialtiesSelection(rootElement, defaultAmonut, initValues) {
         $.ajax({
             url: "/api/v1/specialty/species",
             type: "GET",
             cache: false
         }).done(function(_data){
             species = _data;
-            initSpecialties(3);
+            initSpecialties(rootElement, defaultAmonut, initValues);
         });
         
         $.ajax({
@@ -39,20 +40,26 @@
             cache: false
         }).done(function(_data){
             categories = _data;
-            initSpecialties(3);
+            initSpecialties(rootElement, defaultAmonut, initValues);
         });
-    });
+    }
 
-    function initSpecialties(n) {
+    function initSpecialties(rootElement, defaultAmonut, initValues) {
         if (ready) {
-            for (var i = 1; i <= n; i++) {
-                addSpecialty(i);
+            for (var i = 1; i <= defaultAmonut; i++) {
+                var init = null;
+
+                if(initValues != null && i <= initValues.length){
+                    init = initValues[i-1];
+                }
+                addSpecialty(rootElement, i, init);    
             }
         } else {
             ready = true;
         }
     }
-    function addSpecialty(n) {
+
+    function addSpecialty(rootElement, n, initValue) {
         var s = $(".specialtySelector").find('li[name=spec_item]').clone();
         var input_species = s.find('.species');
         for (i in species) {
@@ -72,9 +79,15 @@
 
         input_species.attr('name', input_species.attr('name') + n);
         input_categories.attr('name', input_categories.attr('name') + n);
-        input_categories.val("一般");
 
-        $('#specialties').append(s);
+        if(initValue != null){
+            input_species.val(initValue.species);
+            input_categories.val(initValue.category);    
+        }else{
+            input_categories.val("一般");    
+        }
+
+        rootElement.append(s);
 
         input_species.change(function(){
           var _inputNewSpecies = s.find(".inputNewSpecies");
@@ -108,4 +121,8 @@
             
           }
         });
+    }
+
+    function setValue(){
+
     }
