@@ -97,9 +97,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo', imageApi.LogoPost,   methods=['POST']),
     webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo', imageApi.Logo,       methods=['GET']),
 
-    webapp2.Route(API_PREFIX+'/posts', postApi.BlogpostAPI,  methods=['POST']),
-    #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d>', post.Blogpost,  methods=['GET']),
-    #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d>', post.Blogpost,  methods=['GET']),
+    webapp2.Route(API_PREFIX+'/posts',                 postApi.BlogpostAPI),
+    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>', postApi.PostAPI),
 
     webapp2.Route('/test/upload/<personid:\d+>/avatar',   image.upload_avatar, methods=['GET']),
     webapp2.Route('/test/upload/<hospitalid:\d+>/logo',   image.upload_logo,   methods=['GET']),
