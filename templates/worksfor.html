@@ -121,7 +121,7 @@
 
                   <span style="color:red">*</span>
                   <label>專科</label>
-                  <ul id='specialties'>
+                  <ul id='vetSpecialties'>
                   </ul>
 
                   <span style="color:red">*</span>
@@ -236,6 +236,8 @@
 
     $("document").ready(
       function(){
+        initSpecialtiesSelection($("#vetSpecialties"), 3, null);
+
         if(!zipLoaded){
           for (var county in TW_ZIP) {
              $("#selector_county").append('<option value="' + county+ '">' + county + '</option>');
@@ -301,7 +303,18 @@
       $("#modalBody").empty();
       $("#modalBody").append("醫院名稱："+ $("input[name=name]").val()+"<br>");
       $("#modalBody").append("簡介："+ $("textarea[name=description]").val()+"<br>");
-      $("#modalBody").append("專科："+ $("textarea[name=specialty]").val()+"<br>");
+
+     var _showSpecialty = "<ul>";
+      for (var i = 1; i < 4; i++) {
+        var _species = $("*[name=species_"+i+"]");
+        if(_species.val() != ""){
+          _showSpecialty += "<li>" + _species.val();
+          _showSpecialty += ":" + $("*[name=category_"+i+"]").val() + "</li>";
+        }
+      }
+      _showSpecialty += "</ul>";
+      $("#modalBody").append("專科："+ _showSpecialty);
+
       $("#modalBody").append("營業時間："+ $("textarea[name=working_hour]").val()+"<br>");
       $("#modalBody").append("地址："+ $("input[name=address]").val()+"<br>");
       $("#modalBody").append("電話："+ $("input[name=phone]").val()+"<br>");

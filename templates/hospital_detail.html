@@ -173,6 +173,7 @@
               <dl name="specialty">
                 <dt>專長</dt>
               </dl>
+              <ul id='vetSpecialties_' class="edit_type"></ul>
               <button type="button" class="btn btn-info" data-target="#nameCard_" data-toggle="collapse">
               <!-- <button class="btn btn-info" name="nameCardBtn_"> -->
                     名片
@@ -231,6 +232,7 @@
             cache: false
         }).done(function (data) { putData(data); });
 
+
        
         $("#browse_mode").hide();
         $(".edit_type").hide();
@@ -264,9 +266,9 @@
           // alert(initSpecialties(1));
           for (j in vs[i].specialties) {
             v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
-            // v.find("dl[name=specialty]").append("<ul id='specialties'></ul>");
-          }
 
+          }
+          initSpecialtiesSelection(v.find("#vetSpecialties_"), vs[i].specialties.length+1, vs[i].specialties);
           
           setBtn(v, i);
           vets.append(v);
@@ -277,8 +279,11 @@
       //set name card.
       var _nameCardBtn = v.find("button[data-target=#nameCard_]");
       var _nameCard = v.find("#nameCard_");
+      var _vetSpecialties = v.find("#vetSpecialties_");
+
       _nameCardBtn.attr("data-target", "#nameCard_"+i);
       _nameCard.attr("id", "nameCard_"+i);
+      _vetSpecialties.attr("id", "vetSpecialties_"+i);
 
       // for (j in v.experience) {
       //   v.find("dl[name=exp]").append("<dd>"+v.experience[j]+"</dd>");
@@ -302,6 +307,7 @@
         v.find("input[name=vet_name]").show();
         v.find("textarea[name=vet_desc]").show();
         v.find("input[name=vet_mail]").show();
+        _vetSpecialties.show();
         _nameCard.removeClass("collapse");
         _nameCardBtn.attr("disabled", true);
 
@@ -318,6 +324,7 @@
         v.find("input[name=vet_name]").hide();
         v.find("textarea[name=vet_desc]").hide();
         v.find("input[name=vet_mail]").hide();
+        _vetSpecialties.hide();
 
         v.find("input[name=vet_name]").val("");
         v.find("textarea[name=vet_desc]").val("");
