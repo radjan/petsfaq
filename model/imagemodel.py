@@ -1,7 +1,7 @@
 from google.appengine.ext import db
 from model.person import Person
 from model.hospital import Hospital
-from model.postmodel import Blogpost
+from model.post import Blogpost
 
 class imagemodel(db.Model):
     person = db.ReferenceProperty(Person, collection_name='avatars')

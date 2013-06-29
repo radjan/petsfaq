@@ -23,7 +23,8 @@ class Post(polymodel.PolyModel):
     content = db.StringProperty(required=True, multiline=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
-
+    def get_id(self):
+        return self.key().id()
 
 class Questions(Post):
     reply_to = db.ReferenceProperty(Post, collection_name='replies')
@@ -41,7 +42,7 @@ class Blogpost(Post):
         print 'samuel, kw', kwargs
         print 'samuel, ar', args
         kwargs['post_type'] = TYPE_BLOG
-        kwargs['status_code'] = TYPE_BLOG
+        kwargs['status_code'] = STATUS_DRAFT
         Post.__init__(self, *args, **kwargs)
         #super(Blogpost, self).__init__(*args, **kwargs)
 
