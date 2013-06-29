@@ -19,8 +19,9 @@ class VetAPI(base.BaseSessionHandler):
 
         results = []
         for p in people:
-            d = restApi._to_dict(p)
-            d['vet'] = restApi._to_dict(p.vet)
+            d = util.out_format(p)
+            # XXX: vet is not a defined property
+            d['vet'] = util.out_format(p.vet)
             results.append(d)
 
         util.jsonify_response(self.response, results)
