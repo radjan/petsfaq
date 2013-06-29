@@ -21,7 +21,7 @@ class Moderator(Role):
 
 class Vet(Role):
     hospital = db.ReferenceProperty(hospital.Hospital, collection_name='vets')
-    description = db.TextProperty()
+    description = db.TextProperty(default='')
     specialties = db.ListProperty(db.Key)
     education = db.StringListProperty()
     experience = db.StringListProperty(str)

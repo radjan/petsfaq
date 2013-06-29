@@ -17,7 +17,7 @@ class Hospital(db.Model):
     emergency = db.BooleanProperty(required=True, default=False)
     emergency_phone = db.PhoneNumberProperty()
     emergency_hour = db.TextProperty()
-    value_added_tax = db.StringProperty()
+    value_added_tax = db.StringProperty(default='')
 
     def get_id(self):
         return self.key().id()
