@@ -36,18 +36,12 @@ class RestAPI(base.BaseSessionHandler):
     def post(self): # create model
         body = self.request.body
         requestJson = json.loads(body)
-        kw = {}
-
-        for i in self.model.properties():
-            if requestJson.has_key(i):
-                kw[i] = requestJson[i]
+        kw = util.get_model_properties(self.model, requestJson)
 
         theOne = self.model(**kw)
         self.service.create(theOne)
         self.response.status = 201
         util.jsonify_response(self.response, {"result":"ok"})
-
-
 
 class HospitalAPI(RestAPI):
     service = hospital_service
@@ -86,9 +80,13 @@ class ModelInstanceAPI(base.BaseSessionHandler):
         requestJson = json.loads(body)
         model_id = kw.get('id', 0)
         domain_obj = self.service.get(model_id)
-        for i in self.model.properties():
-            if requestJson.has_key(i):
-                kw[i] = requestJson[i]
+        if not domain_obj:
+            self.error(404)
+            return
+        # partial update
+        domain_obj = util.update_model_properties(domain_obj, requestJson)
+        domain_obj.put()
+        util.jsonify_response(self.response, {"result":"ok"})
 
 class HospitalInstanceAPI(ModelInstanceAPI):
     def __init__(self, *args, **kw):

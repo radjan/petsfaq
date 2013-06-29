@@ -1,8 +1,11 @@
-from common import share
-from service.account import account_service
-
 import json
 from StringIO import StringIO
+import collections
+
+from google.appengine.ext import db
+
+from common import share
+from service.account import account_service
 
 GOOGLE = share.VIEW_GOOGLE
 IDPWD = share.VIEW_IDPWD
@@ -52,9 +55,6 @@ def jsonify_response(response, data):
     json.dump(data, io)
     response.write(io.getvalue())
 
-import collections
-from google.appengine.ext import db
-
 def out_format(data):
     ret = None
     if isinstance(data, collections.Iterable):
@@ -85,4 +85,21 @@ def _to_str(obj):
     if isinstance(obj, db.Key):
         return _to_dict(db.get(obj))
     return unicode(obj)
+
+def get_model_properties(model, json_obj):
+    kw = {}
+    for key, prop in model.properties().items():
+        if json_obj.has_key(key):
+            kw[key] = _to_proper_type(json_obj[key], prop)
+    return kw
+
+def _to_proper_type(value, prop):
+    # TODO: different type
+    return value
+
+def update_model_properties(modelobj, json_obj):
+    kw = get_model_properties(modelobj, json_obj)
+    for key, value in kw.items():
+        modelobj.__setattr__(key, value)
+    return modelobj
 
