@@ -23,6 +23,7 @@ class Post(polymodel.PolyModel):
     content = db.StringProperty(required=True, multiline=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
+
     def get_id(self):
         return self.key().id()
 
@@ -38,12 +39,9 @@ class Blogpost(Post):
     author = db.ReferenceProperty(person.Person, collection_name='blogposts')
     hospital = db.ReferenceProperty(hospital.Hospital, collection_name='blogposts')
     status_code = db.IntegerProperty(required=True)
+
     def __init__(self, *args, **kwargs):
-        print 'samuel, kw', kwargs
-        print 'samuel, ar', args
         kwargs['post_type'] = TYPE_BLOG
         kwargs['status_code'] = STATUS_DRAFT
         Post.__init__(self, *args, **kwargs)
-        #super(Blogpost, self).__init__(*args, **kwargs)
-
 
