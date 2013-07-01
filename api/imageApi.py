@@ -11,6 +11,33 @@ from google.appengine.api import users
 from model.imagemodel import imagemodel
 from model.person import Person
 from model.hospital import Hospital
+from model.post import Blogpost
+
+from common import util
+
+class Image(blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self, imageid):
+        try:
+            image = imagemodel.get_by_id(int(imageid))
+
+            imgwidth  = self.request.get('width',  300)
+            imgheight = self.request.get('height', 300)
+
+            key = image.img_blobkey
+
+            img = images.Image(blob_key=key)
+
+            #resize
+            img.resize(width=int(imgwidth), height=int(imgheight))
+            self.response.headers['Content-Type'] = 'image/png'
+            self.response.out.write(img.execute_transforms(output_encoding=images.PNG))
+
+            #raw size using send_blob
+            #self.send_blob(blobstore.BlobInfo.get(key))
+        except:
+            self.response.write({'Error':'Internal Error'})
+            raise
+
 
 class Avatar(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, personid):
@@ -100,4 +127,44 @@ class LogoPost(blobstore_handlers.BlobstoreUploadHandler):
         except:
             blob.delete()
             self.response.write({'Error':'Internal Error'})
+            raise
+
+class Photo(blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self, blogpostid):
+        try:
+            keys = []
+            blogpost = Blogpost.get_by_id(int(blogpostid))
+            for image in blogpost.photos:
+                keys.append(image.key().id())
+
+            util.jsonify_response(self.response, {'imgids':keys})
+
+        except Exception as e:
+            self.response.write({'Error':'Internal Error%s' % str(e)})
+            raise
+
+class PhotoPost(blobstore_handlers.BlobstoreUploadHandler):
+    def post(self, blogpostid):
+        try:
+            imgfiles = self.get_uploads('img')
+            imgids = []
+
+            for imgfile in imgfiles:
+                blob = imgfile
+                blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+                
+                photo = blogpost_from_key.photos.get()
+                if photo != None:
+                    photo.img_blobkey = str(blob.key())
+                else:
+                    photo = imagemodel(blogpost = blogpost_from_key, 
+                                        img_blobkey = str(blob.key()))
+
+                putoutput = photo.put()
+                imgids.append(putoutput.id())
+            self.response.write({'blogpostid': blogpostid, 'imageid':imgids})
+        except:
+            self.response.write({'Error':'Internal Error'})
+            raise
+
 

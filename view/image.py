@@ -30,3 +30,16 @@ class upload_logo(webapp2.RequestHandler):
             <input type="submit" value="submit" />
             </form></body></html>
             """)
+
+class upload_photo(webapp2.RequestHandler):
+    def get(self,blogpostid):
+        upload_url = blobstore.create_upload_url('%s/blogpost/%s/photos' % (main.API_PREFIX, blogpostid))
+        self.response.out.write('<html><head></head><body>')
+        self.response.out.write(
+            '<form action="%s" enctype="multipart/form-data" method="POST">' % upload_url)
+
+        self.response.out.write("""
+            <input type="file" multiple="true" name="img" /><br />
+            <input type="submit"  />
+            </form></body></html>
+            """)
