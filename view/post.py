@@ -10,6 +10,7 @@ class upload_post(base.BaseSessionHandler):
         try:
             personid  = self.request.get('personid')
             hospitalid  = self.request.get('hospitalid')
+            publish  = self.request.get('publish')
 
             #api
             upload_url = '%s/posts' % (main.API_PREFIX,)
@@ -24,9 +25,10 @@ class upload_post(base.BaseSessionHandler):
                 <textarea rows="30" cols="30" name="content"></textarea><br />
                 <input type="hidden" value="%s" name="personid">
                 <input type="hidden" value="%s" name="hospitalid">
+                <input type="hidden" value="%s" name="publish">
                 <input type="submit" value="submit" /><br />
                 </form></body></html>
-                """ %(upload_url, personid, hospitalid))
+                """ %(upload_url, personid, hospitalid, publish))
         except Exception as e:
             self.response.write({'Error':'Internal Error: %s' % str(e)})
 

@@ -24,6 +24,7 @@ class BlogpostAPI(base.BaseSessionHandler):
             hospitalid = self.request.get('hospitalid')
             title      = self.request.get('title')
             content    = self.request.get('content')
+            publish    = self.request.get('publish')
 
             person_from_key = None
             hospital_from_key = None
@@ -33,10 +34,17 @@ class BlogpostAPI(base.BaseSessionHandler):
             if hospitalid:
                 hospital_from_key = Hospital.get_by_id(int(hospitalid))
 
+            if publish.isdigit():
+                publish = int(publish)
+            else:
+                publish = None
+
             newpost = Blogpost(title=title,
                                content=content,
                                author=person_from_key,
-                               hospital=hospital_from_key)
+                               hospital=hospital_from_key,
+                               status_code=publish)
+
             postoutput = newpost.put()
             self.response.write({'postid': postoutput.id()})
 
@@ -71,6 +79,8 @@ class PostAPI(base.BaseSessionHandler):
             created = str(long(time.mktime(created.timetuple())))
             last_modified = blogpost_from_key.last_modified
             last_modified = str(long(time.mktime(last_modified.timetuple())))
+            if self.request.get('publish'):
+                status_code = int(self.request.get('publish'))
 
             rtn_post = {}
             rtn_post.update({'title':blogpost_from_key.title})
@@ -79,6 +89,7 @@ class PostAPI(base.BaseSessionHandler):
             rtn_post.update({'content':blogpost_from_key.content})
             rtn_post.update({'created':created})
             rtn_post.update({'last_modified':last_modified})
+            rtn_post.update({'status_code':status_code})
 
             images = []
             for x in blogpost_from_key.images:

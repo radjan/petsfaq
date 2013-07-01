@@ -9,9 +9,9 @@ TYPE_ANSWER = "A"
 TYPE_REPLY = "R"
 TYPE_BLOG = "B"
 
-STATUS_DRAFT = 1
-STATUS_PUBLISH = 2
-STATUS_EDITED = 3 
+STATUS_DRAFT = 0
+STATUS_PUBLISH = 1
+STATUS_EDITED = 2
 
 class Post(polymodel.PolyModel):
     title = db.StringProperty(required=True)
@@ -42,6 +42,9 @@ class Blogpost(Post):
 
     def __init__(self, *args, **kwargs):
         kwargs['post_type'] = TYPE_BLOG
-        kwargs['status_code'] = STATUS_DRAFT
+
+        if kwargs['status_code'] == None:
+           kwargs['status_code'] = STATUS_DRAFT
+
         Post.__init__(self, *args, **kwargs)
 
