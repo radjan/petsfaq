@@ -100,12 +100,12 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos', imageApi.Photo,      methods=['GET']),
     webapp2.Route(API_PREFIX+'/image/<imageid:\d+>',              imageApi.Image,      methods=['GET']),
 
-    webapp2.Route(API_PREFIX+'/posts',                 postApi.BlogpostAPI),
-    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>', postApi.PostAPI),
+    webapp2.Route(API_PREFIX+'/posts',                            postApi.BlogpostAPI),
+    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>',            postApi.PostAPI),
 
-    webapp2.Route('/test/upload/<personid:\d+>/avatar',   image.upload_avatar, methods=['GET']),
-    webapp2.Route('/test/upload/<hospitalid:\d+>/logo',   image.upload_logo,   methods=['GET']),
-    webapp2.Route('/test/upload/<blogpostid:\d+>/photo',  image.upload_photo,   methods=['GET']),
+    webapp2.Route('/test/upload/<personid:\d+>/avatar',           image.upload_avatar, methods=['GET']),
+    webapp2.Route('/test/upload/<hospitalid:\d+>/logo',           image.upload_logo,   methods=['GET']),
+    webapp2.Route('/test/upload/<blogpostid:\d+>/photo',          image.upload_photo,   methods=['GET']),
 
     webapp2.Route('/test/upload/post',   post.upload_post,   methods=['GET']),
 

@@ -57,7 +57,7 @@ class BlogpostAPI(base.BaseSessionHandler):
             ids = []
             for x in Blogpost.all():
                 ids.append(x.key().id())
-            util.jsonify_response(self.response, ids)
+            util.jsonify_response(self.response, {'blogpostids':ids})
         except Exception as e:
             self.response.write({'Error':'Internal Error %s' % str(e)})
             raise
@@ -79,8 +79,8 @@ class PostAPI(base.BaseSessionHandler):
             created = str(long(time.mktime(created.timetuple())))
             last_modified = blogpost_from_key.last_modified
             last_modified = str(long(time.mktime(last_modified.timetuple())))
-            if self.request.get('publish'):
-                status_code = int(self.request.get('publish'))
+
+            status_code = blogpost_from_key.status_code
 
             rtn_post = {}
             rtn_post.update({'title':blogpost_from_key.title})
@@ -91,12 +91,29 @@ class PostAPI(base.BaseSessionHandler):
             rtn_post.update({'last_modified':last_modified})
             rtn_post.update({'status_code':status_code})
 
-            images = []
-            for x in blogpost_from_key.images:
-                images.append(x.key().id())
-            rtn_post.update({'imageids':images})
+            photos = []
+            for x in blogpost_from_key.photos:
+                photos.append(x.key().id())
+            rtn_post.update({'photoids':photos})
 
             util.jsonify_response(self.response, rtn_post)
+
+        except Exception as e:
+            self.response.write({'Error':'Internal Error %s' % str(e)})
+            raise
+
+    def put(self, blogpostid):
+        try:
+            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+            publish    = self.request.get('publish')
+
+            if publish.isdigit():
+                publish = int(publish)
+                blogpost_from_key.status_code=publish
+                blogpost_from_key.put()
+                self.response.out.write('status_code changed to %s OK!'% publish)
+            else:
+                self.response.out.write('no changed')
 
         except Exception as e:
             self.response.write({'Error':'Internal Error %s' % str(e)})
