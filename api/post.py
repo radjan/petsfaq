@@ -14,8 +14,9 @@ from model.person import Person
 from model.hospital import Hospital
 from model.post import Blogpost
 from view import base
-
 from common import util
+
+import json
 
 class BlogpostAPI(base.BaseSessionHandler):
     def post(self):
@@ -105,7 +106,7 @@ class PostAPI(base.BaseSessionHandler):
     def put(self, blogpostid):
         try:
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
-            publish    = self.request.get('publish')
+            publish = json.loads(self.request.body).get('publish')
 
             if publish.isdigit():
                 publish = int(publish)

@@ -19,4 +19,4 @@ curl  -X GET http://localhost:8080/api/v1/person
 
 
 # test PUT to edit blogpost attribute(escape for zsh)
-#curl -XPUT -HContent-type:text/plain  http://127.0.0.1:8080/api/v1/post/4573968371548160\?publish\=0
+#curl -X PUT -i -d '{ "abcde": "666", "publish" : 1  }' http://127.0.0.1:8080/api/v1/post/4573968371548160\?publish\=0
