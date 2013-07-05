@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import urllib
 import urllib2
 #TODO requests?
-import simplejson as json
+import json
 
 GEOCODING_URL = u'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=%s'
 SENSOR_TRUE = 'true'
