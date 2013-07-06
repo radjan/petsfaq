@@ -30,6 +30,8 @@ from api import person as personApi
 
 from api import imageApi
 from api import post as postApi
+from test import testApi
+
 from view import image
 from view import post
 
@@ -71,6 +73,13 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/hospital/<id:\d+>', view.hospital.HospitalDetail, name='view_hospital'),
     ('/faq', faq.BoardPage),
 
+    # edit page with privilege
+    ('/hospitals/edit', view.hospital.HospitalListEdit),
+    webapp2.Route('/hospital/<id:\d+>/edit',
+        view.hospital.HospitalDetailEdit, name='view_hospital'),
+    ('/faq', faq.BoardPage),
+
+
     ('/adm/data', adm_data.ListDataPage),
     (API_PREFIX+'/hospital', restApi.HospitalAPI),
     (API_PREFIX+'/account', restApi.AccountAPI),
@@ -99,15 +108,16 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos', imageApi.PhotoPost,  methods=['POST']),
     webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos', imageApi.Photo,      methods=['GET']),
     webapp2.Route(API_PREFIX+'/image/<imageid:\d+>',              imageApi.Image,      methods=['GET']),
-
     webapp2.Route(API_PREFIX+'/posts',                            postApi.BlogpostAPI),
     webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>',            postApi.PostAPI),
 
     webapp2.Route('/test/upload/<personid:\d+>/avatar',           image.upload_avatar, methods=['GET']),
     webapp2.Route('/test/upload/<hospitalid:\d+>/logo',           image.upload_logo,   methods=['GET']),
     webapp2.Route('/test/upload/<blogpostid:\d+>/photo',          image.upload_photo,   methods=['GET']),
+    webapp2.Route('/test/upload/post',                            post.upload_post,   methods=['GET']),
 
-    webapp2.Route('/test/upload/post',   post.upload_post,   methods=['GET']),
+    #webapp2.Route('/test/testApi/<blobid>', testApi.blob),
+
 
 
     (API_PREFIX+'/.*', NotFound),
