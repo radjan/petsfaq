@@ -11,6 +11,7 @@
     <!-- Le styles -->
     <link href="/s/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
+     
       body {
         padding-top: 60px;
         padding-bottom: 40px;
@@ -47,7 +48,25 @@
     margin: 0;
     }
    
-
+    .list_btn{
+    top: 40%;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    font-size: 60px;
+    font-weight: 100;
+    line-height: 30px;
+    color: #ffffff;
+    text-align: center;
+    background: #222222;
+    border: 3px solid #ffffff;
+    -webkit-border-radius: 23px;
+    -moz-border-radius: 23px;
+    border-radius: 23px;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    }
     </style>
     <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="/s/css/myFormat.css" rel="stylesheet">
@@ -185,7 +204,7 @@
 
     function addClickHandler() {
 
-      $("div[name=hospital_template] a").click(function(e) {
+      $("a[name=linkTo]").click(function(e) {
         e.preventDefault();
 
 
@@ -195,7 +214,7 @@
         //disable others item,so need animate hospital_div size
 
 
-        var hSize = $('div[name=hospital_template]').length;
+        var hSize = $('div[name=hospital_template]').length-1;//-1 include the templete
 
         showIndex = $('div[name=hospital_template]').index(showItem);
         for (var i = hSize - 1; i >= 0; i--) {
@@ -217,7 +236,34 @@
          // overflow: 'hidden'
         //}); //hidden hospital scrollbar
         $("a[name=list_menu]").show(); //menu show
-
+        /**handle next show item**/
+        if(hSize>=2){
+          $("a[name=h_next_btn]").show();
+          $("a[name=h_prev_btn]").show();
+          $("a[name=h_next_btn],a[name=h_prev_btn]").click(function(){
+              var add=1;
+              if(this.name=="h_prev_btn"){
+                add=-1;
+              }
+              var tmp=(showIndex+add+hSize)%hSize;
+              //alert(tmp+"/"+hSize);
+              
+              $('div[name=hospital_template]:eq(' + showIndex + ')').hide();
+              $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').show();
+               $('div[name=hospital_template]:eq(' + tmp + ')').show();
+              $('div[name=hospital_template]:eq(' + tmp + ') a[name=linkTo]').show();
+        showIndex=tmp;
+        
+        var hid = $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').attr("href");
+        $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').hide();
+        // alert(hid);
+         $("#vets").empty(); //clear vets data
+        getVetData(hid); //get vets data
+          });
+        }
+        
+        
+        
         var hid = $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').attr("href");
         $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').hide();
         // alert(hid);
@@ -290,6 +336,8 @@
       //  overflow: 'auto'
      // });
       $(this).hide(); //hide menu bar
+      $("a[name=h_next_btn]").hide();
+      $("a[name=h_prev_btn]").hide();
       $("#vets").empty(); //clear vets data
     });
 
