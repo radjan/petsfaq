@@ -33,6 +33,11 @@
 </head>
 <body>
 
+
+<div id='create_div'>
+<div><a href='#' id='create_link'>新增專長</a></div>
+</div>
+
 <ul id='specialties'>
 </ul>
 
@@ -65,6 +70,29 @@
 
 <script>
 $(document).ready(function(){
+    var create_div = $('#create_div');
+    $('#create_link').click(function() {
+        var f = $('#templates form.edit_form').clone(); 
+        f.find('input[name=save]').click(function (){
+            $.ajax({
+                url: "/api/v1/specialty",
+                type: "POST",
+                data: JSON.stringify({'species':f.find('input[name=species]').val(),
+                       'category': f.find('input[name=category]').val()}),
+                cache: false
+            }).done(function(){
+                delayedCall(function(){list($('#specialties'));}, 1000);
+            });
+            f.find('input[name=save]').disable();
+            return false;
+        });
+        f.find('input[name=cancel]').click(function (){
+            f.remove();
+            return false;
+        });
+        create_div.append(f);
+        return false;
+    });
     list($('#specialties'));
 });
 
@@ -108,6 +136,7 @@ function list(parentElm) {
                     return false;
                 });
                 s.append(f);
+                return false;
             });
 
 
@@ -115,6 +144,7 @@ function list(parentElm) {
                 if (confirm("Are sure delete this?")) {
                     alert('not implemented yet');
                 }
+                return false;
             });
             parentElm.append(s);
         });
