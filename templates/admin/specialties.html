@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <style>
+        #templates {
+            display: None;
+        }
+
+        #specialties li {
+            list-style: None;
+            width: 98%;
+            padding: 2px;
+            clear: both;
+        } 
+
+        #specialties li div {
+            float: left;
+            min-width: 80px;
+            border-bottom: 1px dotted grey;
+        }
+
+        #specialties li div.id {
+            min-width: 140px;
+        }
+
+        #specialties .edit_form {
+            clear: both;
+        }
+        
+    </style>
+</head>
+<body>
+
+
+<div id='create_div'>
+<div><a href='#' id='create_link'>新增專長</a></div>
+</div>
+
+<ul id='specialties'>
+</ul>
+
+<div id='templates'>
+
+    <li class='s_col'>
+        <div class='id'>ID</div>
+        <div class='species'>Species</div>
+        <div class='category'>Category</div>
+        <div class='action'>Actions</div>
+    </li>
+
+    <li class='specialty'>
+        <div class='id'>ID</div>
+        <div class='species'>Species</div>
+        <div class='category'>Category</div>
+        <div class='action'>
+            <a href="#" name='edit'>編輯</a> |
+            <a href='#' name='del'>刪除</a>
+        </div>
+    </li>
+
+    <form class='edit_form'>
+        Species: <input name='species'/>
+        Category: <input name='category'/>
+        <input type='submit' value='儲存' name='save'/>
+        <input type='submit' value='取消' name='cancel'/>
+    </form>
+</div>
+
+<script>
+$(document).ready(function(){
+    var create_div = $('#create_div');
+    $('#create_link').click(function() {
+        var f = $('#templates form.edit_form').clone(); 
+        f.find('input[name=save]').click(function (){
+            $.ajax({
+                url: "/api/v1/specialty",
+                type: "POST",
+                data: JSON.stringify({'species':f.find('input[name=species]').val(),
+                       'category': f.find('input[name=category]').val()}),
+                cache: false
+            }).done(function(){
+                delayedCall(function(){list($('#specialties'));}, 1000);
+            });
+            f.find('input[name=save]').disable();
+            return false;
+        });
+        f.find('input[name=cancel]').click(function (){
+            f.remove();
+            return false;
+        });
+        create_div.append(f);
+        return false;
+    });
+    list($('#specialties'));
+});
+
+function list(parentElm) {
+    parentElm.empty();
+    parentElm.append($('#templates li.s_col').clone());
+
+    $.ajax({
+        url: "/api/v1/specialty",
+        type: "GET",
+        cache: false
+    }).done(function(data){
+        var properties = ['id', 'species', 'category']
+        $.each(data, function(s_idx){
+            var specialty = data[s_idx];
+            var s = $('#templates').find('li.specialty').clone();
+            $.each(properties, function(p_idx){
+                var p_name = properties[p_idx];
+                s.find('div.'+p_name).text(specialty[p_name]);
+            });
+
+            s.find('a[name=edit]').click(function() {
+                var f = $('#templates form.edit_form').clone(); 
+                f.find('input[name=species]').val(s.find('div.species').text());
+                f.find('input[name=category]').val(s.find('div.category').text());
+                f.find('input[name=save]').click(function (){
+                    $.ajax({
+                        url: "/api/v1/specialty/" + s.find('div.id').text(),
+                        type: "PUT",
+                        data: JSON.stringify({'species':f.find('input[name=species]').val(),
+                               'category': f.find('input[name=category]').val()}),
+                        cache: false
+                    }).done(function(){
+                        delayedCall(function(){list($('#specialties'));}, 500);
+                    });
+                    f.find('input[name=save]').disable();
+                    return false;
+                });
+                f.find('input[name=cancel]').click(function (){
+                    f.remove();
+                    return false;
+                });
+                s.append(f);
+                return false;
+            });
+
+
+            s.find('a[name=del]').click(function() {
+                if (confirm("Are sure delete this?")) {
+                    alert('not implemented yet');
+                }
+                return false;
+            });
+            parentElm.append(s);
+        });
+    });
+}
+
+function delayedCall(fn, time) {
+    setTimeout(fn, time);
+}
+
+</script>
+</body>
+</html>
