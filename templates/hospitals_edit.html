@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Helper - hospitals</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/s/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+
+      @media (max-width: 980px) {
+        /* Enable use of floated navbar text */
+        .navbar-text.pull-right {
+          float: none;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+    .hospital_frame{
+    background-color: #EEEEEE;
+    border-radius: 6px 6px 6px 6px;
+    color: inherit;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 30px;
+    margin-bottom: 10px;
+    padding: 20px 20px 20px 20px;
+    }
+    .hospitals_frame:after{
+      clear: both;
+    }
+    .hospital_menu{
+    clear: both;
+    background-color: #EEEEEE;
+    padding:10px;
+    margin: 0;
+    }
+   
+
+    </style>
+    <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/s/css/myFormat.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/s/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/s/ico/favicon.png">
+  </head>
+
+  <body>
+
+    {% include 'components/navbar.html' %}
+    <div class="container-fluid">
+      <div class="row-fluid">
+          {% include 'components/side.html' %}
+
+        <div class="span10">
+          
+            {% include '/hospital_list.html' %}
+            {% include '/vet_list.html' %}
+          <!-- ORIGINAL WAY TO CREATE HOSPITALS -->
+            <!-- {% for h in hospitals %}
+            <div class="row-fluid">
+                <div class="span2">
+                    <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
+                </div>
+                <div class="span8">
+                <h2>{{ h.name }}</h2>
+                <p>{{ h.description }}</p>
+                <p><a class="btn btn-info" href="./hospital_detail?id={{ h.key().id() }}">View details &raquo;</a></p> -->
+                <!-- </div> --><!--/span-->
+            <!-- </div> --><!--/row-->
+            <!-- {% endfor %} -->
+          </div><!-- /container -->
+
+          <!--<div id='fromAJAX' class="container-fluid">
+           當你按了直接搜尋之後 會透過ajax取得所有hospital  name:description 並列在下面：<br />
+          </div> --><!-- /container -->
+          <!--doctors-->
+          
+
+        </div><!--/span-->
+      </div><!--/row-->
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2013</p>
+      </footer>
+
+
+
+ <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
+    <script language='JavaScript'>
+    /*setting browser height*/
+    var showIndex = 0; //the select item index
+    //var initLists_h = parseInt($(window).height() - $("#hospital_div").offset().top); //the browser height
+     // alert( initLists_h);
+    var firstY = 0; //the first hospital point of y
+    //$("#hospital_div").height(initLists_h);
+    /****/
+    $(document).ready(function showHospital() {
+
+      var q = $.url().param('q');
+      var search_url = "/api/v1/hospital";
+      if (q != undefined) {
+        $('#name_search').val(q);
+        search_url += '?name=*' + q;
+      }
+      //get hospital list
+      $.ajax({
+        url: search_url,
+        type: "GET",
+        cache: false
+      }).done(function(data) {
+        //alert(data);
+        createHospitals(data, addClickHandler);
+      });
+    });
+
+    function nameSearch() {
+      $("#hospital_div").html("Searching...");
+      $.ajax({
+        url: "/api/v1/hospital?name=*" + $('#name_search').val() + "*",
+        type: "GET",
+        cache: false
+      }).done(function(data) {
+       
+        createHospitals(data,addClickHandler);
+      });
+    }
+
+    function createHospitals(_data, callback) {
+      $("#hospital_div div[name=hospital_template]").empty();
+      var hospitals=_data;
+      //alert(hospitals[0].id);
+      //var hospitals = jQuery.parseJSON(_data);
+      var list_menu = "a[name=list_menu]";
+
+      for (i in hospitals) {
+        var h = $("div[name=hospital_template]").last().clone();
+        h.find("h2[name=name]").text(hospitals[i].name);
+        h.find("p[name=description]").text(hospitals[i].description);
+        h.find("a[name=linkTo]").attr("href", hospitals[i].id);
+        $("#hospital_div").append(h);
+        //$(h).insertBefore(list_menu);
+
+        /***zmin s**/
+        //set y
+        if (firstY == 0) {
+          firstY = $('div[name=hospital_template]:first()').offset().top;
+          //initLists_h = $('div[name=hospital_template]:first()').outerHeight;
+        }
+
+
+      }
+      //add hospital deatil btn linstener
+      if (typeof(callback) == 'function') {
+        callback();
+      };
+    }
+
+
+    /**  when add the div add this handler
+     * [addClickHandler description]
+     *  zmin
+     */
+
+    function addClickHandler() {
+
+      $("div[name=hospital_template] a").click(function(e) {
+        e.preventDefault();
+
+
+        var showItem = e.target.parentNode.parentNode;
+        //move ietm
+        //$(showItem).animate("top:"+position.top+"px");
+        //disable others item,so need animate hospital_div size
+
+
+        var hSize = $('div[name=hospital_template]').length;
+
+        showIndex = $('div[name=hospital_template]').index(showItem);
+        for (var i = hSize - 1; i >= 0; i--) {
+          if (i == showIndex) {
+            continue;
+          }
+          $('div[name=hospital_template]:eq(' + i + ')').hide();
+        }
+        /*
+               $("#hospital_div").animate( {
+              scrollTop: $(showItem).offset().top, 
+              height:$(showItem).outerHeight(),
+              leaveTransforms: true
+              });
+              
+               */
+        //$("#hospital_div").height($(showItem).outerHeight()); //set hospital div height
+       // $("#hospital_div").css({
+         // overflow: 'hidden'
+        //}); //hidden hospital scrollbar
+        $("a[name=list_menu]").show(); //menu show
+
+        var hid = $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').attr("href");
+        $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').hide();
+        // alert(hid);
+        getVetData(hid); //get vets data
+      });
+      /***zmin e**/
+    }
+    /** 0704 vet list get***/
+    /**
+     * [showHospitalDetail description] get hospital's vets
+     * @param  {[String]} _hid [description] the hospital's id
+     * @return {[type]}      [description]
+     */
+
+    function getVetData(_hid) {
+      $.ajax({
+        url: "/api/v1/hospital/" + _hid,
+        type: "GET",
+        cache: false
+      }).done(function(data) {
+        putVetData(data);
+      });
+    }
+    /**
+     * [putVetData description] add vet data
+     * @param  {[type]} hospital [description] hospital'json data
+     * @return {[type]}          [description]
+     */
+
+    function putVetData(hospital) {
+      //alert('');
+      var vets = $("#vets");
+      var vs =hospital.vets;
+      for (i in vs) {
+        var v = $("div[name=oneVet]").last().clone();
+        v.find("span[name=vet_name]").text(vs[i].person.name);
+        v.find("span[name=vet_desc]").text(vs[i].description);
+        v.find("span[name=vet_mail]").text(vs[i].person.email);
+
+        for (j in vs[i].experience) {
+          v.find("dl[name=exp]").append("<dd>" + vs[i].experience[j] + "</dd>");
+        }
+        for (j in vs[i].education) {
+          v.find("dl[name=exp]").append("<dd>" + vs[i].education[j] + "</dd>");
+        }
+        // alert(initSpecialties(1));
+        for (j in vs[i].specialties) {
+          v.find("dl[name=specilty]").append("<dd>" + vs[i].specialties[j].species + ": " + vs[i].specialties[j].category + "</dd>");
+          // v.find("dl[name=specialty]").append("<ul id='specialties'></ul>");
+        }
+        vets.append(v);
+      
+      }
+    }
+
+    /**0626 zmin show menu list**/
+    /**
+     * [ description]
+     * @param  {[type]} e [description]
+     * @return {[type]}   [description]
+     */
+    $("a[name=list_menu]").click(function(e) {
+      e.preventDefault();
+      //$("#hospital_div").height($(window).height() - $("#hospital_div").offset().top);
+      $("div[name=hospital_template]").each(function() {
+        $(this).show();
+      });
+      $("div[name=hospital_template]:eq(" + showIndex + ") a[name=linkTo]").show(); //the detail item show
+      //$("#hospital_div").css({
+      //  overflow: 'auto'
+     // });
+      $(this).hide(); //hide menu bar
+      $("#vets").empty(); //clear vets data
+    });
+
+
+    /* Example for Yun-Tai */
+     // function showHospitals(){
+     //     $.ajax({
+     //         url: "/api/v1/hospital",
+     //         type: 'GET',
+     //         cache: false
+     //     }).done(function( data ) {
+     //         var hospitals = jQuery.parseJSON(data);
+     //         for(i in hospitals){
+     //             $("#fromAJAX").append("<p>"+hospitals[i].name+":"+hospitals[i].description+":"+hospitals[i].specialty+"</p>");
+     //         }
+     //     });
+     // }
+     //
+    </script>
+
+  </body>
+</html>

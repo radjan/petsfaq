@@ -1,21 +1,47 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <!-- <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
+          </button> -->
           <a class="brand" href="/">Pet Helper</a>
-          <div class="nav-collapse collapse">
-            <p class="navbar-text pull-right">
+          <div class="nav-collapse collapse navbar-responsive-collapse">
+            <ul class="nav pull-right">
               {% if user %}
-                {{ user.name }}, 
-                <a href="/logout" class="navbar-link">Logout</a>
+                <!-- {{ user.name }},  -->
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.name }} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/hospitals/edit">管理平台</a></li>
+                      <li><a href="#">Another action</a></li>
+                      <li><a href="#">Something else here</a></li>
+                      <li class="divider"></li>
+                      <li><a href="/logout" class="navbar-link">Logout</a></li>
+                    </ul>
+                </li>
+                <!-- 
+                <li class="dropdown">
+                  <a href="#" class="dropdown_toogle" data-toogle="dropdown">
+                    {{ user.name }}
+                    <b class="caret"></b>
+                  </a>
+                  <ul id="actions" class="dropdown-menu">
+                    <li>
+                      <a href="#">Action</a>
+                    </li>
+                    <li>
+                      <a href="#">Action</a>
+                    </li>
+                  </ul>
+                </li>
+-->
               {% else %}
                 <a href="/login" class="navbar-link">Login</a>
               {% endif %}
-            </p>
+            </ul>
             <ul class="nav">
               <li><a href="/faq">論壇</a></li>
               <li class="active"><a href="/hospitals">醫療資訊</a></li>

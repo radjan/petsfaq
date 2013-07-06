@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap, from Twitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/s/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+
+      @media (max-width: 980px) {
+        /* Enable use of floated navbar text */
+        .navbar-text.pull-right {
+          float: none;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+    </style>
+    <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/s/css/myFormat.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/s/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="/s/ico/favicon.png">
+
+  </head>
+
+  <body>
+
+ {% include 'components/navbar.html' %}
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        {% include 'components/side.html' %}
+        
+        <div class="span10">
+        
+        <div>
+          <!-- <a class="btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown" href="#">編輯模式
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a id="revise_button" type="button">修改</a></li>
+            <li><a href="#">新增醫生</a></li>
+          </ul> -->
+          <a id="edit_mode" class="btn btn-small btn-danger" type="button">進入編輯模式</a>
+          <a id="browse_mode" class="btn btn-small btn-primary" type="button">進入瀏覽模式</a>
+        </div>        
+        <!-- carousel -->
+          <!-- <div id="myCarousel" class="carousel slide">
+            <div class="carousel-inner">
+              <div class="item active">
+                <img src="/s/img/slide-01.jpg" alt="">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h4>Example headline.</h4>
+                      <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                      <br>
+                      <a class="btn btn-large btn-primary" href="#">Sign up today</a>
+                    </div>
+                  </div>
+              </div>
+              <div class="item">
+                <img src="/s/img/slide-02.jpg" alt="">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h4>Another example headline.</h4>
+                      <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                      <a class="btn btn-large btn-primary" href="#">Learn more</a>
+                    </div>
+                  </div>
+              </div>
+              <div class="item">
+                <img src="/s/img/slide-03.jpg" alt="">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h4>One more for good measure.</h4>
+                      <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                      <a class="btn btn-large btn-primary" href="#">Browse gallery</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+          </div> --><!-- /.carousel -->
+          <div class="hero-unit">
+            <button id="edit_hospital" type="button" class="btn btn-mini btn-danger edit_type edit_button">
+                編輯
+            </button>
+            <button id="save_hospital" type="button" class="btn btn-mini btn-info edit_type">
+                儲存
+            </button>
+            <button id="cancel_hospital" type="button" class="btn btn-mini edit_type">
+                取消
+            </button>
+            <h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
+              <input id="edit_hospital_name" type="text" class="edit_type">
+            </h1>
+            <p>
+              <span id="hospital_desc" class="browse_type"><!-- hospital description --></span>
+              <textarea id="edit_hospital_desc" rows="5" class="input-block-level edit_type"></textarea>
+            </p>
+            <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+          </div>
+          
+          <button id="addVet_button" type="button" class="btn btn-small btn-danger edit_type edit_button">新增醫生</button>
+          <hr class="bs-docs-separator">
+
+          <div class="row-fluid">
+
+            <div class="container-fluid" id="vets">
+              <!-- place for vets -->
+            </div><!-- /container -->
+            <hr class="bs-docs-separator">
+
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2013</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+    <div class="templates">
+        <div class="row-fluid browse_type" name="oneVet">
+            <button id="editVet_" type="button" class="btn btn-mini btn-danger edit_type edit_button">
+                編輯
+            </button>
+            <button id="saveVet_" type="button" class="btn btn-mini btn-info edit_type">
+                儲存
+            </button>
+            <button id="cancelVet_" type="button" class="btn btn-mini edit_type">
+                取消
+            </button>
+
+            <div class="span2">
+              <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
+            </div>
+            <div class="span8">
+              <h2><span name="vet_name"><!-- vet name --></span>
+                  <input type="text" class="edit_type" name="vet_name">
+                  <small><a href="#">Blog</a></small>
+              </h2> 
+              <p><span name="vet_desc"><!-- vet desc --></span>
+                  <textarea name="vet_desc" rows="5" class="input-block-level edit_type"></textarea>
+              </p>
+              <dl name="exp">
+                <dt>學經歷</dt>
+              </dl>
+              <dl name="specialty">
+                <dt>專長</dt>
+              </dl>
+              <ul id='vetSpecialties_' class="edit_type"></ul>
+              <button type="button" class="btn btn-info" data-target="#nameCard_" data-toggle="collapse">
+              <!-- <button class="btn btn-info" name="nameCardBtn_"> -->
+                    名片
+              </button>
+             
+              <div id="nameCard_" class="collapse">
+                <address>
+                  <br>
+                  <strong><span name="vet_name">vet name</span></strong><br>
+                    <a href="mailto:#"><span name="vet_mail">vet@mail</span></a>
+                    <input type="text" class="edit_type" name="vet_mail"><br>
+
+                    <span name="hospital_name"><!-- hospital name --></span><br>
+                    看診時間：9:00-21:00 <br>
+                    電話：<span class='phone'><!-- hospital phone --></span><br>
+                    地址：<span class='address'><!-- hopital address --></span><br>
+                    <ul>
+                      <li>可預約、可急診</li>
+                      <li>急診條件：20:00-24:00</li>
+                    </ul>
+                </address>
+
+              </div>
+            </div><!--/span-->
+        </div><!--/row-->
+    </div>
+
+    <div id='templates' class='templates specialtySelector'>
+     <li name='spec_item'>
+       <label>種類：</label>
+       <select name='species_' class='species'>
+          <option value=''>未選擇</option>
+       </select>
+       <input name="newSpecies" type="text" placeholder="新增種類" class="input-block-level inputNewSpecies">
+       <label>專科：</label>
+       <select name='category_' class='category'>
+          <!-- <option value='一般' class="optionCategory">一般</option> -->
+       </select>
+       <input name="newCategory" type="text" placeholder="新增專科" class="input-block-level inputNewCategory">
+       <!-- <textarea class="inputNewCategory" rows="1" autofocus></textarea> -->
+     </li> 
+   </div>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap.js"></script>
+    <script src="/s/js/showNAddSpecialites.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        
+        var hid = window.location.pathname.split("/")[2];
+        $.ajax({
+            url: "/api/v1/hospital/" + hid,
+            type: "GET",
+            cache: false
+        }).done(function (data) { putData(data); });
+
+
+       
+        $("#browse_mode").hide();
+        $(".edit_type").hide();
+
+
+    });
+
+    function putData(hospital) {
+      $("#hospital_name").text(hospital.name);
+      $("#hospital_desc").text(hospital.description);
+      var vets = $("#vets");
+      var vs = hospital.vets
+      for (i in vs){
+          var v = $("div[name=oneVet]").last().clone();
+          v.find("span[name=hospital_name]").text(hospital.name);
+          v.find("span.phone").text(hospital.phone);
+          v.find("span.address").text(hospital.zipcode +
+                                      hospital.county +
+                                      hospital.area +
+                                      hospital.address);
+          v.find("span[name=vet_name]").text(vs[i].person.name);
+          v.find("span[name=vet_desc]").text(vs[i].description);
+          v.find("span[name=vet_mail]").text(vs[i].person.email);
+
+          for (j in vs[i].experience) {
+            v.find("dl[name=exp]").append("<dd>"+vs[i].experience[j]+"</dd>");
+          }
+          for (j in vs[i].education) {
+            v.find("dl[name=exp]").append("<dd>"+vs[i].education[j]+"</dd>");
+          }
+          // alert(initSpecialties(1));
+          for (j in vs[i].specialties) {
+            v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
+
+          }
+          initSpecialtiesSelection(v.find("#vetSpecialties_"), vs[i].specialties.length+1, vs[i].specialties);
+          
+          setBtn(v, i);
+          vets.append(v);
+      }
+    }
+
+    function setBtn(v, i) {
+      //set name card.
+      var _nameCardBtn = v.find("button[data-target=#nameCard_]");
+      var _nameCard = v.find("#nameCard_");
+      var _vetSpecialties = v.find("#vetSpecialties_");
+
+      _nameCardBtn.attr("data-target", "#nameCard_"+i);
+      _nameCard.attr("id", "nameCard_"+i);
+      _vetSpecialties.attr("id", "vetSpecialties_"+i);
+
+      // for (j in v.experience) {
+      //   v.find("dl[name=exp]").append("<dd>"+v.experience[j]+"</dd>");
+      // }
+      // for (j in v.education) {
+      //   v.find("dl[name=exp]").append("<dd>"+v.education[j]+"</dd>");
+      // }
+      // for (j in v.specialties) {
+      //   v.find("dl[name=specialty]").append("<dd>"+vs.specialties[j].species+": "+v.specialties[j].category+"</dd>");
+      // }   
+
+      //set edit
+      var _editVet = v.find("#editVet_");
+      var _saveVet = v.find("#saveVet_");
+      var _cancelVet = v.find("#cancelVet_");
+      _editVet.attr("id", "editVet_"+i);
+      _saveVet.attr("id", "saveVet_"+i);
+      _cancelVet.attr("id", "cancelVet_"+i);
+
+      _editVet.click(function(){
+        v.find("input[name=vet_name]").show();
+        v.find("textarea[name=vet_desc]").show();
+        v.find("input[name=vet_mail]").show();
+        _vetSpecialties.show();
+        _nameCard.removeClass("collapse");
+        _nameCardBtn.attr("disabled", true);
+
+        _editVet.hide();
+        _saveVet.show();
+        _cancelVet.show();
+      });
+
+      _saveVet.click(function(){
+        //TODO:
+      });
+
+      _cancelVet.click(function(){
+        v.find("input[name=vet_name]").hide();
+        v.find("textarea[name=vet_desc]").hide();
+        v.find("input[name=vet_mail]").hide();
+        _vetSpecialties.hide();
+
+        v.find("input[name=vet_name]").val("");
+        v.find("textarea[name=vet_desc]").val("");
+        v.find("input[name=vet_mail]").val("");
+        
+        _nameCard.addClass("collapse")
+        _nameCardBtn.attr("disabled", false);
+
+        _editVet.show();
+        _saveVet.hide();
+        _cancelVet.hide();
+      });
+    }
+
+    function nameSearch() {
+        window.location.href = '/hospitals?q=' + $('#name_search').val();
+    }
+
+    // $("button[name=nameCardBtn_0]").click(function(){
+    //   alert($(this).attr("name"));
+      // $("div[name^]")
+    // });
+
+    $("#edit_mode").click(function(){
+      $(".edit_button").show();
+      $(".browse_type").show();
+      $("#edit_mode").hide();
+      $("#browse_mode").show();
+    });
+
+    $("#browse_mode").click(function(){
+      $(".edit_type").hide();
+      $(".browse_type").show();
+      $("#edit_mode").show();
+      $("#browse_mode").hide();
+    });
+
+    $("#edit_hospital").click(function(){
+      $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
+      $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
+    });
+
+        
+
+    $("#edit_hospital").click(function(){
+      $("#edit_hospital").hide();
+      $("#save_hospital").show();
+      $("#cancel_hospital").show();
+    });
+
+    $("#save_hospital").click(function(){
+
+    });
+
+    $("#cancel_hospital").click(function(){
+      $("#edit_hospital").show();
+      $("#save_hospital").hide();
+      $("#cancel_hospital").hide();
+
+      $("#edit_hospital_name").hide();
+      $("#edit_hospital_desc").hide();
+      $("#edit_hospital_name").val("");
+      $("#edit_hospital_desc").val("");      
+    });
+
+    </script>
+  </body>
+</html>
