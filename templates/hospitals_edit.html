@@ -70,10 +70,8 @@
     {% include 'components/navbar.html' %}
     <div class="container-fluid">
       <div class="row-fluid">
-          {% include 'components/side.html' %}
-
+   
         <div class="span10">
-          
             {% include '/hospital_list.html' %}
             {% include '/vet_list.html' %}
           <!-- ORIGINAL WAY TO CREATE HOSPITALS -->
@@ -117,7 +115,6 @@
     //$("#hospital_div").height(initLists_h);
     /****/
     $(document).ready(function showHospital() {
-
       var q = $.url().param('q');
       var search_url = "/api/v1/hospital";
       if (q != undefined) {
