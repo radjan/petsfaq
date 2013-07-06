@@ -50,8 +50,20 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        {% include 'components/side.html' %}
-        
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li><a id="edit_mode" class="btn-small btn-danger" type="button">進入編輯模式</a></li>
+              <li><a id="browse_mode" class="btn-small btn-primary" type="button">進入瀏覽模式</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">工具</li>
+              <li><a id="addVet_button" class="btn-small btn-danger">新增醫生</a></li>
+              
+              <!-- <li><a >編輯模式</a></li> -->
+              <!-- <li class="divider"></li> -->
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
         <div class="span10">
         
         <div>
@@ -62,8 +74,8 @@
             <li><a id="revise_button" type="button">修改</a></li>
             <li><a href="#">新增醫生</a></li>
           </ul> -->
-          <a id="edit_mode" class="btn btn-small btn-danger" type="button">進入編輯模式</a>
-          <a id="browse_mode" class="btn btn-small btn-primary" type="button">進入瀏覽模式</a>
+          <!-- <a id="edit_mode" class="btn btn-small btn-danger" type="button">進入編輯模式</a>
+          <a id="browse_mode" class="btn btn-small btn-primary" type="button">進入瀏覽模式</a> -->
         </div>        
         <!-- carousel -->
           <!-- <div id="myCarousel" class="carousel slide">
@@ -123,7 +135,7 @@
             <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
           </div>
           
-          <button id="addVet_button" type="button" class="btn btn-small btn-danger edit_type edit_button">新增醫生</button>
+          
           <hr class="bs-docs-separator">
 
           <div class="row-fluid">
@@ -233,9 +245,17 @@
         }).done(function (data) { putData(data); });
 
 
-       
-        $("#browse_mode").hide();
+        // $("#browse_mode").hide();
+        // $(".edit_type").hide();
+        
+        
+        $(".browse_type").show();
+        $("#edit_mode").hide();
+        $("#browse_mode").show();
         $(".edit_type").hide();
+        $(".edit_button").show();
+
+
 
 
     });

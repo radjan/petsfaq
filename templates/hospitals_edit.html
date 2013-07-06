@@ -70,9 +70,20 @@
     {% include 'components/navbar.html' %}
     <div class="container-fluid">
       <div class="row-fluid">
-   
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">工具</li>
+              <li><a type= "button" class="btn-danger">新增醫院</a></li>
+              <li class="divider"></li>
+              <!-- <li><a >編輯模式</a></li> -->
+              <!-- <li class="divider"></li> -->
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
         <div class="span10">
             {% include '/hospital_list.html' %}
+
             {% include '/vet_list.html' %}
           <!-- ORIGINAL WAY TO CREATE HOSPITALS -->
             <!-- {% for h in hospitals %}
@@ -114,7 +125,8 @@
     var firstY = 0; //the first hospital point of y
     //$("#hospital_div").height(initLists_h);
     /****/
-    $(document).ready(function showHospital() {
+    $(document).ready(
+      function showHospital() {
       var q = $.url().param('q');
       var search_url = "/api/v1/hospital";
       if (q != undefined) {
@@ -130,6 +142,10 @@
         //alert(data);
         createHospitals(data, addClickHandler);
       });
+
+      $("a[name=edit_mode]").show();
+      
+
     });
 
     function nameSearch() {
@@ -156,6 +172,7 @@
         h.find("h2[name=name]").text(hospitals[i].name);
         h.find("p[name=description]").text(hospitals[i].description);
         h.find("a[name=linkTo]").attr("href", hospitals[i].id);
+        h.find("a[name=edit_mode]").attr("href","/hospital/"+hospitals[i].id+"/edit");
         $("#hospital_div").append(h);
         //$(h).insertBefore(list_menu);
 
@@ -182,7 +199,7 @@
 
     function addClickHandler() {
 
-      $("div[name=hospital_template] a").click(function(e) {
+      $("a[name=linkTo]").click(function(e) {
         e.preventDefault();
 
 
