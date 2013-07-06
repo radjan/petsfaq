@@ -24,6 +24,7 @@ from common import share, util
 from view import base, faq, login, create
 import view.hospital
 from admin import data as adm_data
+from admin import adm
 from api import restApi
 from api import specialty as specialtyApi
 from api import person as personApi
@@ -81,6 +82,9 @@ app = webapp2.WSGIApplication([
 
 
     ('/adm/data', adm_data.ListDataPage),
+    ('/adm/index', adm.IndexPage),
+    ('/adm/specialties', adm.SpecialtyPage),
+
     (API_PREFIX+'/hospital', restApi.HospitalAPI),
     (API_PREFIX+'/account', restApi.AccountAPI),
     (API_PREFIX+'/person', restApi.PersonAPI),
