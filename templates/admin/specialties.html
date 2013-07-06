@@ -83,7 +83,7 @@ $(document).ready(function(){
             }).done(function(){
                 delayedCall(function(){list($('#specialties'));}, 1000);
             });
-            f.find('input[name=save]').disable();
+            f.remove();
             return false;
         });
         f.find('input[name=cancel]').click(function (){
