@@ -12,6 +12,7 @@ class GeneralDao:
     def create(self, m):
         m.parent = self.get_root_key()
         m.put()
+        return m.get_id()
 
     def update(self, m):
         m.put()

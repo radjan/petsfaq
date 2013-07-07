@@ -25,12 +25,8 @@ class RestAPI(base.BaseSessionHandler):
             serviceList = self.service.search(params)
         else:
             serviceList = self.service.list()
-        result = {}
-        cnt = 1
-        for i in serviceList: # list all model
-            result[cnt] = util.out_format(i)
-            cnt += 1
 
+        result = util.out_format(serviceList)
         util.jsonify_response(self.response, result)
 
     def post(self): # create model
@@ -39,9 +35,9 @@ class RestAPI(base.BaseSessionHandler):
         kw = util.get_model_properties(self.model, requestJson)
 
         theOne = self.model(**kw)
-        self.service.create(theOne)
+        new_id = self.service.create(theOne)
         self.response.status = 201
-        util.jsonify_response(self.response, {"result":"ok"})
+        util.jsonify_response(self.response, {'id': new_id, "result":"ok"})
 
 class HospitalAPI(RestAPI):
     service = hospital_service
@@ -105,6 +101,12 @@ class HospitalInstanceAPI(ModelInstanceAPI):
             v_dict['person'] = util.out_format(v.person)
             h_dict['vets'].append(v_dict)
         util.jsonify_response(self.response, h_dict)
+
+class PersonInstanceAPI(ModelInstanceAPI):
+    def __init__(self, *args, **kw):
+        self.service = person_service
+        self.model = person.Person
+        ModelInstanceAPI.__init__(self, *args, **kw)
 
 class SpecialtyInstanceAPI(ModelInstanceAPI):
     def __init__(self, *args, **kw):
