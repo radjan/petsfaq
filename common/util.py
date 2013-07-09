@@ -81,19 +81,18 @@ def _to_dict(domain_obj, tracedmdl=None):
     tmp = {}
 
     if kind not in tracedmdl:
-    """
-    check if ReferenceProperty-checked already done in previous recursion
-    or add into checking-Set
-    """
+        """check if ReferenceProperty-checked already done in previous 
+        recursion or add into checking-Set
+        """
         tracedmdl.add(kind)
         add_prop_list = FK_REF.get(kind,[])
         for add_prop in add_prop_list:
             fl = []
             for x in [v for v in domain_obj.__getattribute__(add_prop) if v !=
                     None]:
-                fl.append(_to_dict(x, tracedmdl))
+                fl.append({x.kind():_to_dict(x, tracedmdl)})
             #add model type
-            tmp[add_prop] = {kind:fl} 
+            tmp[add_prop] = fl
 
     property_keys = domain_obj.properties().keys()
     for key in property_keys:
