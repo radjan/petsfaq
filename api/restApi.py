@@ -5,12 +5,14 @@ import json
 from view import base
 from model import *
 from model import specialty
+from model import person
 from service.hospital import hospital_service
 from service.account import account_service
 from service.role import role_service
 from service.person import person_service
 from service.specialty import specialty_service
 from common import share, util
+from sets import Set
 
 
 # General 
@@ -119,4 +121,33 @@ class RoleInstanceAPI(ModelInstanceAPI):
         self.service = role_service
         self.model = role.Role
         ModelInstanceAPI.__init__(self, *args, **kw)
+
+class PersonHopitalList(RestAPI):
+    service = person_service
+    model = person.Person
+    def get(self, personid):
+        try:
+            person_from_key = self.model.get_by_id(int(personid))
+
+            if person_from_key:
+                 roles = person_from_key.roles
+
+            hospitals = {}
+            hospitalids = Set()
+            rtn_list = []
+            for r in roles:
+                if r: 
+                    hospitals.update({r.hospital.get_id():r.hospital})
+                    hospitalids.add(r.hospital.get_id())
+
+            for hid in list(hospitalids):
+                rtn_list.append(hospitals[hid])
+
+            util.jsonify_response(self.response,util.out_format(rtn_list))
+
+        except:
+            self.response.write({'Error':'Internal Error'})
+            raise
+
+
 

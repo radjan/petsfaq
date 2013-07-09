@@ -110,6 +110,8 @@ app = webapp2.WSGIApplication([
     #
     webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',     imageApi.AvatarPost, methods=['POST']),
     webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',     imageApi.Avatar,     methods=['GET']),
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/hospitals',  restApi.PersonHopitalList),
+
     webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',   imageApi.LogoPost,   methods=['POST']),
     webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',   imageApi.Logo,       methods=['GET']),
     webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos', imageApi.PhotoPost,  methods=['POST']),

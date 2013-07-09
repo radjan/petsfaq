@@ -6,9 +6,18 @@ from google.appengine.ext import db
 
 from common import share
 from service.account import account_service
+from sets import Set
 
 GOOGLE = share.VIEW_GOOGLE
 IDPWD = share.VIEW_IDPWD
+
+FK_REF = { 
+        'Person'  :['avatars','questions', 'blogposts', 'roles',
+                    'accounts'],
+        'Hospital':['logos','blogposts','vets','employees'],
+        'Blogpost':['photos'],
+        'Post'    :['replies']
+        }
 
 def get_user(acc):
     return {'userid': acc.userid,
@@ -65,8 +74,27 @@ def out_format(data):
         ret = _to_dict(data)
     return ret
 
-def _to_dict(domain_obj):
+def _to_dict(domain_obj, tracedmdl=None):
+    if tracedmdl == None:
+        tracedmdl = Set()
+    kind = domain_obj.kind()
     tmp = {}
+
+    if kind not in tracedmdl:
+    """
+    check if ReferenceProperty-checked already done in previous recursion
+    or add into checking-Set
+    """
+        tracedmdl.add(kind)
+        add_prop_list = FK_REF.get(kind,[])
+        for add_prop in add_prop_list:
+            fl = []
+            for x in [v for v in domain_obj.__getattribute__(add_prop) if v !=
+                    None]:
+                fl.append(_to_dict(x, tracedmdl))
+            #add model type
+            tmp[add_prop] = {kind:fl} 
+
     property_keys = domain_obj.properties().keys()
     for key in property_keys:
         prop = domain_obj.properties()[key]
@@ -74,16 +102,16 @@ def _to_dict(domain_obj):
         if type(v) is list:
             l = []
             for item in v:
-                l.append(_to_str(item))
+                l.append(_to_str(item, tracedmdl))
             tmp[str(key)] = l
         else:
-            tmp[str(key)] = _to_str(v)
+            tmp[str(key)] = _to_str(v, tracedmdl)
     tmp['id'] = domain_obj.get_id()
     return tmp
 
-def _to_str(obj):
+def _to_str(obj, tracedmdl=None):
     if isinstance(obj, db.Key):
-        return _to_dict(db.get(obj))
+        return _to_dict(db.get(obj), tracedmdl)
     return unicode(obj)
 
 def get_model_properties(model, json_obj):

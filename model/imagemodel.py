@@ -10,3 +10,5 @@ class imagemodel(db.Model):
 
     img_blobkey = db.StringProperty(required=True)
     date = db.DateTimeProperty(auto_now_add=True)
+    def get_id(self):
+        return self.key().id()
