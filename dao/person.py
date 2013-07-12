@@ -12,6 +12,7 @@ class PersonDao(base.GeneralDao):
     def create(self, p):
         p.parent = get_root_key()
         p.put()
+        return p.get_id()
 
     def update(self, p):
         p.put()
