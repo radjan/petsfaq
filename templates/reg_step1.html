@@ -122,8 +122,9 @@
             <input name="email" type="text" class="input-block-level" placeholder="電子信箱">
 
             <label>照片</label>
-              <input name="photo" type="img" class="image" >
-          
+             <!-- <input name="photo" type="image" src='s/img/tmpPic.png' class="image" >-->
+             <img name="pro_photo" src="s/img/tmpPic.png"/>
+              <input type="file" name="file" accept="image/gif,image/png,image/jpg,image/jpeg">
         </div>
 
         <br>
@@ -174,7 +175,16 @@
     <script src="/s/js/bootstrap.js"></script>
 
     <script>
+    var reader;
       $(document).ready(function(){
+        /**zmin select picture file handler**/
+        $("input:file").change(function (e){
+            
+            reader=new FileReader();
+            reader.addEventListener("load",loadendHandler);
+            reader.readAsDataURL(e.target.files[0]);
+        });
+        /**zmin select picture file handler**/
 
         $("a[name=checkdata]").click(function(){
             var _name = $("input[name=name]").val();
@@ -244,7 +254,12 @@
 
 
       });
+      /**zmin load photo to html**/
+      function loadendHandler(){
+        //alert('into');
+        $("img[name=pro_photo]").attr('src',reader.result);
 
+      }
       
     </script> 
   </body>

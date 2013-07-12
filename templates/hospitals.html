@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh">
   <head>
@@ -149,7 +148,7 @@
         type: "GET",
         cache: false
       }).done(function(data) {
-        //alert(data);
+        //alert( jQuery.parseJSON(data));
         createHospitals(data, addClickHandler);
       });
     });
@@ -178,6 +177,9 @@
         h.find("h2[name=name]").text(hospitals[i].name);
         h.find("p[name=description]").text(hospitals[i].description);
         h.find("a[name=linkTo]").attr("href", hospitals[i].id);
+        //hospital
+     
+        h.find('p[name=address]').text(hospitals[i].zipcode+" "+hospitals[i].county+" "+hospitals[i].area+" "+hospitals[i].address);
         $("#hospital_div").append(h);
         //$(h).insertBefore(list_menu);
 
@@ -209,11 +211,6 @@
 
 
         var showItem = e.target.parentNode.parentNode;
-        //move ietm
-        //$(showItem).animate("top:"+position.top+"px");
-        //disable others item,so need animate hospital_div size
-
-
         var hSize = $('div[name=hospital_template]').length-1;//-1 include the templete
 
         showIndex = $('div[name=hospital_template]').index(showItem);
@@ -223,20 +220,15 @@
           }
           $('div[name=hospital_template]:eq(' + i + ')').hide();
         }
-        /*
-               $("#hospital_div").animate( {
-              scrollTop: $(showItem).offset().top, 
-              height:$(showItem).outerHeight(),
-              leaveTransforms: true
-              });
-              
-               */
-        //$("#hospital_div").height($(showItem).outerHeight()); //set hospital div height
-       // $("#hospital_div").css({
-         // overflow: 'hidden'
-        //}); //hidden hospital scrollbar
         $("a[name=list_menu]").show(); //menu show
-        /**handle next show item**/
+        var showH=$('div[name=hospital_template]:eq(' + showIndex + ')');
+        var hid =showH.find('a[name=linkTo]').attr("href");
+        showH.find('a[name=linkTo]').hide();
+        showH.find('div[name=hospital_detail]').show();
+        
+        // alert(hid);
+        getVetData(hid); //get vets data
+         /**handle next show item**/
         if(hSize>=2){
           $("a[name=h_next_btn]").show();
           $("a[name=h_prev_btn]").show();
@@ -261,15 +253,25 @@
         getVetData(hid); //get vets data
           });
         }
-        
-        
-        
-        var hid = $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').attr("href");
-        $('div[name=hospital_template]:eq(' + showIndex + ') a[name=linkTo]').hide();
-        // alert(hid);
-        getVetData(hid); //get vets data
+        /**handle next show item(end)**/
+
+
       });
       /***zmin e**/
+
+       /**handler favorite add and remove**/
+        $("a[name=favorite_btn]").click(function(){
+
+            var isSelect=$(this).find('i').hasClass('icon-white');
+            if(isSelect){
+                $(this).find('i').removeClass('icon-white');
+            }else{
+                $(this).find('i').addClass('icon-white');
+            }
+        });
+        /**handler favorite add and remove(end)**/
+
+
     }
     /** 0704 vet list get***/
     /**
@@ -294,7 +296,9 @@
      */
 
     function putVetData(hospital) {
+      
       //alert('');
+      //vet
       var vets = $("#vets");
       var vs =hospital.vets;
       for (i in vs) {
