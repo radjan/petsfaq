@@ -26,10 +26,6 @@ class AccountDao(base.GeneralDao):
         else:
             raise Exception("unknow type")
 
-    def create(self, acc):
-        acc.parent = get_root_key()
-        acc.put()
-
     def get_by_userid(self, acc_id, acc_type):
         if acc_type == GOOGLE:
             q = acc_model.Google.all()
@@ -46,11 +42,5 @@ class AccountDao(base.GeneralDao):
                                     acc_type + ": " + acc_id)
             return rets[0]
         return None
-
-    def update(self, acc):
-        acc.put()
-
-    def list(self):
-        return acc_model.Account.all()
 
 account_dao = AccountDao()

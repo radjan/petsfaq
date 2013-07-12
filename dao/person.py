@@ -9,15 +9,4 @@ class PersonDao(base.GeneralDao):
     def __init__(self):
         self.model_cls = p_model.Person
 
-    def create(self, p):
-        p.parent = get_root_key()
-        p.put()
-        return p.get_id()
-
-    def update(self, p):
-        p.put()
-
-    def list(self):
-        return p_model.Person.all()
-
 person_dao = PersonDao()
