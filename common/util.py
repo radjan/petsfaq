@@ -79,6 +79,7 @@ def _to_dict(domain_obj, tracedmdl=None):
         tracedmdl = Set()
     kind = domain_obj.kind()
     tmp = {}
+    tmp['kind'] = kind
 
     if kind not in tracedmdl:
         """check if ReferenceProperty-checked already done in previous 
@@ -87,10 +88,9 @@ def _to_dict(domain_obj, tracedmdl=None):
         tracedmdl.add(kind)
         add_prop_list = FK_REF.get(kind,[])
         for add_prop in add_prop_list:
-            fl = []
-            for x in [v for v in domain_obj.__getattribute__(add_prop) if v !=
-                    None]:
-                fl.append({x.kind():_to_dict(x, tracedmdl)})
+            fl = [] #foreign key list
+            for x in [v for v in domain_obj.__getattribute__(add_prop) if v.kind() not in tracedmdl]:
+                fl.append(_to_dict(x, tracedmdl))
             #add model type
             tmp[add_prop] = fl
 
@@ -100,7 +100,7 @@ def _to_dict(domain_obj, tracedmdl=None):
         v = prop.get_value_for_datastore(domain_obj)
         if type(v) is list:
             l = []
-            for item in v:
+            for item in [x for x in v if v.kind() not in tracedmdl]:
                 l.append(_to_str(item, tracedmdl))
             tmp[str(key)] = l
         else:
@@ -110,7 +110,10 @@ def _to_dict(domain_obj, tracedmdl=None):
 
 def _to_str(obj, tracedmdl=None):
     if isinstance(obj, db.Key):
-        return _to_dict(db.get(obj), tracedmdl)
+        if db.get(obj).kind() in tracedmdl:
+            return unicode(db.get(obj).get_id())
+        else:
+            return _to_dict(db.get(obj), tracedmdl)
     return unicode(obj)
 
 def get_model_properties(model, json_obj):
