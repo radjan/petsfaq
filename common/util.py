@@ -109,6 +109,8 @@ def _to_dict(domain_obj, tracedmdl=None):
     return tmp
 
 def _to_str(obj, tracedmdl=None):
+    if db.get(obj) == None:
+        return unicode(None)
     if isinstance(obj, db.Key):
         if db.get(obj).kind() in tracedmdl:
             return unicode(db.get(obj).get_id())
