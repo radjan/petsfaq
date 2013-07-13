@@ -8,11 +8,10 @@ from common import share
 GOOGLE = share.ACCOUNT_GOOGLE
 ID_PWD = share.ACCOUNT_ID_PWD
 
-get_root_key = share.party_root_key
-
 class AccountDao(base.GeneralDao):
     def __init__(self):
         self.model_cls = acc_model.Account
+        self.get_root_key = share.party_root_key
 
     def exist(self, acc_id, acc_type):
         return self.get_by_userid(acc_id, acc_type) != None
