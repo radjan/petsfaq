@@ -3,8 +3,7 @@ from google.appengine.ext.db import polymodel
 
 from model import hospital, person
 
-#quirks
-class Role(object):
+class Role(polymodel.PolyModel):
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
     verified = db.BooleanProperty(default=False)
@@ -15,13 +14,13 @@ class Role(object):
     def get_id(self):
         return self.key().id()
 
-class PetOwner(Role, polymodel.PolyModel):
+class PetOwner(Role):
     pass
 
-class Moderator(Role, polymodel.PolyModel):
+class Moderator(Role):
     pass
 
-class Vet(Role, polymodel.PolyModel):
+class Vet(Role):
     hospital = db.ReferenceProperty(hospital.Hospital, 
             collection_name='vets')
     description = db.TextProperty(default='')
@@ -29,7 +28,7 @@ class Vet(Role, polymodel.PolyModel):
     education = db.StringListProperty()
     experience = db.StringListProperty(str)
 
-class Employee(Role, polymodel.PolyModel):
+class Employee(Role):
     hospital = db.ReferenceProperty(hospital.Hospital, 
             collection_name='employees')
 
