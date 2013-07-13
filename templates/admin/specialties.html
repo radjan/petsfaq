@@ -128,7 +128,7 @@ function list(parentElm) {
                     }).done(function(){
                         delayedCall(function(){list($('#specialties'));}, 500);
                     });
-                    f.find('input[name=save]').disable();
+                    f.remove();
                     return false;
                 });
                 f.find('input[name=cancel]').click(function (){
