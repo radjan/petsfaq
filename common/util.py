@@ -90,7 +90,7 @@ def _to_dict(domain_obj, tracedmdl=None):
         for add_prop in add_prop_list:
             fl = [] #foreign key list
             #for x in [v for v in domain_obj.__getattribute__(add_prop) if v.kind() not in tracedmdl]:
-            for x in v:
+            for x in v in domain_obj.__getattribute__(add_prop):
                 fl.append(_to_dict(x, tracedmdl))
             #add model type
             tmp[add_prop] = fl
@@ -101,7 +101,8 @@ def _to_dict(domain_obj, tracedmdl=None):
         v = prop.get_value_for_datastore(domain_obj)
         if type(v) is list:
             l = []
-            for item in [x for x in v if v.kind() not in tracedmdl]:
+            #for item in [x for x in v if v.kind() not in tracedmdl]:
+            for item in v:
                 l.append(_to_str(item, tracedmdl))
             tmp[str(key)] = l
         else:
