@@ -89,7 +89,8 @@ def _to_dict(domain_obj, tracedmdl=None):
         add_prop_list = FK_REF.get(kind,[])
         for add_prop in add_prop_list:
             fl = [] #foreign key list
-            for x in [v for v in domain_obj.__getattribute__(add_prop) if v.kind() not in tracedmdl]:
+            #for x in [v for v in domain_obj.__getattribute__(add_prop) if v.kind() not in tracedmdl]:
+            for x in v:
                 fl.append(_to_dict(x, tracedmdl))
             #add model type
             tmp[add_prop] = fl
@@ -109,10 +110,10 @@ def _to_dict(domain_obj, tracedmdl=None):
     return tmp
 
 def _to_str(obj, tracedmdl=None):
-    if db.get(obj) == None:
-        return unicode(None)
     if isinstance(obj, db.Key):
-        if db.get(obj).kind() in tracedmdl:
+        if db.get(obj) == None:
+            return unicode(None)
+        if db.get(obj) in tracedmdl:
             return unicode(db.get(obj).get_id())
         else:
             return _to_dict(db.get(obj), tracedmdl)
