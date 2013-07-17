@@ -91,8 +91,21 @@
           {% include 'components/side.html' %}
 
         <div class="span10">
-          
-            {% include '/hospital_list.html' %}
+          <div class="accordion" id="accordion2">
+             <div class="accordion-group">
+                <div class="accordion-heading">
+                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                    Hopital Lists >
+                  </a>
+                </div>
+                <div id="collapseTwo" class="accordion-body collapse in">
+                  <div class="accordion-inner">
+                     {% include '/hospital_list.html' %}
+                  </div>
+                </div>
+              </div>
+           
+          </div>
             {% include '/vet_list.html' %}
           <!-- ORIGINAL WAY TO CREATE HOSPITALS -->
             <!-- {% for h in hospitals %}
@@ -154,25 +167,31 @@
     });
 
     function nameSearch() {
-      $("#hospital_div").html("Searching...");
+      $("#hospital_div div[name=hospital_template]").remove();
+      var p=document.createElement("p");
+      var list_menu = "a[name=list_menu]";
+      $(p).html="searching...";
+       $(p).insertBefore(list_menu);
       $.ajax({
         url: "/api/v1/hospital?name=*" + $('#name_search').val() + "*",
         type: "GET",
         cache: false
       }).done(function(data) {
-       
         createHospitals(data,addClickHandler);
       });
     }
 
     function createHospitals(_data, callback) {
-      $("#hospital_div div[name=hospital_template]").empty();
+      $("#hospital_div div[name=hospital_template]").remove();
+      //empty和remove差別在前者清空tag裡的值，後者輕空tag漢內容值
+
       var hospitals=_data;
       //alert(hospitals[0].id);
       //var hospitals = jQuery.parseJSON(_data);
       var list_menu = "a[name=list_menu]";
 
       for (i in hospitals) {
+        //alert(hospitals[i].name);
         var h = $("div[name=hospital_template]").last().clone();
         h.find("h2[name=name]").text(hospitals[i].name);
         h.find("p[name=description]").text(hospitals[i].description);
@@ -180,9 +199,9 @@
         //hospital
      
         h.find('p[name=address]').text(hospitals[i].zipcode+" "+hospitals[i].county+" "+hospitals[i].area+" "+hospitals[i].address);
-        $("#hospital_div").append(h);
-        //$(h).insertBefore(list_menu);
-
+        //$("#hospital_div").append(h);
+        $(h).insertBefore(list_menu);
+        //alert(hospitals[i].id);
         /***zmin s**/
         //set y
         if (firstY == 0) {
@@ -296,8 +315,7 @@
      */
 
     function putVetData(hospital) {
-      
-      //alert('');
+     
       //vet
       var vets = $("#vets");
       var vs =hospital.vets;
@@ -343,6 +361,8 @@
       $("a[name=h_next_btn]").hide();
       $("a[name=h_prev_btn]").hide();
       $("#vets").empty(); //clear vets data
+      var showH=$('div[name=hospital_template]:eq(' + showIndex + ')');
+        showH.find('div[name=hospital_detail]').hide();
     });
 
 
