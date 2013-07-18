@@ -185,7 +185,13 @@
             reader.readAsDataURL(e.target.files[0]);
         });
         /**zmin select picture file handler**/
+        /**zmin update photo**/
+        $("#nextStep").click(function(e){
+          alert("into");
+          return;
+        });
 
+        /**zmin update photo(end)**/
         $("a[name=checkdata]").click(function(){
             var _name = $("input[name=name]").val();
             var _genderVal = $('[name="gender"]:checked').val();
