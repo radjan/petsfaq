@@ -80,7 +80,6 @@ class AvatarPost(blobstore_handlers.BlobstoreUploadHandler):
             putoutput = avatar.put()
             self.response.write({'personid': personid, 'imageid':putoutput.id()})
         except:
-            blob.delete()
             self.response.write({'Error':'Internal Error'})
 
 class Logo(blobstore_handlers.BlobstoreDownloadHandler):
@@ -125,7 +124,6 @@ class LogoPost(blobstore_handlers.BlobstoreUploadHandler):
             putoutput = logo.put()
             self.response.write({'hospitalid': hospitalid, 'imageid':putoutput.id()})
         except:
-            blob.delete()
             self.response.write({'Error':'Internal Error'})
             raise
 
