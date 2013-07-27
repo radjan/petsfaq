@@ -11,12 +11,13 @@ from sets import Set
 GOOGLE = share.VIEW_GOOGLE
 IDPWD = share.VIEW_IDPWD
 
-FK_REF = { 
+FK_REF = {
         'Person'  :['avatars','questions', 'blogposts', 'roles',
                     'accounts'],
-        'Hospital':['logos','blogposts','vets','employees'],
+        'Hospital':['logos','blogposts','vets','employees', 'specialties'],
         'Blogpost':['photos'],
-        'Post'    :['replies']
+        'Post'    :['replies'],
+        'Role_Vet':['specialties'],
         }
 
 def get_user(acc):
@@ -77,7 +78,7 @@ def out_format(data):
 def _to_dict(domain_obj, tracedmdl=None):
     if tracedmdl == None:
         tracedmdl = Set()
-    kind = domain_obj.kind()
+    kind = domain_obj.get_type()
     tmp = {}
     tmp['kind'] = kind
 
