@@ -79,11 +79,8 @@ class VetDetailPage(base.BaseSessionHandler):
 
         if v is None:
             v = role.Vet(**kw)
-            for s in specialties:
-                k = s.key()
-                if k not in v.specialties:
-                    v.specialties.append(k)
             role_service.create(v)
+            specialty_service.add_specialties(specialties, vet=v)
         else:
             for key, value in kw.items():
                 v.__setattr__(key, value)
@@ -92,6 +89,13 @@ class VetDetailPage(base.BaseSessionHandler):
                 if k not in v.specialties:
                     v.specialties.append(k)
             role_service.update(v)
+            ori_specialties = (rel.specialty for rel in v.specialties)
+            new_specialties = []
+            for s in specialties:
+                if s not in ori_specialties:
+                    new_specialties.append(s)
+            if new_specialties:
+                specialty_service.add_specialties(new_specialties, vet=v)
         self.redirect(share.REG_STEP3)
 
 
@@ -125,12 +129,10 @@ class CreateHospitalPage(base.BaseSessionHandler):
             util.maybe_add(kw, model_key, self.request.get(view_key))
 
         h = hospital.Hospital(**kw)
-
-        specialties = _get_specialties(self.request)
-        for s in specialties:
-            h.specialties.append(s.key())
-
         hospital_service.create(h)
+
+        specialty_service.add_specialties(_get_specialties(self.request),
+                                          hospital=h)
 
         for r in person.roles:
             if type(r) is role.Vet:
