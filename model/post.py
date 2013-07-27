@@ -3,6 +3,7 @@ from google.appengine.ext.db import polymodel
 
 from model import person
 from model import hospital
+from model import base
 
 TYPE_QUESTION = "Q"
 TYPE_ANSWER = "A"
@@ -13,7 +14,7 @@ STATUS_DRAFT = 0
 STATUS_PUBLISH = 1
 STATUS_EDITED = 2
 
-class Post(polymodel.PolyModel):
+class Post(base.BaseModel, polymodel.PolyModel):
     title = db.StringProperty(required=True)
     post_type = db.StringProperty(required=True,
                   choices=([TYPE_QUESTION, 
@@ -24,8 +25,8 @@ class Post(polymodel.PolyModel):
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
 
-    def get_id(self):
-        return self.key().id()
+    def get_type(self):
+        return '_'.join(self._class)
 
 class Questions(Post):
     reply_to = db.ReferenceProperty(Post, collection_name='replies')

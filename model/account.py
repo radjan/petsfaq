@@ -4,12 +4,12 @@
 from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
 
-from model import person
+from model import person, base
 
 from common import share
 
 
-class Account(polymodel.PolyModel):
+class Account(base.BaseModel, polymodel.PolyModel):
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
     login_type = db.StringProperty(required=True,
@@ -20,8 +20,8 @@ class Account(polymodel.PolyModel):
     person = db.ReferenceProperty(person.Person,
                                   collection_name='accounts')
 
-    def get_id(self):
-        return self.key().id()
+    def get_type(self):
+        return '_'.join(self._class)
 
 class Google(Account):
     gmail = db.EmailProperty(required=True)

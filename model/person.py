@@ -1,9 +1,10 @@
 from google.appengine.ext import db
+from model import base
 
 MALE = 'M'
 FEMALE = 'F'
 
-class Person(db.Model):
+class Person(base.BaseModel, db.Model):
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
     name = db.StringProperty(required=True)
@@ -12,6 +13,3 @@ class Person(db.Model):
     email = db.EmailProperty()
     phone = db.PhoneNumberProperty()
     mark = db.IntegerProperty(default=0)
-
-    def get_id(self):
-        return self.key().id()

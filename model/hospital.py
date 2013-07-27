@@ -1,6 +1,7 @@
 from google.appengine.ext import db
+from model import base
 
-class Hospital(db.Model):
+class Hospital(base.BaseModel, db.Model):
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
 
@@ -11,7 +12,6 @@ class Hospital(db.Model):
     area = db.TextProperty(required=True)
     address = db.PostalAddressProperty(required=True)
     phone = db.PhoneNumberProperty(required=True)
-    specialties = db.ListProperty(db.Key)
     working_hour = db.TextProperty() # XXX data structure
     #bookable = db.BooleanProperty(required=True, default=False)
     emergency = db.BooleanProperty(required=True, default=False)
