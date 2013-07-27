@@ -1,9 +1,6 @@
         
-        <div class="span2">
-          <div class="well sidebar-nav"  style="position:fixed;">
-            
-
-            <ul class="nav nav-list">
+        <div class="span2  bs-docs-sidebar" >
+            <ul class="nav nav-list bs-docs-sidenav well">
               <!-- <form class="form-search"> -->
               <li class="nav-header">搜尋醫院、醫生</li>
               <li class="divider"></li>
@@ -13,28 +10,45 @@
               </div>    
               <li class="divider"></li>
                         
-              <!-- <li><button name="area" class="btn btn-primary" onclick="addSelector(this)">按地區 <i class="icon-chevron-right icon-white"></i></button></li> -->
+              <!-- <li><button name="area" class="btn btn-primary" onclick="addSelector(this)">按地區 <i class="icon-chevron-right icon-white"></i></button></li> 
               <li name="area"><a type= "button" class="btn-primary" rel="popover">按地區 <i class="icon-chevron-right icon-white"></i></a></li>
+              -->
+              <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">按地區</a>
+                <ul class="dropdown-menu" name="areas">
+                  
+                </ul>
+              </li>
               <div name="div_area"></div>
               <li class="divider"></li>
 
-              <li name="field"><a type= "button" class="btn-primary" rel="popover">按科別 <i class="icon-chevron-right icon-white"></i></a></li>
-              <!-- <li><button name="field" class="btn btn-primary" onclick="addSelector(this)">按科別 <i class="icon-chevron-right icon-white"></i></button></li> -->
+               <!-- <li name="field"><a type= "button" class="btn-primary" rel="popover">按科別 <i class="icon-chevron-right icon-white"></i></a></li>
+             <li><button name="field" class="btn btn-primary" onclick="addSelector(this)">按科別 <i class="icon-chevron-right icon-white"></i></button></li> -->
+             <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">按科別</a>
+                <ul class="dropdown-menu" name="field">
+                  
+                </ul>
+              </li>
               <div name="div_field"></div>
               <li class="divider"></li>
                 
-              <li name="species"><a type= "button" class="btn-primary" rel="popover">按種類 <i class="icon-chevron-right icon-white"></i></a></li>
-              <!-- <li><button name="species" class="btn btn-primary" onclick="addSelector(this)">按種類 <i class="icon-chevron-right icon-white"></i></button></li> -->
+              <!--<li name="species"><a type= "button" class="btn-primary" rel="popover">按種類 <i class="icon-chevron-right icon-white"></i></a></li>
+               <li><button name="species" class="btn btn-primary" onclick="addSelector(this)">按種類 <i class="icon-chevron-right icon-white"></i></button></li> -->
+                 <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">按種類</a>
+                <ul class="dropdown-menu" name="species">
+                  
+                </ul>
+              </li>
               <div name="div_species"></div>
               <li class="divider"></li>
             
             </ul>
-          </div><!--/.well -->
         </div><!--/span-->
 
 
       <div class="templates">
-
         <!--1. selector_element is the element show in side while choose an area, species or a field. -->
         <div name="selector_element">
             <span class="label label-info" name="label1">Info<button type="button" class="close"><i class="icon-remove"></i></button></span>
@@ -56,16 +70,16 @@
 
           <div name="species_selector">
             <div name="pop_species">
-              <button class="label label-info" name="species1" onclick="addSelector(this)">species 1</button>
-              <button class="label label-info" name="species2" onclick="addSelector(this)">species 2</button>
-              <button class="label label-info" name="species3" onclick="addSelector(this)">species 3</button>
+              <button class="label label-info" name="species[]" onclick="addSelector(this)">species 1</button>
+              <button class="label label-info" name="species[]" onclick="addSelector(this)">species 2</button>
+              <button class="label label-info" name="species[]" onclick="addSelector(this)">species 3</button>
             </div>
           </div>
 
 
           <!--3. selector_button is the button in XXX_selector -->
-          <!-- <a name="selector_button" type= "button" class="btn btn-mini label label-info" rel="popover" style="margin:5px">Template</a> -->
-          <a name="selector_button" type= "button" class="label label-info" rel="popover" style="margin:5px">Template</a>
+          <!-- <a name="selector_button" type= "button" class="btn btn-mini label label-info" rel="popover" style="margin:5px">Template</a> 
+          <a name="selector_button" type= "button" class="label label-info" rel="popover" style="margin:5px">Template</a>-->
 
 
           <!--4.  -->
@@ -77,6 +91,8 @@
             </div>
           </div>
           
+
+          <a name="selector_button" type= "button" class="label label-info" style="margin:5px">Template</a>
           
         </div><!-- End of templates div -->
 
@@ -104,59 +120,42 @@
          var zipLoaded = false;
 
          $(document).ready(function() {
-            $("li[name=area]").click(
-              function(){
-                if(!zipLoaded){
-                  for (var county in TW_ZIP) {
+            /*load data**/
+            var url="/api/v1/";
+            $.ajax({
+              url:url+"specialty/species",
+              type: "GET",
+              cache:false}).done(function(data){
+                createPopBtn(data,"species[]",$("ul[name=species]"));
+            });
+
+            $.ajax({
+              url:url+"specialty/categories",
+              type: "GET",
+              cache:false}).done(function(data){
+                createPopBtn(data,"field[]", $("ul[name=field]"));
+
+            });
+            var i=1;
+            for (var county in TW_ZIP) {
                     // var b = $("a[name=selector_button]").last().clone();
                     var b = $("a[name=selector_button]").clone();
-                    b.attr("name","county");
+                    b.attr("name","county[]");
                     b.text(county);
-                    $("div[name=pop_area]").append(b);
-                  }
-                  zipLoaded = true;  
-                }
-            });
-            
-            // $("a[name=基隆市]").click($("a[name=基隆市]").text("CLICK!"));
-            // .popover({
-            //   placement: "right", 
-            //     title: "選擇縣市",
-            //     html: "true",
-            //     content: function() {
-            //        return $("div[name=area_selector2]").html();
-            //     }
-            // });
-
-            $("li[name=area]").popover({
-                placement: "right", 
-                title: "選擇縣市",
-                html: "true",
-                content: function() {
-                   return $("div[name=area_selector]").html();
-                }
-            });
+                    $("ul[name=areas]").append(b);        
+            }
 
 
-            $("li[name=field]").popover({
-                placement: "right", 
-                title: "選擇科別",
-                html: "true",
-                content: function() {
-                   return $("div[name=field_selector]").html();
-                }
-            });
-
-            $("li[name=species]").popover({
-                placement: "right", 
-                title: "選擇種類",
-                html: "true",
-                content: function() {
-                   return $("div[name=species_selector]").html();
-                }
-            });
           });
-
+          function createPopBtn(data,name,inputDiv,callback){
+            for(i in data){
+              
+               var b = $("a[name=selector_button]").clone();
+                    b.attr("name",name);
+                    b.text(data[i]);
+                    inputDiv.append(b);
+            }
+          }
 
 
           function addSelector(_button){
@@ -184,5 +183,18 @@
             }
           }
 
+          function addSearchHandler(){
 
+               $("a[name=selector_button]").click(function(e){
+                //add into div
+                //add select
+                 $.ajax({
+                    url: "/api/v1/hospital?name=*" + $('#name_search').val() + "*",
+                    type: "GET",
+                    cache: false
+                  }).done(function(data) {
+                    createHospitals(data,hospitalClickHndlr);
+                });
+               });
+          }
         </script>

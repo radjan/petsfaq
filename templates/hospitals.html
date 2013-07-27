@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" ng-app>
   <head>
     <meta charset="utf-8">
     <title>Pet Helper - hospitals</title>
@@ -79,7 +79,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
       <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="/s/ico/favicon.png">
   </head>
 
@@ -105,23 +105,26 @@
                 </div>
               </div>
            
-          </div>
-            {% include '/vet_list.html' %}
-          <!-- ORIGINAL WAY TO CREATE HOSPITALS -->
-            <!-- {% for h in hospitals %}
-            <div class="row-fluid">
-                <div class="span2">
-                    <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
-                </div>
-                <div class="span8">
-                <h2>{{ h.name }}</h2>
-                <p>{{ h.description }}</p>
-                <p><a class="btn btn-info" href="./hospital_detail?id={{ h.key().id() }}">View details &raquo;</a></p> -->
-                <!-- </div> --><!--/span-->
-            <!-- </div> --><!--/row-->
-            <!-- {% endfor %} -->
-          </div><!-- /container -->
+          </div><!--/accordion-->
 
+          <ul class="nav nav-tabs" id="hospitalTab">
+            <li class="active"><a href="#hospital_info">Information</a></li>
+            <li><a href="#hospital_vets">Vet</a></li>
+            <li><a href="#hospital_blog">Blog</a></li>
+            
+          </ul><!--/nav-tabs-->
+          <div class="tab-content">
+            <div id="hospital_info" class="tab-pane active"></div>
+            <div id="hospital_vets" class="tab-pane">
+              {% include '/vet_list.html' %}
+            </div>
+              
+           
+            <div id="hospital_blog" class="tab-pane">
+              coming soon...
+            </div>
+          </div><!--/tab-content-->
+         
           <!--<div id='fromAJAX' class="container-fluid">
            當你按了直接搜尋之後 會透過ajax取得所有hospital  name:description 並列在下面：<br />
           </div> --><!-- /container -->
@@ -130,6 +133,7 @@
 
         </div><!--/span-->
       </div><!--/row-->
+    </div><!-- /container -->
       <hr>
 
       <footer>
@@ -151,6 +155,7 @@
 
     function showHospital() {
       var q = $.url().param('q');
+      //alert(q);
       var search_url = "/api/v1/hospital";
       if (q != undefined) {
         $('#name_search').val(q);
@@ -170,10 +175,18 @@
     $(document).ready(function(){
          /*add accordion2 handler**/
     /**if collapseHospital in means clear vets data**/
+    $("#hospitalTab").hide();
     $("#accordion2 a[name=hLists]").click(function(e){
-       var length=$("div[name=hospital_detail_template]").length;
+
+       var length=$("div[name=oneVet]").length;
+       //alert(length);
        if(length>1){
         $("#vets").empty();
+        $("a[name=hLists]").text("Hopital Lists >");
+        $("#hospitalTab").hide();
+        $("#hospital_info").empty();
+        //$("#hospital_info").empty();
+        //$("#hospital_info").empty();
        }
     });
     });
@@ -208,7 +221,10 @@
         h.find("p[name=description]").text(hospitals[i].description);
         h.find("a[name=linkTo]").attr("href", hospitals[i].id);
         //hospital
-     
+        if(hospitals[i].logos!=""){
+           // h.find("img").attr("src",hospitals[i].logos[0].img_blobkey);
+            
+        }
         h.find('p[name=address]').text(hospitals[i].zipcode+" "+hospitals[i].county+" "+hospitals[i].area+" "+hospitals[i].address);
         //$("#hospital_div").append(h);
         $(h).insertBefore(list_menu);
@@ -238,7 +254,7 @@
        var hid=$(this).attr("href");
         //add vet list
         getVetData(hid); //get vets data
-      
+        
         /**zmin 140716 ui(end)**/
       });
       /***zmin e**/
@@ -255,33 +271,10 @@
         });
         /**handler favorite add and remove(end)**/
     }
-    function hospitalDeatilShowHndlr(){
-      var btn=$("a[name=hospital_scale_btn]");
-     // alert(btn.length);
-      var hospital=$("div[name=hospital_detail_template]:eq(0)");
-      btn.click(function(event) {
-        
-        var detailOn=$(this).find("i").hasClass('icon-minus');
-        //alert(detailOn);
-        if(detailOn){
-          //hide detail
-          hospital.find("div[name=hospital_detail_collapse]").hide();
-          var hospital_name=hospital.find("h2[name=name]").text();
-          var text=document.createTextNode(" >"+hospital_name);
-          var p= document.createElement("span");
-          p.appendChild(text);
-          p.id="minus_name";
-
-          hospital.append(p);
-          $(this).find("i").removeClass("icon-minus").addClass("icon-plus");
-        }else{
-          //show detail
-          hospital.find("div[name=hospital_detail_collapse]").show();
-          $("#minus_name").remove();
-          $(this).find("i").removeClass("icon-plus").addClass("icon-minus");
-        }
-      });
-    }
+    $('#hospitalTab a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
 
 
     /** 0704 vet list get***/
@@ -298,7 +291,8 @@
         cache: false
       }).done(function(data) {
           $("#accordion2 a[name=hLists]").click();
-        putVetData(data,hospitalDeatilShowHndlr);    
+          $("#hospitalTab").show();
+        putVetData(data);    
       });
     }
     /**
@@ -310,13 +304,15 @@
     function putVetData(hospital,callback) {
       var vets = $("#vets");
       //create hospital
-     //alert($("div[name=hospital_detail_template]").length);
+     
       var h = $("div[name=hospital_detail_template]").clone();
-        h.find("h2[name=name]").text(hospital.name);
-        h.find("p[name=description]").text(hospital.description);
-        h.find('p[name=address]').text(hospital.zipcode+" "+hospital.county+" "+hospital.area+" "+hospital.address);
+      h.find("h2[name=name]").text(hospital.name);
+      h.find("p[name=description]").text(hospital.description);
+      h.find('p[name=address]').text(hospital.zipcode+" "+hospital.county+" "+hospital.area+" "+hospital.address);
        
-      vets.append(h);
+      $("a[name=hLists]").text("Hopital Lists >"+hospital.name);
+
+      $("#hospital_info").append(h);
       //vet
       
       var vs =hospital.vets;
