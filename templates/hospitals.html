@@ -331,7 +331,8 @@
         }
         // alert(initSpecialties(1));
         for (j in vs[i].specialties) {
-          v.find("dl[name=specilty]").append("<dd>" + vs[i].specialties[j].species + ": " + vs[i].specialties[j].category + "</dd>");
+          var s = vs[i].specialties[j].specialty;
+          v.find("dl[name=specialty]").append("<dd>" + s.species + ": " + s.category + "</dd>");
           // v.find("dl[name=specialty]").append("<ul id='specialties'></ul>");
         }
         vets.append(v);
