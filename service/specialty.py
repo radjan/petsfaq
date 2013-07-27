@@ -6,6 +6,12 @@ class SpecialtyService(base.GeneralService):
     def __init__(self, *args, **kw):
         self.dao = specialty_dao
 
+    def create(self, specialty):
+        s = self.get_by_value(specialty.species, specialty.category)
+        if not s:
+            return self.dao.create(specialty)
+        return s.get_id()
+
     def get_by_value(self, species='', category=''):
         return self.dao.get_by_value(species, category)
 
