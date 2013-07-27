@@ -3,9 +3,7 @@ import webapp2
 import json
 
 from view import base
-from model import *
-from model import specialty
-from model import person
+from model import specialty, person, hospital, account, role
 from service.hospital import hospital_service
 from service.account import account_service
 from service.role import role_service
