@@ -7,12 +7,7 @@ class SpecialtyService(base.GeneralService):
         self.dao = specialty_dao
 
     def get_by_value(self, species='', category=''):
-        ss = self.dao.search({'species': species,
-                              'category': category})
-        if ss.count() > 0:
-            return ss.fetch(1)[0]
-        else:
-            return None
+        return self.dao.get_by_value(species, category)
 
     def list_species(self):
         specialties = self.dao.list()
@@ -29,5 +24,15 @@ class SpecialtyService(base.GeneralService):
             if s.category:
                 ret.add(s.category)
         return ret
+
+    def add_specialties(self, specialties, vet=None, hospital=None):
+        for s in specialties:
+            self.add_specialty(s, hospital=hospital, vet=vet)
+
+    def add_specialty(self, specialty, note=None, hospital=None, vet=None):
+        return specialty_dao.link_to_entity(specialty,
+                                            note=note,
+                                            vet=vet,
+                                            hospital=hospital)
 
 specialty_service = SpecialtyService()
