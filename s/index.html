@@ -8,14 +8,14 @@
     <meta name="description" content="This tiny jQuery Bootstrap WYSIWYG plugin turns any DIV into a HTML5 rich text editor" />
     <link rel="apple-touch-icon" href="//mindmup.s3.amazonaws.com/lib/img/apple-touch-icon.png" />
     <link rel="shortcut icon" href="http://mindmup.s3.amazonaws.com/lib/img/favicon.ico" >
-    <link href="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+    <link href="css/prettify.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="https://mindmup.s3.amazonaws.com/lib/jquery.hotkeys.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"></script>
+    <script src="js/prettify.js"></script>
     <link href="index.css" rel="stylesheet">
     <script src="bootstrap-wysiwyg.js"></script>
 </head>
@@ -92,9 +92,7 @@
             <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
         </div>
 
-        <div id="editor">
-            Go ahead&hellip;
-        </div>
+        <div id="editor">Hello World</div>
         <button type="submit" class="btn" onClick="post_send();">Submit</button>
         <span id="postid" class="label label-important"></span>
     </div>
@@ -201,18 +199,19 @@
             url: hostURL+"/api/v1/posts",
             data: {
                 //content:JSON.stringify($("#editor").wysiwyg()),
-                content: $("#editor").html(),
+                content: $("#editor").wysiwyg().html(),
                 title: "notitle",
-                publish: 1,
+                publish: 1, //0: draft, 1: published, 2: edited
             },
             dataType: "json",
             error: function(msg){
-                alert(msg);
+                alert("fail"+msg);
             },
             complete: function(msg) {
             },
             success: function(msg){
                 $("#postid").text(msg.postid);
+                alert("success"+msg.postid);
             },
         });
     }
