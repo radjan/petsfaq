@@ -47,7 +47,9 @@ class BlogpostAPI(base.BaseSessionHandler):
                                status_code=publish)
 
             postoutput = newpost.put()
-            self.response.write({'postid': postoutput.id()})
+            self.response.status = 201
+            util.jsonify_response(self.response, {'postid': postoutput.id(), "result":"ok"})
+            #self.response.write({'postid': postoutput.id()})
 
         except Exception as e:
             self.response.write({'Error':'Internal Error %s' % str(e)})
