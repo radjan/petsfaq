@@ -61,16 +61,17 @@
           </div><!--/accordion-->
 
           <div class="hero-unit">
-            <button id="edit_hospital" type="button" class="btn btn-small btn-warning edit_type edit_button right">
+            <button id="edit_hospital" type="button" class="btn btn btn-warning edit_type edit_button right">
                 <i class="icon-pencil"></i>
             </button>
-            <button id="cancel_hospital" type="button" class="btn btn-mini edit_type btn-reverse right">
-                <i class="icon-remove"></i>
-            </button>
-            <button id="save_hospital" type="button" class="btn btn btn-info edit_type right">
-                <i class="icon-hdd icon-white"></i>
-            </button>
-            
+            <div class="right">
+              <button id="save_hospital" type="button" class="btn btn btn-info edit_type">
+                  <i class="icon-hdd icon-white"></i>
+              </button>
+              <button id="cancel_hospital" type="button" class="btn btn-mini edit_type btn-reverse">
+                  <i class="icon-remove"></i>
+              </button>
+            </div>
             <h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
               <input id="edit_hospital_name" type="text" class="edit_type">
             </h1>
@@ -104,18 +105,22 @@
 
     <div class="templates">
         <div class="row-fluid browse_type" name="oneVet">
-            <button id="editVet_" type="button" class="btn btn-small btn-warning edit_type edit_button right">
-                <i class="icon-pencil"></i>
-            </button>
-            <!-- <button id="editVet_" type="button" class="btn btn-mini edit_type edit_button right">
-                <i class="icon-trash"></i>
-            </button> -->
-            <button id="cancelVet_" type="button" class="btn btn-mini edit_type right">
-                <i class="icon-remove"></i>
-            </button>
-            <button id="saveVet_" type="button" class="btn btn btn-info edit_type right">
-                <i class="icon-hdd icon-white"></i>
-            </button>
+            <div class="right">
+              <button id="editVet_" type="button" class="btn btn btn-warning edit_type edit_button">
+                  <i class="icon-pencil"></i>
+              </button>
+              <button id="deleteVet_" type="button" class="btn btn-mini edit_type edit_button">
+                  <i class="icon-trash"></i>
+              </button>
+            </div>
+            <div class="right">
+              <button id="saveVet_" type="button" class="btn btn btn-info edit_type">
+                  <i class="icon-hdd icon-white"></i>
+              </button>
+              <button id="cancelVet_" type="button" class="btn btn-mini edit_type">
+                  <i class="icon-remove"></i>
+              </button>
+            </div>
             
 
             <div class="span2">
@@ -196,7 +201,6 @@
 
         
         $(".browse_type").show();
-        $("#browse_mode").show();
         $(".edit_type").hide();
         $(".edit_button").show();
 
@@ -236,7 +240,6 @@
           setBtn(v, i);
           vets.append(v);
       }
-      // $("a[name=hLists]").text("Hopital Lists > "+ hospital.name);
     }
 
     function setBtn(v, i) {
@@ -261,6 +264,7 @@
 
       //set edit
       var _editVet = v.find("#editVet_");
+      var _deleteVet = v.find("#deleteVet_");
       var _saveVet = v.find("#saveVet_");
       var _cancelVet = v.find("#cancelVet_");
       _editVet.attr("id", "editVet_"+i);
@@ -276,8 +280,13 @@
         _nameCardBtn.attr("disabled", true);
 
         _editVet.hide();
+        _deleteVet.hide();
         _saveVet.show();
         _cancelVet.show();
+      });
+
+      _deleteVet.click(function(){
+        //TODO:
       });
 
       _saveVet.click(function(){
@@ -298,6 +307,7 @@
         _nameCardBtn.attr("disabled", false);
 
         _editVet.show();
+        _deleteVet.show();
         _saveVet.hide();
         _cancelVet.hide();
       });
@@ -307,31 +317,11 @@
         window.location.href = '/hospitals?q=' + $('#name_search').val();
     }
 
-    // $("button[name=nameCardBtn_0]").click(function(){
-    //   alert($(this).attr("name"));
-      // $("div[name^]")
-    // });
-
-    $("#edit_mode").click(function(){
-      $(".edit_button").show();
-      $(".browse_type").show();
-      $("#edit_mode").hide();
-      $("#browse_mode").show();
-    });
-
-    $("#browse_mode").click(function(){
-      $(".edit_type").hide();
-      $(".browse_type").show();
-      $("#edit_mode").show();
-      $("#browse_mode").hide();
-    });
 
     $("#edit_hospital").click(function(){
       $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
       $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
     });
-
-        
 
     $("#edit_hospital").click(function(){
       $("#edit_hospital").hide();
