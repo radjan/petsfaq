@@ -237,12 +237,12 @@
           }
           initSpecialtiesSelection(v.find("#vetSpecialties_"), vs[i].specialties.length+1, vs[i].specialties);
           
-          setBtn(v, i);
+          setBtn(v, i, vs[i]);
           vets.append(v);
       }
     }
 
-    function setBtn(v, i) {
+    function setBtn(v, i, vet) {
       //set name card.
       var _nameCardBtn = v.find("button[data-target=#nameCard_]");
       var _nameCard = v.find("#nameCard_");
@@ -290,7 +290,17 @@
       });
 
       _saveVet.click(function(){
-        //TODO:
+        //FIXME:
+          $.ajax({
+            url: "/api/v1/person/"+vet.id,
+            type: "PUT",
+            contentType: "application/json",
+            data: {
+              "name": "test", 
+              "gender":"F",
+              "email":"test@test.com"
+            }
+          });
       });
 
       _cancelVet.click(function(){
