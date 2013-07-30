@@ -86,32 +86,6 @@
               </div>
            
           </div><!--/accordion-->
-
-          <ul class="nav nav-tabs" id="hospitalTab">
-            <li class="active"><a href="#hospital_info">Information</a></li>
-            <li><a href="#hospital_vets">Vet</a></li>
-            <li><a href="#hospital_blog">Blog</a></li>
-            
-          </ul><!--/nav-tabs-->
-          <div class="tab-content">
-            <div id="hospital_info" class="tab-pane active">
-            </div>
-            <div id="hospital_vets" class="tab-pane">
-              {% include '/vet_list.html' %}
-            </div>
-              
-           
-            <div id="hospital_blog" class="tab-pane">
-              coming soon...
-            </div>
-          </div><!--/tab-content-->
-         
-          <!--<div id='fromAJAX' class="container-fluid">
-           當你按了直接搜尋之後 會透過ajax取得所有hospital  name:description 並列在下面：<br />
-          </div> --><!-- /container -->
-          <!--doctors-->
-          
-
         </div><!--/span-->
       </div><!--/row-->
     </div><!-- /container -->
@@ -126,9 +100,11 @@
 
  <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
  <script src="/s/js/hospitalCtrl.js"></script>
-  </body>
-
   <script type="text/javascript">
+    $("a[name=linkTo]").hide();
     $("a[name=edit_mode]").show();
   </script>
+  </body>
+
+
 </html>

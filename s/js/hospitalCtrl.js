@@ -74,6 +74,7 @@
         h.find("h2[name=name]").text(hospitals[i].name);
         h.find("p[name=description]").text(hospitals[i].description);
         h.find("a[name=linkTo]").attr("href", hospitals[i].id);
+        h.find("a[name=edit_mode]").attr("href", "/hospital/"+hospitals[i].id+"/edit");
         //hospital
         if(hospitals[i].logos!=""){
            // h.find("img").attr("src",hospitals[i].logos[0].img_blobkey);
@@ -124,6 +125,8 @@
             }
         });
         /**handler favorite add and remove(end)**/
+
+        
     }
     $('#hospitalTab a').click(function (e) {
       e.preventDefault();
@@ -164,8 +167,9 @@
       h.find("h2[name=name]").text(hospital.name);
       h.find("p[name=description]").text(hospital.description);
       h.find('p[name=address]').text(hospital.zipcode+" "+hospital.county+" "+hospital.area+" "+hospital.address);
-       
+
       $("a[name=hLists]").text("Hopital Lists >"+hospital.name);
+
 
       $("#hospital_info").append(h);
       //vet
