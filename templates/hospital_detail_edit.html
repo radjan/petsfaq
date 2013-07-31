@@ -295,11 +295,11 @@
             url: "/api/v1/person/"+vet.id,
             type: "PUT",
             contentType: "application/json",
-            data: {
-              "name": "test", 
+            data: JSON.stringify({
+              "name": "ttt",
               "gender":"F",
-              "email":"test@test.com"
-            }
+              "email":"ttt@ttt.com"}),
+            cache: false
           });
       });
 
