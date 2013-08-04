@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from dao.specialty import specialty_dao
+from model import specialty as model
 from service import base
 
 class SpecialtyService(base.GeneralService):
@@ -14,6 +15,13 @@ class SpecialtyService(base.GeneralService):
 
     def get_by_value(self, species='', category=''):
         return self.dao.get_by_value(species, category)
+
+    def ensure_exist(self, species, category=u'一般'):
+        s = self.get_by_value(species, category)
+        if not s:
+            s = model.Specialty(species=species, category=category)
+            s.put()
+        return s
 
     def list_species(self):
         specialties = self.dao.list()
@@ -35,7 +43,7 @@ class SpecialtyService(base.GeneralService):
         for s in specialties:
             self.add_specialty(s, hospital=hospital, vet=vet)
 
-    def add_specialty(self, specialty, note=None, hospital=None, vet=None):
+    def add_specialty(self, specialty, note='', hospital=None, vet=None):
         return specialty_dao.link_to_entity(specialty,
                                             note=note,
                                             vet=vet,
