@@ -72,6 +72,21 @@ class RoleAPI(RestAPI):
     service = role_service
     model = role.Role
 
+    def _create(self, requestJson):
+        specialties = []
+        if 'specialties' in requestJson:
+            specialties = requestJson.pop('specialties')
+
+        kw = util.get_model_properties(self.model, requestJson)
+        theOne = self.model(**kw)
+        new_id = self.service.create(theOne)
+
+        for s in specialties:
+            s = specialty_service.ensure_exist(s['species'], s['category'])
+            specialty_service.add_specialty(s, vet=theOne)
+        return new_id
+
+
 class SpecialtyAPI(RestAPI):
     service = specialty_service
     model = specialty.Specialty
@@ -96,10 +111,15 @@ class ModelInstanceAPI(base.BaseSessionHandler):
         if not domain_obj:
             self.error(404)
             return
+
+        domain_obj = _custom_update(domain_obj, requestJson)
         # partial update
         domain_obj = util.update_model_properties(domain_obj, requestJson)
-        domain_obj.put()
+        self.service.update(domain_obj)
         util.jsonify_response(self.response, {"result":"ok"})
+
+    def _custom_update(self, domain_obj, _requestJson):
+        return domain_obj
 
 class HospitalInstanceAPI(ModelInstanceAPI):
     def __init__(self, *args, **kw):
@@ -119,6 +139,14 @@ class HospitalInstanceAPI(ModelInstanceAPI):
             h_dict['vets'].append(v_dict)
         util.jsonify_response(self.response, h_dict)
 
+    def _custom_update(self, hospital, requestJson):
+        if 'specialties' in requestJson:
+            specialties = requestJson.pop('specialties')
+        for s in specialties:
+            s = specialty_service.ensure_exist(s['species'], s['category'])
+            specialty_service.add_specialty(s, hospital=hospital)
+        return hospital
+
 class PersonInstanceAPI(ModelInstanceAPI):
     def __init__(self, *args, **kw):
         self.service = person_service
@@ -136,6 +164,14 @@ class RoleInstanceAPI(ModelInstanceAPI):
         self.service = role_service
         self.model = role.Role
         ModelInstanceAPI.__init__(self, *args, **kw)
+
+    def _custom_update(self, hospital, requestJson):
+        if 'specialties' in requestJson:
+            specialties = requestJson.pop('specialties')
+        for s in specialties:
+            s = specialty_service.ensure_exist(s['species'], s['category'])
+            specialty_service.add_specialty(s, hospital=hospital)
+        return hospital
 
 class PersonHopitalList(RestAPI):
     service = person_service
