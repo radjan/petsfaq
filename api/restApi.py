@@ -187,7 +187,7 @@ class PersonHopitalList(RestAPI):
             hospitalids = Set()
             rtn_list = []
             for r in roles:
-                if r: 
+                if r:
                     hospitals.update({r.hospital.get_id():r.hospital})
                     hospitalids.add(r.hospital.get_id())
 
