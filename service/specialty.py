@@ -49,4 +49,11 @@ class SpecialtyService(base.GeneralService):
                                             vet=vet,
                                             hospital=hospital)
 
+    def delete_specialties(self, specialties, hospital=None, vet=None):
+        for s in specialties:
+            self.delete_specialty(s, hospital=hospital, vet=vet)
+
+    def delete_specialty(self, specialty, hospital=None, vet=None):
+        return specialty_dao.unlink(specialty, hospital=hospital, vet=vet)
+
 specialty_service = SpecialtyService()
