@@ -19,7 +19,7 @@ class RestAPI(base.BaseSessionHandler):
     def get(self): # get all model 
         params = dict(self.request.params)
         if '_' in params:
-            # add by jquery?
+            # add by jquery
             params.pop('_')
         if params:
             serviceList = self.service.search(params)
@@ -32,16 +32,33 @@ class RestAPI(base.BaseSessionHandler):
     def post(self): # create model
         body = self.request.body
         requestJson = json.loads(body)
-        kw = util.get_model_properties(self.model, requestJson)
 
-        theOne = self.model(**kw)
-        new_id = self.service.create(theOne)
+        new_id = self._create(requestJson)
         self.response.status = 201
         util.jsonify_response(self.response, {'id': new_id, "result":"ok"})
+
+    def _create(self, requestJson):
+        #overwrite this if the creation needs to be customized
+        kw = util.get_model_properties(self.model, requestJson)
+        return self.model(**kw)
 
 class HospitalAPI(RestAPI):
     service = hospital_service
     model = hospital.Hospital
+
+    def _create(self, requestJson):
+        specialties = []
+        if 'specialties' in requestJson:
+            specialties = requestJson.pop('specialties')
+
+        kw = util.get_model_properties(self.model, requestJson)
+        theOne = self.model(**kw)
+        new_id = self.service.create(theOne)
+
+        for s in specialties:
+            s = specialty_service.ensure_exist(s['species'], s['category'])
+            specialty_service.add_specialty(s, hospital=theOne)
+        return new_id
 
 class AccountAPI(RestAPI):
     service = account_service
