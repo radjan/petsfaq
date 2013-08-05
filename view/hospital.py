@@ -23,3 +23,8 @@ class HospitalDetailEdit(base.BaseSessionHandler):
     def get(self, *args, **kw):
         params = {'user': util.get_current_user(self.session)}
         self.render_template('hospital_detail_edit.html', params)
+
+class CreateHospital(base.BaseSessionHandler):
+    def get(self):
+        params = {'user': util.get_current_user(self.session)}
+        self.render_template('create_hospital.html', params)
