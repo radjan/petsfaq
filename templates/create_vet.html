@@ -86,69 +86,67 @@
                 </div>
                 <div id="collapseHospital" class="accordion-body collapse in">
                   <div class="accordion-inner">
-                    <div name="createHospital">
+                    <div>
+                      <h3>獸醫資料</h3>
                       <span style="color:red">*</span>
-                      <label>醫院名稱</label>
-                      <input name="name" type="text" class="input-block-level">
-              
-                      <span style="color:red">*</span>
-                      <label>簡介</label>
-                      <textarea name="description" rows="5" class="input-block-level"></textarea>
+                      <label>姓名</label>
+                      <input name="name" type="text" class="input-block-level" placeholder="姓名">
 
-                      <span style="color:red">*</span>
-                      <label>專科</label>
-                      <ul id='vetSpecialties'>
-                      </ul>
-
-                      <span style="color:red">*</span>
-                      <label>地址</label>
                       <div>
-                        <!-- 郵遞區號：<input name="zipcode" type="text" class="input-block-level"><br> -->
-                        <select id="selector_county" name="county">
-                          <option value=''>選擇縣市</option>
-                          <!-- <input name="county" type="text" class="input-block-level"><br> -->
-                        </select>
-                        <select id="selector_area" name="area">
-                          <option value=''>選擇鄉鎮市區</option>
-                          <!-- 鄉鎮市區：<input name="area" type="text" class="input-block-level"><br> -->
-                        </select>
-                        <br>
                         <span style="color:red">*</span>
-                        <label>街號</label>
-                        <input id="input_zipCode" name="zipcode" type="hidden">
-                        <input name="address" type="text" class="input-block-level"><br>
+                        <label>性別</label>
+                        <div>
+                          <label class="radio inline">
+                            <input type="radio" name="gender" value="M">
+                            男
+                          </label>
+                          <label class="radio inline">
+                            <input type="radio" name="gender" value="F">
+                              女
+                          </label>
+                        </div>
                       </div>
-                      <span style="color:red">*</span>
+
+                      <br>
+                      <label>生日</label>
+                      <input name="birthday" type="text" class="input-block-level" placeholder="西元年/月/日">
+
+      
                       <label>電話</label>
-                      <input name="phone" type="text" class="input-block-level">
-                      <!-- 可預約：<input type='checkbox' name='bookable'><br> -->
-        
-                    <label>營業時間</label>
-                    <textarea name="working_hour" class="input-block-level"></textarea>
-                    <button name="add" class="btn btn-primary"><i class="icon-plus icon-white"></i></button>
+                      <input name="phone" type="text" class="input-block-level" placeholder="電話">
 
-                    <label>統一編號</label>
-                    <input name="value_added_tax" type="text" class="input-block-level"><br>
+                      <span style="color:red">*</span>
+                      <label style="display:inline">電子信箱</label>
+                      <input name="email" type="text" class="input-block-level" placeholder="電子信箱">
 
-                    <label class="checkbox" onclick="displayEr()">
-                      <input name="er" type="checkbox"> 有急診
-                    </label>
-
-                    <div name="erData" style="display:none">
-                      <label>急診電話</label>
-                      <input name='er_phone' type="text" class="input-block-level">
-
-                      <label>急診時間</label>
-                      <textarea name='er_hour' type="text" class="input-block-level"></textarea>
+                      <label>照片</label>
+                        <!-- <input name="photo" type="image" src='s/img/tmpPic.png' class="image" >-->
+                      <img name="pro_photo" src="s/img/tmpPic.png"/>
+                      <input type="file" name="file" accept="image/gif,image/png,image/jpg,image/jpeg">
                     </div>
-                  <br>
-                  <hr class="bs-docs-separator">
-                  <!-- <button class="btn btn-inverse" type="submit">取消</button> -->
-                  <a href="#confirmModal" role="button" class="btn btn-danger" data-toggle="modal" onclick="displayData()">建立醫院</a>
-                  <br>
-                  <br>
+
+                    <label>簡介</label>
+                    <textarea name="intro" rows="5" class="input-block-level"></textarea>
+
+                    <span style="color:red">*</span>
+                    <label>專長</label>
+                    <div>
+                      <ul id='vetSpecialties' class="edit_type"></ul>
+                    </div>
+
+                    <label>學歷</label>
+                    <ul>
+                      <li><input name='edu_1' type="text" placeholder="學歷1" class="input-block-level"></li>
+                      <li><input name='edu_2' type="text" placeholder="學歷2" class="input-block-level"></li>
+                    </ul>
+
+                    <label>經歷</label>
+                    <ul>
+                      <li><input name="exp_1" type="text" placeholder="經歷1" class="input-block-level"></li>
+                      <li><input name="exp_2" type="text" placeholder="經歷2" class="input-block-level"></li>
+                    </ul>
+                  
                   </div>
-                </div>
               </div>
             </div>
 
@@ -156,18 +154,7 @@
         </div><!--/span-->
       </div><!--/row-->
 
-      <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-            <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
-            <h3 id="myModalLabel">確認資料</h3>
-        </div>
-        <div id="modalBody" class="modal-body">
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭修改</button>
-          <button id="nextStep" class="btn btn-large btn-primary" type="submit">確認</button>
-        </div>
-      </div>   <!--/confirmModal div-->
+
       <div id='templates' class='specialtySelector templates'>
         <li name='spec_item'>
         <label>種類：</label>
