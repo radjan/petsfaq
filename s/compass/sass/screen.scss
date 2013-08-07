@@ -1,0 +1,125 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3";
+
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+
+.sidebar-nav {
+  padding: 9px 0;
+}
+
+@media (max-width: 980px) {
+  /* Enable use of floated navbar text */
+  .navbar-text.pull-right {
+    float: none;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.post {
+  margin-left: -20px;
+  list-style: none;
+  *zoom: 1;
+}
+
+.post:before,
+.post:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.post:after {
+  clear: both;
+}
+
+.row-fluid .post {
+  margin-left: 0;
+}
+
+.post > li {
+  float: left;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.post-info {
+  display: block;
+  padding: 4px;
+  line-height: 20px;
+  min-height: 150px;
+  background: #eee;
+  border: 1px solid #ddd;
+  @include border-radius(4px);
+  @include single-box-shadow(rgba(0, 0, 0, 0.055), 0px, 1px, 3px);
+  @include single-transition(all, 0.2s, ease-in-out);
+}
+
+.post-info .post-title {
+  width: 570px;
+  margin-right: 30px;
+  padding: 9px;
+  font-size: 24px;
+  color: #555555;
+}
+
+.post-info .post-desc {
+  width: 570px;
+  margin-right: 30px;
+  min-height: 50px;
+  padding: 9px;
+  font-size: 16px;
+  color: #808080;
+}
+
+.post-info .post-delete {
+  float: right;
+  width: 30px;
+}
+
+.post-item {
+  display: block;
+  padding: 4px;
+  line-height: 20px;
+  min-height: 200px;
+  background: #eee;
+  border: 1px solid #ddd;
+  @include border-radius(4px);
+  @include single-box-shadow(rgba(0, 0, 0, 0.055), 0px, 1px, 3px);
+  @include single-transition(all, 0.2s, ease-in-out);
+}
+
+a.post-item:hover,
+a.post-item:focus {
+  border-color: #0088cc;
+  @include single-box-shadow(rgba(0, 105, 214, 0.25), 0px, 1px, 4px);
+}
+
+.post-item > img {
+  float: left;
+  width: 200px;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.post-item .post-item-text {
+  float: right;
+  width: 340px;
+  margin-right: 30px;
+  min-height: 140px;
+  padding: 9px;
+  color: #555555;
+}
+
+.post-item .post-item-delete {
+  float:right;
+  width: 30px;
+}

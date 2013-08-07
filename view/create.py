@@ -142,6 +142,11 @@ class CreateHospitalPage(base.BaseSessionHandler):
         role_service.create(adm)
         self.redirect(share.HOME)
 
+class CreatePostPage(base.BaseSessionHandler):
+    @base.login_required
+    def get(self):
+        self.render_template('post_edit.html')
+
 def _gather_list(request, k, tolerance=2):
     miss = 0
     i = 1
