@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Helper - edit post</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/s/css/bootstrap.css" rel="stylesheet">
+    <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/s/css/myFormat.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/s/js/html5shiv.js"></script>
+    <![endif]-->
+    
+    <link href="/s/compass/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/s/ico/favicon.png">
+  </head>
+
+  <body>
+
+    {% include 'components/navbar.html' %}
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">工具</li>
+              <li><a type= "button" class="btn-danger">Dummy 1</a></li>
+              <li class="divider"></li>
+              <li><a type= "button" class="btn-danger">Dummy 2</a></li>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span6">
+          <ul class="post">  
+            <li class="row">
+          	  <div class="post-info">
+                <div class="post-delete"><a href="#" class="btn btn-warning">X</a></div>
+                <div class="post-title">Title</div>
+                <div class="post-desc">Description</div>
+                <div><a href="#" class="btn btn-success">Save</a></div>
+              </div>  
+            </li>
+            <li class="row post-item-template" style="display:none">
+          	  <div class="post-item">
+                <div class="post-item-delete"><a href="#" class="btn btn-warning">X</a></div>  
+                <img src="photo.jpg" alt="photo">
+                <div class="post-item-text">The quick brown fox jumps over the lazy dog</div>
+              </div>  
+            </li>
+            <li class="row">  
+          	  <div class="post-add">
+                <a href="#" class="btn btn-success">Add</a>
+              </div>  
+            </li>  
+          </ul>
+        </div><!--/span-->
+      </div><!--/row-->
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2013</p>
+      </footer>
+    </div>
+
+<script src="/s/js/jQuery-URL-Parser/purl.js"></script>
+<script src="/s/js/jquery.jeditable.mini.js"></script>
+<script language='JavaScript'>
+    $('.post-title').editable('', {
+      tooltip   : 'Title'
+    });
+    $('.post-desc').editable('', { 
+      type      : 'textarea',
+      submit    : 'OK',
+      tooltip   : 'Description'
+    });
+    $('.post-delete').click(function() {
+      alert("Really?");
+    });
+    $('.post-item-text').editable('', { 
+      type      : 'textarea',
+      submit    : 'OK',
+      tooltip   : 'Item'
+    });
+    $('.post-item-delete').click(function() {
+      $(this).closest('li').remove();
+    });
+    $('.post-add').click(function() {
+      var li = $('.post-item-template').clone();
+      console.log("li=" + li);
+      li.removeAttr('style')
+           .removeClass('post-item-template');
+      $('.post-add').parent().before(li);
+      setItemHandler(li);
+    });
+    
+    function setItemHandler(li) {
+      //TODO:
+      $('.post-item-text').editable('', { 
+        type      : 'textarea',
+        submit    : 'OK',
+        tooltip   : 'Item'
+      });
+      $('.post-item-delete').click(function() {
+        $(this).closest('li').remove();
+      	});
+    }
+</script>
+
+  </body>
+</html>

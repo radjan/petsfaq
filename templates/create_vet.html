@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Helper - hospitals</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/s/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+
+      @media (max-width: 980px) {
+        /* Enable use of floated navbar text */
+        .navbar-text.pull-right {
+          float: none;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+    .hospital_frame{
+    background-color: #EEEEEE;
+    border-radius: 6px 6px 6px 6px;
+    color: inherit;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 30px;
+    margin-bottom: 10px;
+    padding: 20px 20px 20px 20px;
+    }
+    .hospitals_frame:after{
+      clear: both;
+    }
+    .hospital_menu{
+    clear: both;
+    background-color: #EEEEEE;
+    padding:10px;
+    margin: 0;
+    }
+   
+    div.container label{
+      display: inline;
+    }
+
+    div.container ul label{
+      display: block;
+    }
+    </style>
+    <link href="/s/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/s/css/myFormat.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/s/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/s/ico/favicon.png">
+  </head>
+
+<body>
+    {% include 'components/navbar.html' %}
+    <div class="container-fluid">
+      <div class="row-fluid">
+          {% include 'components/side_editMode.html' %}
+        <div class="span10">
+          <div class="accordion" id="accordion2">
+             <div class="accordion-group">
+                <div class="accordion-heading">
+                  <a name="hLists" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseHospital">
+                    Hopital Lists >
+                  </a>
+                </div>
+                <div id="collapseHospital" class="accordion-body collapse in">
+                  <div class="accordion-inner">
+                    <div>
+                      <h3>獸醫資料</h3>
+                      <span style="color:red">*</span>
+                      <label>姓名</label>
+                      <input name="name" type="text" class="input-block-level" placeholder="姓名">
+
+                      <div>
+                        <span style="color:red">*</span>
+                        <label>性別</label>
+                        <div>
+                          <label class="radio inline">
+                            <input type="radio" name="gender" value="M">
+                            男
+                          </label>
+                          <label class="radio inline">
+                            <input type="radio" name="gender" value="F">
+                              女
+                          </label>
+                        </div>
+                      </div>
+
+                      <br>
+                      <label>生日</label>
+                      <input name="birthday" type="text" class="input-block-level" placeholder="西元年/月/日">
+
+      
+                      <label>電話</label>
+                      <input name="phone" type="text" class="input-block-level" placeholder="電話">
+
+                      <span style="color:red">*</span>
+                      <label style="display:inline">電子信箱</label>
+                      <input name="email" type="text" class="input-block-level" placeholder="電子信箱">
+
+                      <label>照片</label>
+                        <!-- <input name="photo" type="image" src='s/img/tmpPic.png' class="image" >-->
+                      <img name="pro_photo" src="s/img/tmpPic.png"/>
+                      <input type="file" name="file" accept="image/gif,image/png,image/jpg,image/jpeg">
+                    </div>
+
+                    <label>簡介</label>
+                    <textarea name="intro" rows="5" class="input-block-level"></textarea>
+
+                    <span style="color:red">*</span>
+                    <label>專長</label>
+                    <div>
+                      <ul id='vetSpecialties' class="edit_type"></ul>
+                    </div>
+
+                    <label>學歷</label>
+                    <ul>
+                      <li><input name='edu_1' type="text" placeholder="學歷1" class="input-block-level"></li>
+                      <li><input name='edu_2' type="text" placeholder="學歷2" class="input-block-level"></li>
+                    </ul>
+
+                    <label>經歷</label>
+                    <ul>
+                      <li><input name="exp_1" type="text" placeholder="經歷1" class="input-block-level"></li>
+                      <li><input name="exp_2" type="text" placeholder="經歷2" class="input-block-level"></li>
+                    </ul>
+                  
+                  </div>
+              </div>
+            </div>
+
+          </div><!--/accordion-->
+        </div><!--/span-->
+      </div><!--/row-->
+
+
+      <div id='templates' class='specialtySelector templates'>
+        <li name='spec_item'>
+        <label>種類：</label>
+          <select name='species_' class='species'>
+            <option value=''>未選擇</option>
+          </select>
+          <input name="newSpecies" type="text" placeholder="新增種類" class="input-block-level inputNewSpecies">
+          <label>專科：</label>
+          <select name='category_' class='category'>
+          <!-- <option value='一般' class="optionCategory">一般</option> -->
+          </select>
+          <input name="newCategory" type="text" placeholder="新增專科" class="input-block-level inputNewCategory">
+          <!-- <textarea class="inputNewCategory" rows="1" autofocus></textarea> -->
+        </li> 
+      </div>
+    </div><!-- /container -->
+
+
+   <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <script src="/s/js/bootstrap.js"></script>
+    <script src="/s/js/twzipcode.js"></script>
+    <script src="/s/js/showNAddSpecialites.js"></script>    
+    <script type="text/javascript">
+    var zipLoaded = false;
+    var ready = false;
+    var species = [];
+    var categories = [];
+    // var chosenCounty;
+
+    $("document").ready(
+      function(){
+        initSpecialtiesSelection($("#vetSpecialties"), 3, null);
+
+        if(!zipLoaded){
+          for (var county in TW_ZIP) {
+             $("#selector_county").append('<option value="' + county+ '">' + county + '</option>');
+            }
+            zipLoaded = true;  
+        }
+
+        $("#selector_county").change(function(){
+            showArea($("#selector_county").val());
+        });
+
+        $("#selector_area").change(function(){
+          var county = $("#selector_county").val();
+          var area = $("#selector_area").val();
+          $("#input_zipCode").val(TW_ZIP[county][area]);
+          
+        });
+
+
+      });
+
+      $("#nextStep").click(function (){
+          var county = $("#selector_county").val();
+          var area = $("#selector_area").val();
+          var emergency = $("input[name=er]").is(":checked");
+          var speciesArray= new Array();
+          var request2 = { 
+                  "name":$("input[name=name]").val(),
+                  "description":$("textarea[name=description]").val(),
+                  "area": area,
+                  "zipcode": $("#input_zipCode").val(),
+                  "county": county,
+                  "address":$("input[name=address]").val(),
+                  "phone":$("input[name=phone]").val()
+          };
+
+          // add specialties
+          for (var i = 1; i < 4; i++) {
+            var tmpS = $("*[name=species_"+i+"]");
+            if(tmpS.val() != ""){
+              var _sMap = {"species": tmpS.val(), "category":$("*[name=category_"+i+"]").val()};
+              speciesArray.push(_sMap);
+            }
+          }
+          request2["specialties"] = speciesArray;
+          
+          // filter emergency
+          if(emergency){
+            request2["emergency"] = emergency;
+            request2["emergency_phone"] = $("input[name=er_phone]").val();
+            request2["emergency_hour"] = $("textarea[name=er_hour]").val();
+          }
+
+            $.ajax({
+                url: "/api/v1/hospital",
+                type: "POST",
+                data: JSON.stringify(request2),
+                cache: false
+            }).done(function(){
+                window.location.href="/hospitals";
+            });
+            return false;
+        });
+
+    function showArea(chosenCounty){
+      $("#selector_area").empty();
+      $("#selector_area").append('<option value="">請選擇</option>');
+      for (var area in TW_ZIP[chosenCounty]) {
+          var zipCode = TW_ZIP[chosenCounty][area];
+         $("#selector_area").append('<option value="' +area+ '">'+ zipCode+" "+ area + '</option>');
+      };
+    }
+
+    function showCreateHospital(){
+        $("div[name=normalUser]").hide();
+        $("div[name=createHospital]").slideDown();
+    }
+
+    function displayEr(){
+        if ($("input[name=er]").is(":checked")) {
+            $("div[name=erData]").slideDown();
+        }else{
+            $("div[name=erData]").slideUp();
+        }
+    }
+
+    function displayData () { 
+        // check data 
+      $("#nextStep").show();
+      $("#modalBody").empty();
+      $("#modalBody").append("醫院名稱："+ $("input[name=name]").val()+"<br>");
+      $("#modalBody").append("簡介："+ $("textarea[name=description]").val()+"<br>");
+
+     var _showSpecialty = "<ul>";
+      for (var i = 1; i < 4; i++) {
+        var _species = $("*[name=species_"+i+"]");
+        if(_species.val() != ""){
+          _showSpecialty += "<li>" + _species.val();
+          _showSpecialty += ":" + $("*[name=category_"+i+"]").val() + "</li>";
+        }
+      }
+      _showSpecialty += "</ul>";
+      $("#modalBody").append("專科："+ _showSpecialty);
+      $("#modalBody").append("營業時間："+ $("textarea[name=working_hour]").val()+"<br>");
+      $("#modalBody").append("地址："+ $("input[name=address]").val()+"<br>");
+      $("#modalBody").append("電話："+ $("input[name=phone]").val()+"<br>");
+
+      if ($("input[name=er]").is(":checked")) {
+        $("#modalBody").append("急診時間："+ $("textarea[name=er_hour]").val()+"<br>");
+        $("#modalBody").append("急診電話："+ $("input[name=er_phone]").val()+"<br>");
+      }
+
+    }
+    </script>
+
+</body>
+</html>
+  
