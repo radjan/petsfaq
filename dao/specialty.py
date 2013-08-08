@@ -22,6 +22,10 @@ class SpecialtyDao(base.GeneralDao):
     def link_to_entity(self, specialty, note=None, vet=None, hospital=None):
         if vet is None and hospital is None:
             return None
+        rels = vet.specialties if vet else hospital.specialties
+        for r in rels:
+            if specialty == r.specialty:
+                return rel
         rel = specialty_model.EntitySpecialtyRel(specialty=specialty,
                                                  note=note)
         if vet:
