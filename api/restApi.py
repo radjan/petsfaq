@@ -40,7 +40,8 @@ class RestAPI(base.BaseSessionHandler):
     def _create(self, requestJson):
         #overwrite this if the creation needs to be customized
         kw = util.get_model_properties(self.model, requestJson)
-        return self.model(**kw)
+        theOne = self.model(**kw)
+        return self.service.create(theOne)
 
 class HospitalAPI(RestAPI):
     service = hospital_service
@@ -86,10 +87,48 @@ class RoleAPI(RestAPI):
             specialty_service.add_specialty(s, vet=theOne)
         return new_id
 
-
 class SpecialtyAPI(RestAPI):
     service = specialty_service
     model = specialty.Specialty
+
+class VetAPI(RestAPI):
+    service = role_service
+    model = role.Vet
+
+    def _create(self, requestJson):
+        specialties = []
+        if 'specialties' in requestJson:
+            specialties = requestJson.pop('specialties')
+
+        p_dict = requestJson['person']
+        if isinstance(p_dict, dict) and 'id' not in p_dict:
+            pkw = util.get_model_properties(person.Person, p_dict)
+            p = person.Person(**pkw)
+            person_service.create(p)
+            requestJson['person'] = p
+        kw = util.get_model_properties(self.model, requestJson)
+        theOne = self.model(**kw)
+        new_id = self.service.create(theOne)
+
+        for s in specialties:
+            s = specialty_service.ensure_exist(s['species'], s['category'])
+            specialty_service.add_specialty(s, vet=theOne)
+        return new_id
+
+class AdminAPI(RestAPI):
+    service = role_service
+    model = role.Admin
+
+    def _create(self, requestJson):
+        p_dict = requestJson['person']
+        if isinstance(p_dict, dict) and 'id' not in p_dict:
+            pkw = util.get_model_properties(person.Person, p_dict)
+            p = person.Person(**pkw)
+            person_service.create(p)
+            requestJson['person'] = p
+        kw = util.get_model_properties(self.model, requestJson)
+        theOne = self.model(**kw)
+        return self.service.create(theOne)
 
 # single instance
 class ModelInstanceAPI(base.BaseSessionHandler):
