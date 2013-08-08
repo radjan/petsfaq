@@ -1,8 +1,17 @@
 # -*- encoding: utf8 -*-
 import json
+import httplib
 
 SERVER='localhost'
-PORT='8080'
+PORT=8080
+API_PREFIX='/api/v1'
+
+conn = None
+def _get_conn():
+    global conn
+    if conn is None:
+        conn = httplib.HTTPConnection(SERVER, PORT)
+    return conn
 
 h1 = {"name": "醫院一",
       "description": "這是醫院一",
@@ -75,7 +84,8 @@ v3 = {"description": "獸醫",
       "experience": ["醫院一院長", "流浪動物之家志工"]
      }
 
-def import():
+def init_data():
+    global h1, h2, s1, s2, s3, s4, s5, s6, p1, p2, p3, p4, v1, v2, v3
     h1 = create_hospital(h1)
     h2 = create_hospital(h2)
 
@@ -107,7 +117,7 @@ def import():
     a2 = create_admin(person=p4, hospital=h1)
     a3 = create_admin(person=p3, hospital=h2)
 
-def create_hosiptal(h):
+def create_hospital(h):
     response = send_post('/hospital', json.dumps(h))
     h['id'] = json.loads(response)['id']
     return h
@@ -121,5 +131,37 @@ def create_specialty(s):
     response = send_post('/specialty', json.dumps(s))
     s['id'] = json.loads(response)['id']
     return s
+
+def add_specialties(specialties, hospital=None, vet=None):
+    if hospital:
+        url_path = '/hospital/%s/specialties' % hospital['id']
+    else:
+        url_path = '/vet/%s/specialties' % vet['id']
+    send_post(url_path, json.dumps(specialties))
+
+def create_vet(vet, person=None, hospital=None):
+    vet['person'] = person['id']
+    vet['hospital'] = hospital['id']
+    response = send_post('/vets', json.dumps(vet))
+    vet['id'] = json.loads(response)['id']
+    return vet
+
+def create_admin(person=None, hospital=None):
+    admin = {}
+    admin['person'] = person['id']
+    admin['hospital'] = hospital['id']
+    response = send_post('/admins', json.dumps(admin))
+    admin['id'] = json.loads(response)['id']
+    return admin
+
+def send_post(url_path, jsonstr):
+    headers = {"Content-type": "application/json"}
+    conn = _get_conn()
+    conn.request("POST", API_PREFIX+url_path, jsonstr, headers)
+    r = conn.getresponse()
+    assert r.status == 201, 'FAILED: %s, %s' % (url_path, jsonstr)
+    res = r.read()
+    return res
+
 if __name__ == "__main__":
-    import()
+    init_data()
