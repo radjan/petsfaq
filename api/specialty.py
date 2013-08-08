@@ -1,3 +1,5 @@
+import json
+
 from view import base
 from service.specialty import specialty_service
 from service.hospital import hospital_service
@@ -32,8 +34,8 @@ class EntitySpecialtiesAPI(base.BaseSessionHandler):
         request_json = json.loads(body)
         specialties = []
         for s in request_json:
-            s = sepecialty_service.ensure_exist(species=s['species'],
-                                                category=s['category'])
+            s = specialty_service.ensure_exist(species=s['species'],
+                                               category=s['category'])
             specialties.append(s)
 
         h = v = None
