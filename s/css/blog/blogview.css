@@ -1,0 +1,22 @@
+
+.timeline {
+	background-color: #7ABA7B;
+	margin: 0 50px;
+	height:auto;
+}
+.article_preview {
+	background-color: #FAF2CC;
+	border:#515151 solid 2px;
+}
+.article_preview.title{
+	font-size: 1.3em;
+	font-weight: bold;
+}
+.pet_type { /*color:#A9302A;*/}
+.pet_name {/*color:#005580;*/}
+.pet_type,.pet_name {margin: 0 5px; }
+
+.preview_body {
+	padding: 10px;	
+	background-color:#E1E1E8;
+}
