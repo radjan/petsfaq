@@ -79,7 +79,53 @@
               <span id="hospital_desc" class="browse_type"><!-- hospital description --></span>
               <textarea id="edit_hospital_desc" rows="5" class="input-block-level edit_type"></textarea>
             </p>
-            <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+            <p>
+              <span id="hospital_specialties" class="browse_type"></span>
+              <ul id='edit_hospital_Specialties' class="edit_type"></ul>
+            </p>
+            <p>
+              <span id="hospital_address" class="browse_type"></span>
+               <div>
+                    <!-- 郵遞區號：<input name="zipcode" type="text" class="input-block-level"><br> -->
+                    <!-- <select id="selector_county" name="county" class="edit_type"> -->
+                      <!-- <option value=''>選擇縣市</option> -->
+                    <!-- <input name="county" type="text" class="input-block-level"><br> -->
+                    <!-- </select> -->
+                    <!-- <select id="selector_area" name="area" class="edit_type"> -->
+                      <!-- <option value=''>選擇鄉鎮市區</option> -->
+                    <!-- 鄉鎮市區：<input name="area" type="text" class="input-block-level"><br> -->
+                    <!-- </select> -->
+                    <!-- <br> -->
+                    <input id="input_zipCode" name="zipcode" type="hidden">
+                    <input name="address" type="text" class="input-block-level edit_type"><br>
+                </div>
+            </p>
+            <p>
+              <span id="hospital_phone" class="browse_type"></span>
+              <input id="edit_hospital_phone" type="text" class="input-block-level edit_type">
+            </p>
+            <p>
+              <span id="hospital_working_hour" class="browse_type"></span>
+              <textarea id="edit_hospital_working_hour" class="input-block-level edit_type"></textarea>
+            </p>
+            <p>
+              <span id="hospital_value_added_tax" class="browse_type"></span>
+              <input id="edit_value_added_tax" type="text" class="input-block-level edit_type"><br>
+            </p>      
+
+
+
+                    <label class="checkbox" onclick="displayEr()">
+                      <input name="er" type="checkbox"> 有急診
+                    </label>
+
+                    <div name="erData" style="display:none">
+                      <label>急診電話</label>
+                      <input name='er_phone' type="text" class="input-block-level">
+
+                      <label>急診時間</label>
+                      <textarea name='er_hour' type="text" class="input-block-level"></textarea>
+                    </div>
           </div>
           
           
@@ -204,12 +250,81 @@
         $(".edit_type").hide();
         $(".edit_button").show();
 
+        $("#edit_hospital").click(function(){
+          $("#edit_hospital").hide();
+          $("#save_hospital").show();
+          $("#cancel_hospital").show();
+
+          $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
+          $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
+          $("#edit_hospital_address").attr("placeholder", $("#hospital_address").text()).show();
+          $("#edit_hospital_phone").attr("placeholder",$("#hospital_phone").text()).show();
+          $("#edit_hospital_working_hour").attr("placeholder",$("#hospital_working_hour").text()).show();
+        });
+
+
+        $("#save_hospital").click(function(){
+          if( $("#edit_hospital_name").val() != ""){
+            $("#hospital_name").text($("#edit_hospital_name").val());
+          }
+          if($("#edit_hospital_desc").val() != ""){
+            $("hospital_desc").text($("#edit_hospital_desc").val());
+          }
+          $.ajax({
+            url: "/api/v1/hospital/"+hid,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "name":$("#hospital_name").text(),
+                "description": $("hospital_desc").text(),
+                "area": "中和區",
+                "zipcode": "235",
+                "county": "新北市",
+                "address":"no 125 kr road",
+                "phone":"3939889",
+                "emergency": true,
+                "specialties": [
+                  {"species": "貓", "category": "一般"},
+                  {"species": "貓", "category": "一般"},
+                  {"species": "狗", "category": "一般"},
+                  {"species": "兔", "category": "一般"},
+                ]
+            }),
+            cache: false
+          }).done(function(){
+          // window.location.href="/hospitals";
+          });
+        });
+
+    $("#cancel_hospital").click(function(){
+      $("#edit_hospital").show();
+      $("#save_hospital").hide();
+      $("#cancel_hospital").hide();
+
+      $("#edit_hospital_name").hide();
+      $("#edit_hospital_desc").hide();
+      $("#edit_hospital_address").hide();
+      $("#edit_hospital_phone").hide();
+      $("#edit_hospital_working_hour").hide();
+      
+      $("#edit_hospital_name").val("");
+      $("#edit_hospital_desc").val("");
+      $("#edit_hospital_address").val("");
+      $("#edit_hospital_phone").val("");
+      $("#edit_hospital_working_hour").val("");
+
+    });
+
 
     });
 
     function putData(hospital) {
       $("#hospital_name").text(hospital.name);
       $("#hospital_desc").text(hospital.description);
+      $("#hospital_address").text(hospital.address);
+      $("#hospital_phone").text(hospital.phone);
+      $("#hospital_working_hour").text(hospital.working_hour);
+
       var vets = $("#vets");
       var vs = hospital.vets
       for (i in vs){
@@ -328,31 +443,7 @@
     }
 
 
-    $("#edit_hospital").click(function(){
-      $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
-      $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
-    });
 
-    $("#edit_hospital").click(function(){
-      $("#edit_hospital").hide();
-      $("#save_hospital").show();
-      $("#cancel_hospital").show();
-    });
-
-    $("#save_hospital").click(function(){
-
-    });
-
-    $("#cancel_hospital").click(function(){
-      $("#edit_hospital").show();
-      $("#save_hospital").hide();
-      $("#cancel_hospital").hide();
-
-      $("#edit_hospital_name").hide();
-      $("#edit_hospital_desc").hide();
-      $("#edit_hospital_name").val("");
-      $("#edit_hospital_desc").val("");      
-    });
 
     $("#accordion2 a[name=hLists]").attr("href","/hospitals/edit");
     </script>

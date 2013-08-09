@@ -113,6 +113,18 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/specialty/<type:(species|categories)>',
                   specialtyApi.SpecialtyListAPI),
 
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/specialties',
+                  specialtyApi.EntitySpecialtiesAPI),
+    webapp2.Route(API_PREFIX+'/vet/<vetid:\d+>/specialties',
+                  specialtyApi.EntitySpecialtiesAPI),
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/specialties/<specialtyid:\d+>',
+                  specialtyApi.EntitySpecialtiesDeleteAPI),
+    webapp2.Route(API_PREFIX+'/vet/<vetid:\d+>/specialties/<specialtyid:\d+>',
+                  specialtyApi.EntitySpecialtiesDeleteAPI),
+
+    webapp2.Route(API_PREFIX+'/vets', restApi.VetAPI),
+    webapp2.Route(API_PREFIX+'/admins', restApi.AdminAPI),
+
     #
     webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',     imageApi.AvatarPost, methods=['POST']),
     webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',     imageApi.Avatar,     methods=['GET']),

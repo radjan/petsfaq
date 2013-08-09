@@ -35,4 +35,15 @@ class SpecialtyDao(base.GeneralDao):
         rel.put()
         return rel
 
+    def unlink(self, specialty, hospital=None, vet=None):
+        if vet is None and hospital is None:
+            return None
+        if hospital:
+            rels = hospital.specialties
+        else:
+            rels = vet.specialties
+        for r in rels:
+            if r.specialty == specialty:
+                r.delete()
+
 specialty_dao = SpecialtyDao()
