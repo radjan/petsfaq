@@ -30,7 +30,7 @@ class PersonService(base.GeneralService):
         if type(p) == int:
             p = self.get(p)
         for rel in p.specialties:
-            specialty_dao.delete(rel)
+            specialty_dao.remove_link(rel)
         for r in p.roles:
             role_dao.delete(r)
         for img in p.avatars:
