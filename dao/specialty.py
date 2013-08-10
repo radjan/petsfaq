@@ -44,6 +44,10 @@ class SpecialtyDao(base.GeneralDao):
             rels = vet.specialties
         for r in rels:
             if r.specialty == specialty:
-                r.delete()
+                r.key.delete()
+
+    def remove_links(self, specialty):
+        for rel in specialty.relations:
+            rel.key.delete()
 
 specialty_dao = SpecialtyDao()
