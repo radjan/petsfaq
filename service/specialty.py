@@ -14,6 +14,8 @@ class SpecialtyService(base.GeneralService):
         return s.get_id()
 
     def delete(self, s):
+        if type(s) == int:
+            s = self.get(s)
         specialty_dao.remove_links(s)
         return specialty_dao.delete(s)
 
