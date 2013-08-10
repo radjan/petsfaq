@@ -1,22 +1,36 @@
 
 .timeline {
+	text-align: left;
 	background-color: #7ABA7B;
 	margin: 0 50px;
 	height:auto;
 }
+.timeline #left.timeline-flow {
+	padding-right: 20px;
+}
+.timeline #right.timeline-flow {
+	padding-left: 20px;
+}
 .article_preview {
 	background-color: #FAF2CC;
 	border:#515151 solid 2px;
+	margin:5px 0;
+	text-align: left;
+	
 }
-.article_preview.title{
+.article_preview .title{
 	font-size: 1.3em;
-	font-weight: bold;
+	font-weight: 300;
 }
-.pet_type { /*color:#A9302A;*/}
-.pet_name {/*color:#005580;*/}
-.pet_type,.pet_name {margin: 0 5px; }
-
+.pet_type { color:#A9302A;}
+.pet_name { color:#005580;}
+.pet_type,.pet_name {font-size: 0.9em; margin: 0 2px; }
+.article_wrapper .date {
+	font-size:0.8em;
+	color:#363636;
+}
 .preview_body {
 	padding: 10px;	
 	background-color:#E1E1E8;
+	margin: 3px 0;
 }

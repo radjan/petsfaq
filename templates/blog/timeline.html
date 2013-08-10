@@ -18,9 +18,12 @@
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		
 		<script src="s/js/common/debug.js"></script>
+		<script src="s/js/common/common_util.js"></script>
 		<script src="s/js/blog/BlogController.js"></script>
 		<script src="s/js/blog/Article.js"></script>
 		<script src="s/js/blog/blogapi.js"></script>
+		
+		<script src="s/js/date.format.js"></script>
 		<!-- BEGIN CSS -->
 		<link href="/s/css/bootstrap.css" rel="stylesheet">
 		<link href="/s/css/blog/blogview.css" rel="stylesheet">
@@ -42,15 +45,12 @@
 					<p>
 						<a href="/">Home</a>
 					</p>
-					<p>
-						<a href="/contact">Contact</a>
-					</p>
 				</nav>
 	
-				<div class='timeline row-fluid'>
-					<div id='left' class="span5" style="border-left-style: solid 1px red;"></div>
+				<div class='timeline row'>
+					<div id='left' class="timeline-flow span6" ></div>
 					<div></div>
-					<div id='right' class='span5' style=""></div>
+					<div id='right' class='timeline-flow span6' style="border-left: 2px blue solid"></div>
 					<div class="clearfix"></div>
 				</div>
 	
@@ -69,6 +69,7 @@
 	</div> <!-- .container-fluid -->
 	
 	<script>
+		var TAG = "main";
 		var blogCtrl = new BlogController();
 		var aContent = {
 				pet_type : 'Cat',
@@ -78,7 +79,7 @@
 			};
 		var testIndex = 0;
 		$(window).load(function() {
-			
+			getPostList(listPostsHandler, null);
 			
 		});
 		
@@ -89,14 +90,16 @@
 		});
 		
 		$('#test-loadPosts').click(function(){
-			get_articles(listPostsHandler, null);
+			getPostList(listPostsHandler, null);
 		});
 		
 		var listPostsHandler = function(postList){
 			if(typeof postList === 'undefined') return;
-			
+			var view = $(".timeline > div#right");
 			for(var key in postList) {
-				Log.consoleLog(postList[key]);
+				Log.d(TAG, postList[key]);
+				var article = new Article(postList[key]);
+				blogCtrl.insertToView(article, view);
 			}
 		};
 	</script>

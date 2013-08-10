@@ -1,9 +1,20 @@
-function Article(aid) {
+function Article(pid) {
 	//article id
-	this.TAG = "Article"+aid;
-	this.aid = (aid != null && typeof aid !== 'undefined')? aid : 0;
+	this.TAG = "Article"+pid;
+	this.pid = (pid != null && typeof pid !== 'undefined')? pid : 0;
 	this.html = null;
+	this.content = {};
+	
+	this._init();
 } 
+
+Article.prototype._init = function() {
+	var html = $("<div class='article_wrapper'></div>");
+	//Log.d(this.TAG, "pid="+this.pid);
+	html.attr("id", this.pid);
+	html.append("<div class='ajax-load'><img src='s/img/common/ajax-loader-small-trans.gif' /></div>")
+	this.html = html;
+}
 
 /**
  *	<div id='{#id}' class='btn article_preview'>
@@ -19,21 +30,35 @@ function Article(aid) {
  * { pet_type, pet_name, title, preview_content}
  */
 Article.prototype.setContent = function(content) {
-	var html = $("<div class='btn article_preview'></div>");
-	Log.d(this.TAG, "id="+this.aid);
-	Log.consoleLog(content);
-	html.attr("id", "article_"+this.aid);
-	var pType = $("<span class='pet_type btn btn-info disabled'>"+content.pet_type+"</span>");
-	var pName = $("<span class='pet_name btn btn-success disabled '>"+content.pet_name+"</span>");
+	var contentBody = $("<div class='btn article_preview span4' style='width:70%'></div>");
+	this.content = content;
+	Log.d(this.TAG, "pid="+this.pid);
+	//Log.d(this.TAG, content);
+	//html.attr("id", "article_"+this.pid);
+	var pType = $("<span class='pet_type '>"+content.pet_type+"</span>");
+	var pName = $("<span class='pet_name '>"+content.pet_name+"</span>");
 	var title = $("<span class='title'>"+content.title+"</span>");
+	var createdDate = $("<div class='date span1' style='width:20%'>"+getDateString(content.created_date)+"</div>");
 	
-	html.append(pType);
-	html.append(pName);
-	html.append(title);
+	contentBody.append(pType);
+	contentBody.append(pName);
+	contentBody.append(title);
 	
 	var previewBody = $("<div class='preview_body'></div>");
-	var previewContent = $("<div class='preview_content'>"+content.preview_content+"</div>");
+	var previewContent = $("<div class='preview_content'>"+content.preview_content+"<i class='icon-play'></i></div>");
 	previewBody.append(previewContent);
-	html.append(previewBody);
-	this.html = html;
+	contentBody.append(previewBody);
+	
+	this.html.append(contentBody);
+	this.html.append(createdDate);
+};
+
+Article.prototype.getPost = function(postId) {
+	var _this = this;
+	var callback = function(content){
+		_this.setContent(content);
+		//remove ajax-loading animation
+		$("div[id='"+_this.pid+"'] div.ajax-load").remove();
+	};
+	getPostByPid(postId, callback);
 };

@@ -1,4 +1,5 @@
 function BlogController() {
+	this.TAG = 'BlogController';
 	this.articleList = new Array();
 	
 }
@@ -12,9 +13,13 @@ BlogController.prototype.createArticle = function(aid, aContent) {
 };
 
 BlogController.prototype.insertToView = function(article, view) {
-	
-	Log.consoleLog(view);
+	//Log.d(this.TAG, view);
 	if(typeof view === 'undefined') return;
-	Log.consoleLog(article);
+	//Log.d(this.TAG, article);
 	view.append(article.html);
-}
+	article.getPost(article.pid);
+};
+
+BlogController.prototype.sortBy = function() {
+	
+};
