@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<title>timeline</title>
+		<meta name="description" content="" />
+		<meta name="author" content="petsfaq" />
+
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		
+		<script src="s/js/common/debug.js"></script>
+		<script src="s/js/common/common_util.js"></script>
+		<script src="s/js/blog/BlogController.js"></script>
+		<script src="s/js/blog/Article.js"></script>
+		<script src="s/js/blog/blogapi.js"></script>
+		
+		<script src="s/js/date.format.js"></script>
+		<!-- BEGIN CSS -->
+		<link href="/s/css/bootstrap.css" rel="stylesheet">
+		<link href="/s/css/blog/blogview.css" rel="stylesheet">
+		<!-- END CSS -->
+	</head>
+
+	<body>
+	{% include 'components/navbar.html' %}
+
+    <div class="container-fluid">
+      	<div class="row-fluid">
+        {% include 'components/side.html' %}	
+		
+			<div class="span10">
+				<header>
+					<h1>timeline</h1>
+				</header>
+				<nav>
+					<p>
+						<a href="/">Home</a>
+					</p>
+				</nav>
+	
+				<div class='timeline row'>
+					<div id='left' class="timeline-flow span6" ></div>
+					<div></div>
+					<div id='right' class='timeline-flow span6' style="border-left: 2px blue solid"></div>
+					<div class="clearfix"></div>
+				</div>
+	
+				<button class="btn" id='test-addArticle'>Add</button>
+				<button class="btn" id="test-loadPosts">Load</button>
+				<footer>
+					<p>
+						&copy; Copyright  by zen
+					</p>
+				</footer>
+			</div>
+		
+		
+		
+		</div> <!-- END .row-fluid -->
+	</div> <!-- .container-fluid -->
+	
+	<script>
+		var TAG = "main";
+		var blogCtrl = new BlogController();
+		var aContent = {
+				pet_type : 'Cat',
+				pet_name : 'Maggie',
+				title : 'Cat is cute',
+				preview_content : 'cat is as cute as Ringo'
+			};
+		var testIndex = 0;
+		$(window).load(function() {
+			getPostList(listPostsHandler, null);
+			
+		});
+		
+		$('#test-addArticle').click(function(){
+			var a = blogCtrl.createArticle(testIndex++, aContent);
+			var view = $(".timeline > div#right");
+			blogCtrl.insertToView(a, view);
+		});
+		
+		$('#test-loadPosts').click(function(){
+			getPostList(listPostsHandler, null);
+		});
+		
+		var listPostsHandler = function(postList){
+			if(typeof postList === 'undefined') return;
+			var view = $(".timeline > div#right");
+			for(var key in postList) {
+				Log.d(TAG, postList[key]);
+				var article = new Article(postList[key]);
+				blogCtrl.insertToView(article, view);
+			}
+		};
+	</script>
+	</body>
+</html>

@@ -36,6 +36,10 @@ from test import testApi
 from view import image
 from view import post
 
+#[BEGIN] by Zen
+from view import blog
+#[END]
+
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
 share.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
@@ -134,7 +138,9 @@ app = webapp2.WSGIApplication([
 
     #webapp2.Route('/test/testApi/<blobid>', testApi.blob),
 
-
+    #[BEGIN] by Zen,
+    webapp2.Route('/blog', blog.BlogTimeline),
+    #[END]
 
     (API_PREFIX+'/.*', NotFound),
 #    (API_PREFIX+'/hospital', hospital.RestAPI),
