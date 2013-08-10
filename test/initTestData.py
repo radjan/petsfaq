@@ -111,7 +111,7 @@ def init_data():
     add_specialties([s1, s2, s3, s6], vet=v2)
 
     v3['specialties'] = [s1, s3, s4, s5, s6]
-    v3 = create_vet(v3, person=p3, hospital=h1)
+    v3 = create_vet(v3, person=p3, hospital=h2)
 
     a1 = create_admin(person=p1, hospital=h1)
     a2 = create_admin(person=p4, hospital=h1)
