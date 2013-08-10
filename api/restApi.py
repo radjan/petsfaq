@@ -158,7 +158,7 @@ class ModelInstanceAPI(base.BaseSessionHandler):
         util.jsonify_response(self.response, {"result":"ok"})
 
     def delete(self, *args, **kw):
-        model_id = int(args.get('id', 0)
+        model_id = int(args.get('id', 0))
         if model_id:
             self.service.delete(model_id)
         util.jsonify_response(self.response, {"result":"ok"})
