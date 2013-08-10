@@ -6,6 +6,7 @@ import urllib
 import time
 
 from google.appengine.ext import blobstore, db
+from google.appengine.ext.webapp import blobstore_handlers
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -13,12 +14,16 @@ from google.appengine.api import users
 from model.person import Person
 from model.hospital import Hospital
 from model.post import Blogpost
+from model.post import Attached
 from view import base
 from common import util
 
 import json
 
 class BlogpostAPI(base.BaseSessionHandler):
+    """
+    collection: show and edit
+    """
     def post(self):
         try:
             personid   = self.request.get('personid')
@@ -64,6 +69,9 @@ class BlogpostAPI(base.BaseSessionHandler):
             raise
 
 class PostAPI(base.BaseSessionHandler):
+    """
+    element: list and create
+    """
     def get(self, blogpostid):
         try:
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
@@ -106,18 +114,95 @@ class PostAPI(base.BaseSessionHandler):
     def put(self, blogpostid):
         try:
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+
             publish = json.loads(self.request.body).get('publish')
+            title   = json.loads(self.request.body).get('title')
+            content = json.loads(self.request.body).get('content')
+
+            result = {}
+            detail = {'title':'unchanged',
+                      'content':'unchanged',
+                      'publish':'unchanged'}
+
+            if title:
+                blogpost_from_key.title = title
+                detail['title'] = 'Changed'
+            if content:
+                blogpost_from_key.content = content
+                detail['content'] = 'Changed'
+
 
             if publish.isdigit():
                 publish = int(publish)
-                blogpost_from_key.status_code=publish
+                blogpost_from_key.status_code = publish
                 blogpost_from_key.put()
-                self.response.out.write('status_code changed to %s OK!'% publish)
+                result['result'] = {'success':detail}
+                detail['publish'] = 'Changed'
             else:
-                self.response.out.write('no changed')
+                result['result'] = {'error':detail}
+                detail['publish'] = 'type error'
+            
+            self.response.out.write(result)
 
         except Exception as e:
             self.response.write({'Error':'Internal Error %s' % str(e)})
             raise
 
+class AttachedAPI(base.BaseSessionHandler, 
+                  blobstore_handlers.BlobstoreUploadHandler):
+    def get(self, blogpostid):
+        try:
+            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+            ids = []
+            for x in blogpost_from_key.attaches:
+                ids.append(x.key().id())
+            util.jsonify_response(self.response, {'attachedids':ids})
+        except Exception as e:
+            raise
+            self.response.write({'Error':'Internal Error %s' % str(e)})
+
+    def post(self, blogpostid):
+        try:
+            result = {}
+
+            ATYPE_TEXT = "T"
+            ATYPE_PHOTO = "P"
+ 
+            #blogpost
+            hospital_from_key = None
+            if blogpostid:
+                blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+                result['blogpostid'] = blogpostid
+
+            #post 3 args: title, content, img
+            title      = self.request.get('title')
+            content    = self.request.get('content')
+            imgfile    = self.get_uploads('img')
+
+            if len(imgfile) != 0:
+                attached_type = ATYPE_PHOTO
+                blob = imgfile[0]
+            else:
+                attached_type = ATYPE_TEXT
+
+            #create attached
+            attached = Attached(title = title, 
+                                content = content,
+                                attached_type = attached_type,
+                                blogpost = blogpost_from_key)
+            attached_output = attached.put()
+            result['attachedid'] = attached_output.id()
+
+            #create photo reference to attached
+            if attached_type == ATYPE_PHOTO:
+                aphoto = imagemodel(description = content,
+                                    attached = attached,
+                                    img_blobkey = str(blob.key()))
+                aphoto_output = aphoto.put()
+                result['aphoto_output'] = aphoto_output.id()
+
+            self.response.write(result)
+        except:
+            raise
+            self.response.write({'Error':'Internal Error'})
 

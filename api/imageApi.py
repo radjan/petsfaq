@@ -8,7 +8,7 @@ from google.appengine.api import images
 from google.appengine.api import users
 
 
-from model.imagemodel import imagemodel
+from model.image import imagemodel
 from model.person import Person
 from model.hospital import Hospital
 from model.post import Blogpost
@@ -18,7 +18,7 @@ from common import util
 class Image(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, imageid):
         try:
-            image = imagemodel.get_by_id(int(imageid))
+            image = image.get_by_id(int(imageid))
 
             imgwidth  = self.request.get('width',  300)
             imgheight = self.request.get('height', 300)
@@ -79,9 +79,9 @@ class AvatarPost(blobstore_handlers.BlobstoreUploadHandler):
 
             putoutput = avatar.put()
             self.response.write({'personid': personid, 'imageid':putoutput.id()})
-        except:
-            blob.delete()
-            self.response.write({'Error':'Internal Error'})
+        except Exception as e:
+            #self.response.write({'Error':'Internal Error'})
+            self.response.write(str(e))
 
 class Logo(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, hospitalid):
@@ -125,7 +125,6 @@ class LogoPost(blobstore_handlers.BlobstoreUploadHandler):
             putoutput = logo.put()
             self.response.write({'hospitalid': hospitalid, 'imageid':putoutput.id()})
         except:
-            blob.delete()
             self.response.write({'Error':'Internal Error'})
             raise
 
