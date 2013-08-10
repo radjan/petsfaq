@@ -8,6 +8,9 @@ class GeneralService:
     def update(self, h):
         return self.dao.update(h)
 
+    def delete(self, m):
+        return self.dao.delete(m)
+
     def list(self):
         return self.dao.list()
 
