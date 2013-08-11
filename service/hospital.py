@@ -21,7 +21,7 @@ class HospitalService(base.GeneralService):
                 role_dao.update(r)
 
         for r in h.employees:
-            if isinstance(r, role.Employees):
+            if isinstance(r, role.Employee):
                 # delete employee roles
                 role_dao.delete(r)
 
