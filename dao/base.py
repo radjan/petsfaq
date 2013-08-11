@@ -20,7 +20,7 @@ class GeneralDao:
     def delete(self, m):
         if type(m) == int:
             m = self.get(m)
-        m.key.delete()
+        m.delete()
 
     def list(self):
         return self.model_cls.all()

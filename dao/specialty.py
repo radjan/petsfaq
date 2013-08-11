@@ -46,8 +46,8 @@ class SpecialtyDao(base.GeneralDao):
             if r.specialty == specialty:
                 r.key.delete()
 
-    def remove_links(self, rel):
-        rel.key.delete()
+    def remove_link(self, rel):
+        rel.delete()
 
     def remove_links(self, specialty):
         for rel in specialty.relations:
