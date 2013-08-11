@@ -4,6 +4,7 @@ from google.appengine.ext.db import polymodel
 from model import person
 from model import hospital
 from model import base
+import model.image
 
 TYPE_QUESTION = "Q"
 TYPE_ANSWER = "A"
@@ -13,6 +14,9 @@ TYPE_BLOG = "B"
 STATUS_DRAFT = 0
 STATUS_PUBLISH = 1
 STATUS_EDITED = 2
+
+ATYPE_TEXT = "T"
+ATYPE_PHOTO = "P"
 
 class Post(base.BaseModel, polymodel.PolyModel):
     title = db.StringProperty(required=True)
@@ -48,4 +52,17 @@ class Blogpost(Post):
            kwargs['status_code'] = STATUS_DRAFT
 
         Post.__init__(self, *args, **kwargs)
+
+class Attached(base.BaseModel, db.Model):
+    blogpost = db.ReferenceProperty(Blogpost, collection_name='attaches')
+    title = db.StringProperty(required=True)
+    attached_type = db.StringProperty(required=True,
+                                      choices=([ATYPE_TEXT, 
+                                                ATYPE_PHOTO]))
+    content = db.StringProperty(required=True, multiline=True)
+    created = db.DateTimeProperty(auto_now_add=True)
+    last_modified = db.DateTimeProperty(auto_now=True)
+
+    def get_type(self):
+        return '_'.join(self._class)
 

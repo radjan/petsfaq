@@ -16,8 +16,8 @@ class upload_post(base.BaseSessionHandler):
             upload_url = '%s/posts' % (main.API_PREFIX,)
 
             self.response.out.write('<html><head></head><body>')
-            self.response.out.write('Hospital ID: %s'% personid)
-            self.response.out.write('Person  ID: %s'% hospitalid)
+            self.response.out.write('Hospital ID: %s'% hospitalid)
+            self.response.out.write('Person  ID: %s'% personid)
             self.response.out.write("""
                 <form action="%s" enctype="multipart/form-data" method="POST">
                 <label>title:</label><br />
@@ -30,5 +30,27 @@ class upload_post(base.BaseSessionHandler):
                 </form></body></html>
                 """ %(upload_url, personid, hospitalid, publish))
         except Exception as e:
+            self.response.write({'Error':'Internal Error: %s' % str(e)})
+
+class upload_attaches(base.BaseSessionHandler):
+    def get(self):
+        try:
+            blogpostid = self.request.get('blogpostid')
+
+            #api
+            upload_url = '%s/post/%s/attaches' % (main.API_PREFIX, blogpostid)
+
+            self.response.out.write('<html><head></head><body>')
+            self.response.out.write("""
+                <form action="%s" enctype="multipart/form-data" method="POST">
+                <label>title:</label><br />
+                <input type="text" value="test_title" name="title"><br />
+                <textarea rows="30" cols="30" name="content"></textarea><br />
+                <input type="file" name="img" /><br />
+                <input type="submit" value="submit" /><br />
+                </form></body></html>
+                """ %(upload_url ))
+        except Exception as e:
+            raise
             self.response.write({'Error':'Internal Error: %s' % str(e)})
 
