@@ -36,6 +36,10 @@ from test import testApi
 from view import image
 from view import post
 
+#[BEGIN] by Zen
+from view import blog
+#[END]
+
 DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(DIR, 'templates')
 share.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
@@ -94,18 +98,14 @@ app = webapp2.WSGIApplication([
     (API_PREFIX+'/person/vet', personApi.VetAPI),
     (API_PREFIX+'/specialty', restApi.SpecialtyAPI),
 
-    webapp2.Route(API_PREFIX+'/hospital/<id:\d+>',
-                  restApi.HospitalInstanceAPI,
-                  name='hospital_id'),
-    webapp2.Route(API_PREFIX+'/person/<id:\d+>',
-                  restApi.PersonInstanceAPI,
-                  name='hospital_id'),
-    webapp2.Route(API_PREFIX+'/specialty/<id:\d+>',
-                  restApi.SpecialtyInstanceAPI,
-                  name='specialty_id'),
-    webapp2.Route(API_PREFIX+'/role/<id:\d+>',
-                  restApi.RoleInstanceAPI,
-                  name='role_id'),
+    webapp2.Route(API_PREFIX+'/vets',                               restApi.VetAPI),
+    webapp2.Route(API_PREFIX+'/admins',                             restApi.AdminAPI),
+
+    webapp2.Route(API_PREFIX+'/hospital/<id:\d+>',                  restApi.HospitalInstanceAPI),
+    webapp2.Route(API_PREFIX+'/person/<id:\d+>',                    restApi.PersonInstanceAPI),
+    webapp2.Route(API_PREFIX+'/specialty/<id:\d+>',                 restApi.SpecialtyInstanceAPI),
+    webapp2.Route(API_PREFIX+'/role/<id:\d+>',                      restApi.RoleInstanceAPI),
+
     webapp2.Route(API_PREFIX+'/specialty/<type:(species|categories)>',
                   specialtyApi.SpecialtyListAPI),
 
@@ -118,30 +118,33 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/vet/<vetid:\d+>/specialties/<specialtyid:\d+>',
                   specialtyApi.EntitySpecialtiesDeleteAPI),
 
-    webapp2.Route(API_PREFIX+'/vets', restApi.VetAPI),
-    webapp2.Route(API_PREFIX+'/admins', restApi.AdminAPI),
-
     #
-    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',     imageApi.AvatarPost, methods=['POST']),
-    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',     imageApi.Avatar,     methods=['GET']),
-    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/hospitals',  restApi.PersonHopitalList),
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',       imageApi.AvatarPost, methods=['POST']),
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',       imageApi.Avatar,     methods=['GET']),
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/hospitals',    restApi.PersonHopitalList),
 
-    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',   imageApi.LogoPost,   methods=['POST']),
-    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',   imageApi.Logo,       methods=['GET']),
-    webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos', imageApi.PhotoPost,  methods=['POST']),
-    webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos', imageApi.Photo,      methods=['GET']),
-    webapp2.Route(API_PREFIX+'/image/<imageid:\d+>',              imageApi.Image,      methods=['GET']),
-    webapp2.Route(API_PREFIX+'/posts',                            postApi.BlogpostAPI),
-    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>',            postApi.PostAPI),
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',     imageApi.LogoPost,   methods=['POST']),
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',     imageApi.Logo,       methods=['GET']),
+    webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos',   imageApi.PhotoPost,  methods=['POST']),
+    webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos',   imageApi.Photo,      methods=['GET']),
+    webapp2.Route(API_PREFIX+'/image/<imageid:\d+>',                imageApi.Image,      methods=['GET']),
+    webapp2.Route(API_PREFIX+'/posts',                              postApi.BlogpostAPI),
+    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>',              postApi.PostAPI),
+    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attaches',     postApi.AttachedAPI),
+    #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attache/<attachid:\d+', postApi.AttachedItemAPI),
 
-    webapp2.Route('/test/upload/<personid:\d+>/avatar',           image.upload_avatar, methods=['GET']),
-    webapp2.Route('/test/upload/<hospitalid:\d+>/logo',           image.upload_logo,   methods=['GET']),
-    webapp2.Route('/test/upload/<blogpostid:\d+>/photo',          image.upload_photo,   methods=['GET']),
-    webapp2.Route('/test/upload/post',                            post.upload_post,   methods=['GET']),
+
+    webapp2.Route('/test/upload/<personid:\d+>/avatar',             image.upload_avatar, methods=['GET']),
+    webapp2.Route('/test/upload/<hospitalid:\d+>/logo',             image.upload_logo,   methods=['GET']),
+    webapp2.Route('/test/upload/<blogpostid:\d+>/photo',            image.upload_photo,   methods=['GET']),
+    webapp2.Route('/test/upload/post',                              post.upload_post,   methods=['GET']),
+    webapp2.Route('/test/upload/attaches',                          post.upload_attaches,   methods=['GET']),
 
     #webapp2.Route('/test/testApi/<blobid>', testApi.blob),
 
-
+    #[BEGIN] by Zen,
+    webapp2.Route('/blog', blog.BlogTimeline),
+    #[END]
 
     (API_PREFIX+'/.*', NotFound),
 #    (API_PREFIX+'/hospital', hospital.RestAPI),

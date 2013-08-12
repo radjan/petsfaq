@@ -17,6 +17,11 @@ class GeneralDao:
     def update(self, m):
         m.put()
 
+    def delete(self, m):
+        if type(m) == int:
+            m = self.get(m)
+        m.delete()
+
     def list(self):
         return self.model_cls.all()
 

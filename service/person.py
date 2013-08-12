@@ -1,6 +1,8 @@
 from model import role
 
 from dao.person import person_dao
+from dao.role import role_dao
+from dao.specialty import specialty_dao
 from service import base
 
 class PersonService(base.GeneralService):
@@ -23,5 +25,15 @@ class PersonService(base.GeneralService):
             if isinstance(r, role.Vet):
                 return r
         return None
+
+    def delete(self, p):
+        if type(p) == int:
+            p = self.get(p)
+        for r in p.roles:
+            role_dao.delete(r)
+        for img in p.avatars:
+            #XXX image dao, delete blog
+            img.key.delete()
+        person_dao.delete(p)
 
 person_service = PersonService()
