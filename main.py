@@ -23,6 +23,7 @@ from google.appengine.api import users
 from common import share, util
 from view import base, faq, login, create
 import view.hospital
+import view.person
 from admin import data as adm_data
 from admin import adm
 from api import restApi
@@ -78,6 +79,7 @@ app = webapp2.WSGIApplication([
     ('/hospitals', view.hospital.HospitalList),
     ('/createHospital', view.hospital.CreateHospital),
     webapp2.Route('/hospital/<id:\d+>', view.hospital.HospitalDetail, name='view_hospital'),
+    webapp2.Route('/person/<id:\d+>', view.person.PersonDetail),
     ('/faq', faq.BoardPage),
 
     # edit page with privilege
