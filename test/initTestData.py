@@ -1,6 +1,7 @@
 # -*- encoding: utf8 -*-
 import json
 import httplib
+import urllib
 
 SERVER='localhost'
 PORT=8080
@@ -83,9 +84,19 @@ v3 = {"description": "獸醫",
       "education": ["中興獸醫所", "台大獸醫系"],
       "experience": ["醫院一院長", "流浪動物之家志工"]
      }
+bp1 = { "title": "test post",
+        "content": "test post content",
+        "publish": 0
+      }
+
+att1 = {
+        "title": "test attach",
+        "content": "test attach content"
+        }
+
 
 def init_data():
-    global h1, h2, s1, s2, s3, s4, s5, s6, p1, p2, p3, p4, v1, v2, v3
+    global h1, h2, s1, s2, s3, s4, s5, s6, p1, p2, p3, p4, v1, v2, v3, bp1, att1
     h1 = create_hospital(h1)
     h2 = create_hospital(h2)
 
@@ -116,6 +127,15 @@ def init_data():
     a1 = create_admin(person=p1, hospital=h1)
     a2 = create_admin(person=p4, hospital=h1)
     a3 = create_admin(person=p3, hospital=h2)
+
+
+    bp1 = create_blogpost(bp1)
+    att1 = create_attach(att1, blogpost=bp1)
+    
+    pub = {"publish":1}
+    bp1 = complete_post(bp1, pub)
+
+
 
 def create_hospital(h):
     response = send_post('/hospital', json.dumps(h))
@@ -162,6 +182,42 @@ def send_post(url_path, jsonstr):
     assert r.status == 201, 'FAILED: %s, %s' % (url_path, jsonstr)
     res = r.read()
     return res
+
+def send_post_head(url_path,  jsonstr=None):
+    headers = {"Content-type": "application/x-www-form-urlencoded",
+               "Accept": "text/plain"}     
+    jsonstr = urllib.urlencode(jsonstr)
+    conn = _get_conn()
+    conn.request("POST", API_PREFIX+url_path, jsonstr, headers)
+    r = conn.getresponse()
+    assert r.status == 201, 'FAILED: %s, %s' % (url_path, jsonstr)
+    res = r.read()
+    return res
+
+def send_put(url_path, jsonstr):
+    headers = {"Content-type": "application/json"}
+    conn = _get_conn()
+    conn.request("PUT", API_PREFIX+url_path, jsonstr, headers)
+    r = conn.getresponse()
+    assert r.status == 200, 'FAILED: %s, %s' % (url_path, jsonstr)
+    res = r.read()
+    return res
+
+def create_blogpost(bp):
+    response = send_post_head('/posts', bp)
+    bp['id'] = json.loads(response)['postid']
+    return bp
+
+def create_attach(att, blogpost=None):
+    bid = blogpost['id']
+    response = send_post_head('/post/%s/attaches' % bid,att)
+    att['id'] = json.loads(response)['attachedid']
+    return att
+
+def complete_post(bp, jsonstr):
+    response = send_put('/post/%s' % bp['id'], json.dumps(jsonstr))
+    return response
+
 
 if __name__ == "__main__":
     init_data()

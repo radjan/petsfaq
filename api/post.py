@@ -52,10 +52,11 @@ class BlogpostAPI(base.BaseSessionHandler):
                                status_code=publish)
 
             postoutput = newpost.put()
-            self.response.write({'postid': postoutput.id()})
+            self.response.status = 201
+            util.jsonify_response(self.response,{'postid': postoutput.id()})
 
         except Exception as e:
-            self.response.write({'Error':'Internal Error %s' % str(e)})
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
 
     def get(self):
@@ -65,7 +66,7 @@ class BlogpostAPI(base.BaseSessionHandler):
                 ids.append(x.key().id())
             util.jsonify_response(self.response, {'blogpostids':ids})
         except Exception as e:
-            self.response.write({'Error':'Internal Error %s' % str(e)})
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
 
 class PostAPI(base.BaseSessionHandler):
@@ -108,7 +109,7 @@ class PostAPI(base.BaseSessionHandler):
             util.jsonify_response(self.response, rtn_post)
 
         except Exception as e:
-            self.response.write({'Error':'Internal Error %s' % str(e)})
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
 
     def put(self, blogpostid):
@@ -132,8 +133,7 @@ class PostAPI(base.BaseSessionHandler):
                 detail['content'] = 'Changed'
 
 
-            if publish.isdigit():
-                publish = int(publish)
+            if str(publish).isdigit():
                 blogpost_from_key.status_code = publish
                 blogpost_from_key.put()
                 result['result'] = {'success':detail}
@@ -142,7 +142,7 @@ class PostAPI(base.BaseSessionHandler):
                 result['result'] = {'error':detail}
                 detail['publish'] = 'type error'
             
-            self.response.out.write(result)
+            util.jsonify_response(self.response,result)
 
         except Exception as e:
             self.response.write({'Error':'Internal Error %s' % str(e)})
@@ -153,13 +153,14 @@ class AttachedAPI(base.BaseSessionHandler,
     def get(self, blogpostid):
         try:
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+            print 'samuel check attach or blogpost: %s ' %  blogpost_from_key.key().id()
             ids = []
             for x in blogpost_from_key.attaches:
                 ids.append(x.key().id())
             util.jsonify_response(self.response, {'attachedids':ids})
         except Exception as e:
             raise
-            self.response.write({'Error':'Internal Error %s' % str(e)})
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
 
     def post(self, blogpostid):
         try:
@@ -201,8 +202,10 @@ class AttachedAPI(base.BaseSessionHandler,
                 aphoto_output = aphoto.put()
                 result['aphoto_output'] = aphoto_output.id()
 
-            self.response.write(result)
+            self.response.status = 201
+            util.jsonify_response(self.response,result)
+
         except:
             raise
-            self.response.write({'Error':'Internal Error'})
+            self.response.write(json.dumps({'Error':'Internal Error'}))
 
