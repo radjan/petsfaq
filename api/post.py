@@ -106,7 +106,10 @@ class PostAPI(base.BaseSessionHandler):
                 photos.append(x.key().id())
             rtn_post.update({'photoids':photos})
 
-            util.jsonify_response(self.response, rtn_post)
+            #util.jsonify_response(self.response, rtn_post)
+            result = util.out_format(blogpost_from_key)
+            util.jsonify_response(self.response, result)
+
 
         except Exception as e:
             self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
@@ -150,18 +153,21 @@ class PostAPI(base.BaseSessionHandler):
 
 class AttachedAPI(base.BaseSessionHandler, 
                   blobstore_handlers.BlobstoreUploadHandler):
-    def get(self, blogpostid):
-        try:
-            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
-            print 'samuel check attach or blogpost: %s ' %  blogpost_from_key.key().id()
-            ids = []
-            for x in blogpost_from_key.attaches:
-                ids.append(x.key().id())
-            util.jsonify_response(self.response, {'attachedids':ids})
-        except Exception as e:
-            raise
-            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
-
+#    def get(self, blogpostid):
+#        try:
+#            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+#            #ids = []
+#            #for x in blogpost_from_key.attaches:
+#            #    obj = {}
+#            #    obj = { x.key().id(): util.out_format(x)}
+#            #    ids.append(obj)
+#            #print 'samuel: ids %s' % ids
+#            #util.jsonify_response(self.response, ids)
+#            result = util.out_format(blogpost_from_key.attaches)
+#            util.jsonify_response(self.response, result)
+#        except Exception as e:
+#            raise
+#            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
     def post(self, blogpostid):
         try:
             result = {}

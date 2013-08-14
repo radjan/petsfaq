@@ -53,6 +53,10 @@ class Blogpost(Post):
 
         Post.__init__(self, *args, **kwargs)
 
+    def get_type(self):
+        return '_'.join(self._class)
+
+
 class Attached(base.BaseModel, db.Model):
     blogpost = db.ReferenceProperty(Blogpost, collection_name='attaches')
     title = db.StringProperty(required=True)
@@ -62,7 +66,4 @@ class Attached(base.BaseModel, db.Model):
     content = db.StringProperty(required=True, multiline=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
-
-    def get_type(self):
-        return '_'.join(self._class)
 

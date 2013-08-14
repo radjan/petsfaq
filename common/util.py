@@ -15,9 +15,10 @@ FK_REF = {
         'Person'  :['avatars','questions', 'blogposts', 'roles',
                     'accounts'],
         'Hospital':['logos','blogposts','vets','employees', 'specialties'],
-        'Blogpost':['photos'],
+        'Post_Blogpost':['photos','attaches'],
         'Post'    :['replies'],
         'Role_Vet':['specialties'],
+        'Attached':['aphotos'],
         }
 
 def get_user(acc):
@@ -115,7 +116,7 @@ def _to_str(obj, tracedmdl=None):
     if isinstance(obj, db.Key):
         if db.get(obj) == None:
             return unicode(None)
-        if db.get(obj) in tracedmdl:
+        elif db.get(obj).get_type() in tracedmdl:
             return unicode(db.get(obj).get_id())
         else:
             return _to_dict(db.get(obj), tracedmdl)
