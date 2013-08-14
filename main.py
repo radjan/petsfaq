@@ -133,7 +133,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/posts',                              postApi.BlogpostAPI),
     webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>',              postApi.PostAPI),
     webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attaches',     postApi.AttachedAPI),
-    #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attache/<attachid:\d+', postApi.AttachedItemAPI),
+    #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attach/<attachid:\d+', postApi.AttachedItemAPI),
 
 
     webapp2.Route('/test/upload/<personid:\d+>/avatar',             image.upload_avatar, methods=['GET']),
