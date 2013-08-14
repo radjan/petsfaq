@@ -26,6 +26,7 @@
 		<script src="s/js/date.format.js"></script>
 		<!-- BEGIN CSS -->
 		<link href="/s/css/bootstrap.css" rel="stylesheet">
+		<link href="/s/css/blog/common.css" rel="stylesheet">
 		<link href="/s/css/blog/blogview.css" rel="stylesheet">
 		<!-- END CSS -->
 	</head>
@@ -48,7 +49,12 @@
 				</nav>
 	
 				<div class='timeline row'>
-					<div id='left' class="timeline-flow span6" ></div>
+					<div id='left' class="timeline-flow span6" >
+						<div class='searchBar'>
+							<i class='icon-search'></i>
+							<input id='searchInput' type='text' placeholder="Enter keyword to filter" />
+						</div>
+					</div>
 					<div></div>
 					<div id='right' class='timeline-flow span6' style="border-left: 2px blue solid"></div>
 					<div class="clearfix"></div>
@@ -91,6 +97,16 @@
 		
 		$('#test-loadPosts').click(function(){
 			getPostList(listPostsHandler, null);
+		});
+		
+		$('input#searchInput').on('input', function(){
+			var str = $(this).val();
+			if(str) {
+				//Log.d(TAG, "change->val = "+str);
+				blogCtrl.filterByText(str);
+			}else{
+				blogCtrl.showAll(true);
+			}
 		});
 		
 		var listPostsHandler = function(postList){

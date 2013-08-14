@@ -26,11 +26,16 @@
 .pet_name { color:#005580;}
 .pet_type,.pet_name {font-size: 0.9em; margin: 0 2px; }
 .article_wrapper .date {
-	font-size:0.8em;
 	color:#363636;
 }
 .preview_body {
 	padding: 10px;	
 	background-color:#E1E1E8;
 	margin: 3px 0;
+}
+
+.searchBar {
+	position: relative;
+	margin-top: 50%;
+	left: 100px;
 }

@@ -30,6 +30,7 @@ Article.prototype._init = function() {
  * { pet_type, pet_name, title, preview_content}
  */
 Article.prototype.setContent = function(content) {
+	var arrow = $("<i class='arrow_left'></i>");
 	var contentBody = $("<div class='btn article_preview span4' style='width:70%'></div>");
 	this.content = content;
 	Log.d(this.TAG, "pid="+this.pid);
@@ -38,7 +39,7 @@ Article.prototype.setContent = function(content) {
 	var pType = $("<span class='pet_type '>"+content.pet_type+"</span>");
 	var pName = $("<span class='pet_name '>"+content.pet_name+"</span>");
 	var title = $("<span class='title'>"+content.title+"</span>");
-	var createdDate = $("<div class='date span1' style='width:20%'>"+getDateString(content.created_date)+"</div>");
+	var createdDate = $("<div class='date span1 small' style='width:20%'>"+getDateString(content.created_date)+"</div>");
 	
 	contentBody.append(pType);
 	contentBody.append(pName);
@@ -49,6 +50,7 @@ Article.prototype.setContent = function(content) {
 	previewBody.append(previewContent);
 	contentBody.append(previewBody);
 	
+	this.html.append(arrow);
 	this.html.append(contentBody);
 	this.html.append(createdDate);
 };
@@ -61,4 +63,11 @@ Article.prototype.getPost = function(postId) {
 		$("div[id='"+_this.pid+"'] div.ajax-load").remove();
 	};
 	getPostByPid(postId, callback);
+};
+
+Article.prototype.show = function(isShow) {
+	Log.d(this.html);
+	if(isShow)
+		this.html.show();
+	else this.html.hide();
 };
