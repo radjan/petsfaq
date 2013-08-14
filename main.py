@@ -23,6 +23,7 @@ from google.appengine.api import users
 from common import share, util
 from view import base, faq, login, create
 import view.hospital
+import view.person
 from admin import data as adm_data
 from admin import adm
 from api import restApi
@@ -78,6 +79,7 @@ app = webapp2.WSGIApplication([
     ('/hospitals', view.hospital.HospitalList),
     ('/createHospital', view.hospital.CreateHospital),
     webapp2.Route('/hospital/<id:\d+>', view.hospital.HospitalDetail, name='view_hospital'),
+    webapp2.Route('/person/<id:\d+>', view.person.PersonDetail),
     ('/faq', faq.BoardPage),
 
     # edit page with privilege
@@ -130,11 +132,15 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/image/<imageid:\d+>',                imageApi.Image,      methods=['GET']),
     webapp2.Route(API_PREFIX+'/posts',                              postApi.BlogpostAPI),
     webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>',              postApi.PostAPI),
+    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attaches',     postApi.AttachedAPI),
+    #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attache/<attachid:\d+', postApi.AttachedItemAPI),
+
 
     webapp2.Route('/test/upload/<personid:\d+>/avatar',             image.upload_avatar, methods=['GET']),
     webapp2.Route('/test/upload/<hospitalid:\d+>/logo',             image.upload_logo,   methods=['GET']),
     webapp2.Route('/test/upload/<blogpostid:\d+>/photo',            image.upload_photo,   methods=['GET']),
     webapp2.Route('/test/upload/post',                              post.upload_post,   methods=['GET']),
+    webapp2.Route('/test/upload/attaches',                          post.upload_attaches,   methods=['GET']),
 
     #webapp2.Route('/test/testApi/<blobid>', testApi.blob),
 

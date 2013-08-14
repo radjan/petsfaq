@@ -13,6 +13,12 @@ class SpecialtyService(base.GeneralService):
             return self.dao.create(specialty)
         return s.get_id()
 
+    def delete(self, s):
+        if type(s) == int:
+            s = self.get(s)
+        specialty_dao.remove_links(s)
+        return specialty_dao.delete(s)
+
     def get_by_value(self, species='', category=''):
         return self.dao.get_by_value(species, category)
 

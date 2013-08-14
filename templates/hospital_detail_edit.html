@@ -80,52 +80,52 @@
               <textarea id="edit_hospital_desc" rows="5" class="input-block-level edit_type"></textarea>
             </p>
             <p>
+              <span>醫院專科</span>
               <span id="hospital_specialties" class="browse_type"></span>
               <ul id='edit_hospital_Specialties' class="edit_type"></ul>
             </p>
             <p>
-              <span id="hospital_address" class="browse_type"></span>
-               <div>
-                    <!-- 郵遞區號：<input name="zipcode" type="text" class="input-block-level"><br> -->
-                    <!-- <select id="selector_county" name="county" class="edit_type"> -->
-                      <!-- <option value=''>選擇縣市</option> -->
+              <span>地址：</span>
+              <span id="hospital_address_all" class="browse_type"></span>
+               <div id="hospital_address" class="hidden"></div>
+               <div id="edit_hospital_address_all" class="edit_type">
+                    <select id="selector_county" name="county">
+                      <option value=''>選擇縣市</option>
                     <!-- <input name="county" type="text" class="input-block-level"><br> -->
-                    <!-- </select> -->
-                    <!-- <select id="selector_area" name="area" class="edit_type"> -->
-                      <!-- <option value=''>選擇鄉鎮市區</option> -->
+                    </select>
+                    <select id="selector_area" name="area">
+                    <option value=''>選擇鄉鎮市區</option>
                     <!-- 鄉鎮市區：<input name="area" type="text" class="input-block-level"><br> -->
-                    <!-- </select> -->
-                    <!-- <br> -->
+                    </select>
+                    <br>
                     <input id="input_zipCode" name="zipcode" type="hidden">
-                    <input name="address" type="text" class="input-block-level edit_type"><br>
+                    <input id="edit_hospital_address" type="text" class="input-block-level"><br>
                 </div>
             </p>
             <p>
+              <span>電話：</span>
               <span id="hospital_phone" class="browse_type"></span>
               <input id="edit_hospital_phone" type="text" class="input-block-level edit_type">
             </p>
             <p>
+              <span>看診時間：</span>
               <span id="hospital_working_hour" class="browse_type"></span>
               <textarea id="edit_hospital_working_hour" class="input-block-level edit_type"></textarea>
             </p>
             <p>
+              <span>急診電話：</span>
+              <span id="hospital_er_phone" class="browse_type"></span>
+              <input id='edit_hospital_er_phone' type="text" class="input-block-level edit_type">
+              <br>
+              <span>急診時間：</span>
+              <span id="hospital_er_hours" class="browse_type"></span>
+              <textarea id='edit_hospital_er_hour' type="text" class="input-block-level edit_type"></textarea>
+            </p>
+            <p>
+              <span>統一編號：</span>
               <span id="hospital_value_added_tax" class="browse_type"></span>
               <input id="edit_value_added_tax" type="text" class="input-block-level edit_type"><br>
-            </p>      
-
-
-
-                    <label class="checkbox" onclick="displayEr()">
-                      <input name="er" type="checkbox"> 有急診
-                    </label>
-
-                    <div name="erData" style="display:none">
-                      <label>急診電話</label>
-                      <input name='er_phone' type="text" class="input-block-level">
-
-                      <label>急診時間</label>
-                      <textarea name='er_hour' type="text" class="input-block-level"></textarea>
-                    </div>
+            </p>          
           </div>
           
           
@@ -234,6 +234,7 @@
     <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
     <script src="/s/js/bootstrap.js"></script>
     <script src="/s/js/showNAddSpecialites.js"></script>
+    <script src="/s/js/twzipcode.js"></script>
 
     <script type="text/javascript">
     $(document).ready(function(){
@@ -255,34 +256,73 @@
           $("#save_hospital").show();
           $("#cancel_hospital").show();
 
+          $("#hospital_specialties").hide();
+
           $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
           $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
           $("#edit_hospital_address").attr("placeholder", $("#hospital_address").text()).show();
           $("#edit_hospital_phone").attr("placeholder",$("#hospital_phone").text()).show();
           $("#edit_hospital_working_hour").attr("placeholder",$("#hospital_working_hour").text()).show();
+          $("#edit_hospital_Specialties").show();
+          $("#edit_hospital_address_all").show();
+          $("#edit_hospital_er_phone").attr("placeholder",$("#hospital_er_phone").text()).show();
+          $("#edit_hospital_er_hour").attr("placeholder",$("#hospital_er_hours").text()).show();
+          $("#edit_value_added_tax").attr("placeholder",$("#hospital_value_added_tax").text()).show();
         });
 
 
         $("#save_hospital").click(function(){
+          var _hasEr = false;
+          var _request = {};
+
           if( $("#edit_hospital_name").val() != ""){
             $("#hospital_name").text($("#edit_hospital_name").val());
+            _request["name"] = $("#hospital_name").text();
           }
           if($("#edit_hospital_desc").val() != ""){
-            $("hospital_desc").text($("#edit_hospital_desc").val());
+            $("#hospital_desc").text($("#edit_hospital_desc").val());
+            _request["description"] = $("#hospital_desc").text();
           }
+          if($("#edit_hospital_address").val() != ""){
+            $("hospital_address").text($("#edit_hospital_address").val());
+            _request["address"] = $("#hospital_address").text();
+          }
+          if($("#edit_hospital_phone").val() != ""){
+            $("#hospital_phone").text($("#edit_hospital_phone").val());
+            _request["phone"] =  $("#hospital_phone").text();
+          }
+          if($("#edit_hospital_working_hour").val() != ""){
+            $("#hospital_working_hour").text($("edit_hospital_working_hour").val());
+            _request["working_hour"] = $("#hospital_working_hour").text();
+          }
+          if($("#edit_hospital_er_phone").val() != ""){
+            $("#hospital_er_phone").text($("#edit_hospital_er_phone").val());
+            _hasEr = true;
+            _request["emergency_phone"] = $("#hospital_er_phone").text();
+          }
+          if($("#edit_hospital_er_hour").val() != ""){
+            $("#hospital_er_hours").text($("#edit_hospital_er_hour").val());
+            _hasEr = true;
+            _request["emergency_hour"] = $("#hospital_er_hours").text();
+          }
+          if($("#edit_value_added_tax").val() != ""){
+            $("hospital_value_added_tax").text($("#edit_value_added_tax").val());
+            _request["value_added_tax"] = $("hospital_value_added_tax").text();
+          }
+
+          _request["emergency"] = _hasEr;
+          _request["area"] = $("#selector_area").val();
+          _request["zipcode"] = $("#input_zipCode").val();
+          _request["county"] = $("#selector_county").val();
+
+
           $.ajax({
             url: "/api/v1/hospital/"+hid,
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify({
-                "name":$("#hospital_name").text(),
-                "description": $("hospital_desc").text(),
-                "area": "中和區",
-                "zipcode": "235",
-                "county": "新北市",
-                "address":"no 125 kr road",
-                "phone":"3939889",
-                "emergency": true,
+                
+                
                 "specialties": [
                   {"species": "貓", "category": "一般"},
                   {"species": "貓", "category": "一般"},
@@ -296,34 +336,83 @@
           });
         });
 
-    $("#cancel_hospital").click(function(){
-      $("#edit_hospital").show();
-      $("#save_hospital").hide();
-      $("#cancel_hospital").hide();
+        $("#cancel_hospital").click(function(){
+          $("#edit_hospital").show();
+          $("#save_hospital").hide();
+          $("#cancel_hospital").hide();
 
-      $("#edit_hospital_name").hide();
-      $("#edit_hospital_desc").hide();
-      $("#edit_hospital_address").hide();
-      $("#edit_hospital_phone").hide();
-      $("#edit_hospital_working_hour").hide();
+          $("#hospital_specialties").show();
+
+          $("#edit_hospital_name").hide();
+          $("#edit_hospital_desc").hide();
+          $("#edit_hospital_address").hide();
+          $("#edit_hospital_phone").hide();
+          $("#edit_hospital_working_hour").hide();
+          $("#edit_hospital_Specialties").hide();
+          $("#edit_hospital_address_all").hide();
+          $("#edit_hospital_er_phone").hide();
+          $("#edit_hospital_er_hour").hide();
+          $("#edit_value_added_tax").hide();
       
-      $("#edit_hospital_name").val("");
-      $("#edit_hospital_desc").val("");
-      $("#edit_hospital_address").val("");
-      $("#edit_hospital_phone").val("");
-      $("#edit_hospital_working_hour").val("");
-
-    });
-
-
+          $("#edit_hospital_name").val("");
+          $("#edit_hospital_desc").val("");
+          $("#edit_hospital_address").val("");
+          $("#edit_hospital_phone").val("");
+          $("#edit_hospital_working_hour").val("");
+          $("#edit_hospital_er_phone").val("");
+          $("#edit_hospital_er_hour").val("");
+          $("#edit_value_added_tax").val("");
+        });
     });
 
     function putData(hospital) {
       $("#hospital_name").text(hospital.name);
       $("#hospital_desc").text(hospital.description);
+      $("#hospital_address_all").text(hospital.zipcode+" "+hospital.county+hospital.area+hospital.address);
       $("#hospital_address").text(hospital.address);
       $("#hospital_phone").text(hospital.phone);
       $("#hospital_working_hour").text(hospital.working_hour);
+      $("#hospital_value_added_tax").text(hospital.value_added_tax);
+
+      // set specialties edit
+      var _showSpecialty = "<ul>";
+      for (var i = 0; i < hospital.specialties.length; i++) {
+        var _specialty = hospital.specialties[i].specialty;
+        _showSpecialty += "<li>" + _specialty.species;
+        _showSpecialty += ":" + _specialty.category + "</li>";
+      }
+      _showSpecialty += "</ul>";
+      $("#hospital_specialties").html(_showSpecialty);
+      initSpecialtiesSelection($("#edit_hospital_Specialties"), hospital.specialties.length+1, hospital.specialties);
+
+
+      //set address edit
+      for (var county in TW_ZIP) {
+         $("#selector_county").append('<option value="' + county+ '">' + county + '</option>');
+      }
+
+      $("#selector_county").val(hospital.county);
+      showArea($("#selector_county").val());
+      $("#selector_area").val(hospital.area);
+      
+      $("#selector_county").change(function(){
+          showArea($("#selector_county").val());
+      });
+
+      $("#selector_area").change(function(){
+        var county = $("#selector_county").val();
+        var area = $("#selector_area").val();
+        $("#input_zipCode").val(TW_ZIP[county][area]);
+      });
+
+      // set hospital emergency edit
+      // if(hospital.emergency == "True"){
+        $("#hospital_er_phone").text(hospital.emergency_phone);
+        $("#hospital_er_hours").text(hospital.emergency_hour);
+      // }else{
+        // $("#hospital_has_er").hide();
+      // }
+
 
       var vets = $("#vets");
       var vs = hospital.vets
@@ -442,8 +531,22 @@
         window.location.href = '/hospitals?q=' + $('#name_search').val();
     }
 
+    function showArea(chosenCounty){
+      $("#selector_area").empty();
+      $("#selector_area").append('<option value="">請選擇</option>');
+      for (var area in TW_ZIP[chosenCounty]) {
+          var zipCode = TW_ZIP[chosenCounty][area];
+         $("#selector_area").append('<option value="' +area+ '">'+ zipCode+" "+ area + '</option>');
+      };
+    }
 
-
+    // function displayEr(){
+    //     if ($("input[name=er]").is(":checked")) {
+    //         $("div[name=erData]").slideDown();
+    //     }else{
+    //         $("div[name=erData]").slideUp();
+    //     }
+    // }
 
     $("#accordion2 a[name=hLists]").attr("href","/hospitals/edit");
     </script>
