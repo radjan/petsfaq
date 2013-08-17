@@ -175,9 +175,7 @@ class HospitalInstanceAPI(ModelInstanceAPI):
     def _custom_update(self, hospital, requestJson):
         if 'specialties' in requestJson:
             specialties = requestJson.pop('specialties')
-        for s in specialties:
-            s = specialty_service.ensure_exist(s['species'], s['category'])
-            specialty_service.add_specialty(s, hospital=hospital)
+            specialty_service.overwrite_specialties(specialties, hospital=hospital)
         return hospital
 
 class PersonInstanceAPI(ModelInstanceAPI):
@@ -198,12 +196,10 @@ class RoleInstanceAPI(ModelInstanceAPI):
         self.model = role.Role
         ModelInstanceAPI.__init__(self, *args, **kw)
 
-    def _custom_update(self, hospital, requestJson):
+    def _custom_update(self, role, requestJson):
         if 'specialties' in requestJson:
             specialties = requestJson.pop('specialties')
-        for s in specialties:
-            s = specialty_service.ensure_exist(s['species'], s['category'])
-            specialty_service.add_specialty(s, hospital=hospital)
+            specialty_service.overwrite_specialties(specialtes, vet=role)
         return hospital
 
 class PersonHopitalList(RestAPI):

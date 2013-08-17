@@ -62,4 +62,19 @@ class SpecialtyService(base.GeneralService):
     def delete_specialty(self, specialty, hospital=None, vet=None):
         return specialty_dao.unlink(specialty, hospital=hospital, vet=vet)
 
+    def overwrite_specialties(self, specialties, hospital=None, vet=None):
+        model = hospital if hospital else vet
+        origins = (s.specialty for s in model.specialties)
+        new = (self.ensure_exist(s['species'], s['category']) for s in specialties)
+        to_add, to_remove = _specialties_diff(origins, new)
+        self.add_specialties(to_add, hospital=hospital, vet=vet)
+        self.delete_specialties(to_remove, hospital=hospital, vet=vet)
+
+    def _specialties_diff(self, origins, new):
+        ori_set = set(origins)
+        new_set = set(new)
+        to_add = new_set - ori_set
+        to_remove = ori_set - new_set
+        return to_add, to_remove
+
 specialty_service = SpecialtyService()
