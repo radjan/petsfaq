@@ -66,34 +66,35 @@ def jsonify_response(response, data):
     json.dump(data, io)
     response.write(io.getvalue())
 
-def out_format(data):
+def out_format(data, traced_ids=None):
     ret = None
     if isinstance(data, collections.Iterable):
         ret = []
         for d in data:
-            ret.append(out_format(d))
+            ret.append(out_format(d, traced_ids))
     else:
-        ret = _to_dict(data)
+        ret = _to_dict(data, traced_ids)
     return ret
 
-def _to_dict(domain_obj, tracedmdl=None):
-    if tracedmdl == None:
-        tracedmdl = Set()
+def _to_dict(domain_obj, traced_ids=None):
+    if traced_ids == None:
+        traced_ids = Set()
     kind = domain_obj.get_type()
-    tmp = {}
-    tmp['kind'] = kind
+    model_id = domain_obj.get_id()
+    tmp = {'kind': kind,
+           'id': model_id}
 
-    if kind not in tracedmdl:
+    if model_id not in traced_ids:
         """check if ReferenceProperty-checked already done in previous 
         recursion or add into checking-Set
         """
-        tracedmdl.add(kind)
+        traced_ids.add(model_id)
         add_prop_list = FK_REF.get(kind,[])
         for add_prop in add_prop_list:
             fl = [] #foreign key list
-            #for x in [v for v in domain_obj.__getattribute__(add_prop) if v.kind() not in tracedmdl]:
+            #for x in [v for v in domain_obj.__getattribute__(add_prop) if v.kind() not in traced_ids]:
             for x in domain_obj.__getattribute__(add_prop):
-                fl.append(_to_dict(x, tracedmdl))
+                fl.append(_to_dict(x, traced_ids.copy()))
             #add model type
             tmp[add_prop] = fl
 
@@ -103,23 +104,22 @@ def _to_dict(domain_obj, tracedmdl=None):
         v = prop.get_value_for_datastore(domain_obj)
         if type(v) is list:
             l = []
-            #for item in [x for x in v if v.kind() not in tracedmdl]:
+            #for item in [x for x in v if v.kind() not in traced_ids]:
             for item in v:
-                l.append(_to_str(item, tracedmdl))
+                l.append(_to_str(item, traced_ids))
             tmp[str(key)] = l
         else:
-            tmp[str(key)] = _to_str(v, tracedmdl)
-    tmp['id'] = domain_obj.get_id()
+            tmp[str(key)] = _to_str(v, traced_ids)
     return tmp
 
-def _to_str(obj, tracedmdl=None):
+def _to_str(obj, traced_ids):
     if isinstance(obj, db.Key):
         if db.get(obj) == None:
             return unicode(None)
-        elif db.get(obj).get_type() in tracedmdl:
+        elif db.get(obj).get_id() in traced_ids:
             return unicode(db.get(obj).get_id())
         else:
-            return _to_dict(db.get(obj), tracedmdl)
+            return _to_dict(db.get(obj), traced_ids)
     return unicode(obj)
 
 def get_model_properties(model, json_obj):
