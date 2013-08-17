@@ -4,7 +4,7 @@ import httplib
 import urllib
 
 SERVER='localhost'
-PORT=8080
+PORT=9081
 API_PREFIX='/api/v1'
 
 conn = None
