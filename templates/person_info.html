@@ -2,7 +2,7 @@
 <html lang="zh" ng-app>
   <head>
     <meta charset="utf-8">
-    <title>Pet Helper - hospitals</title>
+    <title>Pet Helper - Ｐersons</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -75,12 +75,7 @@
       <script src="/s/js/html5shiv.js"></script>
     <![endif]-->
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/s/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/s/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="/s/ico/favicon.png">
+   
   </head>
 
   <body>
@@ -100,35 +95,29 @@
                 </div>
                 <div id="collapseHospital" class="accordion-body collapse in">
                   <div class="accordion-inner">
-                     {% include '/hospital_list.html' %}
                   </div>
                 </div>
               </div>
            
           </div><!--/accordion-->
-          <div id="hospital_data">
-            <ul class="nav nav-tabs" id="hospitalTab">
-              <li class="active"><a href="#hospital_info">Information</a></li>
-              <li><a href="#hospital_vets">Vet</a></li>
-              <li><a href="#hospital_blog">Blog</a></li>
+          <div id="person_data">
+            <ul class="nav nav-tabs" id="personTab">
+              <li class="active"><a href="#person_info">Information</a></li>
+              
+              <li><a href="#person_blog">Blog</a></li>
               
             </ul><!--/nav-tabs-->
             <div class="tab-content">
-              <div id="hospital_info" class="tab-pane active"></div>
-              <div id="hospital_vets" class="tab-pane">
+              <div id="person_info" class="tab-pane active">
                 {% include '/vet_list.html' %}
               </div>
-                
-             
-              <div id="hospital_blog" class="tab-pane">
+
+              <div id="person_blog" class="tab-pane">
                 coming soon...
               </div>
             </div><!--/tab-content-->
           </div><!--/hospital_data-->
-          <!--<div id='fromAJAX' class="container-fluid">
-           當你按了直接搜尋之後 會透過ajax取得所有hospital  name:description 並列在下面：<br />
-          </div> --><!-- /container -->
-          <!--doctors-->
+
 
         </div><!--/span-->
       </div><!--/row-->
@@ -142,7 +131,7 @@
 
 
  <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
- <script src="/s/js/hospitalCtrl.js"></script>
+ <script src="/s/js/personInfoCtrl.js"></script>
 
   </body>
 </html>
