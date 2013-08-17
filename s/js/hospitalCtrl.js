@@ -24,6 +24,8 @@
           $("#hospital_data").hide();
           $('#hospital_info').empty();
           $("#vets").empty();
+          $("a[name=hLists]").text("Hopital Lists > ");
+
         }
     });
 
