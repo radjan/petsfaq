@@ -4,6 +4,7 @@
       var hid=$.url().param('hid');
       
       if(typeof(hid)=='undefined' || hid==''){
+
         showHospital();
         $("#hospital_data").hide();
       }else{
@@ -16,7 +17,17 @@
       }
 
     });
-    
+    $('#accordion2 a').click(function (){
+        //alert($('div[name=hospital_detail_template]').length);
+        //has selected one of hospitals
+        if($('div[name=hospital_detail_template]').length>1){
+          $("#hospital_data").hide();
+          $('#hospital_info').empty();
+          $("#vets").empty();
+          $("a[name=hLists]").text("Hopital Lists > ");
+
+        }
+    });
 
     function showHospital() {
       var q = $.url().param('q');
@@ -109,8 +120,13 @@
      */
 
     function hospitalClickHndlr() {
+
+
       $("a[name=linkTo]").click(function(e) {
         e.preventDefault();
+        
+        $("#collapseHospital").collapse('hide');
+
         var showItem = e.target.parentNode.parentNode;
         
         var hid=$(this).attr("href");
@@ -156,7 +172,7 @@
             hide: true
          });
           $("#hospital_data").show();
-          $("#hospital_info a").tab('show');//?????no work?
+          $("#hospital_info").tab('show');
 
         putVetData(data,_hid,addVetClickHndlr);    
       });
@@ -168,6 +184,8 @@
      */
 
     function putVetData(hospital,hid,callback) {
+
+
       var vets = $("#vets");
       //create hospital
      
