@@ -52,10 +52,11 @@ class BlogpostAPI(base.BaseSessionHandler):
                                status_code=publish)
 
             postoutput = newpost.put()
-            self.response.write({'postid': postoutput.id()})
+            self.response.status = 201
+            util.jsonify_response(self.response,{'postid': postoutput.id()})
 
         except Exception as e:
-            self.response.write({'Error':'Internal Error %s' % str(e)})
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
 
     def get(self):
@@ -65,7 +66,7 @@ class BlogpostAPI(base.BaseSessionHandler):
                 ids.append(x.key().id())
             util.jsonify_response(self.response, {'blogpostids':ids})
         except Exception as e:
-            self.response.write({'Error':'Internal Error %s' % str(e)})
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
 
 class PostAPI(base.BaseSessionHandler):
@@ -105,10 +106,13 @@ class PostAPI(base.BaseSessionHandler):
                 photos.append(x.key().id())
             rtn_post.update({'photoids':photos})
 
-            util.jsonify_response(self.response, rtn_post)
+            #util.jsonify_response(self.response, rtn_post)
+            result = util.out_format(blogpost_from_key)
+            util.jsonify_response(self.response, result)
+
 
         except Exception as e:
-            self.response.write({'Error':'Internal Error %s' % str(e)})
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
 
     def put(self, blogpostid):
@@ -132,8 +136,7 @@ class PostAPI(base.BaseSessionHandler):
                 detail['content'] = 'Changed'
 
 
-            if publish.isdigit():
-                publish = int(publish)
+            if str(publish).isdigit():
                 blogpost_from_key.status_code = publish
                 blogpost_from_key.put()
                 result['result'] = {'success':detail}
@@ -142,7 +145,7 @@ class PostAPI(base.BaseSessionHandler):
                 result['result'] = {'error':detail}
                 detail['publish'] = 'type error'
             
-            self.response.out.write(result)
+            util.jsonify_response(self.response,result)
 
         except Exception as e:
             self.response.write({'Error':'Internal Error %s' % str(e)})
@@ -150,17 +153,21 @@ class PostAPI(base.BaseSessionHandler):
 
 class AttachedAPI(base.BaseSessionHandler, 
                   blobstore_handlers.BlobstoreUploadHandler):
-    def get(self, blogpostid):
-        try:
-            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
-            ids = []
-            for x in blogpost_from_key.attaches:
-                ids.append(x.key().id())
-            util.jsonify_response(self.response, {'attachedids':ids})
-        except Exception as e:
-            raise
-            self.response.write({'Error':'Internal Error %s' % str(e)})
-
+#    def get(self, blogpostid):
+#        try:
+#            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+#            #ids = []
+#            #for x in blogpost_from_key.attaches:
+#            #    obj = {}
+#            #    obj = { x.key().id(): util.out_format(x)}
+#            #    ids.append(obj)
+#            #print 'samuel: ids %s' % ids
+#            #util.jsonify_response(self.response, ids)
+#            result = util.out_format(blogpost_from_key.attaches)
+#            util.jsonify_response(self.response, result)
+#        except Exception as e:
+#            raise
+#            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
     def post(self, blogpostid):
         try:
             result = {}
@@ -201,8 +208,10 @@ class AttachedAPI(base.BaseSessionHandler,
                 aphoto_output = aphoto.put()
                 result['aphoto_output'] = aphoto_output.id()
 
-            self.response.write(result)
+            self.response.status = 201
+            util.jsonify_response(self.response,result)
+
         except:
             raise
-            self.response.write({'Error':'Internal Error'})
+            self.response.write(json.dumps({'Error':'Internal Error'}))
 
