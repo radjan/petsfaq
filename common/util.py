@@ -1,12 +1,13 @@
 import json
 from StringIO import StringIO
 import collections
+from sets import Set
 
 from google.appengine.ext import db
 
 from common import share
 from service.account import account_service
-from sets import Set
+from model import role
 
 GOOGLE = share.VIEW_GOOGLE
 IDPWD = share.VIEW_IDPWD
@@ -20,6 +21,14 @@ FK_REF = {
         'Role_Vet':['specialties'],
         'Attached':['aphotos'],
         }
+
+# The referenced collection from data store would be confused for polymodels.
+# Filter out the class instances which do not inherit the TheParentClass.
+# (kind, collection_name): TheParentClass
+INSTANCE_FILTER = {
+    ('Hospital', 'vets'): role.Vet,
+    ('Hospital', 'employees'): role.Employee,
+    }
 
 def get_user(acc):
     return {'userid': acc.userid,
@@ -85,7 +94,7 @@ def _to_dict(domain_obj, traced_ids=None):
            'id': model_id}
 
     if model_id not in traced_ids:
-        """check if ReferenceProperty-checked already done in previous 
+        """check if ReferenceProperty-checked already done in previous
         recursion or add into checking-Set
         """
         traced_ids.add(model_id)
@@ -93,7 +102,10 @@ def _to_dict(domain_obj, traced_ids=None):
         for add_prop in add_prop_list:
             fl = [] #foreign key list
             #for x in [v for v in domain_obj.__getattribute__(add_prop) if v.kind() not in traced_ids]:
+            parent_cls = INSTANCE_FILTER.get((kind, add_prop), None)
             for x in domain_obj.__getattribute__(add_prop):
+                if parent_cls and not isinstance(x, parent_cls):
+                    continue
                 fl.append(_to_dict(x, traced_ids.copy()))
             #add model type
             tmp[add_prop] = fl
