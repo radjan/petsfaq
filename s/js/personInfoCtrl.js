@@ -47,16 +47,25 @@ $(document).ready(function(){
 });
 function putVetData(person){
 	//console.log(person.name);
-	//put info to top tip menu
+	
 	var hid=$.url().param('hid');
 	var hname='';
+	//add person img and name
+	var p=$("div[name=person_info]");
+	p.find('h2[name=name]').text(person.name);
 	
+	//add role and change top tip menu
 	var roles=person.roles;
 	for(i in roles){
-		console.log(roles[i].hospital.id+"/"+hid);
+		//console.log(roles[i].hospital.id+"/"+hid);
 		if(roles[i].hospital.id==hid){			
-			hname=roles[i].hospital.name;
-			break;
+			hname=roles[i].hospital.name;	
+		}
+		if(roles[i].kind=='Role_vet'){
+		var roleTag=$("div[name=role_templete]").last().clone();
+		roleTag.find('a').attr('href','#role_'+roles[i].id);
+		roleTag.find('a').text('獸醫');
+		roleTag.find('.accordion_body').id='role_'+roles[i].id;
 		}
 	}
 	//case vets
@@ -65,27 +74,9 @@ function putVetData(person){
 	}else{
 		//not vets case
 	}
-	//put info to info.
-	var v = $("div[name=oneVet]").last().clone();
-	v.find("span[name=vet_name]").append(person.name);
-	v.find("span[name=vet_desc]").text(person.description);
-    v.find("span[name=vet_mail]").text(person.email);
-    $("#vets").append(v);
-    /*
-        for (j in vs[i].experience) {
-          v.find("dl[name=exp]").append("<dd>" + vs[i].experience[j] + "</dd>");
-        }
-        for (j in vs[i].education) {
-          v.find("dl[name=exp]").append("<dd>" + vs[i].education[j] + "</dd>");
-        }
-        // alert(initSpecialties(1));
-        for (j in vs[i].specialties) {
-          var s = vs[i].specialties[j].specialty;
-          v.find("dl[name=specialty]").append("<dd>" + s.species + ": " + s.category + "</dd>");
-          // v.find("dl[name=specialty]").append("<ul id='specialties'></ul>");
-        }
-        vets.append(v);
-      
-      }
-    */
+
 	}
+function putVetRole(data){
+	//identify role:{Role_vet}
+	
+}

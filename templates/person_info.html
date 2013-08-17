@@ -109,7 +109,19 @@
             </ul><!--/nav-tabs-->
             <div class="tab-content">
               <div id="person_info" class="tab-pane active">
-                {% include '/vet_list.html' %}
+                <div name='person_info'>
+                  <div class="span2">
+                      <img src="/s/img/tmpPic.png" class="img-polaroid" style="margin-top:15px">
+                    </div>
+                  <div class='span7'>
+                    <div class='page-header'>
+                      <h2 name="name">template</h2>
+                    </div> 
+                  目前身份：
+                  <div class="accordion" id="accordion_roles">
+                  </div><!--/accordion_roles-->
+                  </div><!--/span7-->
+                </div><!--/person_info-->
               </div>
 
               <div id="person_blog" class="tab-pane">
@@ -128,7 +140,24 @@
         <p>&copy; Company 2013</p>
       </footer>
 
+<div class="templates">
+  
 
+  <div class="accordion-group" name='role_templete'>
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion_roles" href="#roleOne">
+        
+      </a>
+    </div>
+    <div id="roleOne" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        
+      </div>
+    </div>
+  </div><!--/role_templete-->
+
+
+</div>
 
  <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
  <script src="/s/js/personInfoCtrl.js"></script>

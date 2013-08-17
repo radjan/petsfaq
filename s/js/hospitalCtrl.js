@@ -16,7 +16,15 @@
       }
 
     });
-    
+    $('#accordion2 a').click(function (){
+        alert($('div[name=hospital_detail_template]').length);
+        //has selected one of hospitals
+        if($('div[name=hospital_detail_template]').length>1){
+          $("#hospital_data").hide();
+          $('#hospital_info').empty();
+          $("#vets").empty();
+        }
+    });
 
     function showHospital() {
       var q = $.url().param('q');
