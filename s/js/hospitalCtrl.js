@@ -1,13 +1,18 @@
-
+/***add hospital eventlistener***/
     //check has param
     $(document).ready(function (){
       var hid=$.url().param('hid');
       
       if(typeof(hid)=='undefined' || hid==''){
         showHospital();
-
+        $("#hospital_data").hide();
       }else{
-
+        //alert('');
+       $('#collapseHospital').collapse({
+            hide: true
+         });
+       showHospital();
+       getVetData(hid);
       }
 
     });
@@ -32,26 +37,6 @@
       });
     }
     //event listener
-    $(document).ready(function(){
-         /*add accordion2 handler**/
-    /**if collapseHospital in means clear vets data**/
-    $("#hospital_data").hide();
-    $("#accordion2 a[name=hLists]").click(function(e){
-
-       var hasData=$("#hospital_info").has("div[name=hospital_detail_template]").length;
-       //alert(hasData);
-       if(hasData>0){
-        $("a[name=hLists]").text("Hopital Lists >");
-        $("#hospital_data").hide();//tab hide
-        //hospital's data clear
-        $("#hospital_info").empty();
-        $("#vets").empty();
-        
-        
-        //$("#hospital_info").empty();
-       }
-    });
-    });
     /**
     when input and search handler
     **/
@@ -167,7 +152,9 @@
         type: "GET",
         cache: false
       }).done(function(data) {
-          $("#accordion2 a[name=hLists]").click();
+          $('#collapseHospital').collapse({
+            hide: true
+         });
           $("#hospital_data").show();
           $("#hospital_info a").tab('show');//?????no work?
 
