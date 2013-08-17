@@ -315,28 +315,29 @@
           _request["zipcode"] = $("#input_zipCode").val();
           _request["county"] = $("#selector_county").val();
 
+          var speciesArray= new Array();
+          for (var i = 1; i < 4; i++) {
+            var tmpS = $("*[name=species_"+i+"]");
+            if(tmpS.val() != ""){
+              var _sMap = {"species": tmpS.val(), "category":$("*[name=category_"+i+"]").val()};
+              speciesArray.push(_sMap);
+            }
+          }
+          _request["specialties"] = speciesArray;
 
           $.ajax({
             url: "/api/v1/hospital/"+hid,
             type: "PUT",
             contentType: "application/json",
-            data: JSON.stringify({
-                
-                
-                "specialties": [
-                  {"species": "貓", "category": "一般"},
-                  {"species": "貓", "category": "一般"},
-                  {"species": "狗", "category": "一般"},
-                  {"species": "兔", "category": "一般"},
-                ]
-            }),
+            data: JSON.stringify(_request),
             cache: false
-          }).done(function(){
-          // window.location.href="/hospitals";
-          });
+          }).done(cancelHospital());
         });
 
-        $("#cancel_hospital").click(function(){
+        $("#cancel_hospital").click(function(){cancelHospital()});
+    });
+
+    function cancelHospital(){
           $("#edit_hospital").show();
           $("#save_hospital").hide();
           $("#cancel_hospital").hide();
@@ -362,8 +363,7 @@
           $("#edit_hospital_er_phone").val("");
           $("#edit_hospital_er_hour").val("");
           $("#edit_value_added_tax").val("");
-        });
-    });
+    }
 
     function putData(hospital) {
       $("#hospital_name").text(hospital.name);
@@ -376,7 +376,7 @@
 
       // set specialties edit
       var _showSpecialty = "<ul>";
-      for (var i = 0; i < hospital.specialties.length; i++) {
+      for (var i in hospital.specialties) {
         var _specialty = hospital.specialties[i].specialty;
         _showSpecialty += "<li>" + _specialty.species;
         _showSpecialty += ":" + _specialty.category + "</li>";
