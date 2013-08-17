@@ -174,14 +174,18 @@
             </div>
             <div class="span8">
               <h2><span name="vet_name"><!-- vet name --></span>
-                  <input type="text" class="edit_type" name="vet_name">
+                  <!-- <input tsype="text" class="edit_type" name="vet_name"> -->
                   <small><a href="#">Blog</a></small>
               </h2> 
               <p><span name="vet_desc"><!-- vet desc --></span>
                   <textarea name="vet_desc" rows="5" class="input-block-level edit_type"></textarea>
               </p>
-              <dl name="exp">
+              <dl>
                 <dt>學經歷</dt>
+                <div name="exp"></div>
+                <div name="edit_exp" class="edit_type"></div>
+                <div name="edu"></div>
+                <div name="edit_edu" class="edit_type"></div>
               </dl>
               <dl name="specialty">
                 <dt>專長</dt>
@@ -197,7 +201,7 @@
                   <br>
                   <strong><span name="vet_name">vet name</span></strong><br>
                     <a href="mailto:#"><span name="vet_mail">vet@mail</span></a>
-                    <input type="text" class="edit_type" name="vet_mail"><br>
+                    <!-- <input type="text" class="edit_type" name="vet_mail"><br> -->
 
                     <span name="hospital_name"><!-- hospital name --></span><br>
                     看診時間：9:00-21:00 <br>
@@ -317,7 +321,7 @@
 
           var speciesArray= new Array();
           for (var i = 1; i < 4; i++) {
-            var tmpS = $("*[name=species_"+i+"]");
+            var tmpS = $("#edit_hospital_Specialties").find("*[name=species_"+i+"]");
             if(tmpS.val() != ""){
               var _sMap = {"species": tmpS.val(), "category":$("*[name=category_"+i+"]").val()};
               speciesArray.push(_sMap);
@@ -429,11 +433,18 @@
           v.find("span[name=vet_mail]").text(vs[i].person.email);
 
           for (j in vs[i].experience) {
-            v.find("dl[name=exp]").append("<dd>"+vs[i].experience[j]+"</dd>");
+            v.find("div[name=exp]").append("<dd>"+vs[i].experience[j]+"</dd>");
+            v.find("div[name=edit_exp]").append("<dd><input name='exp_"+j+"' type='text' value='"+vs[i].experience[j]+"' class='input-block-level'></dd>");
           }
+          v.find("div[name=edit_exp]").append("<dd><input name='exp_"+vs[i].experience.length+"' type='text' class='input-block-level'></dd>");
+
           for (j in vs[i].education) {
-            v.find("dl[name=exp]").append("<dd>"+vs[i].education[j]+"</dd>");
+            v.find("div[name=edu]").append("<dd>"+vs[i].education[j]+"</dd>");
+            // v.find("div[name=edit_edu]").append("<dd>"+vs[i].education[j]+"</dd>");
+            v.find("div[name=edit_edu]").append("<dd><input name='edu_"+j+"' type='text' value='"+vs[i].education[j]+"' class='input-block-level'></dd>");
           }
+          v.find("div[name=edit_edu]").append("<dd><input name='edu_"+vs[i].education.length+"' type='text' class='input-block-level'></dd>");
+
           // alert(initSpecialties(1));
           for (j in vs[i].specialties) {
             v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
@@ -476,9 +487,11 @@
       _cancelVet.attr("id", "cancelVet_"+i);
 
       _editVet.click(function(){
-        v.find("input[name=vet_name]").show();
+        // v.find("input[name=vet_name]").show();
         v.find("textarea[name=vet_desc]").show();
-        v.find("input[name=vet_mail]").show();
+        v.find("div[name=edit_exp]").show();
+        v.find("div[name=edit_edu]").show();
+        // v.find("input[name=vet_mail]").show();
         _vetSpecialties.show();
         _nameCard.removeClass("collapse");
         _nameCardBtn.attr("disabled", true);
@@ -495,27 +508,79 @@
 
       _saveVet.click(function(){
         //FIXME:
+          var _request = {};
+          var _exp_array = new Array();
+          var _edu_array = new Array();
+
+          var _vet_desc = v.find("textarea[name=vet_desc]").val();
+          if(_vet_desc != ""){
+            v.find("span[name=vet_desc]").text(_vet_desc);
+            _request["description"] = _vet_desc;
+          }
+
+          for (var i = 0; i < vet.experience.length+1; i++) {
+            var _vet_exp = v.find("input[name=exp_"+i+"]").val();
+            if(_vet_exp != ""){
+              _exp_array.push(_vet_exp);
+            }
+          };
+          _request["experience"] = _exp_array;
+
+          for (var i = 0; i < vet.education.length+1; i++) {
+            var _vet_edu = v.find("input[name=edu_"+i+"]").val();
+            if(_vet_edu != ""){
+              _edu_array.push(_vet_edu);
+            }
+          };
+          _request["education"] = _edu_array;          
+
+          var _showSpecialty = "<ul>";
+          for (var i = 1; i < 4; i++) {
+            var _species = v.find("*[name=species_"+i+"]");
+            if(_species.val() != ""){
+              _showSpecialty += "<li>" + _species.val();
+              _showSpecialty += ":" + $("*[name=category_"+i+"]").val() + "</li>";
+            }
+          }
+          _showSpecialty += "</ul>";
+          _request["specialties"] = _showSpecialty;
+
           $.ajax({
             url: "/api/v1/person/"+vet.id,
             type: "PUT",
             contentType: "application/json",
-            data: JSON.stringify({
-              "name": "ttt",
-              "gender":"F",
-              "email":"ttt@ttt.com"}),
+            data: JSON.stringify(_request),
             cache: false
-          });
+          }).done(cancelVet(v));
       });
 
-      _cancelVet.click(function(){
-        v.find("input[name=vet_name]").hide();
+      _cancelVet.click(function(){cancelVet(v)});
+    }
+
+    function cancelVet(v){
+        var _nameCardBtn = v.find("button[data-target=#nameCard_]");
+        var _nameCard = v.find("#nameCard_");
+        var _vetSpecialties = v.find("#vetSpecialties_");
+        var _editVet = v.find("#editVet_");
+        var _deleteVet = v.find("#deleteVet_");
+        var _saveVet = v.find("#saveVet_");
+        var _cancelVet = v.find("#cancelVet_");
+        // v.find("input[name=vet_name]").hide();
         v.find("textarea[name=vet_desc]").hide();
-        v.find("input[name=vet_mail]").hide();
+        v.find("div[name=edit_exp]").hide();
+        v.find("div[name=edit_edu]").hide();
+        // v.find("input[name=vet_mail]").hide();
         _vetSpecialties.hide();
 
-        v.find("input[name=vet_name]").val("");
+        // v.find("input[name=vet_name]").val("");
         v.find("textarea[name=vet_desc]").val("");
-        v.find("input[name=vet_mail]").val("");
+        for (var i = 0; i < vet.experience.length+1; i++) {
+          v.find("input[name=exp_"+i+"]").val("");
+        };
+        for (var i = 0; i < vet.education.length+1; i++) {
+          v.find("input[name=edu_"+i+"]").val("");
+        };
+        // v.find("input[name=vet_mail]").val("");
         
         _nameCard.addClass("collapse")
         _nameCardBtn.attr("disabled", false);
@@ -524,7 +589,6 @@
         _deleteVet.show();
         _saveVet.hide();
         _cancelVet.hide();
-      });
     }
 
     function nameSearch() {
