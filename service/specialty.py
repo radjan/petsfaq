@@ -65,8 +65,8 @@ class SpecialtyService(base.GeneralService):
     def overwrite_specialties(self, specialties, hospital=None, vet=None):
         model = hospital if hospital else vet
         origins = (s.specialty for s in model.specialties)
-        new = (self.ensure_exist(s['species'], s['category']) for s in specialties)
-        to_add, to_remove = _specialties_diff(origins, new)
+        new = self._new_specialties(specialties)
+        to_add, to_remove = self._specialties_diff(origins, new)
         self.add_specialties(to_add, hospital=hospital, vet=vet)
         self.delete_specialties(to_remove, hospital=hospital, vet=vet)
 
@@ -76,5 +76,12 @@ class SpecialtyService(base.GeneralService):
         to_add = new_set - ori_set
         to_remove = ori_set - new_set
         return to_add, to_remove
+
+    def _new_specialties(self, specialties):
+        ret = []
+        for s in specialties:
+            if 'species' in s and 'category' in s:
+                ret.append(self.ensure_exist(s['species'], s['category']))
+        return ret
 
 specialty_service = SpecialtyService()
