@@ -151,7 +151,7 @@ class ModelInstanceAPI(base.BaseSessionHandler):
             self.error(404)
             return
 
-        domain_obj = _custom_update(domain_obj, requestJson)
+        domain_obj = self._custom_update(domain_obj, requestJson)
         # partial update
         domain_obj = util.update_model_properties(domain_obj, requestJson)
         self.service.update(domain_obj)
