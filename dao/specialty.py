@@ -22,10 +22,11 @@ class SpecialtyDao(base.GeneralDao):
     def link_to_entity(self, specialty, note=None, vet=None, hospital=None):
         if vet is None and hospital is None:
             return None
-        rels = vet.specialties if vet else hospital.specialties
+        model = hospital if hospital else vet
+        rels = model.specialties
         for r in rels:
-            if specialty == r.specialty:
-                return rel
+            if specialty.get_id() == r.specialty.get_id():
+                return r
         rel = specialty_model.EntitySpecialtyRel(specialty=specialty,
                                                  note=note)
         if vet:
@@ -38,13 +39,11 @@ class SpecialtyDao(base.GeneralDao):
     def unlink(self, specialty, hospital=None, vet=None):
         if vet is None and hospital is None:
             return None
-        if hospital:
-            rels = hospital.specialties
-        else:
-            rels = vet.specialties
+        model = hospital if hospital else vet
+        rels = model.specialties
         for r in rels:
-            if r.specialty == specialty:
-                r.key.delete()
+            if r.specialty.get_id() == specialty.get_id():
+                r.delete()
 
     def remove_link(self, rel):
         rel.delete()

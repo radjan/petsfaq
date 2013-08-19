@@ -64,18 +64,19 @@ class SpecialtyService(base.GeneralService):
 
     def overwrite_specialties(self, specialties, hospital=None, vet=None):
         model = hospital if hospital else vet
-        origins = (s.specialty for s in model.specialties)
+        origins = [s.specialty for s in model.specialties]
         new = self._new_specialties(specialties)
         to_add, to_remove = self._specialties_diff(origins, new)
         self.add_specialties(to_add, hospital=hospital, vet=vet)
         self.delete_specialties(to_remove, hospital=hospital, vet=vet)
 
     def _specialties_diff(self, origins, new):
-        ori_set = set(origins)
-        new_set = set(new)
+        ori_set = set([s.get_id() for s in origins])
+        new_set = set([s.get_id() for s in new])
         to_add = new_set - ori_set
         to_remove = ori_set - new_set
-        return to_add, to_remove
+        return ([s for s in new if s.get_id() in to_add],
+                [s for s in origins if s.get_id() in to_remove])
 
     def _new_specialties(self, specialties):
         ret = []
