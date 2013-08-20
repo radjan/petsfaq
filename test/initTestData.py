@@ -1,15 +1,16 @@
 # -*- encoding: utf8 -*-
+import sys
 import json
 import httplib
 import urllib
 
 SERVER='localhost'
-PORT=9081
+PORT=8080
 API_PREFIX='/api/v1'
 
 conn = None
 def _get_conn():
-    global conn
+    global conn, PORT, SERVER
     if conn is None:
         conn = httplib.HTTPConnection(SERVER, PORT)
     return conn
@@ -95,7 +96,7 @@ att1 = {
         }
 
 
-def init_data():
+def init_data(PORT=8080):
     global h1, h2, s1, s2, s3, s4, s5, s6, p1, p2, p3, p4, v1, v2, v3, bp1, att1
     h1 = create_hospital(h1)
     h2 = create_hospital(h2)
@@ -221,4 +222,6 @@ def complete_post(bp, jsonstr):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        PORT = int(sys.argv[1])
     init_data()
