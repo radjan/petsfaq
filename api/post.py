@@ -11,6 +11,7 @@ from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import images
 from google.appengine.api import users
 
+from model.image import imagemodel
 from model.person import Person
 from model.hospital import Hospital
 from model.post import Blogpost
@@ -119,33 +120,23 @@ class PostAPI(base.BaseSessionHandler):
         try:
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
 
-            publish = json.loads(self.request.body).get('publish')
-            title   = json.loads(self.request.body).get('title')
-            content = json.loads(self.request.body).get('content')
+            detail =  {'title':'unchanged',
+                       'content':'unchanged',
+                       'status_code':'unchanged'}
 
-            result = {}
-            detail = {'title':'unchanged',
-                      'content':'unchanged',
-                      'publish':'unchanged'}
+            update = {}
+            update['title']   = json.loads(self.request.body).get('title')
+            update['content'] = json.loads(self.request.body).get('content')
+            update['status_code'] = json.loads(self.request.body).get('publish')
 
-            if title:
-                blogpost_from_key.title = title
-                detail['title'] = 'Changed'
-            if content:
-                blogpost_from_key.content = content
-                detail['content'] = 'Changed'
+            for y in [x for x in update.keys() if update[x] != None]:
+                #blogpost_from_key.properties()[y].make_value_from_datastore(update[y])
+                blogpost_from_key.__setattr__(y, update[y])
+                detail[y] = 'Changed'
 
+            blogpost_from_key.put()
 
-            if str(publish).isdigit():
-                blogpost_from_key.status_code = publish
-                blogpost_from_key.put()
-                result['result'] = {'success':detail}
-                detail['publish'] = 'Changed'
-            else:
-                result['result'] = {'error':detail}
-                detail['publish'] = 'type error'
-            
-            util.jsonify_response(self.response,result)
+            util.jsonify_response(self.response, detail)
 
         except Exception as e:
             self.response.write({'Error':'Internal Error %s' % str(e)})
@@ -185,6 +176,11 @@ class AttachedAPI(base.BaseSessionHandler,
             title      = self.request.get('title')
             content    = self.request.get('content')
             imgfile    = self.get_uploads('img')
+            blob = imgfile[0]
+
+            print 'samuel: title: %s' % title
+            print 'samuel: content: %s' % content
+            print 'samuel: img??? %s ' % imgfile
 
             if len(imgfile) != 0:
                 attached_type = ATYPE_PHOTO
@@ -209,7 +205,7 @@ class AttachedAPI(base.BaseSessionHandler,
                 result['aphoto_output'] = aphoto_output.id()
 
             self.response.status = 201
-            util.jsonify_response(self.response,result)
+            util.jsonify_response(self.response, result)
 
         except:
             raise
