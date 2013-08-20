@@ -68,6 +68,8 @@ class AvatarPost(blobstore_handlers.BlobstoreUploadHandler):
         try:
             imgfile = self.get_uploads('img')
             blob = imgfile[0]
+            description = self.request.get('description')
+
             person_from_key = Person.get_by_id(int(personid))
             
             avatar = person_from_key.avatars.get()
@@ -75,7 +77,8 @@ class AvatarPost(blobstore_handlers.BlobstoreUploadHandler):
                 avatar.img_blobkey = str(blob.key())
             else:
                 avatar = imagemodel(person = person_from_key, 
-                                    img_blobkey = str(blob.key()))
+                                    img_blobkey = str(blob.key()),
+                                    description = description)
 
             putoutput = avatar.put()
             self.response.write({'personid': personid, 'imageid':putoutput.id()})
@@ -113,6 +116,8 @@ class LogoPost(blobstore_handlers.BlobstoreUploadHandler):
         try:
             imgfile = self.get_uploads('img')
             blob = imgfile[0]
+            description = self.request.get('description')
+
             hospital_from_key = Hospital.get_by_id(int(hospitalid))
             
             logo = hospital_from_key.logos.get()
@@ -120,7 +125,8 @@ class LogoPost(blobstore_handlers.BlobstoreUploadHandler):
                 logo.img_blobkey = str(blob.key())
             else:
                 logo = imagemodel(hospital = hospital_from_key, 
-                                    img_blobkey = str(blob.key()))
+                                  img_blobkey = str(blob.key()),
+                                  description = description)
 
             putoutput = logo.put()
             self.response.write({'hospitalid': hospitalid, 'imageid':putoutput.id()})
@@ -147,6 +153,7 @@ class PhotoPost(blobstore_handlers.BlobstoreUploadHandler):
         try:
             imgfiles = self.get_uploads('img')
             imgids = []
+            description = self.request.get('description')
 
             for imgfile in imgfiles:
                 blob = imgfile
@@ -157,7 +164,8 @@ class PhotoPost(blobstore_handlers.BlobstoreUploadHandler):
                     photo.img_blobkey = str(blob.key())
                 else:
                     photo = imagemodel(blogpost = blogpost_from_key, 
-                                        img_blobkey = str(blob.key()))
+                                       img_blobkey = str(blob.key()),
+                                       description = description )
 
                 putoutput = photo.put()
                 imgids.append(putoutput.id())
