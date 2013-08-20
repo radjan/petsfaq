@@ -142,8 +142,8 @@ class PostAPI(base.BaseSessionHandler):
             self.response.write({'Error':'Internal Error %s' % str(e)})
             raise
 
-class AttachedAPI(base.BaseSessionHandler, 
-                  blobstore_handlers.BlobstoreUploadHandler):
+class AttachedAPI(blobstore_handlers.BlobstoreUploadHandler,
+                  base.BaseSessionHandler):
 #    def get(self, blogpostid):
 #        try:
 #            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
@@ -176,7 +176,7 @@ class AttachedAPI(base.BaseSessionHandler,
             title      = self.request.get('title')
             content    = self.request.get('content')
             imgfile    = self.get_uploads('img')
-            blob = imgfile[0]
+            #blob = imgfile[0]
 
             print 'samuel: title: %s' % title
             print 'samuel: content: %s' % content
