@@ -199,7 +199,7 @@ class RoleInstanceAPI(ModelInstanceAPI):
     def _custom_update(self, role, requestJson):
         if 'specialties' in requestJson:
             specialties = requestJson.pop('specialties')
-            specialty_service.overwrite_specialties(specialtes, vet=role)
+            specialty_service.overwrite_specialties(specialties, vet=role)
         return hospital
 
 class PersonHopitalList(RestAPI):
