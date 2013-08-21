@@ -1,4 +1,6 @@
 /***add listener***/
+var search_url = "/api/v1";
+
 $(document).ready(function(){
 	$('#accordion2 a').click(function(e){
 		e.preventDefault();
@@ -20,7 +22,7 @@ $(document).ready(function(){
 	$('#collapseHospital').collapse({
   		hide: true
 	});
-	var search_url = "/api/v1";
+	
 	/*
 	$.ajax({
         url: search_url+'/hospital/'+hid,
@@ -40,12 +42,12 @@ $(document).ready(function(){
         type: "GET",
         cache: false
       }).done(function(data) {
-       putVetData(data);
+       putPersonData(data);
        //console.log(data.name);
       });
 	
 });
-function putVetData(person){
+function putPersonData(person){
 	//console.log(person.name);
 	
 	var hid=$.url().param('hid');
@@ -61,11 +63,8 @@ function putVetData(person){
 		if(roles[i].hospital.id==hid){			
 			hname=roles[i].hospital.name;	
 		}
-		if(roles[i].kind=='Role_vet'){
-		var roleTag=$("div[name=role_templete]").last().clone();
-		roleTag.find('a').attr('href','#role_'+roles[i].id);
-		roleTag.find('a').text('獸醫');
-		roleTag.find('.accordion_body').id='role_'+roles[i].id;
+		if(roles[i].kind=="Role_Vet"){
+			putPersonRole(roles[i]);
 		}
 	}
 	//case vets
@@ -73,10 +72,34 @@ function putVetData(person){
 		$("a[name=hLists]").text("Hopital Lists > "+hname+" > "+person.name);
 	}else{
 		//not vets case
+		$("a[name=hLists]").text(person.name);
 	}
 
 	}
-function putVetRole(data){
-	//identify role:{Role_vet}
+
+function putPersonRole(data){
 	
+	//identify role:{Role_vet}
+	var roleTag=$("div[name=role_templete]").last().clone();
+		roleTag.find('a').attr('href','#role_'+data.id);
+		roleTag.find('a').text('獸醫');
+		roleTag.find('.accordion_body').id='role_'+data.id;
+	var roleFrame=roleTag.find('.accordion-inner');
+	var roleInfo=$('dl[name=role_vet]').last().clone();
+	roleInfo.append('<dt>簡介</dt><dd>'+data.description+'</dd>');
+	
+	roleInfo.append('<dt>所屬醫院</dt><dd>'+data.hospital.name+'</dd>');
+	roleInfo.append('<dd>'+data.hospital.zipcode+data.hospital.county+data.hospital.address+'</dd>');
+	roleInfo.append('<dt>個人門診時間</dt><dd> &nbsp</dd>');
+	roleInfo.append('<dt>專長</dt>');
+	var specialties=data.specialties;
+
+	for(var i in specialties){
+
+		roleInfo.append('<dd>'+specialties[i].specialty.species+" : "+specialties[i].specialty.category+'科</dd>');		
+	}
+	roleInfo.append('<dt>學歷</dt><dd>'+data.education+'</dd>');
+	roleInfo.append('<dt>經歷</dt><dd>'+data.experience+'</dd>');
+	roleFrame.append(roleInfo);
+	$('#accordion_roles').append(roleTag);
 }
