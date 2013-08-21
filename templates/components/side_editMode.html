@@ -4,7 +4,7 @@
               <li class="nav-header">新增工具</li>
               <li><a name="createHospital_btn" type= "button" class="btn-danger">新增醫院</a></li>
               <br>
-              <li><a type= "button" class="btn-danger">新增醫生</a></li>
+              <li><a name="createVet_btn" type= "button" class="btn-danger">新增醫生</a></li>
               <br>
               <li><a type= "button" class="btn-danger">新增文章</a></li>
               <li class="divider"></li>
@@ -18,6 +18,10 @@
 <script type="text/javascript">
   $("a[name=createHospital_btn]").click(function(){
     $("a[name=createHospital_btn]").attr("href", "/createHospital");
+  });
+
+  $("a[name=createVet_btn]").click(function(){
+    $("a[name=createVet_btn]").attr("href", "/createVet");
   });
 </script>
          

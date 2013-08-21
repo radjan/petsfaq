@@ -24,6 +24,7 @@ from common import share, util
 from view import base, faq, login, create
 import view.hospital
 import view.person
+import view.vet
 from admin import data as adm_data
 from admin import adm
 from api import restApi
@@ -81,6 +82,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/hospital/<id:\d+>', view.hospital.HospitalDetail, name='view_hospital'),
     webapp2.Route('/person/<id:\d+>', view.person.PersonDetail),
     ('/faq', faq.BoardPage),
+
+    ('/createVet', view.vet.CreateVet),
 
     # edit page with privilege
     ('/hospitals/edit', view.hospital.HospitalListEdit),
