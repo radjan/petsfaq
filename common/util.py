@@ -8,6 +8,7 @@ from google.appengine.ext import db
 from common import share
 from service.account import account_service
 from model import role
+from model import base as base_model
 
 GOOGLE = share.VIEW_GOOGLE
 IDPWD = share.VIEW_IDPWD
@@ -147,7 +148,8 @@ def _to_proper_type(value, prop):
         if isinstance(value, dict):
             # XXX other information dropped
             value = value['id']
-        return prop.reference_class.get_by_id(int(value))
+        if not isinstance(value, base_model.BaseModel):
+            return prop.reference_class.get_by_id(int(value))
     return value
 
 def update_model_properties(modelobj, json_obj):
