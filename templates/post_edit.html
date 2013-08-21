@@ -49,7 +49,7 @@
                 <div class="post-delete"><a href="#" class="btn btn-warning">X</a></div>
                 <div class="post-title">Title</div>
                 <div class="post-desc">Description</div>
-                <div><a href="#" class="btn btn-success">Save</a></div>
+                <div class="post-save"><a href="#" class="btn btn-success">Save</a></div>
               </div>  
             </li>
             <li class="row post-item-template" style="display:none">
@@ -77,25 +77,38 @@
 <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
 <script src="/s/js/jquery.jeditable.mini.js"></script>
 <script language='JavaScript'>
-    $('.post-title').editable('', {
+    $('.post-title').editable(function(value, settings) { 
+      return(value);
+  	}, {
       tooltip   : 'Title'
     });
-    $('.post-desc').editable('', { 
+    $('.post-desc').editable(function(value, settings) { 
+      return(value);
+  	}, { 
       type      : 'textarea',
       submit    : 'OK',
       tooltip   : 'Description'
     });
     $('.post-delete').click(function() {
-      alert("Really?");
+      alert("No api yet");
     });
-    $('.post-item-text').editable('', { 
-      type      : 'textarea',
-      submit    : 'OK',
-      tooltip   : 'Item'
+    $('.post-save').click(function() {
+      //TODO: personId/hospitalId
+      $.ajax({
+        url: "/api/v1/posts",
+        type: "POST",
+        data: {
+          title: $('.post-title').text(),
+          content: $('.post-desc').text(),
+          publish: 1
+        },
+        cache: false
+      }).done(function(data){
+        var postid = data.postid;
+        window.location.href="/post/" + postid;
+      });
     });
-    $('.post-item-delete').click(function() {
-      $(this).closest('li').remove();
-    });
+
     $('.post-add').click(function() {
       var li = $('.post-item-template').clone();
       console.log("li=" + li);
@@ -106,15 +119,16 @@
     });
     
     function setItemHandler(li) {
-      //TODO:
-      $('.post-item-text').editable('', { 
+      li.find('.post-item-text').editable(function(value, settings) { 
+        return(value);
+  	  }, { 
         type      : 'textarea',
         submit    : 'OK',
         tooltip   : 'Item'
       });
-      $('.post-item-delete').click(function() {
+      li.find('.post-item-delete').click(function() {
         $(this).closest('li').remove();
-      	});
+      });
     }
 </script>
 
