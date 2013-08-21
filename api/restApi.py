@@ -200,7 +200,7 @@ class RoleInstanceAPI(ModelInstanceAPI):
         if 'specialties' in requestJson:
             specialties = requestJson.pop('specialties')
             specialty_service.overwrite_specialties(specialties, vet=role)
-        return hospital
+        return role
 
 class PersonHopitalList(RestAPI):
     service = person_service
