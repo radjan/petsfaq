@@ -208,6 +208,7 @@ class AttachesAPI(blobstore_handlers.BlobstoreUploadHandler,
         except Exception as e:
             raise
             self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
+
     def post(self, blogpostid):
         try:
             result = {}
@@ -220,6 +221,8 @@ class AttachesAPI(blobstore_handlers.BlobstoreUploadHandler,
             if blogpostid:
                 blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
                 result['blogpostid'] = blogpostid
+
+            order = blogpost_from_key.attaches.count() + 1
 
             #post 3 args: title, content, img
             title      = self.request.get('title')
@@ -236,7 +239,8 @@ class AttachesAPI(blobstore_handlers.BlobstoreUploadHandler,
             attached = Attached(title = title, 
                                 content = content,
                                 attached_type = attached_type,
-                                blogpost = blogpost_from_key)
+                                blogpost = blogpost_from_key,
+                                order = order)
             attached_output = attached.put()
 
             result['attachedid'] = attached_output.id()
@@ -304,9 +308,15 @@ class AttachAPI(base.BaseSessionHandler):
                 result.append({'photo: %s' % x.key().id():'deleted!'})
 
             #delete self
+            order = attach_from_key.order
             attach_from_key.delete()
             result.append({'attach: %s' % attachid: 'deleted'})
 
+            #re-order
+            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+            for k in [x for x in blogpost_from_key.attaches if x.order > order]:
+                k.order -= 1
+                k.put()
 
             util.jsonify_response(self.response, result)
 

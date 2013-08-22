@@ -65,6 +65,7 @@ class Attached(base.BaseModel, db.Model):
     attached_type = db.StringProperty(required=True,
                                       choices=([ATYPE_TEXT, 
                                                 ATYPE_PHOTO]))
+    order = db.IntegerProperty()
     content = db.StringProperty(multiline=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
