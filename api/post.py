@@ -20,18 +20,18 @@ from view import base
 from common import util
 
 import json
-import main
 
-class file_post(base.BaseSessionHandler):
-    def get(self):
-        upload_url = blobstore.create_upload_url('%s/posts' % (main.API_PREFIX,))
-        util.jsonify_response(self.response,{'url': upload_url})
-
-
-class file_attach(base.BaseSessionHandler):
-    def get(self, postid):
-        upload_url = blobstore.create_upload_url('%s/post/%s/attaches' % (main.API_PREFIX, postid))
-        util.jsonify_response(self.response,{'url': upload_url})
+#import main
+#class file_post(base.BaseSessionHandler):
+#    def get(self):
+#        upload_url = blobstore.create_upload_url('%s/posts' % (main.API_PREFIX,))
+#        util.jsonify_response(self.response,{'url': upload_url})
+#
+#
+#class file_attach(base.BaseSessionHandler):
+#    def get(self, postid):
+#        upload_url = blobstore.create_upload_url('%s/post/%s/attaches' % (main.API_PREFIX, postid))
+#        util.jsonify_response(self.response,{'url': upload_url})
 
 class BlogpostAPI(base.BaseSessionHandler):
     """
@@ -152,6 +152,16 @@ class PostAPI(base.BaseSessionHandler):
 
         except Exception as e:
             self.response.write({'Error':'Internal Error %s' % str(e)})
+            raise
+
+    def delete(self, blogpostid):
+        try:
+            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+            print 'samuel: %s' % blogpost_from_key.properties()
+            blogpost_from_key.delete()
+
+        except Exception as e:
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
 
 class AttachedAPI(blobstore_handlers.BlobstoreUploadHandler,

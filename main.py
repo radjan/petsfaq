@@ -33,6 +33,8 @@ from api import person as personApi
 
 from api import imageApi
 from api import post as postApi
+from api import file as fileApi
+
 from test import testApi
 
 from view import image
@@ -125,11 +127,13 @@ app = webapp2.WSGIApplication([
                   specialtyApi.EntitySpecialtiesDeleteAPI),
 
     #generate first stage API path for blobstore upload
-    webapp2.Route(API_PREFIX+'/file/person/<personid:\d+>/avatar',    imageApi.file_avatar, methods=['GET']),
-    webapp2.Route(API_PREFIX+'/file/hospital/<hospitalid:\d+>/logo',  imageApi.file_logo,   methods=['GET']),
-    webapp2.Route(API_PREFIX+'/file/blogpostid/<postid:\d+>/photos',  imageApi.file_photo,  methods=['GET']),
-    webapp2.Route(API_PREFIX+'/file/posts',                           postApi.file_post,    methods=['GET']),
-    webapp2.Route(API_PREFIX+'/file/post/<postid:\d+>/attaches',      postApi.file_attach,  methods=['GET']),
+    #webapp2.Route(API_PREFIX+'/file/person/<personid:\d+>/avatar',    imageApi.file_avatar, methods=['GET']),
+    #webapp2.Route(API_PREFIX+'/file/hospital/<hospitalid:\d+>/logo',  imageApi.file_logo,   methods=['GET']),
+    #webapp2.Route(API_PREFIX+'/file/blogpostid/<postid:\d+>/photos',  imageApi.file_photo,  methods=['GET']),
+    #webapp2.Route(API_PREFIX+'/file/posts',                           postApi.file_post,    methods=['GET']),
+    #webapp2.Route(API_PREFIX+'/file/post/<postid:\d+>/attaches',      postApi.file_attach,  methods=['GET']),
+
+    webapp2.Route(API_PREFIX+'/file/<apiuri:.*>',                     fileApi.fileapi,  methods=['GET']),
 
     #
     webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',         imageApi.AvatarPost,  methods=['POST']),
