@@ -20,6 +20,18 @@ from view import base
 from common import util
 
 import json
+import main
+
+class file_post(base.BaseSessionHandler):
+    def get(self):
+        upload_url = blobstore.create_upload_url('%s/posts' % (main.API_PREFIX,))
+        util.jsonify_response(self.response,{'url': upload_url})
+
+
+class file_attach(base.BaseSessionHandler):
+    def get(self, postid):
+        upload_url = blobstore.create_upload_url('%s/post/%s/attaches' % (main.API_PREFIX, postid))
+        util.jsonify_response(self.response,{'url': upload_url})
 
 class BlogpostAPI(base.BaseSessionHandler):
     """

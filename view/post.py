@@ -20,7 +20,7 @@ class upload_post(base.BaseSessionHandler):
             publish  = self.request.get('publish')
 
             #api
-            upload_url = '%s/posts' % (main.API_PREFIX,)
+            upload_url = blobstore.create_upload_url('%s/posts' % (main.API_PREFIX,))
 
             self.response.out.write('<html><head></head><body>')
             self.response.out.write('Hospital ID: %s'% hospitalid)
@@ -45,7 +45,7 @@ class upload_attaches(base.BaseSessionHandler):
             blogpostid = self.request.get('blogpostid')
 
             #api
-            upload_url = '%s/post/%s/attaches' % (main.API_PREFIX, blogpostid)
+            upload_url = blobstore.create_upload_url('%s/post/%s/attaches' % (main.API_PREFIX, blogpostid))
 
             self.response.out.write('<html><head></head><body>')
             self.response.out.write("""

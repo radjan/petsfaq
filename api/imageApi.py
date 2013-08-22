@@ -14,6 +14,23 @@ from model.hospital import Hospital
 from model.post import Blogpost
 
 from common import util
+import main
+
+class file_avatar(webapp2.RequestHandler):
+    def get(self, personid):
+        upload_url = blobstore.create_upload_url('%s/person/%s/avatar' % (main.API_PREFIX, personid))
+        util.jsonify_response(self.response,{'url': upload_url})
+
+class file_logo(webapp2.RequestHandler):
+    def get(self, hospitalid):
+        upload_url = blobstore.create_upload_url('%s/hospital/%s/logo' % (main.API_PREFIX, hospitalid))
+        util.jsonify_response(self.response,{'url': upload_url})
+
+class file_photo(webapp2.RequestHandler):
+    def get(self, blogpostid):
+        upload_url = blobstore.create_upload_url('%s/blogpost/%s/photos' % (main.API_PREFIX, blogpostid))
+        util.jsonify_response(self.response,{'url': upload_url})
+
 
 class Image(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, imageid):

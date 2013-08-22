@@ -124,27 +124,37 @@ app = webapp2.WSGIApplication([
     webapp2.Route(API_PREFIX+'/vet/<vetid:\d+>/specialties/<specialtyid:\d+>',
                   specialtyApi.EntitySpecialtiesDeleteAPI),
 
-    #
-    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',       imageApi.AvatarPost, methods=['POST']),
-    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',       imageApi.Avatar,     methods=['GET']),
-    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/hospitals',    restApi.PersonHopitalList),
+    #generate first stage API path for blobstore upload
+    webapp2.Route(API_PREFIX+'/file/person/<personid:\d+>/avatar',    imageApi.file_avatar, methods=['GET']),
+    webapp2.Route(API_PREFIX+'/file/hospital/<hospitalid:\d+>/logo',  imageApi.file_logo,   methods=['GET']),
+    webapp2.Route(API_PREFIX+'/file/blogpostid/<postid:\d+>/photos',  imageApi.file_photo,  methods=['GET']),
+    webapp2.Route(API_PREFIX+'/file/posts',                           postApi.file_post,    methods=['GET']),
+    webapp2.Route(API_PREFIX+'/file/post/<postid:\d+>/attaches',      postApi.file_attach,  methods=['GET']),
 
-    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',     imageApi.LogoPost,   methods=['POST']),
-    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',     imageApi.Logo,       methods=['GET']),
-    webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos',   imageApi.PhotoPost,  methods=['POST']),
-    webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos',   imageApi.Photo,      methods=['GET']),
-    webapp2.Route(API_PREFIX+'/image/<imageid:\d+>',                imageApi.Image,      methods=['GET']),
-    webapp2.Route(API_PREFIX+'/posts',                              postApi.BlogpostAPI),
-    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>',              postApi.PostAPI),
-    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attaches',     postApi.AttachedAPI),
+    #
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',         imageApi.AvatarPost,  methods=['POST']),
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/avatar',         imageApi.Avatar,      methods=['GET']),
+    webapp2.Route(API_PREFIX+'/person/<personid:\d+>/hospitals',      restApi.PersonHopitalList),
+
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',       imageApi.LogoPost,    methods=['POST']),
+    webapp2.Route(API_PREFIX+'/hospital/<hospitalid:\d+>/logo',       imageApi.Logo,        methods=['GET']),
+    webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos',     imageApi.PhotoPost,   methods=['POST']),
+    webapp2.Route(API_PREFIX+'/blogpost/<blogpostid:\d+>/photos',     imageApi.Photo,       methods=['GET']),
+
+    webapp2.Route(API_PREFIX+'/image/<imageid:\d+>',                  imageApi.Image,       methods=['GET']),
+
+    webapp2.Route(API_PREFIX+'/posts',                                postApi.BlogpostAPI),
+    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>',                postApi.PostAPI),
+
+    webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attaches',       postApi.AttachedAPI),
     #webapp2.Route(API_PREFIX+'/post/<blogpostid:\d+>/attach/<attachid:\d+', postApi.AttachedItemAPI),
 
 
-    webapp2.Route('/test/upload/<personid:\d+>/avatar',             image.upload_avatar, methods=['GET']),
-    webapp2.Route('/test/upload/<hospitalid:\d+>/logo',             image.upload_logo,   methods=['GET']),
-    webapp2.Route('/test/upload/<blogpostid:\d+>/photo',            image.upload_photo,   methods=['GET']),
-    webapp2.Route('/test/upload/post',                              post.upload_post,   methods=['GET']),
-    webapp2.Route('/test/upload/attaches',                          post.upload_attaches,   methods=['GET']),
+    webapp2.Route('/test/upload/<personid:\d+>/avatar',               image.upload_avatar,  methods=['GET']),
+    webapp2.Route('/test/upload/<hospitalid:\d+>/logo',               image.upload_logo,    methods=['GET']),
+    webapp2.Route('/test/upload/<blogpostid:\d+>/photo',              image.upload_photo,   methods=['GET']),
+    webapp2.Route('/test/upload/post',                                post.upload_post,     methods=['GET']),
+    webapp2.Route('/test/upload/attaches',                            post.upload_attaches, methods=['GET']),
 
     #webapp2.Route('/test/testApi/<blobid>', testApi.blob),
 
