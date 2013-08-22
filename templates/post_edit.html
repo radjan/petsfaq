@@ -49,6 +49,7 @@
                 <div class="post-delete"><a href="#" class="btn btn-warning">X</a></div>
                 <div class="post-title">Title</div>
                 <div class="post-desc">Description</div>
+                <div class="post-edit"><a href="#" class="btn btn-success">Edit</a></div>
                 <div class="post-save"><a href="#" class="btn btn-success">Save</a></div>
               </div>  
             </li>
@@ -60,7 +61,7 @@
               </div>  
             </li>
             <li class="row">  
-          	  <div class="post-add">
+          	  <div class="post-add-item">
                 <a href="#" class="btn btn-success">Add</a>
               </div>  
             </li>  
@@ -77,44 +78,22 @@
 <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
 <script src="/s/js/jquery.jeditable.mini.js"></script>
 <script language='JavaScript'>
-    $('.post-title').editable(function(value, settings) { 
-      return(value);
-  	}, {
-      tooltip   : 'Title'
-    });
-    $('.post-desc').editable(function(value, settings) { 
-      return(value);
-  	}, { 
-      type      : 'textarea',
-      submit    : 'OK',
-      tooltip   : 'Description'
-    });
     $('.post-delete').click(function() {
       alert("No api yet");
     });
+    $('.post-edit').click(function() {
+      editPost();
+    });
     $('.post-save').click(function() {
-      //TODO: personId/hospitalId
-      $.ajax({
-        url: "/api/v1/posts",
-        type: "POST",
-        data: {
-          title: $('.post-title').text(),
-          content: $('.post-desc').text(),
-          publish: 1
-        },
-        cache: false
-      }).done(function(data){
-        var postid = data.postid;
-        window.location.href="/post/" + postid;
-      });
+      savePost();
     });
 
-    $('.post-add').click(function() {
+    $('.post-add-item').click(function() {
       var li = $('.post-item-template').clone();
       console.log("li=" + li);
       li.removeAttr('style')
            .removeClass('post-item-template');
-      $('.post-add').parent().before(li);
+      $('.post-add-item').parent().before(li);
       setItemHandler(li);
     });
     
@@ -129,6 +108,103 @@
       li.find('.post-item-delete').click(function() {
         $(this).closest('li').remove();
       });
+    }
+    
+    var postInfo = {};
+    
+    $(document).ready(function() {
+	  postInfo.id = window.location.pathname.split("/")[2];
+	  if (postInfo.id) {
+	    getPost(postInfo.id);
+	  }
+	  else {
+	    newPost();
+	  }
+	});
+
+	function newPost() {
+	  $('.post-edit').hide();
+	  $('.post-save').show();
+	  $('.post-delete').hide();
+	  $('.post-add-item').hide();
+	  //TODO: attachments
+	}
+
+	function getPost(id) {
+	  $('.post-edit').hide();
+	  $('.post-save').hide();
+	  $('.post-delete').hide();
+	  $('.post-add-item').hide();
+      $.ajax({
+        url: "/api/v1/post/" + id,
+        type: "GET",
+        cache: false
+      }).done(function(data) {
+        showPost(data);
+      });
+	  //TODO: attachments
+	}
+	
+	function showPost(data) {
+	  $('.post-edit').show();
+	  console.log("data=" + JSON.stringify(data));
+	  $('.post-title').text(data.title);
+	  $('.post-desc').text(data.content);
+	  //TODO: attachments
+	}
+	
+	function editPost() {
+	  $('.post-edit').hide();
+	  $('.post-save').show();
+	  $('.post-delete').show();
+	  $('.post-add-item').hide();
+	  $('.post-title').editable(function(value, settings) { 
+        return(value);
+  	  }, {
+        tooltip   : 'Title'
+      });
+      $('.post-desc').editable(function(value, settings) { 
+        return(value);
+  	  }, { 
+        type      : 'textarea',
+        submit    : 'OK',
+        tooltip   : 'Description'
+      });
+	  //TODO: attachments
+    }
+    
+    function savePost() {
+      //TODO: personId/hospitalId?
+      if (postInfo.id) {
+        var data = {
+          "title": $('.post-title').text(),
+          "content": $('.post-desc').text(),
+          "publish": 1
+        };
+        $.ajax({
+          url: "/api/v1/post/" + postInfo.id,
+          type: "PUT",
+          data: JSON.stringify(data),
+          cache: false
+        }).done(function(data){
+          window.location.href="/post/" + postInfo.id;
+        });
+      }
+      else {
+        $.ajax({
+          url: "/api/v1/posts",
+          type: "POST",
+          data: {
+            title: $('.post-title').text(),
+            content: $('.post-desc').text(),
+            publish: 1
+          },
+          cache: false
+        }).done(function(data){
+          var postid = data.postid;
+          window.location.href="/post/" + postid;
+        });
+      }
     }
 </script>
 

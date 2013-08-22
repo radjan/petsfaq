@@ -145,7 +145,8 @@ class CreateHospitalPage(base.BaseSessionHandler):
 class CreatePostPage(base.BaseSessionHandler):
     @base.login_required
     def get(self):
-        self.render_template('post_edit.html')
+        params = {'user': util.get_current_user(self.session)}
+        self.render_template('post_edit.html', params)
 
 def _gather_list(request, k, tolerance=2):
     miss = 0

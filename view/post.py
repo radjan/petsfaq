@@ -1,9 +1,16 @@
 import webapp2
 import urllib
 from view import base
+from common import util
 
 import main
 #API_PREFIX = main.API_PREFIX
+
+class PostDetail(base.BaseSessionHandler):
+    @base.login_required
+    def get(self, *args, **kw):
+        params = {'user': util.get_current_user(self.session)}
+        self.render_template('post_edit.html', params)
 
 class upload_post(base.BaseSessionHandler):
     def get(self):

@@ -81,6 +81,7 @@ app = webapp2.WSGIApplication([
     ('/createHospital', view.hospital.CreateHospital),
     webapp2.Route('/hospital/<id:\d+>', view.hospital.HospitalDetail, name='view_hospital'),
     webapp2.Route('/person/<id:\d+>', view.person.PersonDetail),
+    webapp2.Route('/post/<id:\d+>', view.post.PostDetail),
     ('/faq', faq.BoardPage),
 
     ('/createVet', view.vet.CreateVet),
