@@ -43,6 +43,8 @@
           </div><!--/.well -->
         </div><!--/span-->
         <div class="span6">
+          <select id="hospital-list" style="display:none"></select>
+          <select id="vet-list" style="display:none"></select>
           <ul class="post">  
             <li class="row">
           	  <div class="post-info">
@@ -123,12 +125,39 @@
 	});
 
 	function newPost() {
-	  $('.post-edit').hide();
-	  $('.post-save').show();
-	  $('.post-delete').hide();
-	  $('.post-add-item').hide();
-	  //TODO: attachments
+	  getHospitals();
+	  getVets();
+	  //TODO: default title/content text?
+	  editPost();
 	}
+
+	function getHospitals() {
+      $.ajax({
+        url: "/api/v1/hospital",
+        type: "GET",
+        cache: false
+      }).done(function(data) {
+        $('#hospital-list').show();
+        for (var i = 0; i < data.length; i++) {
+          var option = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+          $('#hospital-list').append(option);
+        }
+      });
+    }
+    
+	function getVets() {
+      $.ajax({
+        url: "/api/v1/person/vet",
+        type: "GET",
+        cache: false
+      }).done(function(data) {
+        $('#vet-list').show();
+        for (var i = 0; i < data.length; i++) {
+          var option = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+          $('#vet-list').append(option);
+        }
+      });
+    }
 
 	function getPost(id) {
 	  $('.post-edit').hide();
@@ -152,7 +181,7 @@
 	  $('.post-desc').text(data.content);
 	  //TODO: attachments
 	}
-	
+
 	function editPost() {
 	  $('.post-edit').hide();
 	  $('.post-save').show();
@@ -172,9 +201,8 @@
       });
 	  //TODO: attachments
     }
-    
+
     function savePost() {
-      //TODO: personId/hospitalId?
       if (postInfo.id) {
         var data = {
           "title": $('.post-title').text(),
@@ -191,10 +219,13 @@
         });
       }
       else {
+        //TODO: personId/hospitalId?
         $.ajax({
           url: "/api/v1/posts",
           type: "POST",
           data: {
+            hospitalid: $('#hospital-list').val(),
+            personid: $('#vet-list').val(),
             title: $('.post-title').text(),
             content: $('.post-desc').text(),
             publish: 1
