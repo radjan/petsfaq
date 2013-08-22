@@ -132,14 +132,18 @@ class PostAPI(base.BaseSessionHandler):
         try:
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
 
-            detail =  {'title':'unchanged',
-                       'content':'unchanged',
-                       'status_code':'unchanged'}
+            #detail =  {'title':'unchanged',
+            #           'content':'unchanged',
+            #           'status_code':'unchanged'}
+            detail = {}
 
             update = {}
-            update['title']   = json.loads(self.request.body).get('title')
-            update['content'] = json.loads(self.request.body).get('content')
+            update['title']       = json.loads(self.request.body).get('title')
+            update['content']     = json.loads(self.request.body).get('content')
             update['status_code'] = json.loads(self.request.body).get('publish')
+            update['author']      = json.loads(self.request.body).get('personid')
+            update['hospital']    = json.loads(self.request.body).get('hospitalid')
+            update['post_type']   = json.loads(self.request.body).get('post_type')
 
             for y in [x for x in update.keys() if update[x] != None]:
                 #blogpost_from_key.properties()[y].make_value_from_datastore(update[y])
@@ -156,9 +160,21 @@ class PostAPI(base.BaseSessionHandler):
 
     def delete(self, blogpostid):
         try:
+            ref = ['photos','attaches']
+
+            #delete self
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
             print 'samuel: %s' % blogpost_from_key.properties()
             blogpost_from_key.delete()
+
+            #delete photos
+            for x in blogpost_from_key.photos:
+                x.delete()
+
+            #delete attaches
+            for x in blogpost_from_key.attaches:
+                x.delete()
+
 
         except Exception as e:
             self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
