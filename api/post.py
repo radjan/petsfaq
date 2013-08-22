@@ -35,7 +35,7 @@ import json
 
 class BlogpostAPI(base.BaseSessionHandler):
     """
-    collection: show and edit
+    collection: list and create
     """
     def post(self):
         try:
@@ -84,7 +84,7 @@ class BlogpostAPI(base.BaseSessionHandler):
 
 class PostAPI(base.BaseSessionHandler):
     """
-    element: list and create
+    element: show, edit, and delete
     """
     def get(self, blogpostid):
         try:
@@ -148,7 +148,7 @@ class PostAPI(base.BaseSessionHandler):
             for y in [x for x in update.keys() if update[x] != None]:
                 #blogpost_from_key.properties()[y].make_value_from_datastore(update[y])
                 blogpost_from_key.__setattr__(y, update[y])
-                detail[y] = 'Changed'
+                detail[y] = 'Changed: %s' % update[y]
 
             blogpost_from_key.put()
 
@@ -160,43 +160,54 @@ class PostAPI(base.BaseSessionHandler):
 
     def delete(self, blogpostid):
         try:
-            ref = ['photos','attaches']
-
-            #delete self
+            result = []
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
-            print 'samuel: %s' % blogpost_from_key.properties()
-            blogpost_from_key.delete()
+
+            #delete attaches
+            for x in blogpost_from_key.attaches:
+                for y in x.aphotos:
+                    y.delete()
+                    result.append({'photo: %s' % y.key().id():'deleted!'})
+                x.delete()
+                result.append({'attach: %s' % x.key().id():'deleted!'})
+
 
             #delete photos
             for x in blogpost_from_key.photos:
                 x.delete()
+                result.append({'photo: %s' % x.key().id():'deleted!'})
 
-            #delete attaches
-            for x in blogpost_from_key.attaches:
-                x.delete()
+            #delete self
+            blogpost_from_key.delete()
+            result.append({'blogpost: %s' % blogpostid:'deleted!'})
 
+
+            util.jsonify_response(self.response, result)
 
         except Exception as e:
             self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
 
-class AttachedAPI(blobstore_handlers.BlobstoreUploadHandler,
+class AttachesAPI(blobstore_handlers.BlobstoreUploadHandler,
                   base.BaseSessionHandler):
-#    def get(self, blogpostid):
-#        try:
-#            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
-#            #ids = []
-#            #for x in blogpost_from_key.attaches:
-#            #    obj = {}
-#            #    obj = { x.key().id(): util.out_format(x)}
-#            #    ids.append(obj)
-#            #print 'samuel: ids %s' % ids
-#            #util.jsonify_response(self.response, ids)
-#            result = util.out_format(blogpost_from_key.attaches)
-#            util.jsonify_response(self.response, result)
-#        except Exception as e:
-#            raise
-#            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
+    """
+    collection: show and edit
+    """
+    def get(self, blogpostid):
+        try:
+            blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
+            #ids = []
+            #for x in blogpost_from_key.attaches:
+            #    obj = {}
+            #    obj = { x.key().id(): util.out_format(x)}
+            #    ids.append(obj)
+            #print 'samuel: ids %s' % ids
+            #util.jsonify_response(self.response, ids)
+            result = util.out_format(blogpost_from_key.attaches)
+            util.jsonify_response(self.response, result)
+        except Exception as e:
+            raise
+            self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
     def post(self, blogpostid):
         try:
             result = {}
@@ -214,11 +225,6 @@ class AttachedAPI(blobstore_handlers.BlobstoreUploadHandler,
             title      = self.request.get('title')
             content    = self.request.get('content')
             imgfile    = self.get_uploads('img')
-            #blob = imgfile[0]
-
-            print 'samuel: title: %s' % title
-            print 'samuel: content: %s' % content
-            print 'samuel: img??? %s ' % imgfile
 
             if len(imgfile) != 0:
                 attached_type = ATYPE_PHOTO
@@ -232,6 +238,7 @@ class AttachedAPI(blobstore_handlers.BlobstoreUploadHandler,
                                 attached_type = attached_type,
                                 blogpost = blogpost_from_key)
             attached_output = attached.put()
+
             result['attachedid'] = attached_output.id()
 
             #create photo reference to attached
@@ -248,4 +255,62 @@ class AttachedAPI(blobstore_handlers.BlobstoreUploadHandler,
         except:
             raise
             self.response.write(json.dumps({'Error':'Internal Error'}))
+
+
+class AttachAPI(base.BaseSessionHandler):
+    """
+    element: show, edit, and delete
+    """
+    def get(self, blogpostid, attachid):
+        try:
+            attach_from_key = Attached.get_by_id(int(attachid))
+            result = util.out_format(attach_from_key)
+            util.jsonify_response(self.response, result)
+        except:
+            self.response.write(json.dumps({'Error':'Internal Error'}))
+            raise
+
+    def put(self, blogpostid, attachid):
+        try:
+            attach_from_key = Attached.get_by_id(int(attachid))
+
+            detail = {}
+
+            update = {}
+            update['title']       = json.loads(self.request.body).get('title')
+            update['content']     = json.loads(self.request.body).get('content')
+            update['attached_type']  = json.loads(self.request.body).get('attached_type')
+
+            for y in [x for x in update.keys() if update[x] != None]:
+                attach_from_key.__setattr__(y, update[y])
+                detail[y] = 'Changed: %s' % update[y]
+
+            attach_from_key.put()
+            util.jsonify_response(self.response, detail)
+
+
+        except:
+            self.response.write(json.dumps({'Error':'Internal Error'}))
+            raise
+
+    def delete(self, blogpostid, attachid):
+        try:
+            result = []
+            attach_from_key = Attached.get_by_id(int(attachid))
+
+            #delete photos
+            for x in attach_from_key.aphotos:
+                x.delete()
+                result.append({'photo: %s' % x.key().id():'deleted!'})
+
+            #delete self
+            attach_from_key.delete()
+            result.append({'attach: %s' % attachid: 'deleted'})
+
+
+            util.jsonify_response(self.response, result)
+
+        except:
+            self.response.write(json.dumps({'Error':'Internal Error'}))
+            raise
 

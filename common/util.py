@@ -14,8 +14,7 @@ GOOGLE = share.VIEW_GOOGLE
 IDPWD = share.VIEW_IDPWD
 
 FK_REF = {
-        'Person'  :['avatars','questions', 'blogposts', 'roles',
-                    'accounts'],
+        'Person'  :['avatars','questions', 'blogposts', 'roles', 'accounts'],
         'Hospital':['logos','blogposts','vets','employees', 'specialties'],
         'Post_Blogpost':['photos','attaches'],
         'Post'    :['replies'],
