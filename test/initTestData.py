@@ -133,6 +133,8 @@ def init_data(PORT=8080):
     bp1 = create_blogpost(bp1)
     tt1 = create_attach(att1, blogpost=bp1)
     tt2 = create_attach(att1, blogpost=bp1)
+    tt3 = create_attach(att1, blogpost=bp1)
+    tt4 = create_attach(att1, blogpost=bp1)
     
     pub = {"publish":1}
     bp1 = complete_post(bp1, pub)
