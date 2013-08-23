@@ -284,6 +284,7 @@ class AttachAPI(base.BaseSessionHandler):
             update['title']       = json.loads(self.request.body).get('title')
             update['content']     = json.loads(self.request.body).get('content')
             update['attached_type']  = json.loads(self.request.body).get('attached_type')
+            update['order']  = json.loads(self.request.body).get('order')
 
             for y in [x for x in update.keys() if update[x] != None]:
                 attach_from_key.__setattr__(y, update[y])
