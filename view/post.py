@@ -2,6 +2,7 @@ import webapp2
 import urllib
 from view import base
 from common import util
+from google.appengine.ext import blobstore
 
 import main
 #API_PREFIX = main.API_PREFIX
@@ -33,6 +34,9 @@ class upload_post(base.BaseSessionHandler):
                 <input type="hidden" value="%s" name="personid">
                 <input type="hidden" value="%s" name="hospitalid">
                 <input type="hidden" value="%s" name="publish">
+
+                <input type="file" name="img" /><br />
+                <input type="text" value="description" name="description" /><br />
                 <input type="submit" value="submit" /><br />
                 </form></body></html>
                 """ %(upload_url, personid, hospitalid, publish))

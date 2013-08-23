@@ -167,7 +167,7 @@ class PostAPI(base.BaseSessionHandler):
             for x in blogpost_from_key.attaches:
                 for y in x.aphotos:
                     y.delete()
-                    result.append({'photo: %s' % y.key().id():'deleted!'})
+                    result.append({'attach photo: %s' % y.key().id():'deleted!'})
                 x.delete()
                 result.append({'attach: %s' % x.key().id():'deleted!'})
 
@@ -175,7 +175,7 @@ class PostAPI(base.BaseSessionHandler):
             #delete photos
             for x in blogpost_from_key.photos:
                 x.delete()
-                result.append({'photo: %s' % x.key().id():'deleted!'})
+                result.append({'post photo: %s' % x.key().id():'deleted!'})
 
             #delete self
             blogpost_from_key.delete()
@@ -301,7 +301,7 @@ class AttachAPI(base.BaseSessionHandler):
             #delete photos
             for x in attach_from_key.aphotos:
                 x.delete()
-                result.append({'photo: %s' % x.key().id():'deleted!'})
+                result.append({'attach :photo: %s' % x.key().id():'deleted!'})
 
             #delete self
             attach_from_key.delete()
