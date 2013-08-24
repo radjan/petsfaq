@@ -5,7 +5,7 @@ from common import util
 class BlogTimeline(base.BaseSessionHandler):
     def get(self):
         params = {'user': util.get_current_user(self.session)}
-        self.render_template('blog/timeline.html')
+        self.render_template('blog/blog.html')
 
 class PostView(base.BaseSessionHandler):
     def get(self):
@@ -13,7 +13,7 @@ class PostView(base.BaseSessionHandler):
         self.render_template('post_edit.html')
         
 class Test():
-     def get(self):
+     def get(self, name=None):
         params = {'user': util.get_current_user(self.session)}
         name = self.request.get('name')
         self.response.out.write(name)

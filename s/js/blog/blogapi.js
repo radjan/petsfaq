@@ -13,17 +13,42 @@ function getPostList(handler, errHandler) {
 				
 			}			
 		}
-		
-		
-		
 		handler(postList);
 	});
 }
 
 /**
+ *
+ */
+function getPostImgByImgId(imgId, handler, errHandler) {
+	var api_url = api_prefix + 'image';
+	$.get(api_url, function(data) {
+		//console.log(data);
+		if(typeof data !== 'undefined' && typeof data.blogpostids !== 'undefined') {
+			var imgPath = data;
+			handler(postList);
+		}
+	});
+}
+
+
+/**
  * Get a post content by requested post id 
  * @param {Object} pid the requested post id
  * @param {Object} handler
+ * 
+ *   photoids:
+    [ 
+      {pid}
+      ...
+    ],
+  title: {title},
+  last_modified: {timestamp},
+  status_code: {publish value},
+  authorid: {pid},
+  created: {timestamp},
+  content: {content},
+  hospitalid: {hid}
  */
 function getPostByPid(pid, handler) {
 	var api_url = api_prefix + 'post/' + pid;
@@ -38,7 +63,8 @@ function getPostByPid(pid, handler) {
 				pet_type: 'default', 
 				pet_name: 'default', 
 				preview_content: preview,
-				created_date: createdDate
+				created_date: createdDate,
+				photo_ids_list: data.photoids
 			};
 			handler(postContent);
 		}else {
