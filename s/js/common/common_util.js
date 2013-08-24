@@ -14,3 +14,7 @@ function getDateString(date, format) {
     return '' + y + '/' + (m<=9 ? '0' + m : m) + '/' + (d <= 9 ? '0' + d : d);
 	*/
 }
+
+function delayedCall(fn, time) {
+    setTimeout(fn, time);
+}

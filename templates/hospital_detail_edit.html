@@ -239,6 +239,7 @@
     <script src="/s/js/bootstrap.js"></script>
     <script src="/s/js/showNAddSpecialites.js"></script>
     <script src="/s/js/twzipcode.js"></script>
+    <script src="/s/js/common/common_util.js"></script>
 
     <script type="text/javascript">
     $(document).ready(function(){
@@ -418,7 +419,14 @@
       // }
 
 
+     
+      updateVets(hospital);
+
+    }
+
+    function updateVets(hospital){
       var vets = $("#vets");
+      vets.empty();
       var vs = hospital.vets
       for (i in vs){
           var v = $("div[name=oneVet]").last().clone();
@@ -447,7 +455,8 @@
 
           // alert(initSpecialties(1));
           for (j in vs[i].specialties) {
-            v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
+            // alert("j: "+j);
+            v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].specialty.species+": "+vs[i].specialties[j].specialty.category+"</dd>");
 
           }
           initSpecialtiesSelection(v.find("#vetSpecialties_"), vs[i].specialties.length+1, vs[i].specialties);
@@ -483,6 +492,7 @@
       var _saveVet = v.find("#saveVet_");
       var _cancelVet = v.find("#cancelVet_");
       _editVet.attr("id", "editVet_"+i);
+      _deleteVet.attr("id", "deleteVet_"+i);
       _saveVet.attr("id", "saveVet_"+i);
       _cancelVet.attr("id", "cancelVet_"+i);
 
@@ -506,7 +516,12 @@
         //TODO:
       });
 
-      _saveVet.click(function(){
+      _saveVet.click(function(){saveVet(v, i, vet)});
+
+      _cancelVet.click(function(){cancelVet(v, i, vet)});
+    }
+
+    function saveVet(v, i, vet){
         //FIXME:
           var _request = {};
           var _exp_array = new Array();
@@ -534,37 +549,44 @@
           };
           _request["education"] = _edu_array;          
 
-          var _showSpecialty = "<ul>";
+          var _showSpecialty = new Array();
           for (var i = 1; i < 4; i++) {
             var _species = v.find("*[name=species_"+i+"]");
+            var _sMap = {};
             if(_species.val() != ""){
-              _showSpecialty += "<li>" + _species.val();
-              _showSpecialty += ":" + $("*[name=category_"+i+"]").val() + "</li>";
+              _sMap["species"] = _species.val();
+              _sMap["category"] = $("*[name=category_"+i+"]").val();
             }
+            _showSpecialty.push(_sMap);
           }
-          _showSpecialty += "</ul>";
           _request["specialties"] = _showSpecialty;
 
           $.ajax({
-            url: "/api/v1/person/"+vet.id,
+            url: "/api/v1/role/"+vet.id,
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(_request),
             cache: false
-          }).done(cancelVet(v));
-      });
+          }).done(
+            delayedCall(function(){
+              var hid = window.location.pathname.split("/")[2];
+              $.ajax({
+                  url: "/api/v1/hospital/" + hid,
+                  type: "GET",
+                  cache: false
+                }).done(function (data) { updateVets(data); });
+              }, 500)
+          );
+      }
 
-      _cancelVet.click(function(){cancelVet(v)});
-    }
-
-    function cancelVet(v){
-        var _nameCardBtn = v.find("button[data-target=#nameCard_]");
-        var _nameCard = v.find("#nameCard_");
-        var _vetSpecialties = v.find("#vetSpecialties_");
-        var _editVet = v.find("#editVet_");
-        var _deleteVet = v.find("#deleteVet_");
-        var _saveVet = v.find("#saveVet_");
-        var _cancelVet = v.find("#cancelVet_");
+    function cancelVet(v, i, vet){
+        var _nameCardBtn = v.find("button[data-target=#nameCard_"+i+"]");
+        var _nameCard = v.find("#nameCard_"+i);
+        var _vetSpecialties = v.find("#vetSpecialties_"+i);
+        var _editVet = v.find("#editVet_"+i);
+        var _deleteVet = v.find("#deleteVet_"+i);
+        var _saveVet = v.find("#saveVet_"+i);
+        var _cancelVet = v.find("#cancelVet_"+i);
         // v.find("input[name=vet_name]").hide();
         v.find("textarea[name=vet_desc]").hide();
         v.find("div[name=edit_exp]").hide();

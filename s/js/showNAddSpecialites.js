@@ -81,8 +81,8 @@
         input_categories.attr('name', input_categories.attr('name') + n);
 
         if(initValue != null){
-            input_species.val(initValue.species);
-            input_categories.val(initValue.category);    
+            input_species.val(initValue.specialty.species);
+            input_categories.val(initValue.specialty.category);    
         }else{
             input_categories.val("一般");    
         }
