@@ -222,12 +222,20 @@ class AttachesAPI(blobstore_handlers.BlobstoreUploadHandler,
                 blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
                 result['blogpostid'] = blogpostid
 
-            order = blogpost_from_key.attaches.count() + 1
+            #order = blogpost_from_key.attaches.count() + 1
 
             #post 3 args: title, content, img
             title      = self.request.get('title')
             content    = self.request.get('content')
+            order      = self.request.get('order')
             imgfile    = self.get_uploads('img')
+
+            if order.isdigit():
+                order = int(order)
+            else:
+                order = -1
+
+            result['order'] = order
 
             if len(imgfile) != 0:
                 attached_type = ATYPE_PHOTO
