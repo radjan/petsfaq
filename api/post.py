@@ -74,10 +74,24 @@ class BlogpostAPI(base.BaseSessionHandler):
 
     def get(self):
         try:
+            personid   = self.request.get('personid', None)
+            hospitalid = self.request.get('hospitalid', None)
+
+            postlist = Blogpost.all()
             ids = []
-            for x in Blogpost.all():
-                ids.append(x.key().id())
+
+            if hospitalid and hospitalid.isdigit():
+                #ids.append([x.key().id() for x in postlist if x.hospital.key().id() == long(hospitalid)])
+                postlist = [x for x in postlist if x.hospital.key().id() == long(hospitalid)]
+                ids.append(x.key().id()) 
+            elif personid and personid.isdigit():
+                postlist = [x for x in postlist if x.author.key().id() == long(personid)]
+                ids.append(x.key().id()) 
+            else:
+                ids.append([x.key().id() for x in postlist])
+
             util.jsonify_response(self.response, {'blogpostids':ids})
+
         except Exception as e:
             self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
@@ -276,7 +290,10 @@ class AttachAPI(base.BaseSessionHandler):
     def get(self, blogpostid, attachid):
         try:
             attach_from_key = Attached.get_by_id(int(attachid))
-            result = util.out_format(attach_from_key)
+            if attach_from_key == None:
+                result = {}
+            else:
+                result = util.out_format(attach_from_key)
             util.jsonify_response(self.response, result)
         except:
             self.response.write(json.dumps({'Error':'Internal Error'}))

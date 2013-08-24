@@ -32,6 +32,7 @@ class Post(base.BaseModel, polymodel.PolyModel):
     def get_type(self):
         return '_'.join(self._class)
 
+
 class Questions(Post):
     reply_to = db.ReferenceProperty(Post, collection_name='replies')
     author = db.ReferenceProperty(person.Person, collection_name='questions')
@@ -41,6 +42,7 @@ class Questions(Post):
         self.post_type = TYPE_QUESTION
         self.title = ''
         self.content = ''
+
 
 class Blogpost(Post):
     author = db.ReferenceProperty(person.Person, collection_name='blogposts')
@@ -54,9 +56,6 @@ class Blogpost(Post):
            kwargs['status_code'] = STATUS_DRAFT
 
         Post.__init__(self, *args, **kwargs)
-
-    def get_type(self):
-        return '_'.join(self._class)
 
 
 class Attached(base.BaseModel, db.Model):
