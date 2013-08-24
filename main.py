@@ -164,6 +164,8 @@ app = webapp2.WSGIApplication([
 
     #[BEGIN] by Zen,
     webapp2.Route('/blog', blog.BlogTimeline),
+    #webapp2.Route('/blog/post/<blogpostid:\d+>',                    )
+    webapp2.Route('/blog/post/<name:\d+>', blog.Test, methods=['GET']),
     #[END]
 
     (API_PREFIX+'/.*', NotFound),
