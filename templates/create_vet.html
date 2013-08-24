@@ -87,6 +87,12 @@
                 <div id="collapseHospital" class="accordion-body collapse in">
                   <div class="accordion-inner">
                     <div>
+                      <h3>所屬醫院</h3>
+                        <select name="hospitalSelect">
+                          <option value="">請選擇</option>
+                        </select>
+                    </div>
+                    <div>
                       <h3>獸醫資料</h3>
                       <span style="color:red">*</span>
                       <label>姓名</label>
@@ -147,6 +153,10 @@
                     </ul>
                   
                   </div>
+                   <hr class="bs-docs-separator">
+                  <!-- <button class="btn btn-inverse" type="submit">取消</button> -->
+                  <a href="#confirmModal" role="button" class="btn btn-danger" data-toggle="modal" onclick="displayData()">建立獸醫</a>
+                  <br>
               </div>
             </div>
 
@@ -154,6 +164,18 @@
         </div><!--/span-->
       </div><!--/row-->
 
+      <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+            <h3 id="myModalLabel">確認資料</h3>
+        </div>
+        <div id="modalBody" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-inverse left" data-dismiss="modal" aria-hidden="true">回頭修改</button>
+          <button id="nextStep" class="btn btn-large btn-primary" type="submit">確認</button>
+        </div>
+      </div>   <!--/confirmModal div-->
 
       <div id='templates' class='specialtySelector templates'>
         <li name='spec_item'>
@@ -188,8 +210,17 @@
     var categories = [];
     // var chosenCounty;
 
-    $("document").ready(
-      function(){
+    $("document").ready(function(){
+
+      $.ajax({
+        url: "/api/v1/hospital",
+        type: "GET",
+        cache: false
+      }).done(function(data){
+        createHospialSelect(data);
+      });
+        
+
         initSpecialtiesSelection($("#vetSpecialties"), 3, null);
 
         if(!zipLoaded){
@@ -210,25 +241,39 @@
           
         });
 
-
       });
 
+      function createHospialSelect(hospitals){
+        for (var i in hospitals) {
+          var _showStr = "<option value='"+hospitals[i].id+" "+hospitals[i].county+hospitals[i].area+" "+hospitals[i].name+"'>"+hospitals[i].county+hospitals[i].area+" "+hospitals[i].name+"</option>";
+          $("select[name=hospitalSelect]").append(_showStr);
+        }
+      }
+
       $("#nextStep").click(function (){
-          var county = $("#selector_county").val();
-          var area = $("#selector_area").val();
-          var emergency = $("input[name=er]").is(":checked");
-          var speciesArray= new Array();
           var request2 = { 
-                  "name":$("input[name=name]").val(),
-                  "description":$("textarea[name=description]").val(),
-                  "area": area,
-                  "zipcode": $("#input_zipCode").val(),
-                  "county": county,
-                  "address":$("input[name=address]").val(),
-                  "phone":$("input[name=phone]").val()
+              hospital: $("select[name=hospitalSelect]").val().split(" ")[0],
+              person: {
+                  name: $("input[name=name]").val(),        
+                  gender: $('[name="gender"]:checked').val(),         
+                  email: $("input[name=email]").val()
+              },
           };
 
+          if($("input[name=birthday]").val() != ""){
+            request2["birthday"] = $("input[name=birthday]").val();
+          }
+
+          if($("input[name=phone]").val() != ""){
+            request2["phone"] =  $("input[name=phone]").val();
+          }
+
+          if ($("textarea[name=intro]").val() != "") {
+            request2["description"] = $("textarea[name=intro]").val();
+          }
+
           // add specialties
+          var speciesArray= new Array();
           for (var i = 1; i < 4; i++) {
             var tmpS = $("*[name=species_"+i+"]");
             if(tmpS.val() != ""){
@@ -238,22 +283,34 @@
           }
           request2["specialties"] = speciesArray;
           
-          // filter emergency
-          if(emergency){
-            request2["emergency"] = emergency;
-            request2["emergency_phone"] = $("input[name=er_phone]").val();
-            request2["emergency_hour"] = $("textarea[name=er_hour]").val();
+          var _edu = new Array();
+          if ($("input[name=edu_1]").val() != "") {
+              _edu.push($("input[name=edu_1]").val());
           }
+          if ($("input[name=edu_2]").val() != "") {
+              _edu.push($("input[name=edu_2]").val());
+          }
+          request2["education"] = _edu;
 
-            $.ajax({
-                url: "/api/v1/hospital",
-                type: "POST",
-                data: JSON.stringify(request2),
-                cache: false
-            }).done(function(){
-                window.location.href="/hospitals";
-            });
-            return false;
+
+          var _exp = new Array();
+          if ($("input[name=exp_1]").val() != "") {
+              _exp.push($("input[name=exp_1]").val());
+          }
+          if ($("input[name=exp_2]").val() != "") {
+              _exp.push($("input[name=exp_2]").val());
+          }
+          request2["experience"] = _exp;
+
+          $.ajax({
+              url: "/api/v1/vets",
+              type: "POST",
+              data: JSON.stringify(request2),
+              cache: false
+          }).done(function(){
+              window.location.href="/hospitals";
+          });
+          return false;
         });
 
     function showArea(chosenCounty){
@@ -280,12 +337,59 @@
 
     function displayData () { 
         // check data 
-      $("#nextStep").show();
-      $("#modalBody").empty();
-      $("#modalBody").append("醫院名稱："+ $("input[name=name]").val()+"<br>");
-      $("#modalBody").append("簡介："+ $("textarea[name=description]").val()+"<br>");
+        var _hospitalValue = $("select[name=hospitalSelect]").val().split(" ");
+        var _hospitalName;
+        var _name = $("input[name=name]").val();
+        var _genderVal = $('[name="gender"]:checked').val();
+        var _birthday = $("input[name=birthday]").val();
+        var _tel = $("input[name=phone]").val();
+        var _email = $("input[name=email]").val();
+            
+        var _gender;
+        var _isVet;     
 
-     var _showSpecialty = "<ul>";
+        $("#nextStep").show();
+        $("#modalBody").empty();
+
+        if(_hospitalValue==""){
+           _hospitalName = "請填寫名字";
+            $("#nextStep").hide();
+        }else{
+          _hospitalName =  _hospitalValue[1]+" "+_hospitalValue[2];
+        }
+
+        if (_name == "") { 
+            _name = "請填寫名字";
+            $("#nextStep").hide();
+        }
+
+        if (_genderVal != null ) {
+            if (_genderVal != "M") {
+              _gender = "女";  
+            }else{
+              _gender = "男";
+            }
+        }else{
+            _gender = "請選擇性別";
+            $("#nextStep").hide();
+        }
+
+
+        if(_email == ""){
+          _email = "請填寫email";
+          $("#nextStep").hide();
+        }
+
+      
+      $("#modalBody").append("所屬醫院："+_hospitalName+"<br>");
+      $("#modalBody").append("姓名："+ _name +"<br>");
+      $("#modalBody").append("性別："+ _gender +"<br>");
+      $("#modalBody").append("生日："+ _birthday +"<br>");
+      $("#modalBody").append("電話："+ _tel +"<br>");
+      $("#modalBody").append("電子信箱："+ _email +"<br>");
+      $("#modalBody").append("簡介："+ $("textarea[name=intro]").val()+"<br>");
+
+      var _showSpecialty = "<ul>";
       for (var i = 1; i < 4; i++) {
         var _species = $("*[name=species_"+i+"]");
         if(_species.val() != ""){
@@ -294,15 +398,31 @@
         }
       }
       _showSpecialty += "</ul>";
-      $("#modalBody").append("專科："+ _showSpecialty);
-      $("#modalBody").append("營業時間："+ $("textarea[name=working_hour]").val()+"<br>");
-      $("#modalBody").append("地址："+ $("input[name=address]").val()+"<br>");
-      $("#modalBody").append("電話："+ $("input[name=phone]").val()+"<br>");
-
-      if ($("input[name=er]").is(":checked")) {
-        $("#modalBody").append("急診時間："+ $("textarea[name=er_hour]").val()+"<br>");
-        $("#modalBody").append("急診電話："+ $("input[name=er_phone]").val()+"<br>");
+      if (_showSpecialty == "<ul></ul>") {
+        _showSpecialty = "請填寫專長" + "<br>";
+        $("#nextStep").hide();
       }
+      $("#modalBody").append("專長："+ _showSpecialty);
+
+      var _edu = "<ul>";
+      if ($("input[name=edu_1]").val() != "") {
+        _edu += "<li>"+$("input[name=edu_1]").val()+"</li>";
+      }
+      if ($("input[name=edu_2]").val() != "") {
+        _edu += "<li>"+$("input[name=edu_2]").val()+"</li>";
+      }
+      _edu+="</ul>"
+      $("#modalBody").append("學歷："+ _edu);      
+    
+      var _exp = "<ul>";
+      if ($("input[name=exp_1]").val() != "") {
+        _exp += "<li>"+$("input[name=exp_1]").val()+"</li>";
+      }
+      if ($("input[name=exp_2]").val() != "") {
+        _exp += "<li>"+$("input[name=exp_2]").val()+"</li>";
+      }
+      _exp+="</ul>"
+      $("#modalBody").append("經歷："+ _exp);      
 
     }
     </script>

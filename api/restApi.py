@@ -151,7 +151,7 @@ class ModelInstanceAPI(base.BaseSessionHandler):
             self.error(404)
             return
 
-        domain_obj = _custom_update(domain_obj, requestJson)
+        domain_obj = self._custom_update(domain_obj, requestJson)
         # partial update
         domain_obj = util.update_model_properties(domain_obj, requestJson)
         self.service.update(domain_obj)
@@ -172,24 +172,10 @@ class HospitalInstanceAPI(ModelInstanceAPI):
         self.model = hospital.Hospital
         ModelInstanceAPI.__init__(self, *args, **kw)
 
-    def get(self, *args, **kw):
-        h, h_dict = self._get_obj(*args, **kw)
-        h_dict['vets'] = []
-        for v in h.vets:
-            # XXX Adm in vets too
-            if not isinstance(v, role.Vet):
-                continue
-            v_dict = util.out_format(v)
-            v_dict['person'] = util.out_format(v.person)
-            h_dict['vets'].append(v_dict)
-        util.jsonify_response(self.response, h_dict)
-
     def _custom_update(self, hospital, requestJson):
         if 'specialties' in requestJson:
             specialties = requestJson.pop('specialties')
-        for s in specialties:
-            s = specialty_service.ensure_exist(s['species'], s['category'])
-            specialty_service.add_specialty(s, hospital=hospital)
+            specialty_service.overwrite_specialties(specialties, hospital=hospital)
         return hospital
 
 class PersonInstanceAPI(ModelInstanceAPI):
@@ -210,13 +196,11 @@ class RoleInstanceAPI(ModelInstanceAPI):
         self.model = role.Role
         ModelInstanceAPI.__init__(self, *args, **kw)
 
-    def _custom_update(self, hospital, requestJson):
+    def _custom_update(self, role, requestJson):
         if 'specialties' in requestJson:
             specialties = requestJson.pop('specialties')
-        for s in specialties:
-            s = specialty_service.ensure_exist(s['species'], s['category'])
-            specialty_service.add_specialty(s, hospital=hospital)
-        return hospital
+            specialty_service.overwrite_specialties(specialties, vet=role)
+        return role
 
 class PersonHopitalList(RestAPI):
     service = person_service

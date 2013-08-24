@@ -1,9 +1,17 @@
 import webapp2
 import urllib
 from view import base
+from common import util
+from google.appengine.ext import blobstore
 
 import main
 #API_PREFIX = main.API_PREFIX
+
+class PostDetail(base.BaseSessionHandler):
+    @base.login_required
+    def get(self, *args, **kw):
+        params = {'user': util.get_current_user(self.session)}
+        self.render_template('post_edit.html', params)
 
 class upload_post(base.BaseSessionHandler):
     def get(self):
@@ -13,7 +21,7 @@ class upload_post(base.BaseSessionHandler):
             publish  = self.request.get('publish')
 
             #api
-            upload_url = '%s/posts' % (main.API_PREFIX,)
+            upload_url = blobstore.create_upload_url('%s/posts' % (main.API_PREFIX,))
 
             self.response.out.write('<html><head></head><body>')
             self.response.out.write('Hospital ID: %s'% hospitalid)
@@ -26,6 +34,9 @@ class upload_post(base.BaseSessionHandler):
                 <input type="hidden" value="%s" name="personid">
                 <input type="hidden" value="%s" name="hospitalid">
                 <input type="hidden" value="%s" name="publish">
+
+                <input type="file" name="img" /><br />
+                <input type="text" value="description" name="description" /><br />
                 <input type="submit" value="submit" /><br />
                 </form></body></html>
                 """ %(upload_url, personid, hospitalid, publish))
@@ -38,7 +49,7 @@ class upload_attaches(base.BaseSessionHandler):
             blogpostid = self.request.get('blogpostid')
 
             #api
-            upload_url = '%s/post/%s/attaches' % (main.API_PREFIX, blogpostid)
+            upload_url = blobstore.create_upload_url('%s/post/%s/attaches' % (main.API_PREFIX, blogpostid))
 
             self.response.out.write('<html><head></head><body>')
             self.response.out.write("""

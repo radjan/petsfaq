@@ -1,4 +1,5 @@
 # -*- encoding: utf8 -*-
+import sys
 import json
 import httplib
 import urllib
@@ -9,7 +10,7 @@ API_PREFIX='/api/v1'
 
 conn = None
 def _get_conn():
-    global conn
+    global conn, PORT, SERVER
     if conn is None:
         conn = httplib.HTTPConnection(SERVER, PORT)
     return conn
@@ -91,11 +92,12 @@ bp1 = { "title": "test post",
 
 att1 = {
         "title": "test attach",
-        "content": "test attach content"
+        "content": "test attach content",
+        "order":1
         }
 
 
-def init_data():
+def init_data(PORT=8080):
     global h1, h2, s1, s2, s3, s4, s5, s6, p1, p2, p3, p4, v1, v2, v3, bp1, att1
     h1 = create_hospital(h1)
     h2 = create_hospital(h2)
@@ -132,6 +134,8 @@ def init_data():
     bp1 = create_blogpost(bp1)
     tt1 = create_attach(att1, blogpost=bp1)
     tt2 = create_attach(att1, blogpost=bp1)
+    tt3 = create_attach(att1, blogpost=bp1)
+    tt4 = create_attach(att1, blogpost=bp1)
     
     pub = {"publish":1}
     bp1 = complete_post(bp1, pub)
@@ -221,4 +225,6 @@ def complete_post(bp, jsonstr):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        PORT = int(sys.argv[1])
     init_data()

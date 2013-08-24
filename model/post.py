@@ -39,6 +39,8 @@ class Questions(Post):
     def __init__(self, *args, **kwargs):
         Post.__init__(self, *args, **kwargs)
         self.post_type = TYPE_QUESTION
+        self.title = ''
+        self.content = ''
 
 class Blogpost(Post):
     author = db.ReferenceProperty(person.Person, collection_name='blogposts')
@@ -59,11 +61,12 @@ class Blogpost(Post):
 
 class Attached(base.BaseModel, db.Model):
     blogpost = db.ReferenceProperty(Blogpost, collection_name='attaches')
-    title = db.StringProperty(required=True)
+    title = db.StringProperty()
     attached_type = db.StringProperty(required=True,
                                       choices=([ATYPE_TEXT, 
                                                 ATYPE_PHOTO]))
-    content = db.StringProperty(required=True, multiline=True)
+    order = db.IntegerProperty()
+    content = db.StringProperty(multiline=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
 

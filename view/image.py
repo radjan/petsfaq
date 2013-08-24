@@ -14,6 +14,7 @@ class upload_avatar(webapp2.RequestHandler):
 
         self.response.out.write("""
             <input type="file" name="img" /><br />
+            <input type="text" value="description" name="description" /><br />
             <input type="submit" value="submit" />
             </form></body></html>
             """)
@@ -27,6 +28,7 @@ class upload_logo(webapp2.RequestHandler):
 
         self.response.out.write("""
             <input type="file" name="img" /><br />
+            <input type="text" value="description" name="description" /><br />
             <input type="submit" value="submit" />
             </form></body></html>
             """)
@@ -40,6 +42,7 @@ class upload_photo(webapp2.RequestHandler):
 
         self.response.out.write("""
             <input type="file" multiple="true" name="img" /><br />
+            <input type="text" value="description" name="description" /><br />
             <input type="submit"  />
             </form></body></html>
             """)
