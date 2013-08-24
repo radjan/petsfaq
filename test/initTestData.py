@@ -131,7 +131,7 @@ def init_data(PORT=8080):
     a3 = create_admin(person=p3, hospital=h2)
 
 
-    bp1 = create_blogpost(bp1)
+    bp1 = create_blogpost(bp1, h1, p1)
     tt1 = create_attach(att1, blogpost=bp1)
     tt2 = create_attach(att1, blogpost=bp1)
     tt3 = create_attach(att1, blogpost=bp1)
@@ -208,7 +208,9 @@ def send_put(url_path, jsonstr):
     res = r.read()
     return res
 
-def create_blogpost(bp):
+def create_blogpost(bp, hospital=None, person=None):
+    bp.update({'hospitalid': hospital['id'],
+               'personid':   person['id']})
     response = send_post_head('/posts', bp)
     bp['id'] = json.loads(response)['postid']
     return bp
