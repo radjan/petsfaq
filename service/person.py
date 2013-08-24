@@ -1,9 +1,10 @@
 from model import role
 
 from dao.person import person_dao
-from dao.role import role_dao
 from dao.specialty import specialty_dao
 from service import base
+
+from common import serviceFactory
 
 class PersonService(base.GeneralService):
     def __init__(self):
@@ -29,11 +30,12 @@ class PersonService(base.GeneralService):
     def delete(self, p):
         if type(p) == int:
             p = self.get(p)
+        role_service = serviceFactory.get_service(serviceFactory.ROLE)
         for r in p.roles:
-            role_dao.delete(r)
+            role_service.delete(r)
         for img in p.avatars:
             #XXX image dao, delete blog
-            img.key.delete()
+            img.delete()
         person_dao.delete(p)
 
 person_service = PersonService()
