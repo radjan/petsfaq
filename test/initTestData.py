@@ -92,7 +92,8 @@ bp1 = { "title": "test post",
 
 att1 = {
         "title": "test attach",
-        "content": "test attach content"
+        "content": "test attach content",
+        "order":1
         }
 
 
