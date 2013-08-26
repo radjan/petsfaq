@@ -155,8 +155,8 @@ class PostAPI(base.BaseSessionHandler):
             update['title']       = json.loads(self.request.body).get('title')
             update['content']     = json.loads(self.request.body).get('content')
             update['status_code'] = json.loads(self.request.body).get('publish')
-            update['authorid']      = json.loads(self.request.body).get('personid')
-            update['hospitalid']    = json.loads(self.request.body).get('hospitalid')
+            update['author']      = json.loads(self.request.body).get('personid')
+            update['hospital']    = json.loads(self.request.body).get('hospitalid')
             update['post_type']   = json.loads(self.request.body).get('post_type')
 
             for y in [x for x in update.keys() if update[x] != None]:
