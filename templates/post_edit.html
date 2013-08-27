@@ -32,16 +32,7 @@
     {% include 'components/navbar.html' %}
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">工具</li>
-              <li><a type= "button" class="btn-danger">Dummy 1</a></li>
-              <li class="divider"></li>
-              <li><a type= "button" class="btn-danger">Dummy 2</a></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
+        {% include 'components/side_editMode.html' %}
         <div class="span6">
           <input id="input-image" type="file" accept='image/*' style="display:none" /> 
           <select id="hospital-list" style="display:none"></select>
@@ -162,8 +153,23 @@
       });
     }
     
+    function getQueryParams(qs) {
+      qs = qs.split("+").join(" ");
+      var params = {}, tokens,
+        re = /[?&]?([^=]+)=([^&]*)/g;
+
+      while (tokens = re.exec(qs)) {
+        params[decodeURIComponent(tokens[1])]
+          = decodeURIComponent(tokens[2]);
+      }
+      return params;
+    }
+
     var postInfo = {};
-    
+    var params = getQueryParams(document.location.search);
+    postInfo.defaultPersonId = parseInt(params['pid']);
+    postInfo.defaultHospitalId = parseInt(params['hid']);
+
     $(document).ready(function() {
       postInfo.id = window.location.pathname.split("/")[2];
       if (postInfo.id) {
@@ -202,9 +208,15 @@
         cache: false
       }).done(function(data) {
         $('#hospital-list').show();
+        var option = '<option value="-1">N/A</option>';
+        $('#hospital-list').append(option);
+        $('#hospital-list').val(-1);
         for (var i = 0; i < data.length; i++) {
           var option = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
           $('#hospital-list').append(option);
+          if (data[i].id == postInfo.defaultHospitalId) {
+            $('#hospital-list').val(data[i].id);
+          }
         }
       });
     }
@@ -216,9 +228,15 @@
         cache: false
       }).done(function(data) {
         $('#vet-list').show();
+        var option = '<option value="-1">N/A</option>';
+        $('#vet-list').append(option);
+        $('#vet-list').val(-1);
         for (var i = 0; i < data.length; i++) {
           var option = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
           $('#vet-list').append(option);
+          if (data[i].id == postInfo.defaultPersonId) {
+            $('#vet-list').val(data[i].id);
+          }
         }
       });
     }
