@@ -16,12 +16,21 @@
          </div>
 
 <script type="text/javascript">
-  $("a[name=createHospital_btn]").click(function(){
-    $("a[name=createHospital_btn]").attr("href", "/createHospital");
+$(document).ready(function(){
+		
+  $("button[name=createHospital_btn]").click(function(){
+    //$("a[name=createHospital_btn]").attr("href", "/createHospital");
+      location.href = "/createHospital";
   });
 
-  $("a[name=createVet_btn]").click(function(){
-    $("a[name=createVet_btn]").attr("href", "/createVet");
+  $("button[name=createVet_btn]").click(function(){
+    //$("a[name=createVet_btn]").attr("href", "/createVet");
+      location.href = "createVet";
   });
+		
+
+});
+		 
+
 </script>
          
