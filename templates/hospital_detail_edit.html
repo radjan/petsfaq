@@ -64,6 +64,10 @@
             <button id="edit_hospital" type="button" class="btn btn btn-warning edit_type edit_button right">
                 <i class="icon-pencil"></i>
             </button>
+            <button id="create_post" type="button" class="btn btn btn-info edit_type edit_button right">
+                <i class="icon-file"></i>
+            </button>
+
             <div class="right">
               <button id="save_hospital" type="button" class="btn btn btn-info edit_type">
                   <i class="icon-hdd icon-white"></i>
@@ -125,7 +129,7 @@
               <span>統一編號：</span>
               <span id="hospital_value_added_tax" class="browse_type"></span>
               <input id="edit_value_added_tax" type="text" class="input-block-level edit_type"><br>
-            </p>          
+            </p>
           </div>
           
           
@@ -154,6 +158,9 @@
             <div class="right">
               <button id="editVet_" type="button" class="btn btn btn-warning edit_type edit_button">
                   <i class="icon-pencil"></i>
+              </button>
+               <button id="vet_create_post_" type="button" class="btn btn btn-info edit_type edit_button">
+                <i class="icon-file"></i>
               </button>
               <button id="deleteVet_" type="button" class="btn btn-mini edit_type edit_button">
                   <i class="icon-trash"></i>
@@ -258,6 +265,7 @@
 
         $("#edit_hospital").click(function(){
           $("#edit_hospital").hide();
+          $("#create_post").hide();
           $("#save_hospital").show();
           $("#cancel_hospital").show();
 
@@ -275,6 +283,10 @@
           $("#edit_value_added_tax").attr("placeholder",$("#hospital_value_added_tax").text()).show();
         });
 
+        $("#create_post").click(function(){
+          location.href = "/new_post?hid="+hid;
+        });
+    
 
         $("#save_hospital").click(function(){
           var _hasEr = false;
@@ -344,6 +356,7 @@
 
     function cancelHospital(){
           $("#edit_hospital").show();
+          $("#create_post").show();
           $("#save_hospital").hide();
           $("#cancel_hospital").hide();
 
@@ -488,10 +501,12 @@
 
       //set edit
       var _editVet = v.find("#editVet_");
+      var _vetCreatePost = v.find("#vet_create_post_");
       var _deleteVet = v.find("#deleteVet_");
       var _saveVet = v.find("#saveVet_");
       var _cancelVet = v.find("#cancelVet_");
       _editVet.attr("id", "editVet_"+i);
+      _vetCreatePost.attr("id", "vet_create_post_"+i);
       _deleteVet.attr("id", "deleteVet_"+i);
       _saveVet.attr("id", "saveVet_"+i);
       _cancelVet.attr("id", "cancelVet_"+i);
@@ -510,6 +525,11 @@
         _deleteVet.hide();
         _saveVet.show();
         _cancelVet.show();
+      });
+
+      _vetCreatePost.click(function(){
+        var s = "/new_post?hid="+vet.hospital+"&pid="+vet.person.id;
+        location.href = s;
       });
 
       _deleteVet.click(function(){
@@ -634,7 +654,9 @@
     //     }
     // }
 
-    $("#accordion2 a[name=hLists]").attr("href","/hospitals/edit");
+    $("#accordion2 a[name=hLists]").click(function(){
+      location.href = "/hospitals/edit";
+    });
     </script>
 
   </body>
