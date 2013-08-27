@@ -522,6 +522,7 @@
         _nameCardBtn.attr("disabled", true);
 
         _editVet.hide();
+        _vetCreatePost.hide();
         _deleteVet.hide();
         _saveVet.show();
         _cancelVet.show();
@@ -604,6 +605,7 @@
         var _nameCard = v.find("#nameCard_"+i);
         var _vetSpecialties = v.find("#vetSpecialties_"+i);
         var _editVet = v.find("#editVet_"+i);
+        var _vetCreatePost = v.find("#vet_create_post_"+i);
         var _deleteVet = v.find("#deleteVet_"+i);
         var _saveVet = v.find("#saveVet_"+i);
         var _cancelVet = v.find("#cancelVet_"+i);
@@ -628,6 +630,7 @@
         _nameCardBtn.attr("disabled", false);
 
         _editVet.show();
+        _vetCreatePost.show();
         _deleteVet.show();
         _saveVet.hide();
         _cancelVet.hide();
