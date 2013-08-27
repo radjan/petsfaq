@@ -25,7 +25,8 @@ class Post(base.BaseModel, polymodel.PolyModel):
                             TYPE_ANSWER, 
                             TYPE_REPLY,
                             TYPE_BLOG]))
-    content = db.StringProperty(required=True, multiline=True)
+    #content = db.StringProperty(required=True, multiline=True)
+    content = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
 
