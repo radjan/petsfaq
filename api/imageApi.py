@@ -35,7 +35,7 @@ from common import util
 class Image(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, imageid):
         try:
-            image = image.get_by_id(int(imageid))
+            image = imagemodel.get_by_id(int(imageid))
 
             imgwidth  = self.request.get('width',  300)
             imgheight = self.request.get('height', 300)

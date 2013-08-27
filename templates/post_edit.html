@@ -43,6 +43,7 @@
           </div><!--/.well -->
         </div><!--/span-->
         <div class="span6">
+          <input id="input-image" type="file" accept='image/*' style="display:none" /> 
           <select id="hospital-list" style="display:none"></select>
           <select id="vet-list" style="display:none"></select>
           <ul class="post">  
@@ -58,7 +59,7 @@
             <li class="row post-listitem-template" style="display:none">
               <div class="post-item">
                 <div class="post-item-delete"><a href="#" class="btn btn-warning">X</a></div>  
-                <img src="photo.jpg" alt="photo">
+                <div class="post-item-image">Click to add photo</div>
                 <div class="post-item-text">The quick brown fox jumps over the lazy dog</div>
               </div>  
             </li>
@@ -80,6 +81,23 @@
 <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
 <script src="/s/js/jquery.jeditable.mini.js"></script>
 <script language='JavaScript'>
+    $('#input-image').on("change", function() {
+      var files = !!this.files ? this.files : [];
+      if (!files.length || !window.FileReader || !/^image/.test(files[0].type)) {
+        return;
+      }
+      var reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onloadend = function() {
+        postInfo.li.attr('imageUrl', this.result);
+        var imageDiv = postInfo.li.find('.post-item-image');
+        imageDiv.text("");
+        imageDiv.css("background-image", "url(" + this.result + ")");
+        delete postInfo.li;
+      }
+      newAttachment(postInfo.li, postInfo.li.find('.post-item-text').text(), -1, files[0]);
+    });
+
     $('.post-delete').click(function() {
       if (confirm("Are you sure to delete this post?")) {
         deletePost();
@@ -97,7 +115,7 @@
       addItem(true, "");
     });
     
-    function addItem(editable, content, attachedid) {
+    function addItem(editable, content, attachedid, photoid) {
       var li = $('.post-listitem-template').clone();      
       li.removeAttr('style')
         .removeClass('post-listitem-template')
@@ -114,16 +132,26 @@
       else {
         li.find('.post-item-delete').hide();
       }
+      
+      setPhoto(li, photoid, editable);
     }
     
     function setItemHandler(li) {
       li.find('.post-item-text').editable(function(value, settings) {
-        saveAttachment(li, value);
+        //saveAttachment(li, value);
         return(value);
         }, { 
         type      : 'textarea',
         submit    : 'OK',
         tooltip   : 'Item'
+      });
+      li.find('.post-item-image').click(function() {
+        var li = $(this).closest('li');
+        if (li.attr('imageUrl')) {
+          return;
+        }
+        postInfo.li = li;
+        $("#input-image").click();
       });
       li.find('.post-item-delete').click(function() {
         var li = $(this).closest('li');
@@ -194,6 +222,25 @@
         }
       });
     }
+    
+    function setPhoto(li, photoid, editable) {
+      var imageDiv = li.find('.post-item-image');
+      if (!photoid) {
+        if (!editable) {
+          // text item
+          imageDiv.hide();
+        }
+        else {
+          // new item
+        }
+        return;
+      }
+    
+      // photo item
+      li.attr('imageUrl', photoid);
+      imageDiv.text("");
+      imageDiv.css("background-image", "url(/api/v1/image/" + photoid + ")");
+    }
 
     function getPost(id) {
       $('.post-info').hide();
@@ -232,7 +279,12 @@
           continue;
         }
         
-        addItem(false, attach.content, attach.id);
+        if (attach.aphotos && attach.aphotos.length > 0) {
+          addItem(false, attach.content, attach.id, attach.aphotos[0].id);
+        }
+        else {
+          addItem(false, attach.content, attach.id);
+        }
       }
     }
 
@@ -283,51 +335,62 @@
     }
 
     function savePost() {
-      if (!postInfo.data) {
-        return;
+      var data = {
+        title: $('.post-title').text(),
+        content: $('.post-desc').text(),
+        publish: (0 == postInfo.publish) ? 1 : 2
+      };
+      
+      //TODO: get hospital id from user?
+      if ($('#hospital-list').val() && $('#hospital-list').val().length > 0) {
+        data.hospitalid = parseInt($('#hospital-list').val());
       }
 
-      var data = {
-        "hospitalid": $('#hospital-list').val(),
-        "personid": $('#vet-list').val(),
-        "title": $('.post-title').text(),
-        "content": $('.post-desc').text(),
-        "publish": (0 == postInfo.publish) ? 1 : 2
-      };
+      //TODO: get person id from user?
+      if ($('#vet-list').val() && $('#vet-list').val().length > 0) {
+        data.personid = parseInt($('#vet-list').val());
+      }
+      
       $.ajax({
         url: "/api/v1/post/" + postInfo.postid,
         type: "PUT",
         data: JSON.stringify(data),
         cache: false
       }).done(function(data){
-        saveAttachmentsOrder(postInfo.id);
+        saveAttachments();
       });
     }
     
-    function saveAttachment(li, content) {
-      //TODO: img
+    function saveAttachment(li, content, order) {
       if (li.attr('attachedid')) {
-        updateAttachmentContent(li.attr('attachedid'), content);
+        updateAttachment(li.attr('attachedid'), content, order);
       }
       else {
-        newAttachment(li, content);
+        newAttachment(li, content, order);
       }
     }
 
-    function newAttachment(li, content) {
+    function newAttachment(li, content, order, img) {
       $.ajax({
         url: "/api/v1/file/post/" + postInfo.postid + "/attaches",
         type: "GET",
         cache: false
       }).done(function(data) {
+        var postData = new FormData();
+        postData.append('title', '');
+        postData.append('content', content);
+        postData.append('order', order);
+        if (img) {
+          postData.append('img', img);
+        }
         $.ajax({
           url: data.url,
           type: "POST",
-          data: {
-            title: "",
-            content: content,
-            order: -1
-          },
+          data: postData,
+          //contentType: 'multipart/form-data',
+          //mimeType: 'multipart/form-data',
+          contentType: false,
+          processData: false,
           cache: false
         }).done(function(data) {
           li.attr('attachedid', data.attachedid);
@@ -335,28 +398,14 @@
       });
     }
 
-    function updateAttachmentContent(attachedid, content) {
-      var data = {
-        "title": "",
-        "content": content,
-        "attach_type": 'T',
-        "order": -1
-      };
-      $.ajax({
-        url: "/api/v1/post/" + postInfo.postid + "/attach/" + attachedid,
-        type: "PUT",
-        data: JSON.stringify(data),
-        cache: false
-      }).done(function(data){
-      });
-    }
-
-    function updateAttachmentOrder(attachedid, order) {
+    function updateAttachment(attachedid, content, order) {
       if (!attachedid) {
         return;
       }
-    
+
       var data = {
+        "title": "",
+        "content": content,
         "order": order
       };
       $.ajax({
@@ -368,9 +417,9 @@
       });
     }
 
-    function saveAttachmentsOrder() {
+    function saveAttachments() {
       $('.post-listitem').each(function(i, obj) {
-        updateAttachmentOrder($(this).attr('attachedid'), i);
+        saveAttachment($(this), $(this).find('.post-item-text').text(), i);
       });
 
       $("body").ajaxStop(function() {
