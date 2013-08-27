@@ -146,18 +146,24 @@ class PostAPI(base.BaseSessionHandler):
         try:
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
 
-            #detail =  {'title':'unchanged',
-            #           'content':'unchanged',
-            #           'status_code':'unchanged'}
             detail = {}
 
             update = {}
-            update['title']       = json.loads(self.request.body).get('title')
-            update['content']     = json.loads(self.request.body).get('content')
-            update['status_code'] = json.loads(self.request.body).get('publish')
-            update['author']      = json.loads(self.request.body).get('personid')
-            update['hospital']    = json.loads(self.request.body).get('hospitalid')
-            update['post_type']   = json.loads(self.request.body).get('post_type')
+            update['title']       = json.loads(self.request.body).get('title', None)
+            update['content']     = json.loads(self.request.body).get('content', None)
+            update['status_code'] = json.loads(self.request.body).get('publish', None)
+            update['author']      = json.loads(self.request.body).get('personid', None)
+            update['hospital']    = json.loads(self.request.body).get('hospitalid', None)
+            update['post_type']   = json.loads(self.request.body).get('post_type', None)
+
+            #TODO: digit id check
+            if update['author'] != None:
+                update['author'] = Person.get_by_id(int(update['author']))
+            if update['hospital'] != None:
+                update['hospital'] = Hospital.get_by_id(int(update['hospital']))
+
+            # all attributes are required by this helper function 
+            #util.update_model_properties(blogpost_from_key, update)
 
             for y in [x for x in update.keys() if update[x] != None]:
                 #blogpost_from_key.properties()[y].make_value_from_datastore(update[y])
