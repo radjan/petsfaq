@@ -76,9 +76,10 @@
                   <i class="icon-remove"></i>
               </button>
             </div>
-            <h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
+            <a id="hospital_name_edit"><h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
               <input id="edit_hospital_name" type="text" class="edit_type">
             </h1>
+            </a>
             <p>
               <span id="hospital_desc" class="browse_type"><!-- hospital description --></span>
               <textarea id="edit_hospital_desc" rows="5" class="input-block-level edit_type"></textarea>
@@ -263,25 +264,7 @@
         $(".edit_type").hide();
         $(".edit_button").show();
 
-        $("#edit_hospital").click(function(){
-          $("#edit_hospital").hide();
-          $("#create_post").hide();
-          $("#save_hospital").show();
-          $("#cancel_hospital").show();
-
-          $("#hospital_specialties").hide();
-
-          $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
-          $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
-          $("#edit_hospital_address").attr("placeholder", $("#hospital_address").text()).show();
-          $("#edit_hospital_phone").attr("placeholder",$("#hospital_phone").text()).show();
-          $("#edit_hospital_working_hour").attr("placeholder",$("#hospital_working_hour").text()).show();
-          $("#edit_hospital_Specialties").show();
-          $("#edit_hospital_address_all").show();
-          $("#edit_hospital_er_phone").attr("placeholder",$("#hospital_er_phone").text()).show();
-          $("#edit_hospital_er_hour").attr("placeholder",$("#hospital_er_hours").text()).show();
-          $("#edit_value_added_tax").attr("placeholder",$("#hospital_value_added_tax").text()).show();
-        });
+        $("#edit_hospital").click(editHospitalFunction);
 
         $("#create_post").click(function(){
           location.href = "/new_post?hid="+hid;
@@ -353,6 +336,26 @@
 
         $("#cancel_hospital").click(function(){cancelHospital()});
     });
+    
+    function editHospitalFunction(){
+          $("#edit_hospital").hide();
+          $("#create_post").hide();
+          $("#save_hospital").show();
+          $("#cancel_hospital").show();
+
+          $("#hospital_specialties").hide();
+
+          $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
+          $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
+          $("#edit_hospital_address").attr("placeholder", $("#hospital_address").text()).show();
+          $("#edit_hospital_phone").attr("placeholder",$("#hospital_phone").text()).show();
+          $("#edit_hospital_working_hour").attr("placeholder",$("#hospital_working_hour").text()).show();
+          $("#edit_hospital_Specialties").show();
+          $("#edit_hospital_address_all").show();
+          $("#edit_hospital_er_phone").attr("placeholder",$("#hospital_er_phone").text()).show();
+          $("#edit_hospital_er_hour").attr("placeholder",$("#hospital_er_hours").text()).show();
+          $("#edit_value_added_tax").attr("placeholder",$("#hospital_value_added_tax").text()).show();
+    }
 
     function cancelHospital(){
           $("#edit_hospital").show();
@@ -385,6 +388,7 @@
 
     function putData(hospital) {
       $("#hospital_name").text(hospital.name);
+      $("#hospital_name_edit").click(editHospitalFunction);
       $("#hospital_desc").text(hospital.description);
       $("#hospital_address_all").text(hospital.zipcode+" "+hospital.county+hospital.area+hospital.address);
       $("#hospital_address").text(hospital.address);
