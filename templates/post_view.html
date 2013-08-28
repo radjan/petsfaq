@@ -2,7 +2,7 @@
 <html lang="zh">
   <head>
     <meta charset="utf-8">
-    <title>Pet Helper - edit post</title>
+    <title>Pet Helper - view post</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -65,9 +65,12 @@
 <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
 <script src="/s/js/jquery.jeditable.mini.js"></script>
 <script language='JavaScript'>
+    function nl2br(str) {
+      //return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2');
+      return (str + '').replace(/\n/g, '<br>');
+    } 
 
     function addItem(editable, content, attachedid, photoid) {
-console.log('addItem');
       var li = $('.post-listitem-template').clone();      
       li.removeAttr('style')
         .removeClass('post-listitem-template')
@@ -76,7 +79,7 @@ console.log('addItem');
       if (attachedid) {
         li.attr('attachedid', attachedid);
       }
-      li.find('.post-item-text').text(content);
+      li.find('.post-item-text').html(content);
       $('.post-add-item').parent().before(li);
       
       setPhoto(li, photoid, editable);
@@ -145,7 +148,7 @@ console.log('addItem');
     function showPost() {
       $('.post-info').show();
       $('.post-title').text(postInfo.data.title);
-      $('.post-desc').text(postInfo.data.content);
+      $('.post-desc').html(nl2br(postInfo.data.content));
       
       postInfo.data.attaches.sort(sortAttaches);
       for (var i = 0; i < postInfo.data.attaches.length; i++) {
@@ -155,10 +158,10 @@ console.log('addItem');
         }
         
         if (attach.aphotos && attach.aphotos.length > 0) {
-          addItem(false, attach.content, attach.id, attach.aphotos[0].id);
+          addItem(false, nl2br(attach.content), attach.id, attach.aphotos[0].id);
         }
         else {
-          addItem(false, attach.content, attach.id);
+          addItem(false, nl2br(attach.content), attach.id);
         }
       }
     }

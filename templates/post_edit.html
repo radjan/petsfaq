@@ -72,6 +72,14 @@
 <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
 <script src="/s/js/jquery.jeditable.mini.js"></script>
 <script language='JavaScript'>
+    function nl2br(str) {
+      //return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2');
+      return (str + '').replace(/\n/g, '<br>');
+    } 
+    function br2nl(str) { 
+      return (str + '').replace(/<br\s*\/?>/mg, '\n');
+    }
+ 
     $('#input-image').on("change", function() {
       var files = !!this.files ? this.files : [];
       if (!files.length || !window.FileReader || !/^image/.test(files[0].type)) {
@@ -115,7 +123,7 @@
       if (attachedid) {
         li.attr('attachedid', attachedid);
       }
-      li.find('.post-item-text').text(content);
+      li.find('.post-item-text').html(content);
       $('.post-add-item').parent().before(li);
       if (editable) {
         setItemHandler(li);
@@ -130,11 +138,14 @@
     function setItemHandler(li) {
       li.find('.post-item-text').editable(function(value, settings) {
         //saveAttachment(li, value);
-        return(value);
+        return(nl2br(value));
         }, { 
         type      : 'textarea',
-        submit    : 'OK',
-        tooltip   : 'Item'
+        onblur    : 'submit',
+        tooltip   : 'Item',
+        data: function(value, settings) {
+          return br2nl(value);
+        }
       });
       li.find('.post-item-image').click(function() {
         var li = $(this).closest('li');
@@ -287,7 +298,7 @@
       $('.post-delete').hide();
       $('.post-add-item').hide();
       $('.post-title').text(postInfo.data.title);
-      $('.post-desc').text(postInfo.data.content);
+      $('.post-desc').html(nl2br(postInfo.data.content));
       
       postInfo.data.attaches.sort(sortAttaches);
       for (var i = 0; i < postInfo.data.attaches.length; i++) {
@@ -298,10 +309,10 @@
         }
         
         if (attach.aphotos && attach.aphotos.length > 0) {
-          addItem(false, attach.content, attach.id, attach.aphotos[0].id);
+          addItem(false, nl2br(attach.content), attach.id, attach.aphotos[0].id);
         }
         else {
-          addItem(false, attach.content, attach.id);
+          addItem(false, nl2br(attach.content), attach.id);
         }
       }
     }
@@ -315,14 +326,18 @@
       $('.post-title').editable(function(value, settings) { 
         return(value);
         }, {
-        tooltip   : 'Title'
+        tooltip   : 'Title',
+        onblur    : 'submit'
       });
       $('.post-desc').editable(function(value, settings) { 
-        return(value);
+        return(nl2br(value));
         }, { 
         type      : 'textarea',
-        submit    : 'OK',
-        tooltip   : 'Description'
+        onblur    : 'submit',
+        tooltip   : 'Description',
+        data: function(value, settings) {
+          return br2nl(value);
+        }
       });
         
       $('.post-listitem').each(function(i, obj) {
@@ -339,7 +354,7 @@
         type: "POST",
         data: {
           title: $('.post-title').text(),
-          content: $('.post-desc').text(),
+          content: br2nl($('.post-desc').text()),
           publish: 0
         },
         cache: false
@@ -355,7 +370,7 @@
     function savePost() {
       var data = {
         title: $('.post-title').text(),
-        content: $('.post-desc').text(),
+        content: br2nl($('.post-desc').text()),
         publish: (0 == postInfo.publish) ? 1 : 2
       };
       
@@ -396,7 +411,7 @@
       }).done(function(data) {
         var postData = new FormData();
         postData.append('title', '');
-        postData.append('content', content);
+        postData.append('content', br2nl(content));
         postData.append('order', order);
         if (img) {
           postData.append('img', img);
@@ -405,8 +420,6 @@
           url: data.url,
           type: "POST",
           data: postData,
-          //contentType: 'multipart/form-data',
-          //mimeType: 'multipart/form-data',
           contentType: false,
           processData: false,
           cache: false
@@ -423,7 +436,7 @@
 
       var data = {
         "title": "",
-        "content": content,
+        "content": br2nl(content),
         "order": order
       };
       $.ajax({
