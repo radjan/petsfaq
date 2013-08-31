@@ -90,6 +90,12 @@ bp1 = { "title": "test post",
         "publish": 0
       }
 
+bp2 = { "title": "test post",
+        "content": "test post content",
+        "publish": 0
+      }
+
+
 att1 = {
         "title": "test attach",
         "content": "test attach content",
@@ -98,7 +104,7 @@ att1 = {
 
 
 def init_data(PORT=8080):
-    global h1, h2, s1, s2, s3, s4, s5, s6, p1, p2, p3, p4, v1, v2, v3, bp1, att1
+    global h1, h2, s1, s2, s3, s4, s5, s6, p1, p2, p3, p4, v1, v2, v3, bp1, bp2, att1
     h1 = create_hospital(h1)
     h2 = create_hospital(h2)
 
@@ -132,13 +138,17 @@ def init_data(PORT=8080):
 
 
     bp1 = create_blogpost(bp1, h1, p1)
+    bp2 = create_blogpost(bp2, h2, p2)
     tt1 = create_attach(att1, blogpost=bp1)
     tt2 = create_attach(att1, blogpost=bp1)
     tt3 = create_attach(att1, blogpost=bp1)
     tt4 = create_attach(att1, blogpost=bp1)
     
-    pub = {"publish":1}
-    bp1 = complete_post(bp1, pub)
+    pub1 = {"publish":1, "personid":p4['id'], "hospitalid":h2['id']}
+    bp1 = complete_post(bp1, pub1)
+
+    pub2 = {"publish":1, "content":"fix content"}
+    bp2 = complete_post(bp2, pub2)
 
 
 

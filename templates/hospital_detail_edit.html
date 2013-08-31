@@ -64,6 +64,10 @@
             <button id="edit_hospital" type="button" class="btn btn btn-warning edit_type edit_button right">
                 <i class="icon-pencil"></i>
             </button>
+            <button id="create_post" type="button" class="btn btn btn-info edit_type edit_button right">
+                <i class="icon-file"></i>
+            </button>
+
             <div class="right">
               <button id="save_hospital" type="button" class="btn btn btn-info edit_type">
                   <i class="icon-hdd icon-white"></i>
@@ -72,9 +76,10 @@
                   <i class="icon-remove"></i>
               </button>
             </div>
-            <h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
+            <a id="hospital_name_edit"><h1><span id="hospital_name" class="browse_type"><!--hospital name--></span>
               <input id="edit_hospital_name" type="text" class="edit_type">
             </h1>
+            </a>
             <p>
               <span id="hospital_desc" class="browse_type"><!-- hospital description --></span>
               <textarea id="edit_hospital_desc" rows="5" class="input-block-level edit_type"></textarea>
@@ -125,7 +130,7 @@
               <span>統一編號：</span>
               <span id="hospital_value_added_tax" class="browse_type"></span>
               <input id="edit_value_added_tax" type="text" class="input-block-level edit_type"><br>
-            </p>          
+            </p>
           </div>
           
           
@@ -154,6 +159,9 @@
             <div class="right">
               <button id="editVet_" type="button" class="btn btn btn-warning edit_type edit_button">
                   <i class="icon-pencil"></i>
+              </button>
+               <button id="vet_create_post_" type="button" class="btn btn btn-info edit_type edit_button">
+                <i class="icon-file"></i>
               </button>
               <button id="deleteVet_" type="button" class="btn btn-mini edit_type edit_button">
                   <i class="icon-trash"></i>
@@ -239,6 +247,7 @@
     <script src="/s/js/bootstrap.js"></script>
     <script src="/s/js/showNAddSpecialites.js"></script>
     <script src="/s/js/twzipcode.js"></script>
+    <script src="/s/js/common/common_util.js"></script>
 
     <script type="text/javascript">
     $(document).ready(function(){
@@ -255,25 +264,12 @@
         $(".edit_type").hide();
         $(".edit_button").show();
 
-        $("#edit_hospital").click(function(){
-          $("#edit_hospital").hide();
-          $("#save_hospital").show();
-          $("#cancel_hospital").show();
+        $("#edit_hospital").click(editHospitalFunction);
 
-          $("#hospital_specialties").hide();
-
-          $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
-          $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
-          $("#edit_hospital_address").attr("placeholder", $("#hospital_address").text()).show();
-          $("#edit_hospital_phone").attr("placeholder",$("#hospital_phone").text()).show();
-          $("#edit_hospital_working_hour").attr("placeholder",$("#hospital_working_hour").text()).show();
-          $("#edit_hospital_Specialties").show();
-          $("#edit_hospital_address_all").show();
-          $("#edit_hospital_er_phone").attr("placeholder",$("#hospital_er_phone").text()).show();
-          $("#edit_hospital_er_hour").attr("placeholder",$("#hospital_er_hours").text()).show();
-          $("#edit_value_added_tax").attr("placeholder",$("#hospital_value_added_tax").text()).show();
+        $("#create_post").click(function(){
+          location.href = "/new_post?hid="+hid;
         });
-
+    
 
         $("#save_hospital").click(function(){
           var _hasEr = false;
@@ -340,9 +336,30 @@
 
         $("#cancel_hospital").click(function(){cancelHospital()});
     });
+    
+    function editHospitalFunction(){
+          $("#edit_hospital").hide();
+          $("#create_post").hide();
+          $("#save_hospital").show();
+          $("#cancel_hospital").show();
+
+          $("#hospital_specialties").hide();
+
+          $("#edit_hospital_name").attr("placeholder",$("#hospital_name").text()).show();
+          $("#edit_hospital_desc").attr("placeholder", $("#hospital_desc").text()).show();
+          $("#edit_hospital_address").attr("placeholder", $("#hospital_address").text()).show();
+          $("#edit_hospital_phone").attr("placeholder",$("#hospital_phone").text()).show();
+          $("#edit_hospital_working_hour").attr("placeholder",$("#hospital_working_hour").text()).show();
+          $("#edit_hospital_Specialties").show();
+          $("#edit_hospital_address_all").show();
+          $("#edit_hospital_er_phone").attr("placeholder",$("#hospital_er_phone").text()).show();
+          $("#edit_hospital_er_hour").attr("placeholder",$("#hospital_er_hours").text()).show();
+          $("#edit_value_added_tax").attr("placeholder",$("#hospital_value_added_tax").text()).show();
+    }
 
     function cancelHospital(){
           $("#edit_hospital").show();
+          $("#create_post").show();
           $("#save_hospital").hide();
           $("#cancel_hospital").hide();
 
@@ -371,6 +388,7 @@
 
     function putData(hospital) {
       $("#hospital_name").text(hospital.name);
+      $("#hospital_name_edit").click(editHospitalFunction);
       $("#hospital_desc").text(hospital.description);
       $("#hospital_address_all").text(hospital.zipcode+" "+hospital.county+hospital.area+hospital.address);
       $("#hospital_address").text(hospital.address);
@@ -418,7 +436,14 @@
       // }
 
 
+     
+      updateVets(hospital);
+
+    }
+
+    function updateVets(hospital){
       var vets = $("#vets");
+      vets.empty();
       var vs = hospital.vets
       for (i in vs){
           var v = $("div[name=oneVet]").last().clone();
@@ -447,7 +472,8 @@
 
           // alert(initSpecialties(1));
           for (j in vs[i].specialties) {
-            v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].species+": "+vs[i].specialties[j].category+"</dd>");
+            // alert("j: "+j);
+            v.find("dl[name=specialty]").append("<dd>"+vs[i].specialties[j].specialty.species+": "+vs[i].specialties[j].specialty.category+"</dd>");
 
           }
           initSpecialtiesSelection(v.find("#vetSpecialties_"), vs[i].specialties.length+1, vs[i].specialties);
@@ -479,10 +505,13 @@
 
       //set edit
       var _editVet = v.find("#editVet_");
+      var _vetCreatePost = v.find("#vet_create_post_");
       var _deleteVet = v.find("#deleteVet_");
       var _saveVet = v.find("#saveVet_");
       var _cancelVet = v.find("#cancelVet_");
       _editVet.attr("id", "editVet_"+i);
+      _vetCreatePost.attr("id", "vet_create_post_"+i);
+      _deleteVet.attr("id", "deleteVet_"+i);
       _saveVet.attr("id", "saveVet_"+i);
       _cancelVet.attr("id", "cancelVet_"+i);
 
@@ -497,16 +526,27 @@
         _nameCardBtn.attr("disabled", true);
 
         _editVet.hide();
+        _vetCreatePost.hide();
         _deleteVet.hide();
         _saveVet.show();
         _cancelVet.show();
+      });
+
+      _vetCreatePost.click(function(){
+        var s = "/new_post?hid="+vet.hospital+"&pid="+vet.person.id;
+        location.href = s;
       });
 
       _deleteVet.click(function(){
         //TODO:
       });
 
-      _saveVet.click(function(){
+      _saveVet.click(function(){saveVet(v, i, vet)});
+
+      _cancelVet.click(function(){cancelVet(v, i, vet)});
+    }
+
+    function saveVet(v, i, vet){
         //FIXME:
           var _request = {};
           var _exp_array = new Array();
@@ -534,37 +574,45 @@
           };
           _request["education"] = _edu_array;          
 
-          var _showSpecialty = "<ul>";
+          var _showSpecialty = new Array();
           for (var i = 1; i < 4; i++) {
             var _species = v.find("*[name=species_"+i+"]");
+            var _sMap = {};
             if(_species.val() != ""){
-              _showSpecialty += "<li>" + _species.val();
-              _showSpecialty += ":" + $("*[name=category_"+i+"]").val() + "</li>";
+              _sMap["species"] = _species.val();
+              _sMap["category"] = $("*[name=category_"+i+"]").val();
             }
+            _showSpecialty.push(_sMap);
           }
-          _showSpecialty += "</ul>";
           _request["specialties"] = _showSpecialty;
 
           $.ajax({
-            url: "/api/v1/person/"+vet.id,
+            url: "/api/v1/role/"+vet.id,
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(_request),
             cache: false
-          }).done(cancelVet(v));
-      });
+          }).done(
+            delayedCall(function(){
+              var hid = window.location.pathname.split("/")[2];
+              $.ajax({
+                  url: "/api/v1/hospital/" + hid,
+                  type: "GET",
+                  cache: false
+                }).done(function (data) { updateVets(data); });
+              }, 500)
+          );
+      }
 
-      _cancelVet.click(function(){cancelVet(v)});
-    }
-
-    function cancelVet(v){
-        var _nameCardBtn = v.find("button[data-target=#nameCard_]");
-        var _nameCard = v.find("#nameCard_");
-        var _vetSpecialties = v.find("#vetSpecialties_");
-        var _editVet = v.find("#editVet_");
-        var _deleteVet = v.find("#deleteVet_");
-        var _saveVet = v.find("#saveVet_");
-        var _cancelVet = v.find("#cancelVet_");
+    function cancelVet(v, i, vet){
+        var _nameCardBtn = v.find("button[data-target=#nameCard_"+i+"]");
+        var _nameCard = v.find("#nameCard_"+i);
+        var _vetSpecialties = v.find("#vetSpecialties_"+i);
+        var _editVet = v.find("#editVet_"+i);
+        var _vetCreatePost = v.find("#vet_create_post_"+i);
+        var _deleteVet = v.find("#deleteVet_"+i);
+        var _saveVet = v.find("#saveVet_"+i);
+        var _cancelVet = v.find("#cancelVet_"+i);
         // v.find("input[name=vet_name]").hide();
         v.find("textarea[name=vet_desc]").hide();
         v.find("div[name=edit_exp]").hide();
@@ -586,6 +634,7 @@
         _nameCardBtn.attr("disabled", false);
 
         _editVet.show();
+        _vetCreatePost.show();
         _deleteVet.show();
         _saveVet.hide();
         _cancelVet.hide();
@@ -612,7 +661,9 @@
     //     }
     // }
 
-    $("#accordion2 a[name=hLists]").attr("href","/hospitals/edit");
+    $("#accordion2 a[name=hLists]").click(function(){
+      location.href = "/hospitals/edit";
+    });
     </script>
 
   </body>

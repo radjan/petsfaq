@@ -74,10 +74,24 @@ class BlogpostAPI(base.BaseSessionHandler):
 
     def get(self):
         try:
+            personid   = self.request.get('personid', None)
+            hospitalid = self.request.get('hospitalid', None)
+
+            postlist = Blogpost.all()
             ids = []
-            for x in Blogpost.all():
-                ids.append(x.key().id())
+
+            if hospitalid and hospitalid.isdigit():
+                #ids.append([x.key().id() for x in postlist if x.hospital.key().id() == long(hospitalid)])
+                postlist = [x for x in postlist if x.hospital.key().id() == long(hospitalid)]
+                ids.append(x.key().id()) 
+            elif personid and personid.isdigit():
+                postlist = [x for x in postlist if x.author.key().id() == long(personid)]
+                ids.append(x.key().id()) 
+            else:
+                ids.append([x.key().id() for x in postlist])
+
             util.jsonify_response(self.response, {'blogpostids':ids})
+
         except Exception as e:
             self.response.write(json.dumps({'Error':'Internal Error %s' % str(e)}))
             raise
@@ -132,18 +146,24 @@ class PostAPI(base.BaseSessionHandler):
         try:
             blogpost_from_key = Blogpost.get_by_id(int(blogpostid))
 
-            #detail =  {'title':'unchanged',
-            #           'content':'unchanged',
-            #           'status_code':'unchanged'}
             detail = {}
 
             update = {}
-            update['title']       = json.loads(self.request.body).get('title')
-            update['content']     = json.loads(self.request.body).get('content')
-            update['status_code'] = json.loads(self.request.body).get('publish')
-            update['author']      = json.loads(self.request.body).get('personid')
-            update['hospital']    = json.loads(self.request.body).get('hospitalid')
-            update['post_type']   = json.loads(self.request.body).get('post_type')
+            update['title']       = json.loads(self.request.body).get('title', None)
+            update['content']     = json.loads(self.request.body).get('content', None)
+            update['status_code'] = json.loads(self.request.body).get('publish', None)
+            update['author']      = json.loads(self.request.body).get('personid', None)
+            update['hospital']    = json.loads(self.request.body).get('hospitalid', None)
+            update['post_type']   = json.loads(self.request.body).get('post_type', None)
+
+            #TODO: digit id check
+            if update['author'] != None:
+                update['author'] = Person.get_by_id(int(update['author']))
+            if update['hospital'] != None:
+                update['hospital'] = Hospital.get_by_id(int(update['hospital']))
+
+            # all attributes are required by this helper function 
+            #util.update_model_properties(blogpost_from_key, update)
 
             for y in [x for x in update.keys() if update[x] != None]:
                 #blogpost_from_key.properties()[y].make_value_from_datastore(update[y])
@@ -276,7 +296,10 @@ class AttachAPI(base.BaseSessionHandler):
     def get(self, blogpostid, attachid):
         try:
             attach_from_key = Attached.get_by_id(int(attachid))
-            result = util.out_format(attach_from_key)
+            if attach_from_key == None:
+                result = {}
+            else:
+                result = util.out_format(attach_from_key)
             util.jsonify_response(self.response, result)
         except:
             self.response.write(json.dumps({'Error':'Internal Error'}))
