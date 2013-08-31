@@ -144,7 +144,7 @@ def init_data(PORT=8080):
     tt3 = create_attach(att1, blogpost=bp1)
     tt4 = create_attach(att1, blogpost=bp1)
     
-    pub1 = {"publish":1, "personid":p4['id'], "hospitalid":h2['id']}
+    pub1 = {"publish":1, "personid":p1['id'], "hospitalid":h2['id']}
     bp1 = complete_post(bp1, pub1)
 
     pub2 = {"publish":1, "content":"fix content"}
