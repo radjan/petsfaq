@@ -132,7 +132,7 @@
         var hid=$(this).attr("href");
         //add vet list
         getVetData(hid); //get vets data
-              
+        loadPostsByHid(hid);	//list post by hospital id
       });
        /**handler favorite add and remove**/
         $("a[name=favorite_btn]").click(function(){
