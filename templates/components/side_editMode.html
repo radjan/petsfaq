@@ -6,7 +6,7 @@
               <br>
               <li><button name="createVet_btn" class="btn-danger btn-small">新增醫生</button></li>
               <br>
-              <li><button type= "button" class="btn-danger btn-small">新增文章</button></li>
+              <li><button name="createPost_btn" type= "button" class="btn-danger btn-small">新增文章</button></li>
               <li class="divider"></li>
 
               <!-- <li><a >編輯模式</a></li> -->
@@ -28,6 +28,10 @@ $(document).ready(function(){
       location.href = "createVet";
   });
 		
+  $("button[name=createPost_btn]").click(function(){
+    //$("a[name=createVet_btn]").attr("href", "/createVet");
+      location.href = "new_post";
+  });
 
 });
 		 
