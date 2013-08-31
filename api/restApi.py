@@ -16,6 +16,11 @@ from sets import Set
 # General 
 class RestAPI(base.BaseSessionHandler):
 
+    def __init__(self, *args, **kw):
+        base.BaseSessionHandler.__init__(self, *args, **kw)
+        self.max_level = 2
+        self.properties = []
+
     def get(self): # get all model 
         params = dict(self.request.params)
         if '_' in params:
@@ -26,7 +31,9 @@ class RestAPI(base.BaseSessionHandler):
         else:
             serviceList = self.service.list()
 
-        result = util.out_format(serviceList)
+        result = util.out_format(serviceList,
+                                 maxlevel=self.max_level,
+                                 more=self.properties)
         util.jsonify_response(self.response, result)
 
     def post(self): # create model
@@ -46,6 +53,11 @@ class RestAPI(base.BaseSessionHandler):
 class HospitalAPI(RestAPI):
     service = hospital_service
     model = hospital.Hospital
+
+    def __init__(self, *args, **kw):
+        RestAPI.__init__(self, *args, **kw)
+        self.max_level = 0
+        self.properties = []
 
     def _create(self, requestJson):
         specialties = []
@@ -132,10 +144,18 @@ class AdminAPI(RestAPI):
 
 # single instance
 class ModelInstanceAPI(base.BaseSessionHandler):
+
+    def __init__(self, *args, **kw):
+        base.BaseSessionHandler.__init__(self, *args, **kw)
+        self.max_level = 2
+        self.properties = []
+
     def _get_obj(self, *args, **kw):
         model_id = kw.get('id', 0)
         domain_obj = self.service.get(model_id)
-        domain_dict = util.out_format(domain_obj)
+        domain_dict = util.out_format(domain_obj,
+                                      maxlevel=self.max_level,
+                                      more=self.properties)
         return domain_obj, domain_dict
 
     def get(self, *args, **kw):
@@ -171,6 +191,7 @@ class HospitalInstanceAPI(ModelInstanceAPI):
         self.service = hospital_service
         self.model = hospital.Hospital
         ModelInstanceAPI.__init__(self, *args, **kw)
+        self.properties = ['vets', 'specialties']
 
     def _custom_update(self, hospital, requestJson):
         if 'specialties' in requestJson:
