@@ -204,6 +204,7 @@ class PersonInstanceAPI(ModelInstanceAPI):
         self.service = person_service
         self.model = person.Person
         ModelInstanceAPI.__init__(self, *args, **kw)
+        self.properties = ['specialties']
 
 class SpecialtyInstanceAPI(ModelInstanceAPI):
     def __init__(self, *args, **kw):
