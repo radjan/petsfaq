@@ -75,17 +75,23 @@ def jsonify_response(response, data):
     json.dump(data, io)
     response.write(io.getvalue())
 
-def out_format(data, traced_ids=None):
+def out_format(data, traced_ids=None, maxlevel=2, more=None):
     ret = None
+    if more is None:
+        more = []
     if isinstance(data, collections.Iterable):
         ret = []
         for d in data:
-            ret.append(out_format(d, traced_ids))
+            ret.append(out_format(d, traced_ids=traced_ids, maxlevel=maxlevel, more=more))
     else:
-        ret = _to_dict(data, traced_ids)
+        ret = _to_dict(data, traced_ids=traced_ids, maxlevel=maxlevel, more=more)
     return ret
 
-def _to_dict(domain_obj, traced_ids=None):
+def _to_dict(domain_obj, traced_ids=None, maxlevel=0, level=0, more=None):
+    if level > maxlevel:
+        return domain_obj.get_id()
+    level += 1
+
     if traced_ids == None:
         traced_ids = Set()
     kind = domain_obj.get_type()
@@ -106,7 +112,11 @@ def _to_dict(domain_obj, traced_ids=None):
             for x in domain_obj.__getattribute__(add_prop):
                 if parent_cls and not isinstance(x, parent_cls):
                     continue
-                fl.append(_to_dict(x, traced_ids.copy()))
+
+                # if the property in more, set the level to 0
+                new_level = 0 if add_prop in more else level
+                fl.append(_to_dict(x, traced_ids=traced_ids.copy(),
+                                   maxlevel=maxlevel, level=new_level, more=more))
             #add model type
             tmp[add_prop] = fl
 
@@ -114,24 +124,27 @@ def _to_dict(domain_obj, traced_ids=None):
     for key in property_keys:
         prop = domain_obj.properties()[key]
         v = prop.get_value_for_datastore(domain_obj)
+
+        # if the property in more, set the level to 0
+        new_level = 0 if key in more else level
         if type(v) is list:
             l = []
             #for item in [x for x in v if v.kind() not in traced_ids]:
             for item in v:
-                l.append(_to_str(item, traced_ids))
+                l.append(_to_str(item, traced_ids, maxlevel, new_level, more))
             tmp[str(key)] = l
         else:
-            tmp[str(key)] = _to_str(v, traced_ids)
+            tmp[str(key)] = _to_str(v, traced_ids, maxlevel, new_level, more)
     return tmp
 
-def _to_str(obj, traced_ids):
+def _to_str(obj, traced_ids, maxlevel, level, more):
     if isinstance(obj, db.Key):
         if db.get(obj) == None:
             return unicode(None)
         elif db.get(obj).get_id() in traced_ids:
             return unicode(db.get(obj).get_id())
         else:
-            return _to_dict(db.get(obj), traced_ids)
+            return _to_dict(db.get(obj), traced_ids=traced_ids, maxlevel=maxlevel, level=level, more=more)
     return unicode(obj)
 
 def get_model_properties(model, json_obj):
