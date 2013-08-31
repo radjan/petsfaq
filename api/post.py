@@ -83,12 +83,15 @@ class BlogpostAPI(base.BaseSessionHandler):
             if hospitalid and hospitalid.isdigit():
                 #ids.append([x.key().id() for x in postlist if x.hospital.key().id() == long(hospitalid)])
                 postlist = [x for x in postlist if x.hospital.key().id() == long(hospitalid)]
-                ids.append(x.key().id()) 
+                for x in postlist:
+                    ids.append(x.key().id()) 
             elif personid and personid.isdigit():
                 postlist = [x for x in postlist if x.author.key().id() == long(personid)]
-                ids.append(x.key().id()) 
+                for x in postlist:
+                    ids.append(x.key().id()) 
             else:
-                ids.append([x.key().id() for x in postlist])
+                for x in postlist:
+                    ids.append(x.key().id()) 
 
             util.jsonify_response(self.response, {'blogpostids':ids})
 
