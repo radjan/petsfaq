@@ -6,6 +6,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		var hid=$(location).attr('href').split('=')[1];
 		console.log('into ');
+		if(hid=='undefined'){
+			document.location.href='/hospitals';
+		}
 		document.location.href='/hospitals'+'?hid='+hid;
 
 	});
@@ -36,13 +39,14 @@ $(document).ready(function(){
 	//get vet's data
 	var url=$(location).attr('href');
 	var pid=url.split('/')[url.split('/').length-1].split('?')[0];
-	
+	//loadPostsByPid(pid);
 	$.ajax({
         url: search_url+'/person/'+pid,
         type: "GET",
         cache: false
       }).done(function(data) {
        putPersonData(data);
+
        //console.log(data.name);
       });
 	
