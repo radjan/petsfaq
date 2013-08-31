@@ -39,7 +39,7 @@ $(document).ready(function(){
 	//get vet's data
 	var url=$(location).attr('href');
 	var pid=url.split('/')[url.split('/').length-1].split('?')[0];
-	//loadPostsByPid(pid);
+	loadPostsByPid(pid);
 	$.ajax({
         url: search_url+'/person/'+pid,
         type: "GET",
