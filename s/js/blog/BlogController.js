@@ -15,7 +15,7 @@ BlogController.prototype.createArticle = function(aid, aContent) {
 BlogController.prototype.insertToView = function(article, view) {
 	//Log.d(this.TAG, view);
 	if(typeof view === 'undefined') return;
-	//Log.d(this.TAG, article);
+	Log.d(this.TAG, article);
 	view.append(article.html);
 	article.getPost(article.pid);
 	this.articleList.push(article);

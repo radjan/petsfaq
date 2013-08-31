@@ -47,7 +47,7 @@
 					};
 				var testIndex = 0;
 				$(window).load(function() {
-					getPostList(listPostsHandler, null);
+					//getPostsByHospitalId(5066549580791808,listPostsHandler, null);
 					
 				});
 				
@@ -74,12 +74,21 @@
 				var listPostsHandler = function(postList){
 					if(typeof postList === 'undefined') return;
 					var view = $(".timeline > div#right");
+					Log.d('postList', postList);
 					for(var key in postList) {
 						Log.d(TAG, postList[key]);
 						var article = new Article(postList[key]);
 						blogCtrl.insertToView(article, view);
 					}
 				};
+				
+				function loadPostsByHid(hid) {
+					getPostsByHospitalId(hid,listPostsHandler, null);
+				}
+				
+				function loadPostsByPid(vetId) {
+					getPostsByVetId(vid, listPostsHandler, null);
+				}
 			</script>
 		
 		

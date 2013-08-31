@@ -9,6 +9,10 @@
 
     <!-- Le styles -->
     <link href="/s/css/bootstrap.css" rel="stylesheet">
+    <!--[BEGIN] CSS for blog -->
+    <link href="/s/css/blog/common.css" rel="stylesheet">
+	<link href="/s/css/blog/blogview.css" rel="stylesheet">
+    <!--[END] -->
     <style type="text/css">
      
       body {
@@ -121,7 +125,7 @@
                 
              
               <div id="hospital_blog" class="tab-pane">
-                coming soon...
+                {% include 'blog/timeline.html' %}
               </div>
             </div><!--/tab-content-->
           </div><!--/hospital_data-->
