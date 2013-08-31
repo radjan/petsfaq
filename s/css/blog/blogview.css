@@ -1,9 +1,10 @@
 
 .timeline {
 	text-align: left;
-	background-color: #7ABA7B;
+	background-color: #EEEEEE;
 	margin: 0 50px;
 	height:auto;
+	border-radius: 6px 6px 6px 6px;
 }
 .timeline #left.timeline-flow {
 	padding-right: 20px;

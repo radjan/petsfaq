@@ -126,14 +126,16 @@
         e.preventDefault();
         
         $("#collapseHospital").collapse('hide');
-
+        $('#hospitalTab a:first').tab('show'); 
         var showItem = e.target.parentNode.parentNode;
         
         var hid=$(this).attr("href");
+        $('input[name=hid]').val(hid);
+
+        changeURL("hospitals?hid="+hid);
         //add vet list
         getVetData(hid); //get vets data
-        loadPostsByHid(hid);	//list post by hospital id
-      });
+         });
        /**handler favorite add and remove**/
         $("a[name=favorite_btn]").click(function(){
 
@@ -149,6 +151,13 @@
     //if click hospital detail, then has tabs(info,vets,blog) can choose
     $('#hospitalTab a').click(function (e) {
       e.preventDefault();
+      var tabIndex=$(this).attr('href');
+      var hid=$('input[name=]hid').val();
+      
+      if(tabIndex=="#hospital_blog" && $("input[name=blogLoad]").val()=='0'){
+             loadPostsByHid(hid); //list post by hospital id
+             $("input[name=blogLoad]").attr("value","1");
+      }
       $(this).tab('show');
     });
 
@@ -249,6 +258,10 @@
            //url+='&hid='+hid+'vid='+$(this).attr("href");
            window.location.href='person/'+$(this).attr("href")+'?hid='+hid;
       });
+    }
+
+    function changeURL(url){
+      window.history.pushState("", "Pet Helper - hospitals", url);
     }
 
     /* Example for Yun-Tai */
