@@ -261,7 +261,7 @@
     }
 
     function changeURL(url){
-      window.history.pushState("", "Pet Helper - hospitals", url);
+      window.history.pushState("", "Pets FAQ - hospitals", url);
     }
 
     /* Example for Yun-Tai */
