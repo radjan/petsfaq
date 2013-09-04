@@ -28,7 +28,7 @@ class PersonService(base.GeneralService):
         return None
 
     def delete(self, p):
-        if type(p) == int:
+        if type(p) in (int, long):
             p = self.get(p)
         role_service = serviceFactory.get_service(serviceFactory.ROLE)
         for r in p.roles:

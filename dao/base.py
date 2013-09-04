@@ -18,7 +18,7 @@ class GeneralDao:
         m.put()
 
     def delete(self, m):
-        if type(m) == int:
+        if type(m) in (int, long):
             m = self.get(m)
         m.delete()
 

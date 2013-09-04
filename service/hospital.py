@@ -9,7 +9,7 @@ class HospitalService(base.GeneralService):
         self.dao = h_dao
 
     def delete(self, h):
-        if type(h) == int:
+        if type(h) in (int, long):
             h = self.get(h)
         for rel in h.specialties:
             specialty_dao.remove_link(rel)
