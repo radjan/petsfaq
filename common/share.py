@@ -2,7 +2,7 @@ jinja_env = None
 
 # -----
 # web key
-WEBAPP2_SESSION_KEY = 'my-little-secret_change-this-before-deploy_secret'
+WEBAPP2_SESSION_KEY = 'my-little-secret_change-this-before-deploy_littlesecret'
 
 VIEW_GOOGLE = 'g'
 VIEW_IDPWD = 'id'

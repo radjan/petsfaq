@@ -9,7 +9,7 @@ class RoleService(base.GeneralService):
 
     def delete(self, r):
         if isinstance(r, role.Vet):
-            for rel in p.specialties:
+            for rel in r.specialties:
                 specialty_dao.remove_link(rel)
         return role_dao.delete(r)
 
