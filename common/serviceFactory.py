@@ -24,6 +24,6 @@ def _init_service_map():
             ACCOUNT: account_service,
             }
 
-def get_service(self, service_name):
+def get_service(service_name):
     _init_service_map()
     return SERVICES_MAP.get(service_name, None)
