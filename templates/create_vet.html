@@ -395,10 +395,11 @@
         }
       }
       _showSpecialty += "</ul>";
-      if (_showSpecialty == "<ul></ul>") {
-        _showSpecialty = "請填寫專長" + "<br>";
-        $("#nextStep").hide();
-      }
+      // TODO temporary disable due to no data available, #31
+      //if (_showSpecialty == "<ul></ul>") {
+      //  _showSpecialty = "請填寫專長" + "<br>";
+      //  $("#nextStep").hide();
+      //}
       $("#modalBody").append("專長："+ _showSpecialty);
 
       var _edu = "<ul>";
