@@ -67,6 +67,9 @@
             <button id="create_post" type="button" class="btn btn btn-info edit_type edit_button right">
                 <i class="icon-file"></i>
             </button>
+            <button id="create_vet" type="button" class="btn btn btn-info edit_type edit_button right">
+                <i class="icon-user"></i>
+            </button>
 
             <div class="right">
               <button id="save_hospital" type="button" class="btn btn btn-info edit_type">
@@ -269,6 +272,9 @@
         $("#create_post").click(function(){
           location.href = "/new_post?hid="+hid;
         });
+        $("#create_vet").click(function(){
+          location.href = "/createVet?hid="+hid;
+        });
     
 
         $("#save_hospital").click(function(){
@@ -340,6 +346,7 @@
     function editHospitalFunction(){
           $("#edit_hospital").hide();
           $("#create_post").hide();
+          $("#create_vet").hide();
           $("#save_hospital").show();
           $("#cancel_hospital").show();
 
@@ -360,6 +367,7 @@
     function cancelHospital(){
           $("#edit_hospital").show();
           $("#create_post").show();
+          $("#create_vet").show();
           $("#save_hospital").hide();
           $("#cancel_hospital").hide();
 

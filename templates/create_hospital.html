@@ -261,8 +261,8 @@
                 type: "POST",
                 data: JSON.stringify(request2),
                 cache: false
-            }).done(function(){
-                window.location.href="/hospitals/edit";
+            }).done(function(data){
+                window.location.href="/hospital/" + data.id + "/edit";
             });
             return false;
         });
