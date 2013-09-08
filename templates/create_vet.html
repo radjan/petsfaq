@@ -200,6 +200,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/s/js/twzipcode.js"></script>
     <script src="/s/js/showNAddSpecialites.js"></script>    
+    <script src="/s/js/jQuery-URL-Parser/purl.js"></script>
     <script type="text/javascript">
     var zipLoaded = false;
     var ready = false;
@@ -207,7 +208,10 @@
     var categories = [];
     // var chosenCounty;
 
+    var hid;
     $("document").ready(function(){
+
+      hid = $.url().param('hid');
 
       $.ajax({
         url: "/api/v1/hospital",
@@ -241,15 +245,25 @@
       });
 
       function createHospialSelect(hospitals){
+        var selected = "";
         for (var i in hospitals) {
-          var _showStr = "<option value='"+hospitals[i].id+" "+hospitals[i].county+hospitals[i].area+" "+hospitals[i].name+"'>"+hospitals[i].county+hospitals[i].area+" "+hospitals[i].name+"</option>";
+          var value = hospitals[i].id+" "+hospitals[i].county+hospitals[i].area+" "+hospitals[i].name;
+          var _showStr = "<option value='" + value + "'>"+hospitals[i].county+hospitals[i].area+" "+hospitals[i].name+"</option>";
           $("select[name=hospitalSelect]").append(_showStr);
+
+          if (hid == hospitals[i].id) {
+            selected = value;
+          }
+        }
+        if (selected != "") {
+          $("select[name=hospitalSelect]").val(selected);
         }
       }
 
       $("#nextStep").click(function (){
+          var hospital_id = $("select[name=hospitalSelect]").val().split(" ")[0];
           var request2 = { 
-              hospital: $("select[name=hospitalSelect]").val().split(" ")[0],
+              hospital: hospital_id,
               person: {
                   name: $("input[name=name]").val(),        
                   gender: $('[name="gender"]:checked').val(),         
@@ -305,7 +319,7 @@
               data: JSON.stringify(request2),
               cache: false
           }).done(function(){
-              window.location.href="/hospitals";
+              window.location.href="/hospital/" + hospital_id + "/edit";
           });
           return false;
         });
