@@ -14,8 +14,8 @@ def _init_service_map():
     from service.hospital import hospital_service
     from service.person import person_service
     from service.account import account_service
-    global SERVICE_MAP
-    if not SERVICE_MAP:
+    global SERVICES_MAP
+    if not SERVICES_MAP:
         SERVICES_MAP = {
             ROLE: role_service,
             SPECIALTY: specialty_service,
@@ -26,4 +26,5 @@ def _init_service_map():
 
 def get_service(service_name):
     _init_service_map()
+    global SERVICES_MAP
     return SERVICES_MAP.get(service_name, None)
