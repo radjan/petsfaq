@@ -12,6 +12,9 @@ handlers:
 - url: /s
   static_dir: s
 
+- url: /hospital
+  static_dir: hospital
+
 - url: .*
   script: main.app
 
