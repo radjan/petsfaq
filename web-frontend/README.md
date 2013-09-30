@@ -2,11 +2,13 @@
 
 
 1. License
+
 	Currently, all license reserved to Rad Jan.
 
 
 
 2. Purpose
+
 	Create frontend modules through AngularJS.
  
 
