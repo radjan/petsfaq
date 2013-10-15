@@ -15,4 +15,5 @@ angular.module('hospitalApp')
             'url': '#/about'
         }
     ];
+
   });
