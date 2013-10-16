@@ -6,14 +6,28 @@ angular.module('hospitalApp')
     $scope.links = [
         {
             'item': '論壇', 
-            'url': '#/knowledge'
+            'url': '#/knowledge',
+            'isActive':''
         },{
             'item': '找尋醫院',
-            'url': '#/hospitalList'
+            'url': '#/hospitalList',
+            'isActive':''
         },{
             'item':'聯絡我們',
-            'url': '#/about'
+            'url': '#/about',
+            'isActive':''
         }
     ];
+
+    $scope.markActive = function (index){
+        var i = 0;
+        for(i=0; i<$scope.links.length; i++){
+            if(i == index){
+                $scope.links[i].isActive = "active";
+            }else{
+                $scope.links[i].isActive = "";
+            }
+        }
+    };
 
   });

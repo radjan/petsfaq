@@ -31,7 +31,7 @@
         <div class="navbar-inner">
             <a class="brand" href="/">{{brandName}}</a>
             <ul class="nav navbar-nav" ng-repeat="item in links">
-                <li class="active"><a href="{{item.url}}">{{item.item}}</a></li>
+                <li class="{{item.isActive}}" ng-click="markActive($index)"><a href="{{item.url}}">{{item.item}}</a></li>
             </ul>
         </div>
     </div>
