@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity {
             action.hide(mUserSettingsFragment);
             action.commitAllowingStateLoss();
 
-            Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+            Request.newMeRequest(session, new Request.GraphUserCallback() {
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
                     Log.d(TAG, "executeMeRequestAsync response=" + response);
@@ -78,7 +78,7 @@ public class MainActivity extends FragmentActivity {
                         Log.d(TAG, "token=" + session.getAccessToken());
                     }
                 }
-            });
+            }).executeAsync();
         }
     }
 }
