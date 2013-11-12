@@ -4,10 +4,10 @@ log=logging.getLogger()
 from bottle import route, run, template, request
 import os
 from subprocess import Popen, PIPE
-hook_key = 'key'
-hook_secret = 'key'
+hook_key = '5e4ac67053292fe7f96c63f423e7'
+hook_secret = '97c1a1c0bc10a4c90154803227066'
 
-@route('/api/reload', method='GET')
+@route('/api/reload', method='POST')
 def github_hook():
     key = request.query.get('key',None)
     secret = request.query.get('secret',None)
