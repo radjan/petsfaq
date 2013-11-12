@@ -19,6 +19,11 @@ def github_hook():
         elif secret == '':
             return 'fail2';
         else:
+            if key != hook_key:
+                return 'fail4'
+            if secret != hook_secret:
+                return 'fail5'
+
 	    os.chdir('/home/petsquare/petsfaq/')
 	    os.system('git pull') 
 
@@ -33,3 +38,4 @@ def github_hook():
         return 'fail3'
 
 run(host='0.0.0.0', port=35423)
+
