@@ -4,8 +4,10 @@ log=logging.getLogger()
 from bottle import route, run, template, request
 import os
 from subprocess import Popen, PIPE
+
 hook_key = '5e4ac67053292fe7f96c63f423e7'
 hook_secret = '97c1a1c0bc10a4c90154803227066'
+
 
 @route('/api/reload', method='POST')
 def github_hook():
@@ -13,29 +15,26 @@ def github_hook():
     secret = request.query.get('secret',None)
     print key
     print secret
-    if key != None and secret != None:
-        if key == '':
-            return 'fail1';
-        elif secret == '':
-            return 'fail2';
-        else:
-            if key != hook_key:
-                return 'fail4'
-            if secret != hook_secret:
-                return 'fail5'
 
-	    os.chdir('/home/petsquare/petsfaq/')
-	    os.system('git pull') 
-
-	    cmd1 = [ "git", "log"]
-
-	    pipe = Popen(cmd1, stdout=PIPE) 
-	    text = pipe.communicate()[0].splitlines()
-            text1 = text[2]
-            text2 = text[4]
-	    return text1+text2
+    if any ([ key    == None,
+              secret == None,
+              key    == '',
+              secret == '',
+              key    != hook_key,
+              secret != hook_secret,
+            ]):
+        return 'fail'
     else:
-        return 'fail3'
+        os.chdir('/home/petsquare/petsfaq/')
+        os.system('git pull') 
+
+        cmd1 = [ "git", "log"]
+
+        pipe = Popen(cmd1, stdout=PIPE) 
+        text = pipe.communicate()[0].splitlines()
+        text1 = text[2]
+        text2 = text[4]
+        return text1+text2
 
 run(host='0.0.0.0', port=35423)
 
