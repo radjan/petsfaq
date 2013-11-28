@@ -2,7 +2,9 @@
 
 angular.module('webFrontendApp')
   .controller('TopnavbarCtrl', function ($scope) {
-
+    $scope.navBarList = [
+      {name:"寵物地圖", url:"/#petMap"}
+    ];
   });
 
 

@@ -2,7 +2,7 @@
 	<div class="navbar-inner">
 		<a class="brand">Pet Adventure</a>
 		<ul class="nav">
-			<li><a>Home</a></li>
+			<li ng-repeat="list in navBarList"><a href="{{list.url}}">{{list.name}}</a></li>
 		</ul>
 
 	    <ul class="nav pull-right">
