@@ -2,18 +2,20 @@
   "name": "webFrontend",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "~1.0.7",
+    "angular": "~1.2.2",
     "json3": "~3.2.4",
     "jquery": "~1.9.1",
     "bootstrap-sass": "~2.3.1",
     "es5-shim": "~2.0.8",
-    "angular-resource": "~1.0.7",
-    "angular-cookies": "~1.0.7",
-    "angular-sanitize": "~1.0.7",
-    "font-awesome":"http://fontawesome.io/assets/font-awesome-4.0.3.zip"
+    "angular-resource": "~1.2.2",
+    "angular-cookies": "~1.2.2",
+    "angular-sanitize": "~1.2.2",
+    "angular-route": "~1.2.2",
+    "font-awesome": "http://fontawesome.io/assets/font-awesome-4.0.3.zip",
+    "angular-google-maps": "~1.0.0"
   },
   "devDependencies": {
-    "angular-mocks": "~1.0.7",
-    "angular-scenario": "~1.0.7"
+    "angular-mocks": "~1.2.2",
+    "angular-scenario": "~1.2.2"
   }
 }
