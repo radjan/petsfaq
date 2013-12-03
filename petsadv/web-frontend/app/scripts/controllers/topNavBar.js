@@ -5,19 +5,10 @@ angular.module('webFrontendApp')
     $scope.navBarList = [
       {name:"寵物地圖", url:"/#petMap"}
     ];
-  });
 
 
-// Additional JS functions here
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '447182208718938', // App ID
-      channelUrl : '7fd7975b33e7c21185d476ae1141314c', // Channel File
-      status     : true, // check login status
-      cookie     : true, // enable cookies to allow the server to access the session
-      xfbml      : true  // parse XFBML
-    });
-    $('#fb-root a').click(function(){
+    
+    $scope.loginByFB=function(){
 		FB.login(function(response) {
 			console.log(response.status);
 		    if (response.authResponse) {
@@ -29,8 +20,23 @@ angular.module('webFrontendApp')
 		        // The person cancelled the login dialog
 		    }
 		});
-	});
+	};
+
+  });
+
+    // Additional JS functions here
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '447182208718938', // App ID
+      channelUrl : '7fd7975b33e7c21185d476ae1141314c', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+    
+
 };
+
 
 
 
