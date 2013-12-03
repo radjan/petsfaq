@@ -11,9 +11,11 @@ from pyramid.paster import (
 
 from ..models import (
     DBSession,
-    MyModel,
     Base,
     )
+
+from ..models.location import location_tb
+
 
 
 def usage(argv):
@@ -33,5 +35,6 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = MyModel(name='one', value=1)
+        model = location_tb(name='one', desc='1', gps='1,5', addr='taipei', userid=1)
         DBSession.add(model)
+

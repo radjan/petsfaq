@@ -5,7 +5,7 @@ from sqlalchemy.exc import DBAPIError
 
 from petsquarebackend.models import (
     DBSession,
-    MyModel,
+    #MyModel,
     )
 
 
