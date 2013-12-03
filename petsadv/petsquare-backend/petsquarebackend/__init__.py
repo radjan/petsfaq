@@ -18,3 +18,4 @@ def main(global_config, **settings):
     api_routes(config)
     config.scan()
     return config.make_wsgi_app()
+
