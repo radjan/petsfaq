@@ -22,8 +22,8 @@ from sqlalchemy.types import (
 
 import datetime
 
-class location_tb(Base):
-    __tablename__ = 'user'
+class Location_TB(Base):
+    __tablename__ = 'location'
     id              = Column(Integer(10), nullable=False, unique=True, 
                              primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=True, unique=False, )
@@ -40,7 +40,7 @@ class location_tb(Base):
         super(location_tb, self).__init__(*args, **kwargs)
 
     @classmethod
-    def create(cls, name, desc, gps, addr, userid):
+    def create(cls, name, description, gps, address, userid):
         global DBSession
         try:
             model = cls(name=name, description=desc, gps=gps, 
