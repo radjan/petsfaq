@@ -55,6 +55,7 @@ def github_hook():
 
         #update frontend-code
         os.chdir('/home/petsquare/petsfaq/petsadv/web-frontend')
+        os.system('rm -rf dist')
         os.system('./compile.sh --force')
         return gitlog
 
