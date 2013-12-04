@@ -83,7 +83,10 @@ class LocationAPI(BaseAPI):
             #mock fake serv_rtn
             serv_rtn = {'data':'',
                         'info':data,
-                        'code':code}
+                        'code':code,
+                        'success':False
+                        }
+
 
         api_rtn = self.handle_serv_rtn(serv_rtn)
         return api_rtn
@@ -115,7 +118,9 @@ class LocationAPI(BaseAPI):
             #mock fake serv_rtn
             serv_rtn = {'data':'',
                         'info':data,
-                        'code':code}
+                        'code':code,
+                        'success':False
+                        }
 
 
         api_rtn = self.handle_serv_rtn(serv_rtn)
@@ -148,8 +153,9 @@ class LocationAPI(BaseAPI):
             #mock fake serv_rtn
             serv_rtn = {'data':'',
                         'info':data,
-                        'code':code}
-
+                        'code':code,
+                        'success':False
+                        }
         api_rtn = self.handle_serv_rtn(serv_rtn)
         return api_rtn
 
