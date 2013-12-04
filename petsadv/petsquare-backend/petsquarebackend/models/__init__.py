@@ -177,6 +177,25 @@ class ModelMixin(object):
             return None
         return union_rtn
 
+    @classmethod
+    def delete_by_id(cls, id, session=DBSession):
+        try:
+            model = cls.get_by_attr(attr='id', value=id)
+            DBSession.delete(model)
+            #do not use commit() method manually
+            #DBSession.commit()
+            rtn = (True,)
+        except Exception, e:
+            import traceback
+            err_tbk = traceback.format_exc()
+            err_exp = str(e)
+            #err_msg = err_exp + ', ' + err_tbk
+            err_msg = err_exp
+            log.debug(err_tbk)
+            rtn = (False, err_msg)
+        return rtn
+
+
     def __json__(self, request):
         obj_dict = self.__dict__
         obj_dict = dict((key, obj_dict[key]) for key in obj_dict if not key.startswith("_"))

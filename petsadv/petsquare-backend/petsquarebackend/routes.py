@@ -10,7 +10,7 @@ def api_routes(config):
 
     #api
     config.add_route('locations',  api_prefix + str(main_version) + '/locations')
-    config.add_route('locationid', api_prefix + str(main_version) + '/location/{id:\d+}')
+    config.add_route('location', api_prefix + str(main_version) + '/location/{id:\d+}')
 
     
 
