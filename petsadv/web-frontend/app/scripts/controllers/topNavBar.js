@@ -5,10 +5,9 @@ angular.module('webFrontendApp')
     $scope.navBarList = [
       {name:"寵物地圖", url:"/#petMap"}
     ];
-
-
     
     $scope.loginByFB=function(){
+    /*global FB */
 		FB.login(function(response) {
 			console.log(response.status);
 		    if (response.authResponse) {
@@ -26,6 +25,7 @@ angular.module('webFrontendApp')
 
     // Additional JS functions here
   window.fbAsyncInit = function() {
+    /*global FB */
     FB.init({
       appId      : '447182208718938', // App ID
       channelUrl : '7fd7975b33e7c21185d476ae1141314c', // Channel File

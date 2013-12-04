@@ -1,8 +1,10 @@
-// Generated on 2013-11-12 using generator-angular 0.4.0
+// Generated on 2013-09-24 using generator-angular 0.4.0
 'use strict';
 var LIVERELOAD_PORT = 35729;
-var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
-var mountFolder = function (connect, dir) {
+var lrSnippet = require('connect-livereload')({
+  port: LIVERELOAD_PORT
+});
+var mountFolder = function(connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
 
@@ -12,7 +14,7 @@ var mountFolder = function (connect, dir) {
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
 
@@ -52,8 +54,8 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
+          '<%= yeoman.app %>/images/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -72,11 +74,11 @@ module.exports = function (grunt) {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost'
+        hostname: '0.0.0.0'
       },
       livereload: {
         options: {
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               lrSnippet,
               mountFolder(connect, '.tmp'),
@@ -87,7 +89,7 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               mountFolder(connect, '.tmp'),
               mountFolder(connect, 'test')
@@ -97,7 +99,7 @@ module.exports = function (grunt) {
       },
       dist: {
         options: {
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               mountFolder(connect, yeomanConfig.dist)
             ];
@@ -129,7 +131,7 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
+        '<%= yeoman.app %>/scripts/**/*.js'
       ]
     },
     coffee: {
@@ -186,7 +188,7 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
+            '<%= yeoman.dist %>/scripts/**/*.js',
             '<%= yeoman.dist %>/styles/{,*/}*.css',
             '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             '<%= yeoman.dist %>/styles/fonts/*'
@@ -271,9 +273,11 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             '*.{ico,png,txt}',
+            '*.html', 'views/*.html',
             '.htaccess',
             'bower_components/**/*',
-            'images/{,*/}*.{gif,webp}',
+            'resources/**/*',
+            'images/{,*/}*.{ico,gif,webp}',
             'styles/fonts/*'
           ]
         }, {
@@ -308,8 +312,8 @@ module.exports = function (grunt) {
         'compass:dist',
         'copy:styles',
         'imagemin',
-        'svgmin',
-        'htmlmin'
+        'svgmin'
+        // 'htmlmin'
       ]
     },
     karma: {
@@ -344,7 +348,7 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('server', function (target) {
+  grunt.registerTask('server', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
     }
@@ -363,8 +367,8 @@ module.exports = function (grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
-    'connect:test',
-    'karma'
+    'connect:test'
+    // 'karma'
   ]);
 
   grunt.registerTask('build', [
@@ -377,8 +381,8 @@ module.exports = function (grunt) {
     'cdnify',
     'ngmin',
     'cssmin',
-    'uglify',
-    'rev',
+    // 'uglify',
+    // 'rev',
     'usemin'
   ]);
 
