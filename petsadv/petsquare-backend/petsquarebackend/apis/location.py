@@ -72,7 +72,7 @@ class LocationAPI(BaseAPI):
 
 
         #validation
-        success, data, code = self.handle_req_params(Schema_locations_get)
+        success, data, code = self.validate(Schema_locations_get)
 
         if success:
             serv = LocationService(self.request)
@@ -84,14 +84,13 @@ class LocationAPI(BaseAPI):
             serv_rtn = {'data':'',
                         'info':data,
                         'code':code,
-                        'success':False
+                        'success':False,
                         }
 
-
-        api_rtn = self.handle_serv_rtn(serv_rtn)
+        api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    #TODO: test it!
+    #TODO: test me!
     @view_config(route_name='locations', request_method='POST')
     def locations_create(self):
         """
@@ -105,7 +104,7 @@ class LocationAPI(BaseAPI):
 
 
         #validation
-        success, data, code = self.handle_req_params(Schema_locations_post)
+        success, data, code = self.validate(Schema_locations_post)
 
         if success:
             serv = LocationService(self.request)
@@ -119,11 +118,10 @@ class LocationAPI(BaseAPI):
             serv_rtn = {'data':'',
                         'info':data,
                         'code':code,
-                        'success':False
+                        'success':False,
                         }
 
-
-        api_rtn = self.handle_serv_rtn(serv_rtn)
+        api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
     @view_config(route_name='location', request_method='GET')
@@ -138,7 +136,7 @@ class LocationAPI(BaseAPI):
         self.request.response.headers.add('Access-Control-Allow-Origin',  '*')
 
         #validation
-        success, data, code = self.handle_req_params(Schema_locations_get)
+        success, data, code = self.validate(Schema_locations_get)
 
         try:
             #get id from route_path
@@ -154,9 +152,10 @@ class LocationAPI(BaseAPI):
             serv_rtn = {'data':'',
                         'info':data,
                         'code':code,
-                        'success':False
+                        'success':False,
                         }
-        api_rtn = self.handle_serv_rtn(serv_rtn)
+
+        api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
 

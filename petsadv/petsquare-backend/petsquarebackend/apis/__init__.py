@@ -11,7 +11,7 @@ class BaseAPI(object):
         self.context = context
         self.request = request
 
-    def handle_serv_rtn(self, serv_rtn, fcode=500, scode=200):
+    def format_return(self, serv_rtn, fcode=500, scode=200):
         """
         Handle status returned from Services
         """
@@ -24,7 +24,7 @@ class BaseAPI(object):
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
-    def handle_req_params(self, schema):
+    def validate(self, schema):
         """
         Handle params sent from web requests
         """
