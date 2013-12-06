@@ -3,6 +3,8 @@
 __date__= 'Dec 04, 2013 '
 __author__= 'samuel'
 
+import logging
+log = logging.getLogger(__name__)
 
 class BaseService(object):
     def __init__(self, service_cls, request=None):
@@ -12,8 +14,8 @@ class BaseService(object):
                        'success': False,
                        'data': '',
                        'info': ''}
-    @classmethod
-    def serv_exception_rtn(cls, status, exp, ins_stk, tbk):
+    #@classmethod
+    def serv_exception_rtn(self, status, exp, ins_stk, tbk):
         err_info = (self.service_cls, ins_stk, tbk)
         log.debug('%s:%s, traceback:\n %s' % err_info)
         status['data'] = ''

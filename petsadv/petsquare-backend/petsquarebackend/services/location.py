@@ -20,14 +20,14 @@ class LocationService(BaseService):
         status = self.status.copy()
         try:
             if userid:
-                models = Location_TB.list(filattr=('userid', userid),
+                success, models = Location_TB.list(filattr=('userid', userid),
                                           offset=offset,
                                           size=size)
             else:
-                models = Location_TB.list(offset=offset,
+                success, models = Location_TB.list(offset=offset,
                                           size=size)
 
-            status = self.serv_rtn(status=status, success=success, model=model)
+            status = self.serv_rtn(status=status, success=success, model=models)
         except Exception, e:
             self.serv_exception_rtn(\
                     status=status, 
