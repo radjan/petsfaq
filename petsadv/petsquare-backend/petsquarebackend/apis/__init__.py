@@ -33,8 +33,7 @@ class BaseAPI(object):
             target_dict.update(dict(self.request.params.copy()))
             if len(self.request.body) > 0:
                 target_dict.update(dict(self.request.json_body.copy()))
-
-            data = dict(self.request.params.copy())
+            data = dict(target_dict)
             data = schema.to_python(data)
             rtn = (True, data, 200)
 
