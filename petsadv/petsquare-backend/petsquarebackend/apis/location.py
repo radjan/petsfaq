@@ -155,7 +155,7 @@ class LocationAPI(BaseAPI):
         self.XHeaders()
 
         #validation
-        success, data, code = self.validate(Schema_locations_get)
+        success, data, code = self.validate(Schema_location_put)
 
         try:
             #get id from route_path

@@ -93,6 +93,8 @@ class Location_TB(Base):
     @classmethod
     def update(cls, id, name=None, description=None, gps=None, address=None, userid=None):
         model = cls.get_by_id(id)
+        updateddatetime = datetime.datetime.now()
+        log.debug('model update: %s' % model)
         try:
             #FIXME
             if name:        model.name = name
@@ -100,6 +102,8 @@ class Location_TB(Base):
             if gps:         model.gps = gps
             if address:     model.address = address
             if userid:      model.userid = userid
+            model.updateddatetime = updateddatetime
+            DBSession.merge(model)
             return (True, model)
         except Exception, e:
             err_tbk = traceback.format_exc()

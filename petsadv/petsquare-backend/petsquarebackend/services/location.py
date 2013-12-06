@@ -28,6 +28,7 @@ class LocationService(BaseService):
                                           size=size)
 
             status = self.serv_rtn(status=status, success=success, model=models)
+            status['info']['count'] = len(models)
         except Exception, e:
             self.serv_exception_rtn(\
                     status=status, 
