@@ -62,15 +62,24 @@ class Location_TB(Base):
 
     @classmethod
     def list(cls, filattr=None, offset=None, size=None):
-        model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
-        return model_list
+        try:
+            model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
+            rtn = (True, model_list)
+        except Exception, e:
+            err_tbk = traceback.format_exc()
+            err_exp = str(e)
+            #err_msg = err_exp + ', ' + err_tbk
+            err_msg = err_exp
+            log.debug(err_tbk)
+            rtn = (False, '%s' % (err_msg))
+        return rtn
 
 
     @classmethod
     def show(cls, id):
         try:
             model = cls.get_by_id(id)
-            rtn = model
+            rtn = (True, model)
         except Exception, e:
             err_tbk = traceback.format_exc()
             err_exp = str(e)
@@ -103,7 +112,17 @@ class Location_TB(Base):
 
     @classmethod
     def delete(cls, id):
-        return cls.delete_by_id(id)
+        try:
+            rtn = (True, cls.delete_by_id(id))
+        except Exception, e:
+            err_tbk = traceback.format_exc()
+            err_exp = str(e)
+            #err_msg = err_exp + ', ' + err_tbk
+            err_msg = err_exp
+            log.debug(err_tbk)
+            rtn = (False, '%s' % (err_msg))
+        return rtn
+
 
 def main():
     pass

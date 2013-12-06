@@ -33,30 +33,25 @@ class Schema_locations_post(Schema):
     address     = validators.UnicodeString(if_missing=u'PlaceAddress')
     userid      = validators.Int(if_missing=1)
 
-class Schema_location_get(Schema):
-    pass
-
 class Schema_location_put(Schema):
-    pass
+    name        = validators.UnicodeString()
+    description = validators.UnicodeString()
+    gps         = validators.UnicodeString()
+    address     = validators.UnicodeString()
+    userid      = validators.Int()
 
-class Schema_location_delete(Schema):
-    pass
 
 
 @view_defaults(renderer='json')
 class LocationAPI(BaseAPI):
     @view_config(route_name='locations', request_method='OPTIONS')
     def location_options(self):
-        self.request.response.headers.add('Access-Control-Allow-Headers', 'X-Requested-With')
-        self.request.response.headers.add('Access-Control-Allow-Origin',  '*')
-        self.request.response.headers.add('Access-Control-Allow-Methods', 'POST')
+        self.XHeaders(methods=['POST'])
         return {}
 
     @view_config(route_name='location', request_method='OPTIONS')
     def location_option(self):
-        self.request.response.headers.add('Access-Control-Allow-Headers', 'X-Requested-With')
-        self.request.response.headers.add('Access-Control-Allow-Origin',  '*')
-        self.request.response.headers.add('Access-Control-Allow-Methods', 'PUT, DELETE')
+        self.XHeaders(methods=['PUT','DELETE'])
         return {}
 
     @view_config(route_name='locations', request_method='GET')
@@ -65,20 +60,48 @@ class LocationAPI(BaseAPI):
         list locations
         API: GET /locations
         """
-
         #for X-domain development
-        self.request.response.headers.add('Access-Control-Allow-Headers', 'X-Requested-With')
-        self.request.response.headers.add('Access-Control-Allow-Origin',  '*')
-
+        self.XHeaders()
 
         #validation
         success, data, code = self.validate(Schema_locations_get)
 
         if success:
             serv = LocationService(self.request)
-            serv_rtn = serv.list(userid=data['userid'],
+            serv_rtn = serv.list(userid=data['userid'], 
                                  offset=data['offset'],
                                  size=data['size'])
+        else:
+            #mock fake serv_rtn
+            serv_rtn = {'data':'', 
+                        'info':data, 
+                        'code':code, 
+                        'success':False}
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+    @view_config(route_name='location', request_method='GET')
+    def location_show(self):
+        """
+        show location
+        API: GET /location/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+
+        #validation
+        success, data, code = self.validate(Schema_locations_get)
+
+        try:
+            #get id from route_path
+            locationid = self.request.matchdict['id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = LocationService(self.request)
+            serv_rtn = serv.show(id=locationid)
         else:
             #mock fake serv_rtn
             serv_rtn = {'data':'',
@@ -90,6 +113,7 @@ class LocationAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
+
     #TODO: test me!
     @view_config(route_name='locations', request_method='POST')
     def locations_create(self):
@@ -98,9 +122,7 @@ class LocationAPI(BaseAPI):
         API: POST /locations
         """
         #for X-domain development
-        self.request.response.headers.add('Access-Control-Allow-Headers', 'X-Requested-With')
-        self.request.response.headers.add('Access-Control-Allow-Origin',  '*')
-        self.request.response.headers.add('Access-Control-Allow-Methods', 'POST')
+        self.XHeaders(methods=['POST'])
 
 
         #validation
@@ -115,25 +137,22 @@ class LocationAPI(BaseAPI):
                                    userid=data['userid'])
         else:
             #mock fake serv_rtn
-            serv_rtn = {'data':'',
-                        'info':data,
-                        'code':code,
-                        'success':False,
-                        }
+            serv_rtn = {'data':'', 
+                        'info':data, 
+                        'code':code, 
+                        'success':False}
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='location', request_method='GET')
-    def location_list(self):
+    @view_config(route_name='location', request_method='PUT')
+    def location_update(self):
         """
-        list locations
-        API: GET /location/<id:\d+>
+        update locations
+        API: PUT /location/<id:\d+>
         """
-
         #for X-domain development
-        self.request.response.headers.add('Access-Control-Allow-Headers', 'X-Requested-With')
-        self.request.response.headers.add('Access-Control-Allow-Origin',  '*')
+        self.XHeaders()
 
         #validation
         success, data, code = self.validate(Schema_locations_get)
@@ -146,7 +165,39 @@ class LocationAPI(BaseAPI):
 
         if success:
             serv = LocationService(self.request)
-            serv_rtn = serv.show(id=locationid)
+            serv_rtn = serv.update(id=locationid, data=data)
+        else:
+            #mock fake serv_rtn
+            serv_rtn = {'data':'',
+                        'info':data,
+                        'code':code,
+                        'success':False,
+                        }
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+    @view_config(route_name='location', request_method='DELETE')
+    def location_delete(self):
+        """
+        delete location
+        API: DELETE /location/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+
+        #validation
+        success, data, code = self.validate(Schema_locations_get)
+
+        try:
+            #get id from route_path
+            locationid = self.request.matchdict['id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = LocationService(self.request)
+            serv_rtn = serv.delete(id=locationid)
         else:
             #mock fake serv_rtn
             serv_rtn = {'data':'',

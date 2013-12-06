@@ -43,3 +43,24 @@ class BaseAPI(object):
             rtn = (False, errors, 400)
         return rtn
 
+    def XHeaders(self, headers=['X-Requested-With'], origins=['*'],methods=[]):
+        header = ''
+        for h in headers:
+            header = header + ', ' + h
+        header = header[2:]
+        self.request.response.headers.add('Access-Control-Allow-Headers', header)
+
+        origin = ''
+        for o in origins:
+            origin = origin + ', ' + o
+        origin = origin[2:]
+        self.request.response.headers.add('Access-Control-Allow-Origin', origin)
+
+        method = ''
+        for m in methods:
+            method = method + ', ' + m
+        method = method[2:]
+        if len(methods) != 0:
+            self.request.response.headers.add('Access-Control-Allow-Methods', method)
+
+
