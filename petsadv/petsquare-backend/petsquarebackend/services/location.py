@@ -86,7 +86,7 @@ class LocationService(BaseService):
     def delete(self, id):
         status = self.status.copy()
         try:
-            success, model = Location_TB.update(id=id)
+            success, model = Location_TB.delete(id=id)
             status = self.serv_rtn(status=status, success=success, model=model)
         except Exception, e:
             self.serv_exception_rtn(\

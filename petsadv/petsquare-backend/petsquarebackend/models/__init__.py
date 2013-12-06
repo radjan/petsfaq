@@ -182,6 +182,7 @@ class ModelMixin(object):
         try:
             model = cls.get_by_attr(attr='id', value=id)
             DBSession.delete(model)
+            #DBSession.flush()
             #do not use commit() method manually
             #DBSession.commit()
             rtn = (True,)
