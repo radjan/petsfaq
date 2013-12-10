@@ -3,7 +3,7 @@
 angular.module('webFrontendApp')
   .controller('PetmapCtrl', function ($scope) {
   	var map;
-	function initialize() {
+	var initialize = function() {
 	  var mapOptions = {
 	    zoom: 8,
 	    /*global google */
@@ -16,6 +16,6 @@ angular.module('webFrontendApp')
 
 	$scope.loadMap = function(){
 		/*global google */
-		google.maps.event.addDomListener(window, 'load', initialize);
+		google.maps.event.addDomListener(window, 'load', initialize());
 	};
   });
