@@ -35,6 +35,9 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
+        Location_TB.__table__.drop(engine, checkfirst=True)
+        Base.metadata.create_all(engine)
+
         success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
         success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
         success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
