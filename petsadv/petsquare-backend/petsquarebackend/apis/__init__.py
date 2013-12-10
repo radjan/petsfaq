@@ -4,11 +4,14 @@
 import logging
 log = logging.getLogger(__name__)
 
+from formencode import Invalid
+
 class BaseAPI(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-    def handle_serv_rtn(self, serv_rtn, fcode=500, scode=200):
+
+    def format_return(self, serv_rtn, fcode=500, scode=200):
         """
         Handle status returned from Services
         """
@@ -20,4 +23,43 @@ class BaseAPI(object):
             self.request.status_int = fcode
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
+
+    def validate(self, schema):
+        """
+        Handle params sent from web requests
+        """
+        try:
+            target_dict = dict()
+            target_dict.update(dict(self.request.params.copy()))
+            if len(self.request.body) > 0:
+                target_dict.update(dict(self.request.json_body.copy()))
+            data = dict(target_dict)
+            data = schema.to_python(data)
+            rtn = (True, data, 200)
+
+        except Invalid, e:
+            errors = e.unpack_errors()
+            rtn = (False, errors, 400)
+        return rtn
+
+    def XHeaders(self, headers=['X-Requested-With'], origins=['*'],methods=[]):
+        header = ''
+        for h in headers:
+            header = header + ', ' + h
+        header = header[2:]
+        self.request.response.headers.add('Access-Control-Allow-Headers', header)
+
+        origin = ''
+        for o in origins:
+            origin = origin + ', ' + o
+        origin = origin[2:]
+        self.request.response.headers.add('Access-Control-Allow-Origin', origin)
+
+        method = ''
+        for m in methods:
+            method = method + ', ' + m
+        method = method[2:]
+        if len(methods) != 0:
+            self.request.response.headers.add('Access-Control-Allow-Methods', method)
+
 

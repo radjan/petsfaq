@@ -14,7 +14,7 @@ from ..models import (
     Base,
     )
 
-from ..models.location import location_tb
+from ..models.location import Location_TB
 
 
 
@@ -35,6 +35,8 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = location_tb(name='one', description='1', gps='1,5', address='taipei', userid=1)
+        success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
+        success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
+        success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
         DBSession.add(model)
 
