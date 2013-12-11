@@ -6,6 +6,20 @@ __author__= 'samuel'
 import logging
 log = logging.getLogger(__name__)
 
+
+def ServiceMethod(func):
+    def wrapped(self, *args, **kwargs):
+        try:
+            status = func(self, *args, **kwargs)
+        except Exception, e:
+            self.serv_exception_rtn(\
+                    status=status, 
+                    exp=e, 
+                    ins_stk=inspect.stack()[0][3],
+                    tbk=traceback.format_exc())
+        return status
+    return wrapped
+     
 class BaseService(object):
     def __init__(self, service_cls, request=None):
         self.service_cls = service_cls
@@ -31,6 +45,8 @@ class BaseService(object):
         status['info'] = {'status':str(success), 
                           'msg':'' if success else model}
         return status
+
+
 
 
 
