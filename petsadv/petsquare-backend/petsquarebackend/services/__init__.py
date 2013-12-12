@@ -6,12 +6,15 @@ __author__= 'samuel'
 import logging
 log = logging.getLogger(__name__)
 
+import inspect
+import traceback
 
 def ServiceMethod(func):
     def wrapped(self, *args, **kwargs):
         try:
             status = func(self, *args, **kwargs)
         except Exception, e:
+            status = self.status.copy()
             self.serv_exception_rtn(\
                     status=status, 
                     exp=e, 
