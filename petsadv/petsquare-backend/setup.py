@@ -15,6 +15,7 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'formencode',
+    'PIL',
     ]
 
 setup(name='petsquare-backend',
