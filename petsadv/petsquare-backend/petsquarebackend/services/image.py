@@ -35,8 +35,13 @@ class ImageService(BaseService):
     @ServiceMethod
     def create(self, description, image, userid):
         status = self.status.copy()
+
+        image_filename = image.filename
+        image_file     = image.file
+
         success, model = Image_TB.create(description=description,
-                                         iamge=image,
+                                         filename=image_filename,
+                                         image=image_file,
                                          userid=userid)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
@@ -51,9 +56,14 @@ class ImageService(BaseService):
     @ServiceMethod
     def update(self, id, data):
         status = self.status.copy()
+
+        image_filename = data['image'].filename
+        image_file     = data['image'].file
+
         success, model = Image_TB.update(id=id,
                            description=data['description'],
-                           image=data['image'],
+                           filename=image_filename,
+                           image=image_file,
                            userid=data['userid'],)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
