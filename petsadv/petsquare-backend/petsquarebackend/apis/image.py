@@ -20,6 +20,9 @@ from pyramid.view import (
 from petsquarebackend.apis import BaseAPI
 from petsquarebackend.services.image import ImageService
 
+from pyramid.response import FileResponse
+from pyramid.response import Response
+import Image as PILImage
 
 class Schema_images_get(Schema):
     offset = validators.Int(if_missing=0)
@@ -82,6 +85,51 @@ class ImageAPI(BaseAPI):
         """
         show image
         API: GET /image/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+
+        #validation
+        success, data, code = self.validate(Schema_images_get)
+
+        try:
+            #get id from route_path
+            imageid = self.request.matchdict['id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = ImageService(self.request)
+            serv_rtn = serv.show(id=imageid)
+
+            #return img
+            import os
+            from io import BytesIO
+
+            model = serv_rtn['data']
+            img_format = str(model.format).lower()
+            img_string = model.image.decode("base64")
+            img = PILImage.open(BytesIO(img_string))
+
+            api_rtn = Response(content_type='image/%s' % img_format)
+            img.save(api_rtn,"%s" % img_format)
+
+        else:
+            #mock fake serv_rtn
+            serv_rtn = {'data':'',
+                        'info':data,
+                        'code':code,
+                        'success':False,
+                        }
+
+        return api_rtn
+
+
+    @view_config(route_name='imagedata', request_method='GET')
+    def image_data(self):
+        """
+        show image data
+        API: GET /image/data/<id:\d+>
         """
         #for X-domain development
         self.XHeaders()
