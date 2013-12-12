@@ -31,6 +31,7 @@ class Image_TB(Base):
     id              = Column(Integer(10), nullable=False, unique=True, 
                              primary_key=True, autoincrement=True)
     description     = Column(String(255), nullable=True, unique=False,)
+    filename        = Column(String(255), nullable=False, unique=False,)
     image           = Column(BLOB)
     userid          = Column(Integer(10), nullable=False, unique=False,)
     createddatetime = Column(DateTime, nullable=False)
@@ -42,10 +43,13 @@ class Image_TB(Base):
         super(Image_TB, self).__init__(*args, **kwargs)
 
     @classmethod
-    def create(cls, name, description,  userid):
+    def create(cls, description, filename, image, userid):
         global DBSession
         try:
-            model = cls(description=description, image=image, userid=userid)
+            model = cls(description=description,
+                        filename=filename, 
+                        image=image,
+                        userid=userid)
             DBSession.add(model)
             DBSession.flush()
             rtn = (True, model)
@@ -89,13 +93,14 @@ class Image_TB(Base):
 
 
     @classmethod
-    def update(cls, id, description=None, image=None, userid=None):
+    def update(cls, id, description=None, filename=filename, image=None, userid=None):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
         try:
             #FIXME
             if description: model.description = description
+            if filename:    model.filename = filename
             if image:       model.image = image
             if userid:      model.userid = userid
             model.updateddatetime = updateddatetime
