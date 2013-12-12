@@ -25,6 +25,7 @@ from sqlalchemy.types import (
 
 import datetime
 import traceback
+import Image as PILImage
 
 class Image_TB(Base):
     __tablename__ = 'image'
@@ -33,6 +34,7 @@ class Image_TB(Base):
     description     = Column(String(255), nullable=True, unique=False,)
     filename        = Column(String(255), nullable=False, unique=False,)
     image           = Column(BLOB)
+    format          = Column(String(20), nullable=False, unique=False,)
     userid          = Column(Integer(10), nullable=False, unique=False,)
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
@@ -46,9 +48,16 @@ class Image_TB(Base):
     def create(cls, description, filename, image, userid):
         global DBSession
         try:
+            img_string = image.read()
+
+            from io import BytesIO
+            img = PILImage.open(BytesIO(img_string))
+            format = img.format
+
             model = cls(description=description,
                         filename=filename, 
-                        image=image,
+                        image=img_string.encode("base64"),
+                        format=format,
                         userid=userid)
             DBSession.add(model)
             DBSession.flush()
