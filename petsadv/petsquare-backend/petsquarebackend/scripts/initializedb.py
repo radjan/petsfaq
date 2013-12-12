@@ -15,6 +15,7 @@ from ..models import (
     )
 
 from ..models.location import Location_TB
+from ..models.image import Image_TB
 
 
 
