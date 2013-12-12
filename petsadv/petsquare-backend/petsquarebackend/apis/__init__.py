@@ -24,15 +24,22 @@ class BaseAPI(object):
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
-    def validate(self, schema):
+    def validate(self, schema, body=True):
         """
         Handle params sent from web requests
         """
         try:
+            #log.debug('request param: %s' % self.request.params)
+            #log.debug('request body: %s'  % self.request.body)
             target_dict = dict()
-            target_dict.update(dict(self.request.params.copy()))
-            if len(self.request.body) > 0:
-                target_dict.update(dict(self.request.json_body.copy()))
+
+            if body == True:
+                target_dict.update(dict(self.request.params.copy()))
+                if len(self.request.body) > 0:
+                    target_dict.update(dict(self.request.json_body.copy()))
+            else:
+                target_dict.update(dict(self.request.params.copy()))
+
             data = dict(target_dict)
             data = schema.to_python(data)
             rtn = (True, data, 200)
