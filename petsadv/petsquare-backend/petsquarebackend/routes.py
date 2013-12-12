@@ -9,8 +9,10 @@ def api_routes(config):
 
 
     #api
-    config.add_route('locations',  api_prefix + str(main_version) + '/locations')
-    config.add_route('location', api_prefix + str(main_version) + '/location/{id:\d+}')
+    config.add_route('locations', api_prefix + str(main_version) + '/locations')
+    config.add_route('location',  api_prefix + str(main_version) + '/location/{id:\d+}')
+    config.add_route('images',    api_prefix + str(main_version) + '/images')
+    config.add_route('image',     api_prefix + str(main_version) + '/image/{id:\d+}')
 
     
 
