@@ -10,8 +10,8 @@ angular.module('webFrontendApp')
       window.fbAsyncInit = function() {
         /*global FB */
         FB.init({
-          appId      : '447182208718938', // App ID
-          channelUrl : '7fd7975b33e7c21185d476ae1141314c', // Channel File
+          appId      : '365022226968758', // App ID
+          channelUrl : 'efecb3e99c55926533debed6c33e63c5', // Channel File
           status     : true, // check login status
           cookie     : true, // enable cookies to allow the server to access the session
           xfbml      : true  // parse XFBML
