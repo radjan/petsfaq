@@ -2,6 +2,40 @@
 
 angular.module('webFrontendApp')
   .controller('PetmapCtrl', function ($scope) {
+  	/********* MOCK DATA **/
+  	var USER_ID = '000001';
+
+	var MOCK_LOCATIONS = {
+		'0001': {
+			'name': 'LOCATION_0001',
+			'description': 'one sentence desc',
+			'lat': 25.04171, //float
+			'lng': 121.548353, //float
+			'address': 'Taipei City',
+		},
+		'0002': {
+			'name': 'LOCATION_0002',
+			'description': 'one sentence desc',
+			'lat': 25.021334,
+			'lng': 121.548205,
+			'address': 'Taipei City',
+		},
+	};
+
+	 var MOCK_CHECKINS = [
+		{
+			'user': USER_ID,
+		 	'location': MOCK_LOCATIONS['0001'],
+		 	'create': '', //timestamp1
+		},
+		{
+			'user': USER_ID,
+		 	'location': MOCK_LOCATIONS['0002'],
+		 	'create': '', //timestamp2
+		},
+	]
+
+	/********* END MOCK DATA **/
   	var map;
   	var myLatlng = new google.maps.LatLng(23.5, 121);
 
