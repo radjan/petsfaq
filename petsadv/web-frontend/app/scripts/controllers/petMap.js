@@ -33,7 +33,7 @@ angular.module('webFrontendApp')
 		 	'location': MOCK_LOCATIONS['0002'],
 		 	'create': '', //timestamp2
 		},
-	]
+	];
 
 	/********* END MOCK DATA **/
   	var map;
@@ -69,7 +69,7 @@ angular.module('webFrontendApp')
 
 	  setMarkers();
 	  
-	}
+	};
 
 	var setMarkers = function(){
 		// marker.setMap(map);
