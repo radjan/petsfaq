@@ -30,7 +30,7 @@
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
+          "title": "Successful Response Body:",
           "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true, \n       msg: \"\" \n     }, \n     data: null\n   }\n"
         }
       ]
@@ -68,7 +68,7 @@
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
+          "title": "Successful Response Body:",
           "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2013-12-24, 02:54:24\",\n       userid: 1,\n       name: \"one\",\n       address: \"taipei\",\n       updateddatetime: \"2013-12-24, 02:54:24\",\n       id: 1,\n       longtitude: 121.5130475,\n       latitude: 25.040063\n     }\n   }\n"
         }
       ]
@@ -120,7 +120,7 @@
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
+          "title": "Successful Response Body:",
           "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n         msg: \"\",\n         count: 3\n     },\n       data: [\n       {\n         description: \"1\",\n         createddatetime: \"2013-12-24, 02:54:24\",\n         userid: 1,\n         name: \"one\",\n         address: \"taipei\",\n         updateddatetime: \"2013-12-24, 02:54:24\",\n         id: 1,\n         longtitude: 121.5130475,\n         latitude: 25.040063\n       },\n       {\n         description: \"1\",\n         createddatetime: \"2013-12-24, 02:54:24\",\n         userid: 1,\n         name: \"one\",\n         address: \"taipei\",\n         updateddatetime: \"2013-12-24, 02:54:24\",\n         id: 2,\n         longtitude: 121.5130475,\n         latitude: 25.040063\n       },\n       {\n         description: \"1\",\n         createddatetime: \"2013-12-24, 02:54:24\",\n         userid: 1,\n         name: \"one\",\n         address: \"taipei\",\n         updateddatetime: \"2013-12-24, 02:54:24\",\n         id: 3,\n         longtitude: 121.5130475,\n         latitude: 25.040063\n       }\n     ]\n   }\n"
         }
       ]
@@ -193,7 +193,7 @@
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
+          "title": "Successful Response Body:",
           "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"dd\",\n           createddatetime: \"2013-12-24, 04:22:50\",\n           userid: 1,\n           name: \"nn\",\n           address: \"address\",\n           updateddatetime: \"2013-12-24, 04:22:50\",\n           id: 1,\n           longtitude: 121.5130475,\n           latitude: 25.040063\n       }\n   }\n"
         }
       ]
@@ -280,7 +280,7 @@
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
+          "title": "Successful Response Body:",
           "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"description\",\n           createddatetime: \"2013-12-24, 04:22:50\",\n           userid: 1,\n           name: \"name\",\n           address: \"address\",\n           updateddatetime: \"2013-12-24, 04:25:50\",\n           id: 1,\n           longtitude: 121.5130475,\n           latitude: 25.040063\n       }\n   }\n"
         }
       ]
