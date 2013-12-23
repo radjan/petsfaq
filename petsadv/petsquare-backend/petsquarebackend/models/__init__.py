@@ -204,7 +204,7 @@ class ModelMixin(object):
         for k,value in obj_dict.items():
             #log.debug('key name: %s, value: %s, value type: %s' % (k, value, type(value)))
             if isinstance(value, datetime.datetime):
-                value = [value.strftime("%Y-%m-%d"), value.strftime("%H:%M:%S")]
+                value = value.strftime("%Y-%m-%d, %H:%M:%S")
             rtn_dict[k] = value
         return rtn_dict
 
