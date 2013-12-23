@@ -11,11 +11,13 @@ requires = [
     'SQLAlchemy',
     'transaction',
     'pyramid_tm',
+    'pyramid_jinja2',
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
     'formencode',
     'PIL',
+    'IPython',
     ]
 
 setup(name='petsquare-backend',
