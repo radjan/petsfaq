@@ -185,7 +185,7 @@ class ModelMixin(object):
             #DBSession.flush()
             #do not use commit() method manually
             #DBSession.commit()
-            rtn = (True,)
+            rtn = (True, None)
         except Exception, e:
             import traceback
             err_tbk = traceback.format_exc()

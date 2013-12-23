@@ -117,7 +117,7 @@ class Location_TB(Base):
     @classmethod
     def delete(cls, id):
         try:
-            rtn = (True, cls.delete_by_id(id))
+            rtn = cls.delete_by_id(id)
         except Exception, e:
             err_tbk = traceback.format_exc()
             err_exp = str(e)

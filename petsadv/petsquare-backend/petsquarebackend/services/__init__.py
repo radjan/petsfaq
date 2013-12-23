@@ -45,7 +45,7 @@ class BaseService(object):
     def serv_rtn(cls, status, success, model):
         status['data'] = model if success else ''
         status['success'] = success
-        status['info'] = {'status':str(success), 
+        status['info'] = {'status':success, 
                           'msg':'' if success else model}
         return status
 
