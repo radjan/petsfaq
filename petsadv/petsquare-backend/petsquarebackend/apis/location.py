@@ -29,14 +29,16 @@ class Schema_locations_get(Schema):
 class Schema_locations_post(Schema):
     name        = validators.UnicodeString(if_missing=u'PlaceName')
     description = validators.UnicodeString(if_missing=u'PlaceDescription')
-    gps         = validators.UnicodeString(if_missing=u'PlaceGPS')
+    longtitude  = validators.Number(if_missing=121.5130475)
+    latitude    = validators.Number(if_missing=25.040063)
     address     = validators.UnicodeString(if_missing=u'PlaceAddress')
     userid      = validators.Int(if_missing=1)
 
 class Schema_location_put(Schema):
     name        = validators.UnicodeString()
     description = validators.UnicodeString()
-    gps         = validators.UnicodeString()
+    longtitude  = validators.Number()
+    latitude    = validators.Number()
     address     = validators.UnicodeString()
     userid      = validators.Int()
 

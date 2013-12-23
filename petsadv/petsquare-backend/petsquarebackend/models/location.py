@@ -20,6 +20,7 @@ from sqlalchemy.types import (
         Boolean,
         DateTime,
         UnicodeText,
+        Float,
         )
 
 import datetime
@@ -28,10 +29,11 @@ import traceback
 class Location_TB(Base):
     __tablename__ = 'location'
     id              = Column(Integer(10), nullable=False, unique=True, 
-                             primary_key=True, autoincrement=True)
+            primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=True, unique=False, )
     description     = Column(String(255), nullable=True, unique=False,)
-    gps             = Column(String(255), nullable=True, unique=False,)
+    longtitude      = Column(Float(255), nullable=True, unique=False,)
+    latitude        = Column(Float(255), nullable=True, unique=False,)
     address         = Column(String(255), nullable=True, unique=False,)
     userid          = Column(Integer(10), nullable=True, unique=False,)
     createddatetime = Column(DateTime, nullable=False)
@@ -43,11 +45,12 @@ class Location_TB(Base):
         super(Location_TB, self).__init__(*args, **kwargs)
 
     @classmethod
-    def create(cls, name, description, gps, address, userid):
+    def create(cls, name, description, longtitude, latitude, address, userid):
         global DBSession
         try:
-            model = cls(name=name, description=description, gps=gps, 
-                        address=address, userid=userid)
+            model = cls(name=name, description=description,
+                    longtitude=longtitude, latitude=latitude, address=address, 
+                    userid=userid)
             DBSession.add(model)
             DBSession.flush()
             rtn = (True, model)
@@ -91,7 +94,8 @@ class Location_TB(Base):
 
 
     @classmethod
-    def update(cls, id, name=None, description=None, gps=None, address=None, userid=None):
+    def update(cls, id, name=None, description=None, longtitude=None,
+            latitude=None, address=None, userid=None):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
@@ -99,7 +103,8 @@ class Location_TB(Base):
             #FIXME
             if name:        model.name = name
             if description: model.description = description
-            if gps:         model.gps = gps
+            if longtitude:  model.longtitude = longtitude
+            if latitude:    model.latitude = latitude
             if address:     model.address = address
             if userid:      model.userid = userid
             model.updateddatetime = updateddatetime

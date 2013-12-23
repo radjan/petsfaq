@@ -33,11 +33,13 @@ class LocationService(BaseService):
         return status
 
     @ServiceMethod
-    def create(self, name, description, gps, address, userid):
+    def create(self, name, description, longtitude, latitude, address, userid):
         status = self.status.copy()
         success, model = Location_TB.create(name=name, 
                                             description=description,
-                                            gps=gps, address=address, 
+                                            longtitude=longtitude,
+                                            latitude=latitude,
+                                            address=address, 
                                             userid=userid)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
@@ -55,7 +57,8 @@ class LocationService(BaseService):
         success, model = Location_TB.update(id=id,
                            name=data['name'],
                            description=data['description'],
-                           gps=data['gps'],
+                           longtitude=data['longtitude'],
+                           latitude=data['latitude'],
                            address=data['address'],
                            userid=data['userid'],)
         status = self.serv_rtn(status=status, success=success, model=model)
