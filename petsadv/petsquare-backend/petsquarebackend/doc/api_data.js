@@ -161,10 +161,17 @@ define({ api: [
           },
           {
             "group": "Parameter",
-            "type": "String",
-            "field": "gps",
+            "type": "Number",
+            "field": "longtitude",
             "optional": false,
-            "description": "gps"
+            "description": "longtitude"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "latitude",
+            "optional": false,
+            "description": "latitude"
           },
           {
             "group": "Parameter",
@@ -241,10 +248,17 @@ define({ api: [
           },
           {
             "group": "Parameter",
-            "type": "String",
-            "field": "gps",
+            "type": "Number",
+            "field": "longtitude",
             "optional": false,
-            "description": "gps"
+            "description": "longtitude"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "latitude",
+            "optional": false,
+            "description": "latitude"
           },
           {
             "group": "Parameter",
