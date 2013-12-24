@@ -5,13 +5,16 @@ angular.module('webFrontendApp')
     $scope.navBarList = [
       {name:"寵物地圖", url:"/#petMap"}
     ];
-  
+    $scope.username="登入";
+    $scope.login_check="Facebook 登入";
     $scope.initFb = function(){
       window.fbAsyncInit = function() {
         /*global FB */
         FB.init({
-          appId      : '365022226968758', // App ID
-          channelUrl : 'efecb3e99c55926533debed6c33e63c5', // Channel File
+          //appId      : '365022226968758', // App ID
+          //channelUrl : 'efecb3e99c55926533debed6c33e63c5', // Channel File
+          appId      : '447182208718938', // App ID
+          channelUrl : '7fd7975b33e7c21185d476ae1141314c', // Channel File
           status     : true, // check login status
           cookie     : true, // enable cookies to allow the server to access the session
           xfbml      : true  // parse XFBML
@@ -30,10 +33,13 @@ angular.module('webFrontendApp')
     $scope.loginByFB=function(){
       /*global FB */
   		FB.login(function(response) {
-  			console.log(response.status);
+  			
   		    if (response.authResponse) {
   		        // The person logged into your app
   		        FB.api('/me', function(response) {
+              $scope.username=response.name ;
+              console.log($scope.username);
+              $scope.login_check='Facebook登出';
        			 	console.log('Good to see you, ' + response.name + '.');
       			});
   		    } else {

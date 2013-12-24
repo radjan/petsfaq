@@ -1,10 +1,10 @@
 <div class="row-fluid">
 	<div class="span2">
-		<ul class="nav nav-pills nav-stacked">
-			<li>最近活動點</li>
-			<li>歷史活動點</li>
-			<li>熱門地點</li>
-		</ul>
+		<accordion close-others="oneAtATime">
+			<accordion-group heading="{{category.title}}" ng-repeat="category in categories">
+      			{{category.content}}
+    		</accordion-group>
+		</accordion>
 	</div>
 	
 	<div class="span10">

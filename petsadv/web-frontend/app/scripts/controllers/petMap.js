@@ -98,5 +98,13 @@ angular.module('webFrontendApp')
 		google.maps.event.addDomListener(window, 'load', initialize());
 	};
 
+
+	/********nav bar **********/
+	$scope.oneAtATime = true;
+	$scope.categories=[
+		{title:'最近活動點',content:'test1'},
+		{title:'歷史活動點',content:'test2'},
+		{title:'熱門地點',content:'test3'},
+	]
 	
   });

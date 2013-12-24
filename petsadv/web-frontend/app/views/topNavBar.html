@@ -8,7 +8,7 @@
 	    <ul class="nav pull-right">
 			<li class="divider-vertical"></li>
 			<li class="dropdown">
-				<a class="dropdown-toggle" href="#" data-toggle="dropdown"> 登入 <strong class="caret"></strong></a>
+				<a class="dropdown-toggle" href="#" data-toggle="dropdown"> {{username}} <strong class="caret"></strong></a>
 				<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
 					<div>
 						<a class="btn" ng-click="loginByFB()" ng-init="initFb()">
@@ -16,7 +16,7 @@
 							 	<i class="fa fa-square-o fa-stack-2x" style="color:white; background:#3B5998"></i>
 							  	<i class="fa fa-facebook fa-stack-1x" style="color:white"></i>
 							</span>
-							&nbsp;Facebook 登入
+							&nbsp;{{login_check}}
 						</a>
 					</div>
 					<br>
