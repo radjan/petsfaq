@@ -15,11 +15,30 @@ from sqlalchemy.orm import (
 
 from sqlalchemy import desc
 from sqlalchemy import func
+import transaction
 
 import datetime
 import json
 
-DBSession = scoped_session(sessionmaker(extension=ZTE()))
+import inspect
+import traceback
+
+DBSession = scoped_session(sessionmaker(expire_on_commit=False,
+                                        extension=ZTE(keep_session=False)))
+
+
+def ModelMethod(func):
+    def wrapped(cls, *args, **kwargs):
+        with transaction.manager:
+            try:
+                rtn = func(cls, *args, **kwargs)
+            except Exception, e:
+                rtn = cls.model_exception_rtn(exp=e,
+                                              ins_stk=inspect.stack()[0][3],
+                                              tbk=traceback.format_exc())
+        return rtn
+    return wrapped
+
 
 class ModelMixin(object):
     @classmethod
@@ -185,7 +204,7 @@ class ModelMixin(object):
             #DBSession.flush()
             #do not use commit() method manually
             #DBSession.commit()
-            rtn = (True,)
+            rtn = (True, None)
         except Exception, e:
             import traceback
             err_tbk = traceback.format_exc()
@@ -196,6 +215,15 @@ class ModelMixin(object):
             rtn = (False, err_msg)
         return rtn
 
+    @classmethod
+    def model_exception_rtn(cls, exp, ins_stk, tbk):
+        rtn = []
+        err_info = (cls.__tablename__, ins_stk, tbk)
+        log.debug('%s:%s, traceback:\n %s' % err_info)
+        rtn.append(False)
+        rtn.append({'status':'fail', 'msg':'service error on %s' % ins_stk}) 
+        return rtn
+                                   
 
     def __json__(self, request):
         obj_dict = self.__dict__
@@ -204,7 +232,7 @@ class ModelMixin(object):
         for k,value in obj_dict.items():
             #log.debug('key name: %s, value: %s, value type: %s' % (k, value, type(value)))
             if isinstance(value, datetime.datetime):
-                value = [value.strftime("%Y-%m-%d"), value.strftime("%H:%M:%S")]
+                value = value.strftime("%Y-%m-%d, %H:%M:%S")
             rtn_dict[k] = value
         return rtn_dict
 

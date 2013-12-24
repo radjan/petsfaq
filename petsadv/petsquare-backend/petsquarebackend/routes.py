@@ -6,7 +6,7 @@ dev_version  = 2
 def api_routes(config):
     #test
     config.add_route('hello','/hello')
-
+    config.add_static_view('/apidoc', path='petsquarebackend:doc', cache_max_age=3600)
 
     #api
     config.add_route('locations', api_prefix + str(main_version) + '/locations')

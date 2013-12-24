@@ -7,6 +7,7 @@ log = logging.getLogger(__name__)
 
 from petsquarebackend.models import DBSession
 from petsquarebackend.models import Base
+from petsquarebackend.models import ModelMethod
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -20,6 +21,7 @@ from sqlalchemy.types import (
         Boolean,
         DateTime,
         UnicodeText,
+        Float,
         )
 
 import datetime
@@ -28,10 +30,11 @@ import traceback
 class Location_TB(Base):
     __tablename__ = 'location'
     id              = Column(Integer(10), nullable=False, unique=True, 
-                             primary_key=True, autoincrement=True)
+            primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=True, unique=False, )
     description     = Column(String(255), nullable=True, unique=False,)
-    gps             = Column(String(255), nullable=True, unique=False,)
+    longtitude      = Column(Float(255), nullable=True, unique=False,)
+    latitude        = Column(Float(255), nullable=True, unique=False,)
     address         = Column(String(255), nullable=True, unique=False,)
     userid          = Column(Integer(10), nullable=True, unique=False,)
     createddatetime = Column(DateTime, nullable=False)
@@ -43,90 +46,58 @@ class Location_TB(Base):
         super(Location_TB, self).__init__(*args, **kwargs)
 
     @classmethod
-    def create(cls, name, description, gps, address, userid):
+    @ModelMethod
+    def create(cls, name, description, longtitude, latitude, address, userid):
         global DBSession
-        try:
-            model = cls(name=name, description=description, gps=gps, 
-                        address=address, userid=userid)
-            DBSession.add(model)
-            DBSession.flush()
-            rtn = (True, model)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+        model = cls(name=name, description=description,
+                longtitude=longtitude, latitude=latitude, address=address, 
+                userid=userid)
+        DBSession.add(model)
+        DBSession.flush()
+        rtn = (True, model)
         return rtn
 
     @classmethod
+    @ModelMethod
     def list(cls, filattr=None, offset=None, size=None):
-        try:
-            model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
-            rtn = (True, model_list)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+        model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
+        rtn = (True, model_list)
         return rtn
 
 
     @classmethod
+    @ModelMethod
     def show(cls, id):
-        try:
-            model = cls.get_by_id(id)
-            rtn = (True, model)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+        model = cls.get_by_id(id)
+        rtn = (True, model)
         return rtn
 
 
     @classmethod
-    def update(cls, id, name=None, description=None, gps=None, address=None, userid=None):
+    @ModelMethod
+    def update(cls, id, name=None, description=None, longtitude=None,
+            latitude=None, address=None, userid=None):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
-        try:
-            #FIXME
-            if name:        model.name = name
-            if description: model.description = description
-            if gps:         model.gps = gps
-            if address:     model.address = address
-            if userid:      model.userid = userid
-            model.updateddatetime = updateddatetime
-            DBSession.merge(model)
-            return (True, model)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+
+        #FIXME
+        if name:        model.name = name
+        if description: model.description = description
+        if longtitude:  model.longtitude = longtitude
+        if latitude:    model.latitude = latitude
+        if address:     model.address = address
+        if userid:      model.userid = userid
+        model.updateddatetime = updateddatetime
+        DBSession.merge(model)
+        rtn =  (True, model)
         return rtn
 
     @classmethod
+    @ModelMethod
     def delete(cls, id):
-        try:
-            rtn = (True, cls.delete_by_id(id))
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+        rtn = cls.delete_by_id(id)
         return rtn
-
 
 def main():
     pass

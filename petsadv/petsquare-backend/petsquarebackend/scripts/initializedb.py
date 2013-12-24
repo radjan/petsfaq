@@ -39,8 +39,11 @@ def main(argv=sys.argv):
         Location_TB.__table__.drop(engine, checkfirst=True)
         Base.metadata.create_all(engine)
 
-        success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
-        success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
-        success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
+        success, model = Location_TB.create(name='one', description='1',
+                longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
+        success, model = Location_TB.create(name='one', description='1',
+                longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
+        success, model = Location_TB.create(name='one', description='1',
+                longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
         DBSession.add(model)
 
