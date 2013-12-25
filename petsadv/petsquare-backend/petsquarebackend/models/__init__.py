@@ -176,24 +176,25 @@ class ModelMixin(object):
 
     @classmethod
     def union_by_ids(cls, idlist, session=DBSession):
+        if not hasattr(cls, 'id'):
+            return None
         union_rtn = None
         for id in idlist:
-            if hasattr(cls, 'id'):
-                scalar = False
-                query = session.query(cls)
-                query = query.filter(cls.id == id)
-                if scalar:
-                    #return query.scalar()
-                    if union_rtn:
-                        union_rtn = union_rtn.union_rtn(query.scalar())
-                    else:
-                        union_rtn = query.scalar()
-                #return query.first()
-                elif union_rtn:
-                    union_rtn = union_rtn.union_rtn(query.first())
+            scalar = False
+            query = session.query(cls)
+            query = query.filter(cls.id == id)
+            if scalar:
+                # FIXME scalar is never True
+                #return query.scalar()
+                if union_rtn:
+                    union_rtn = union_rtn.union_rtn(query.scalar())
                 else:
-                    union_rtn = query.first()
-            return None
+                    union_rtn = query.scalar()
+            #return query.first()
+            elif union_rtn:
+                union_rtn = union_rtn.union_rtn(query.first())
+            else:
+                union_rtn = query.first()
         return union_rtn
 
     @classmethod
