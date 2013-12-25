@@ -14,6 +14,8 @@ def api_routes(config):
     config.add_route('images',    api_prefix + str(main_version) + '/images')
     config.add_route('imagedata', api_prefix + str(main_version) + '/image/data/{id:\d+}')
     config.add_route('image',     api_prefix + str(main_version) + '/image/{id:\d+}')
+    config.add_route('checks', api_prefix + str(main_version) + '/checks')
+    config.add_route('check',  api_prefix + str(main_version) + '/check/{id:\d+}')
 
     
 

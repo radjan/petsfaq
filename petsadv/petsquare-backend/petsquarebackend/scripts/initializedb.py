@@ -16,6 +16,7 @@ from ..models import (
 
 from ..models.location import Location_TB
 from ..models.image import Image_TB
+from ..models.check import Check_TB
 
 
 
@@ -37,13 +38,23 @@ def main(argv=sys.argv):
     Base.metadata.create_all(engine)
     with transaction.manager:
         Location_TB.__table__.drop(engine, checkfirst=True)
+        Check_TB.__table__.drop(engine, checkfirst=True)
         Base.metadata.create_all(engine)
 
-        success, model = Location_TB.create(name='one', description='1',
+        #location
+        success, lmodel = Location_TB.create(name='one', description='1',
                 longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
-        success, model = Location_TB.create(name='one', description='1',
+        success, lmodel = Location_TB.create(name='one', description='1',
                 longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
-        success, model = Location_TB.create(name='one', description='1',
+        success, lmodel = Location_TB.create(name='one', description='1',
                 longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
-        DBSession.add(model)
+        #DBSession.add(lmodel)
+
+        #check
+        success, cmodel = Check_TB.create(title='check1', description='1',
+                location_id=1, image_id=None, userid=1)
+        success, cmodel = Check_TB.create(title='check2', description='2',
+                location_id=1, image_id=None, userid=1)
+        success, cmodel = Check_TB.create(title='check3', description='3',
+                location_id=1, image_id=None, userid=1)
 
