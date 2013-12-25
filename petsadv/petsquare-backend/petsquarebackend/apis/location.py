@@ -134,7 +134,8 @@ class LocationAPI(BaseAPI):
             serv = LocationService(self.request)
             serv_rtn = serv.create(name=data['name'],
                                    description=data['description'],
-                                   gps=data['gps'],
+                                   longtitude=data['longtitude'],
+                                   latitude=data['latitude'],
                                    address=data['address'],
                                    userid=data['userid'])
         else:
