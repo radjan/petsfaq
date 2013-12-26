@@ -33,9 +33,10 @@ def ModelMethod(func):
             try:
                 rtn = func(cls, *args, **kwargs)
             except Exception, e:
-                rtn = cls.model_exception_rtn(exp=e,
-                                              ins_stk=inspect.stack()[0][3],
-                                              tbk=traceback.format_exc())
+                rtn = cls.model_exception_rtn(
+                        exp=e,
+                        ins_stk=inspect.stack()[0][3],
+                        tbk=traceback.format_exc())
         return rtn
     return mdl_wrapped
 
@@ -109,7 +110,7 @@ class ModelMixin(object):
 
     
     @classmethod
-    def get_all(cls, filattr=None, session=DBSession, columns=None, offset=None, limit=None, order_by=None, lock_mode  =None, DESC=False):
+    def get_all(cls, filattr=None, session=DBSession, columns=None, offset=None, limit=None, order_by=None, lock_mode=None, DESC=False):
         if columns:
             if isinstance(columns, (tuple, list)):
                 query = session.query(*columns)
