@@ -13,6 +13,8 @@ from petsquarebackend.services import BaseService
 from petsquarebackend.services import ServiceMethod
 from petsquarebackend.models.image import Image_TB
 
+import Image as PILImage
+
 class ImageService(BaseService):
     def __init__(self, request):
         super(ImageService, self).__init__('ImageService', request)
@@ -47,10 +49,38 @@ class ImageService(BaseService):
         return status
 
     @ServiceMethod
+    def show_img(self, id):
+        status = self.status.copy()
+        success, rtn_dict = Image_TB.show_img(id)
+        print 'show_img() model: %s' % rtn_dict
+
+        #status = self.serv_rtn(status=status, success=success, model=rtn_dict)
+        if success:
+            if rtn_dict != None:
+            #return img
+                import os
+                from io import BytesIO
+                from pyramid.response import Response
+
+                import cStringIO
+
+                img_format = rtn_dict['format']
+                img = PILImage.open(cStringIO.StringIO(rtn_dict['img']))
+
+                status['data'] = Response(content_type='image/%s' % img_format)
+                img.save(status['data'],"%s" % img_format)
+        else:
+            status['data'] = rtn_dict['img']
+        return status
+
+    @ServiceMethod
     def show(self, id):
         status = self.status.copy()
         success, model = Image_TB.show(id)
+
         status = self.serv_rtn(status=status, success=success, model=model)
+        if model == None:
+            status['info']['msg'] = 'empty'
         return status
 
     @ServiceMethod

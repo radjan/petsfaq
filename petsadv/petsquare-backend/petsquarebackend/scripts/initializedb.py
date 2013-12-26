@@ -18,7 +18,7 @@ from ..models.location import Location_TB
 from ..models.image import Image_TB
 from ..models.check import Check_TB
 
-
+import Image as PILImage
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -37,8 +37,9 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        Location_TB.__table__.drop(engine, checkfirst=True)
         Check_TB.__table__.drop(engine, checkfirst=True)
+        Location_TB.__table__.drop(engine, checkfirst=True)
+        Image_TB.__table__.drop(engine, checkfirst=True)
         Base.metadata.create_all(engine)
 
         #location
@@ -48,13 +49,20 @@ def main(argv=sys.argv):
                 longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
         success, lmodel = Location_TB.create(name='one', description='1',
                 longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
-        #DBSession.add(lmodel)
+
+        #image
+        f = open('petsquarebackend/scripts/python.png')
+        success, imodel = Image_TB.create(description='1', 
+                                          filename='python.png',
+                                          image=f,
+                                          userid=1)
 
         #check
         success, cmodel = Check_TB.create(title='check1', description='1',
-                location_id=1, image_id=None, userid=1)
+                location_id=1, image_id=1, userid=1)
         success, cmodel = Check_TB.create(title='check2', description='2',
-                location_id=1, image_id=None, userid=1)
+                location_id=1, image_id=1, userid=1)
         success, cmodel = Check_TB.create(title='check3', description='3',
-                location_id=1, image_id=None, userid=1)
+                location_id=1, image_id=1, userid=1)
+
 

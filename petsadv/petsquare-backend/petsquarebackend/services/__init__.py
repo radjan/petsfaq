@@ -10,7 +10,7 @@ import inspect
 import traceback
 
 def ServiceMethod(func):
-    def wrapped(self, *args, **kwargs):
+    def serv_wrapped(self, *args, **kwargs):
         try:
             status = func(self, *args, **kwargs)
         except Exception, e:
@@ -21,7 +21,7 @@ def ServiceMethod(func):
                     ins_stk=inspect.stack()[0][3],
                     tbk=traceback.format_exc())
         return status
-    return wrapped
+    return serv_wrapped
      
 class BaseService(object):
     def __init__(self, service_cls, request=None):
@@ -38,7 +38,7 @@ class BaseService(object):
         status['data'] = ''
         status['success'] = False
         status['info'] = {'status':'fail',
-                          'msg':'DB internal error on %s' % ins_stk}
+                          'msg':'DB internal error on %s, %s, %s' % err_info}
         return status
 
     @classmethod

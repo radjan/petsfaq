@@ -28,7 +28,7 @@ DBSession = scoped_session(sessionmaker(expire_on_commit=False,
 
 
 def ModelMethod(func):
-    def wrapped(cls, *args, **kwargs):
+    def mdl_wrapped(cls, *args, **kwargs):
         with transaction.manager:
             try:
                 rtn = func(cls, *args, **kwargs)
@@ -37,7 +37,7 @@ def ModelMethod(func):
                                               ins_stk=inspect.stack()[0][3],
                                               tbk=traceback.format_exc())
         return rtn
-    return wrapped
+    return mdl_wrapped
 
 
 class ModelMixin(object):
@@ -222,16 +222,18 @@ class ModelMixin(object):
         err_info = (cls.__tablename__, ins_stk, tbk)
         log.debug('%s:%s, traceback:\n %s' % err_info)
         rtn.append(False)
-        rtn.append({'status':'fail', 'msg':'service error on %s' % ins_stk}) 
+        rtn.append({'status':'fail', 'msg':'model error on %s' % ins_stk}) 
         return rtn
                                    
 
-    def __json__(self, request):
+    def __json__(self, request, pass_col=[]):
         obj_dict = self.__dict__
         obj_dict = dict((key, obj_dict[key]) for key in obj_dict if not key.startswith("_"))
         rtn_dict = {}
         for k,value in obj_dict.items():
             #log.debug('key name: %s, value: %s, value type: %s' % (k, value, type(value)))
+            if k in pass_col:
+                continue
             if isinstance(value, datetime.datetime):
                 value = value.strftime("%Y-%m-%d, %H:%M:%S")
             rtn_dict[k] = value

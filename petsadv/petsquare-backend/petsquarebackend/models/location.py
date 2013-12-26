@@ -39,6 +39,7 @@ class Location_TB(Base):
     userid          = Column(Integer(10), nullable=True, unique=False,)
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
+    checks    = relationship('Check_TB',  backref=backref('location', order_by=id))
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()

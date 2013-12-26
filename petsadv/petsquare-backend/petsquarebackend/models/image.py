@@ -7,6 +7,7 @@ log = logging.getLogger(__name__)
 
 from petsquarebackend.models import DBSession
 from petsquarebackend.models import Base
+from petsquarebackend.models import ModelMethod
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -26,6 +27,7 @@ from sqlalchemy.types import (
 import datetime
 import traceback
 import Image as PILImage
+import base64
 
 class Image_TB(Base):
     __tablename__ = 'image'
@@ -38,6 +40,7 @@ class Image_TB(Base):
     userid          = Column(Integer(10), nullable=False, unique=False,)
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
+    checks    = relationship('Check_TB',  backref=backref('image', order_by=id))
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
@@ -45,97 +48,95 @@ class Image_TB(Base):
         super(Image_TB, self).__init__(*args, **kwargs)
 
     @classmethod
+    @ModelMethod
     def create(cls, description, filename, image, userid):
         global DBSession
-        try:
-            img_string = image.read()
+        img_string = image.read()
 
-            from io import BytesIO
-            img = PILImage.open(BytesIO(img_string))
-            format = img.format
+        from io import BytesIO
+        format = PILImage.open(BytesIO(img_string)).format
 
-            model = cls(description=description,
-                        filename=filename, 
-                        image=img_string.encode("base64"),
-                        format=format,
-                        userid=userid)
-            DBSession.add(model)
-            DBSession.flush()
-            rtn = (True, model)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+        model = cls(description=description,
+                    filename=filename, 
+                    #image=base64.b64encode(img_string),
+                    image=img_string,
+                    format=format,
+                    userid=userid)
+        DBSession.add(model)
+        DBSession.flush()
+        rtn = (True, model)
         return rtn
 
     @classmethod
+    @ModelMethod
     def list(cls, filattr=None, offset=None, size=None):
-        try:
-            model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
-            rtn = (True, model_list)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+        global DBSession
+        model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
+        rtn = (True, model_list)
         return rtn
 
 
     @classmethod
+    @ModelMethod
+    def show_img(cls, id):
+        global DBSession
+        model = cls.get_by_id(id)
+        print '==='
+        print '==='
+        print '==='
+        from pyramid.response import Response
+        print '==='
+        print '==='
+        #print model.image
+        #print model.format
+        rtn_dict = {}
+        if model != None:
+            rtn_dict['format'] =  str(model.format).lower()
+            #b64_string = model.image
+            #img_string =  base64.b64decode(b64_string)
+            #rtn_dict['img'] = img_string
+            rtn_dict['img'] = model.image
+        else:
+            rtn_dict = None
+        rtn = (True, rtn_dict)
+        return rtn
+
+    @classmethod
+    @ModelMethod
     def show(cls, id):
-        try:
-            model = cls.get_by_id(id)
-            rtn = (True, model)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+        global DBSession
+        model = cls.get_by_id(id)
+        rtn = (True, model)
         return rtn
 
-
     @classmethod
+    @ModelMethod
     def update(cls, id, description=None, filename=filename, image=None, userid=None):
+        global DBSession
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
-        try:
-            #FIXME
-            if description: model.description = description
-            if filename:    model.filename = filename
-            if image:       model.image = image
-            if userid:      model.userid = userid
-            model.updateddatetime = updateddatetime
-            DBSession.merge(model)
-            return (True, model)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+
+        #FIXME
+        if description: model.description = description
+        if filename:    model.filename = filename
+        if image:       model.image = image
+        if userid:      model.userid = userid
+        model.updateddatetime = updateddatetime
+        DBSession.merge(model)
+        rtn = (True, model)
         return rtn
 
     @classmethod
+    @ModelMethod
     def delete(cls, id):
-        try:
-            rtn = cls.delete_by_id(id)
-        except Exception, e:
-            err_tbk = traceback.format_exc()
-            err_exp = str(e)
-            #err_msg = err_exp + ', ' + err_tbk
-            err_msg = err_exp
-            log.debug(err_tbk)
-            rtn = (False, '%s' % (err_msg))
+        global DBSession
+        rtn = cls.delete_by_id(id)
         return rtn
+
+    def __json__(self, request):
+        pass_col = ['image']
+        super(Image_TB, self).__json__(request, pass_col)
 
 
 def main():

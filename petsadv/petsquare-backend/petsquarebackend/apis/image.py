@@ -100,19 +100,7 @@ class ImageAPI(BaseAPI):
 
         if success:
             serv = ImageService(self.request)
-            serv_rtn = serv.show(id=imageid)
-
-            #return img
-            import os
-            from io import BytesIO
-
-            model = serv_rtn['data']
-            img_format = str(model.format).lower()
-            img_string = model.image.decode("base64")
-            img = PILImage.open(BytesIO(img_string))
-
-            api_rtn = Response(content_type='image/%s' % img_format)
-            img.save(api_rtn,"%s" % img_format)
+            serv_rtn = serv.show_img(id=imageid)
 
         else:
             #mock fake serv_rtn
@@ -122,6 +110,7 @@ class ImageAPI(BaseAPI):
                         'success':False,
                         }
 
+        api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
 

@@ -33,9 +33,12 @@ class Check_TB(Base):
     id              = Column(Integer(10), nullable=False, unique=True, primary_key=True, autoincrement=True)
     title           = Column(String(255), nullable=True, unique=False)
     description     = Column(String(255), nullable=True, unique=False)
-    location_id     = Column(Integer(10), nullable=True, unique=False)
-    image_id        = Column(Integer(10), nullable=True, unique=False)
-    userid          = Column(Integer(10), nullable=True, unique=False)
+
+    location_id     = Column(Integer(10), ForeignKey('location.id'), nullable=False, unique=False)
+    image_id        = Column(Integer(10), ForeignKey('image.id'), nullable=False, unique=False)
+    userid          = Column(Integer(10), nullable=True, unique=False,)
+
+
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
 
