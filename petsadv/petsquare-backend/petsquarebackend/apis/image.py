@@ -101,6 +101,7 @@ class ImageAPI(BaseAPI):
         if success:
             serv = ImageService(self.request)
             serv_rtn = serv.show_img(id=imageid)
+            api_rtn = serv_rtn['data']
 
         else:
             #mock fake serv_rtn
@@ -109,8 +110,8 @@ class ImageAPI(BaseAPI):
                         'code':code,
                         'success':False,
                         }
+            api_rtn = self.format_return(serv_rtn)
 
-        api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
 

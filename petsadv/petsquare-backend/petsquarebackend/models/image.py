@@ -131,7 +131,7 @@ class Image_TB(Base):
         return rtn
 
     def __json__(self, request):
-        pass_col = ['image']
+        pass_col = ['img']
         super(Image_TB, self).__json__(request, pass_col)
 
 

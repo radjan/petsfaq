@@ -52,17 +52,12 @@ class ImageService(BaseService):
     def show_img(self, id):
         status = self.status.copy()
         success, rtn_dict = Image_TB.show_img(id)
-        print 'show_img() model: %s' % rtn_dict
 
-        #status = self.serv_rtn(status=status, success=success, model=rtn_dict)
         if success:
             if rtn_dict != None:
-            #return img
-                import os
-                from io import BytesIO
-                from pyramid.response import Response
-
+                #return img
                 import cStringIO
+                from pyramid.response import Response
 
                 img_format = rtn_dict['format']
                 img = PILImage.open(cStringIO.StringIO(rtn_dict['img']))
