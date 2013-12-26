@@ -58,8 +58,8 @@ class Image_TB(Base):
 
         model = cls(description=description,
                     filename=filename, 
-                    #image=base64.b64encode(img_string),
-                    image=img_string,
+                    image=base64.b64encode(img_string),
+                    #image=img_string,
                     format=format,
                     userid=userid)
         DBSession.add(model)
@@ -84,7 +84,6 @@ class Image_TB(Base):
         print '==='
         print '==='
         print '==='
-        from pyramid.response import Response
         print '==='
         print '==='
         #print model.image
@@ -92,10 +91,7 @@ class Image_TB(Base):
         rtn_dict = {}
         if model != None:
             rtn_dict['format'] =  str(model.format).lower()
-            #b64_string = model.image
-            #img_string =  base64.b64decode(b64_string)
-            #rtn_dict['img'] = img_string
-            rtn_dict['img'] = model.image
+            rtn_dict['img'] = base64.b64decode(model.image)
         else:
             rtn_dict = None
         rtn = (True, rtn_dict)
