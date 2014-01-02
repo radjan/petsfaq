@@ -12,7 +12,9 @@
     "angular-sanitize": "1.2.5",
     "angular-route": "1.2.5",
     "font-awesome": "http://fontawesome.io/assets/font-awesome-4.0.3.zip",
-    "angular-bootstrap": "https://github.com/angular-ui/bootstrap/archive/gh-pages.zip"
+    "angular-bootstrap": "https://github.com/angular-ui/bootstrap/archive/gh-pages.zip",
+    "angular-ui-utils": "bower-event",
+    "angular-ui-map": "~0.5.0"
   },
   "devDependencies": {
     "angular-mocks": "1.2.5",

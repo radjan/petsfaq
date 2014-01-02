@@ -6,6 +6,7 @@ angular.module('webFrontendApp', [
   'ngSanitize',
   'ngRoute',
   'ui.bootstrap',
+  'ui.map'
 ])
   .config(function ($routeProvider) {
     $routeProvider
