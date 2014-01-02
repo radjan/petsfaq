@@ -22,7 +22,9 @@ class TestMyView(unittest.TestCase):
         DBSession.configure(bind=engine)
         Base.metadata.create_all(engine)
         with transaction.manager:
-            success, model = Location_TB.create(name='one', description='1', gps='1,5', address='taipei', userid=1)
+            success, model = Location_TB.create(name='one', description='1', longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
+            if not success:
+                raise Exception(model)
             DBSession.add(model)
 
     def tearDown(self):
@@ -46,7 +48,8 @@ class TestMyView(unittest.TestCase):
 
         self.assertEqual(response['data'][0].name, 'one')
         self.assertEqual(response['data'][0].description, '1')
-        self.assertEqual(response['data'][0].gps, '1,5')
+        self.assertEqual(response['data'][0].longtitude, 121.5130475)
+        self.assertEqual(response['data'][0].latitude, 25.040063)
         self.assertEqual(response['data'][0].address, 'taipei')
         self.assertEqual(response['data'][0].userid, 1)
 
