@@ -231,14 +231,21 @@ class ModelMixin(object):
         obj_dict = self.__dict__
         obj_dict = dict((key, obj_dict[key]) for key in obj_dict if not key.startswith("_"))
 
+        foreignkeys = list(self.__table__.foreign_keys)
+        foreignkeys = dict([(x.parent.name, x.column.table.name) for x in foreignkeys])
+        #foreignkeys = {fk_name: f_table, ...}
+
         rtn_dict = {}
         for k,value in obj_dict.items():
-            log.debug('key name: %s, value: %s, value type: %s' % (k, value, type(value)))
+            #log.debug('key name: %s, value: %s, value type: %s' % (k, value, type(value)))
             if k in pass_col:
                 continue
-            if k[-3:] == '_id':
-                value = self.__getattribute__(k[:-3])
-                log.debug(' transform key name: %s, value: %s, value type: %s' % (k[:-3], value, type(value)))
+            if all ([k in foreignkeys.keys(),
+                    foreignkeys.get(k, None) != None,]):
+                obj = DBSession.query(self.__class__).get(self.id)
+                value = obj.__getattribute__(foreignkeys[k])
+                k = foreignkeys[k]
+                #log.debug(' transform key name: %s, value: %s, value type: %s' % (k[:-3], value, type(value)))
             if isinstance(value, datetime.datetime):
                 value = value.strftime("%Y-%m-%d, %H:%M:%S")
             rtn_dict[k] = value

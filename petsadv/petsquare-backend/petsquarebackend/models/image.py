@@ -40,7 +40,7 @@ class Image_TB(Base):
     userid          = Column(Integer, nullable=False, unique=False,)
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
-    checks    = relationship('Check_TB',  backref=backref('image', order_by=id))
+    checks          = relationship('Check_TB',  backref=backref('check.image_id', order_by=id))
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
