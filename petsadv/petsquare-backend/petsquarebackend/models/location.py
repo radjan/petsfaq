@@ -29,14 +29,14 @@ import traceback
 
 class Location_TB(Base):
     __tablename__ = 'location'
-    id              = Column(Integer(10), nullable=False, unique=True, 
+    id              = Column(Integer, nullable=False, unique=True, 
             primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=True, unique=False, )
     description     = Column(String(255), nullable=True, unique=False,)
     longtitude      = Column(Float(255), nullable=True, unique=False,)
     latitude        = Column(Float(255), nullable=True, unique=False,)
     address         = Column(String(255), nullable=True, unique=False,)
-    userid          = Column(Integer(10), nullable=True, unique=False,)
+    userid          = Column(Integer, nullable=True, unique=False,)
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
     checks    = relationship('Check_TB',  backref=backref('location', order_by=id))

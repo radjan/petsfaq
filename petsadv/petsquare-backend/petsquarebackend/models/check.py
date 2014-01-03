@@ -30,13 +30,13 @@ import traceback
 class Check_TB(Base):
     __tablename__  = 'check'
 
-    id              = Column(Integer(10), nullable=False, unique=True, primary_key=True, autoincrement=True)
+    id              = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     title           = Column(String(255), nullable=True, unique=False)
     description     = Column(String(255), nullable=True, unique=False)
 
-    location_id     = Column(Integer(10), ForeignKey('location.id'), nullable=False, unique=False)
-    image_id        = Column(Integer(10), ForeignKey('image.id'), nullable=False, unique=False)
-    userid          = Column(Integer(10), nullable=True, unique=False,)
+    location_id     = Column(Integer, ForeignKey('location.id'), nullable=False, unique=False)
+    image_id        = Column(Integer, ForeignKey('image.id'), nullable=False, unique=False)
+    userid          = Column(Integer, nullable=True, unique=False,)
 
 
     createddatetime = Column(DateTime, nullable=False)
