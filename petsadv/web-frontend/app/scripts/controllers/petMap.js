@@ -3,7 +3,7 @@ angular.module('webFrontendApp')
   .controller('PetmapCtrl', ['$scope', 'apiUrlConstant', '$http', 
   	function ($scope, apiUrlConstant, $http) {
 
-  	$scope.myMarkers = [];
+  	$scope.googleMarkers = [];
  
 	$scope.mapOptions = {
       center: new google.maps.LatLng(23.5, 121),
@@ -12,8 +12,8 @@ angular.module('webFrontendApp')
     };
 	 
 	$scope.addMarker = function($event, $params) {
-	  $scope.myMarkers.push(new google.maps.Marker({
-	    map: $scope.myMap,
+	  $scope.googleMarkers.push(new google.maps.Marker({
+	    map: $scope.googleMap,
 	    position: $params[0].latLng,
 	  }));
 	};
@@ -24,11 +24,11 @@ angular.module('webFrontendApp')
 	};
 	 
 	$scope.openMarkerInfo = function(marker) {
-	  $scope.currentMarker = marker;
-	  $scope.currentMarkerLat = marker.getPosition().lat();
-	  $scope.currentMarkerLng = marker.getPosition().lng();
-	  $scope.currentMarkerTitle = marker.getTitle();
-	  $scope.myInfoWindow.open($scope.myMap, marker);
+	  $scope.currentGoogleMarker = marker;
+	  $scope.currentGoogleMarkerLat = marker.getPosition().lat();
+	  $scope.currentGoogleMarkerLng = marker.getPosition().lng();
+	  $scope.currentGoogleMarkerTitle = marker.getTitle();
+	  $scope.currentGoogleInfoWindow.open($scope.googleMap, marker);
 	};
 	 
 	$scope.setMarkerPosition = function(marker, lat, lng) {
@@ -108,20 +108,20 @@ angular.module('webFrontendApp')
 				for (var i = 0; i < result.length; i++) {
 					var myLatlng = new google.maps.LatLng(result[i].location.lat, result[i].location.lng);
 					recentMarkers.push(new google.maps.Marker({
-					    map: $scope.myMap,
+					    map: $scope.googleMap,
 					    position: myLatlng,
 					    title: result[i].title
 					 }));
 					
 				}
-				$scope.myMarkers = recentMarkers;
-				$scope.sideMarkers = result;
+				$scope.googleMarkers = recentMarkers;
+				$scope.checksInfo = result;
 			});
 			
 		} else if (type === 'history'){
-			$scope.myMarkers = [];
+			$scope.googleMarkers = [];
 		} else if (type === 'hot'){
-			$scope.myMarkers = [];
+			$scope.googleMarkers = [];
 		}
 	};
 
