@@ -1,7 +1,7 @@
 'use strict';
 angular.module('webFrontendApp')
-  .controller('PetmapCtrl', ['$scope', 'apiUrlConstant', '$http', 
-  	function ($scope, apiUrlConstant, $http) {
+  .controller('PetmapCtrl', ['$scope', 'checkApi',
+  	function ($scope, checkApi) {
 
   	$scope.googleMarkers = [];
  
@@ -20,7 +20,7 @@ angular.module('webFrontendApp')
 	 
 	$scope.setZoomMessage = function(zoom) {
 	  $scope.zoomMessage = 'You just zoomed to '+zoom+'!';
-	  console.log(zoom,'zoomed')
+	  console.log(zoom,'zoomed');
 	};
 	 
 	$scope.openMarkerInfo = function(marker) {
@@ -56,41 +56,6 @@ angular.module('webFrontendApp')
 		},
 	};
 
-	 var MOCK_CHECKINS = [
-		{
-			'description': "1",
-			'title': "check1",
-			'createddatetime': "2013-12-27, 00:32:11",
-			'userid': 1,
-			'image_id': 1,
-			'updateddatetime': "2013-12-27, 00:32:11",
-			'location': {
-				'name': 'LOCATION_0001',
-				'description': 'one sentence desc',
-				'lat': 25.04171, //float
-				'lng': 121.548353, //float
-				'address': 'Taipei City 1',
-			},
-			'id': 1
-		},
-		{
-			'description': "1",
-			'title': "check2",
-			'createddatetime': "2013-12-27, 00:32:11",
-			'userid': 1,
-			'image_id': 1,
-			'updateddatetime': "2013-12-27, 00:32:11",
-			'location': {
-				'name': 'LOCATION_0002',
-				'description': 'one sentence desc',
-				'lat': 25.021334,
-				'lng': 121.548205,
-				'address': 'Taipei City 2',
-			},
-			'id': 2
-		},
-	];
-
 	/********nav bar **********/
 	$scope.oneAtATime = true;
 	$scope.categories = [
@@ -101,9 +66,7 @@ angular.module('webFrontendApp')
 
 	$scope.setMarkers = function (type){
 		if (type === 'recent') {
-			$http.get(apiUrlConstant['CHECKS']).success(function(result){
-				//FIXME
-				result = MOCK_CHECKINS;
+            checkApi.list_checks(function(result) {
 				var recentMarkers = [];
 				for (var i = 0; i < result.length; i++) {
 					var myLatlng = new google.maps.LatLng(result[i].location.lat, result[i].location.lng);
