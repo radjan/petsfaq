@@ -34,10 +34,12 @@
 	 
 	<!-- Giving the div an id="map_canvas" fix problems with twitter bootstrap affecting
 	google maps -->
-	<div id="map_canvas" ui-map="googleMap" class="map-canvas"
-	  ui-event="{'map-click': 'addMarker($event, $params)', 'map-zoom_changed': 'setZoomMessage(googleMap.getZoom())' }"
-	  ui-options="mapOptions">
-</div>
+	<div class="span8">
+		<div id="map_canvas" ui-map="googleMap" class="map-canvas"
+		  ui-event="{'map-click': 'addMarker($event, $params)', 'map-zoom_changed': 'setZoomMessage(googleMap.getZoom())' }"
+		  ui-options="mapOptions">
+		</div>
+	</div>
 </section>
 
 
