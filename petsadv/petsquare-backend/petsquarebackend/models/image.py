@@ -37,10 +37,15 @@ class Image_TB(Base):
     filename        = Column(String(255), nullable=False, unique=False,)
     image           = Column(BLOB)
     format          = Column(String(20), nullable=False, unique=False,)
-    userid          = Column(Integer, nullable=False, unique=False,)
+
+    #userid          = Column(Integer, nullable=False, unique=False,)
+    userid = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    user   = relationship('User_TB', backref=backref('image.userid', order_by=id))
+
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
     checks          = relationship('Check_TB',  backref=backref('check.image_id', order_by=id))
+
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()

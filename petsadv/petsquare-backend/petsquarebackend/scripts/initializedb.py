@@ -14,6 +14,8 @@ from ..models import (
     Base,
     )
 
+from ..models.accounts import Group_TB
+from ..models.accounts import User_TB
 from ..models.location import Location_TB
 from ..models.image import Image_TB
 from ..models.check import Check_TB
@@ -40,7 +42,21 @@ def main(argv=sys.argv):
         Check_TB.__table__.drop(engine, checkfirst=True)
         Location_TB.__table__.drop(engine, checkfirst=True)
         Image_TB.__table__.drop(engine, checkfirst=True)
+        User_TB.__table__.drop(engine, checkfirst=True)
+        Group_TB.__table__.drop(engine, checkfirst=True)
+        User_TB.__table__.drop(engine, checkfirst=True)
         Base.metadata.create_all(engine)
+
+        #TODO: use model classmethod
+        gmodel = Group_TB(name='one', description='1')
+        DBSession.add(gmodel)
+        DBSession.flush()
+        #TODO: use model classmethod
+        umodel = User_TB(name='pub user1', description='used as public',
+                         password='no password', fb_api_key='fbkey',
+                         fb_api_secret='apisecret', group_id=gmodel.id)
+        DBSession.add(umodel)
+        DBSession.flush()
 
         #location
         success, lmodel = Location_TB.create(name='one', description='1',
@@ -64,5 +80,6 @@ def main(argv=sys.argv):
                 location_id=1, image_id=1, userid=1)
         success, cmodel = Check_TB.create(title='check3', description='3',
                 location_id=1, image_id=1, userid=1)
+
 
 

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 __date__= 'Dec 04, 2013 '
 __author__= 'samuel'
+
 import logging
 log = logging.getLogger(__name__)
 
@@ -36,7 +37,11 @@ class Location_TB(Base):
     longtitude      = Column(Float(255), nullable=True, unique=False,)
     latitude        = Column(Float(255), nullable=True, unique=False,)
     address         = Column(String(255), nullable=True, unique=False,)
-    userid          = Column(Integer, nullable=True, unique=False,)
+
+    #userid          = Column(Integer, nullable=True, unique=False,)
+    userid          = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    user   = relationship('User_TB', backref=backref('location.userid', order_by=id))
+
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
     checks    = relationship('Check_TB',  backref=backref('check.location_id', order_by=id))
