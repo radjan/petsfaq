@@ -5,8 +5,8 @@ $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
 
 /* Put your CSS here */
 html, body {
-  margin: 20px;
   height: 100%;
+  min-width:480px;
 }
 
 body {
@@ -33,7 +33,6 @@ body {
 }
 
 .map-canvas {
-    min-width:600px;
     height: 700px;
     weight: 100%;
     margin: 20px;
