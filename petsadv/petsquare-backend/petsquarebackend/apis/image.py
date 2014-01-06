@@ -34,7 +34,7 @@ class Schema_images_post(Schema):
     image       = validators.FieldStorageUploadConverter() 
     userid      = validators.Int()
 
-class Schema_image_put(Schema):
+class Schema_imagedata_put(Schema):
     description = validators.UnicodeString()
     image       = validators.FieldStorageUploadConverter() 
     userid      = validators.Int()
@@ -180,13 +180,13 @@ class ImageAPI(BaseAPI):
     def image_update(self):
         """
         update images
-        API: PUT /image/<id:\d+>
+        API: PUT /image/data/<id:\d+>
         """
         #for X-domain development
         self.XHeaders()
 
         #validation
-        success, data, code = self.validate(Schema_image_put)
+        success, data, code = self.validate(Schema_imagedata_put)
 
         try:
             #get id from route_path

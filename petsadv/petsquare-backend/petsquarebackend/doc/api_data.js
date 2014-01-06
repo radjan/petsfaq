@@ -148,9 +148,9 @@ define({ api: [
           {
             "group": "Parameter",
             "type": "String",
-            "field": "name",
+            "field": "title",
             "optional": false,
-            "description": "name"
+            "description": "title"
           },
           {
             "group": "Parameter",
@@ -162,23 +162,16 @@ define({ api: [
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "longtitude",
+            "field": "location_id",
             "optional": false,
-            "description": "longtitude"
+            "description": "location_id"
           },
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "latitude",
+            "field": "image_id",
             "optional": false,
-            "description": "latitude"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "field": "address",
-            "optional": false,
-            "description": "address"
+            "description": "image_id"
           },
           {
             "group": "Parameter",
@@ -235,9 +228,9 @@ define({ api: [
           {
             "group": "Parameter",
             "type": "String",
-            "field": "name",
+            "field": "title",
             "optional": false,
-            "description": "name"
+            "description": "title"
           },
           {
             "group": "Parameter",
@@ -249,23 +242,16 @@ define({ api: [
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "longtitude",
+            "field": "location_id",
             "optional": false,
-            "description": "longtitude"
+            "description": "location_id"
           },
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "latitude",
+            "field": "image_id",
             "optional": false,
-            "description": "latitude"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "field": "address",
-            "optional": false,
-            "description": "address"
+            "description": "image_id"
           },
           {
             "group": "Parameter",
@@ -286,6 +272,296 @@ define({ api: [
       ]
     },
     "filename": "api/check.js"
+  },
+  {
+    "type": "delete",
+    "url": "/image/:id",
+    "title": "6. Delete a Image",
+    "version": "1.0.0",
+    "name": "DeleteImage",
+    "group": "Image",
+    "description": "Delete Image",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Image-ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true, \n       msg: \"\" \n     }, \n     data: null\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/image.js"
+  },
+  {
+    "type": "get",
+    "url": "/image/:id",
+    "title": "4. Show Image",
+    "version": "1.0.0",
+    "name": "GetImage",
+    "group": "Image",
+    "description": "Show Image",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Image-ID"
+          }
+        ]
+      }
+    },
+    "filename": "api/image.js"
+  },
+  {
+    "type": "get",
+    "url": "/image/data/:id",
+    "title": "3. Read data of a Image",
+    "version": "1.0.0",
+    "name": "GetImageData",
+    "group": "Image",
+    "description": "Show Image",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Image-ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       format: \"PNG\",\n       createddatetime: \"2013-12-27, 02:19:09\",\n       userid: 1,\n       filename: \"python.png\",\n       updateddatetime: \"2013-12-27, 02:19:09\",\n       id: 1\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/image.js"
+  },
+  {
+    "type": "get",
+    "url": "/images",
+    "title": "2. List data of Images",
+    "version": "1.0.0",
+    "name": "ListImages",
+    "group": "Image",
+    "description": "List Images",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "offset",
+            "optional": false,
+            "description": "offset"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "size",
+            "optional": false,
+            "description": "size"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "userid",
+            "optional": false,
+            "description": "userid"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n         msg: \"\",\n         count: 2\n     },\n       data: [\n       {\n         description: \"1\",\n         format: \"PNG\",\n         createddatetime: \"2013-12-27, 02:19:09\",\n         userid: 1,\n         filename: \"python.png\",\n         updateddatetime: \"2013-12-27, 02:19:09\",\n         id: 1\n       },\n       {\n         description: \"2\",\n         format: \"PNG\",\n         createddatetime: \"2013-12-27, 02:19:10\",\n         userid: 1,\n         filename: \"python2.png\",\n         updateddatetime: \"2013-12-27, 02:19:10\",\n         id: 2\n       }\n     ]\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/image.js"
+  },
+  {
+    "type": "post",
+    "url": "/images",
+    "title": "1. Create a new Image",
+    "version": "1.0.0",
+    "name": "PostImages",
+    "group": "Image",
+    "description": "Create Image",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Image-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "POST-Params",
+            "field": "__POST-Params__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "File",
+            "field": "image",
+            "optional": false,
+            "description": "image file"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "description",
+            "optional": false,
+            "description": "description"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "userid",
+            "optional": false,
+            "description": "userid"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       format: \"PNG\",\n       createddatetime: \"2013-12-27, 02:19:09\",\n       userid: 1,\n       filename: \"python.png\",\n       updateddatetime: \"2013-12-27, 02:19:09\",\n       id: 1\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/image.js"
+  },
+  {
+    "type": "put",
+    "url": "/image/data/:id",
+    "title": "5. Change a new Image",
+    "version": "1.0.0",
+    "name": "PutImage",
+    "group": "Image",
+    "description": "Update Image",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Image-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "POST-Params",
+            "field": "__POST-Params__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "File",
+            "field": "image",
+            "optional": false,
+            "description": "image file"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "description",
+            "optional": false,
+            "description": "description"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "userid",
+            "optional": false,
+            "description": "userid"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       format: \"PNG\",\n       createddatetime: \"2013-12-27, 02:19:09\",\n       userid: 1,\n       filename: \"python.png\",\n       updateddatetime: \"2013-12-27, 02:19:09\",\n       id: 1\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/image.js"
   },
   {
     "type": "delete",
