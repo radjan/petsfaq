@@ -15,9 +15,15 @@ body {
     color: #333;
 }
 
+.ngView {
+    padding-top: 60px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+
 .hero-unit {
     margin: 50px auto 0 auto;
-    width: 300px;
     font-size: 18px;
     font-weight: 200;
     line-height: 30px;
