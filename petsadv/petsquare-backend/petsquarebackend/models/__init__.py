@@ -241,8 +241,6 @@ class ModelMixin(object):
         foreignkeys = list(self.__table__.foreign_keys)
         foreignkeys = dict([(x.parent.name, x.column.table.name) for x in foreignkeys])
         #foreignkeys = {fk_name: f_table, ...}
-        if foreignkeys:
-            obj = DBSession.query(self.__class__).get(self.id)
 
         rtn_dict = {}
         for k,value in obj_dict.items():
@@ -250,7 +248,7 @@ class ModelMixin(object):
             if k in pass_col:
                 continue
             if foreignkeys.get(k, None):
-                value = obj.__getattribute__(foreignkeys[k])
+                value = self.__getattribute__(foreignkeys[k])
                 k = foreignkeys[k]
                 #log.debug(' transform key name: %s, value: %s, value type: %s' % (k[:-3], value, type(value)))
             if isinstance(value, datetime.datetime):
