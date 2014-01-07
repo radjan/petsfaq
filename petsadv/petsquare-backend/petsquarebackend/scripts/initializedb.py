@@ -45,10 +45,10 @@ def main(argv=sys.argv):
         #location
         success, lmodel = Location_TB.create(name='one', description='1',
                 longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
-        success, lmodel = Location_TB.create(name='one', description='1',
-                longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
-        success, lmodel = Location_TB.create(name='one', description='1',
-                longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
+        success, lmodel = Location_TB.create(name='two', description='2',
+                longtitude=121.548375, latitude=25.020945, address='taipei', userid=1)
+        success, lmodel = Location_TB.create(name='three', description='3',
+                longtitude=121.548732, latitude=25.102097, address='taipei', userid=1)
 
         #image
         f = open('petsquarebackend/scripts/python.png')
