@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 __date__= 'Dec 04, 2013 '
 __author__= 'samuel'
+
 import logging
 log = logging.getLogger(__name__)
 
@@ -29,17 +30,26 @@ import traceback
 
 class Location_TB(Base):
     __tablename__ = 'location'
-    id              = Column(Integer, nullable=False, unique=True, 
-            primary_key=True, autoincrement=True)
-    name            = Column(String(255), nullable=True, unique=False, )
-    description     = Column(String(255), nullable=True, unique=False,)
-    longtitude      = Column(Float(255), nullable=True, unique=False,)
-    latitude        = Column(Float(255), nullable=True, unique=False,)
-    address         = Column(String(255), nullable=True, unique=False,)
-    userid          = Column(Integer, nullable=True, unique=False,)
+    __public__ = ('id','name', 'description', 'longtitude', 'latitude', 'address',
+            'explorer_id',  #fk
+            'explorer',     #backref
+            'checks',       #relation
+            'createddatetime', 'updateddatetime')
+
+
+    id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    name        = Column(String(255), nullable=True, unique=False, )
+    description = Column(String(255), nullable=True, unique=False,)
+    longtitude  = Column(Float(255), nullable=True, unique=False,)
+    latitude    = Column(Float(255), nullable=True, unique=False,)
+    address     = Column(String(255), nullable=True, unique=False,)
+    #fk
+    explorer_id  = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    #relation
+    checks       = relationship('Check_TB',  backref=backref('location', order_by=id))
+
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
-    checks    = relationship('Check_TB',  backref=backref('check.location_id', order_by=id))
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
@@ -48,11 +58,12 @@ class Location_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, description, longtitude, latitude, address, userid):
+    def create(cls, name, description, longtitude, latitude, address,
+            explorer_id):
         global DBSession
         model = cls(name=name, description=description,
                 longtitude=longtitude, latitude=latitude, address=address, 
-                userid=userid)
+                explorer_id=explorer_id)
         DBSession.add(model)
         DBSession.flush()
         rtn = (True, model)
@@ -77,7 +88,7 @@ class Location_TB(Base):
     @classmethod
     @ModelMethod
     def update(cls, id, name=None, description=None, longtitude=None,
-            latitude=None, address=None, userid=None):
+            latitude=None, address=None, explorer_id=None):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
@@ -88,7 +99,7 @@ class Location_TB(Base):
         if longtitude:  model.longtitude = longtitude
         if latitude:    model.latitude = latitude
         if address:     model.address = address
-        if userid:      model.userid = userid
+        if explorer_id:      model.explorer_id = explorer_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
         rtn =  (True, model)
