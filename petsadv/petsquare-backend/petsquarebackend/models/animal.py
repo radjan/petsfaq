@@ -31,6 +31,10 @@ import base64
 
 class Animal_TB(Base):
     __tablename__ = 'animal'
+    __public__ = ('id', 'name', 'type', 'status', 'description',
+                  'createddatetime', 'updateddatetime', 'finder',
+                  'owner', 'image_assocs')
+
     id              = Column(Integer, nullable=False, unique=True, 
                              primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=False, unique=False,)
@@ -44,6 +48,7 @@ class Animal_TB(Base):
 
     finder_id = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
     owner_id = Column(Integer, ForeignKey('user.id'), nullable=True, unique=False)
+    image_assocs = relationship('Animal_Image_TB', backref='animal')
 
 
     def __init__(self, *args, **kwargs):
@@ -107,6 +112,22 @@ class Animal_TB(Base):
         rtn = cls.delete_by_id(id)
         return rtn
 
+
+class Animal_Image_TB(Base):
+    __tablename__ = 'animal_image'
+    __public__ = ('animal', 'image', 'status', 'description',
+                  'createddatetime', 'updateddatetime')
+
+    animal_id = Column(Integer, ForeignKey('animal.id'), primary_key=True)
+    image_id = Column(Integer, ForeignKey('image.id', primary_key=True)
+
+    status          = Column(String(255), nullable=False, unique=False,)
+    description     = Column(String(255), nullable=True, unique=False,)
+
+    createddatetime = Column(DateTime, nullable=False)
+    updateddatetime = Column(DateTime, nullable=False)
+
+    image = relationship('Image_TB', backref=backref('animal_assocs', order_by=id))
 
 def main():
     pass
