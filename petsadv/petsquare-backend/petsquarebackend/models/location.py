@@ -37,18 +37,17 @@ class Location_TB(Base):
             'createddatetime', 'updateddatetime')
 
 
-    id              = Column(Integer, nullable=False, unique=True, 
-            primary_key=True, autoincrement=True)
-    name            = Column(String(255), nullable=True, unique=False, )
-    description     = Column(String(255), nullable=True, unique=False,)
-    longtitude      = Column(Float(255), nullable=True, unique=False,)
-    latitude        = Column(Float(255), nullable=True, unique=False,)
-    address         = Column(String(255), nullable=True, unique=False,)
+    id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    name        = Column(String(255), nullable=True, unique=False, )
+    description = Column(String(255), nullable=True, unique=False,)
+    longtitude  = Column(Float(255), nullable=True, unique=False,)
+    latitude    = Column(Float(255), nullable=True, unique=False,)
+    address     = Column(String(255), nullable=True, unique=False,)
 
-    #userid          = Column(Integer, nullable=True, unique=False,)
-    userid          = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
-    user   = relationship('User_TB', backref=backref('location.userid', order_by=id))
-    checks    = relationship('Check_TB',  backref='location')
+    #userid      = Column(Integer, nullable=True, unique=False,)
+    userid      = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    user        = relationship('User_TB', backref=backref('location.userid', order_by=id))
+    checks      = relationship('Check_TB',  backref='location')
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)

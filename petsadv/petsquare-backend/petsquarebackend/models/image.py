@@ -35,18 +35,17 @@ class Image_TB(Base):
             'userid', 'user', 'checks',
             'createddatetime', 'updateddatetime')
 
-    id              = Column(Integer, nullable=False, unique=True, 
-                             primary_key=True, autoincrement=True)
-    description     = Column(String(255), nullable=True, unique=False,)
-    filename        = Column(String(255), nullable=False, unique=False,)
-    image           = Column(BLOB)
-    format          = Column(String(20), nullable=False, unique=False,)
+    id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    description = Column(String(255), nullable=True, unique=False,)
+    filename    = Column(String(255), nullable=False, unique=False,)
+    image       = Column(BLOB)
+    format      = Column(String(20), nullable=False, unique=False,)
 
-    #userid          = Column(Integer, nullable=False, unique=False,)
-    userid = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
-    user   = relationship('User_TB', backref=backref('image.userid', order_by=id))
+    #userid      = Column(Integer, nullable=False, unique=False,)
+    userid      = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    user        = relationship('User_TB', backref=backref('image.userid', order_by=id))
 
-    checks          = relationship('Check_TB',  backref='image')
+    checks      = relationship('Check_TB',  backref='image')
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
 
@@ -140,7 +139,7 @@ class Image_TB(Base):
         return rtn
 
     def __json__(self, request):
-        pass_col = ['image']
+        pass_col = ('image',)
         return super(Image_TB, self).__json__(request, pass_col)
 
 
