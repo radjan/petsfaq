@@ -33,14 +33,12 @@ class Group_TB(Base):
     __public__ = ('id','name','description','users',
             'createddatetime', 'updateddatetime')
 
-
-
     id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     name        = Column(String(255), nullable=True, unique=False)
     description = Column(String(255), nullable=True, unique=False)
     #image_id    = Column(Integer, ForeignKey('image.id'), nullable=True, unique=False)
 
-    users       = relationship('User_TB', backref=backref('user.group_id', order_by=id))
+    users       = relationship('User_TB', backref=backref('group', order_by=id))
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
@@ -53,11 +51,10 @@ class Group_TB(Base):
 
 class User_TB(Base):
     __tablename__ = 'user'
-    __public__ = ('id','name','description',
-            'password',
-            'fb_api_key','fb_api_secret', 
-            'group_id', 'group',
-            'images', 'checks',
+    __public__ = ('id','name','description', 'password', 'fb_api_key','fb_api_secret', 
+            'group_id',                     #fk
+            'group',                        #backref
+            'images', 'locations', 'checks', #relation
             'createddatetime', 'updateddatetime')
 
     id            = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
@@ -68,10 +65,10 @@ class User_TB(Base):
     fb_api_secret = Column(String(255), nullable=True, unique=False)
 
     group_id      = Column(Integer, ForeignKey('group.id'), nullable=False, unique=False)
-    group         = relationship('Group_TB', backref=backref('user.group_id', order_by=id))
 
-    images        = relationship('Image_TB', backref=backref('image.userid', order_by=id))
-    checks        = relationship('Check_TB', backref=backref('image.userid', order_by=id))
+    images        = relationship('Image_TB',    backref=backref('uploader', order_by=id))
+    locations     = relationship('Location_TB', backref=backref('explorer', order_by=id))
+    checks        = relationship('Check_TB',    backref=backref('user', order_by=id))
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)

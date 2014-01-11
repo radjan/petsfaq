@@ -29,19 +29,20 @@ import traceback
 
 class Check_TB(Base):
     __tablename__  = 'check'
-    __public__ = ('id','title','description','location_id','image_id','userid',
-            'user', 'createddatetime', 'updateddatetime')
+    __public__ = ('id','title','description',
+                  'location_id','image_id','user_id',   #fk
+                  'user', 'location', 'image',          #backref
+                                                        #relation
+                  'createddatetime', 'updateddatetime')
 
     id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     title       = Column(String(255), nullable=True, unique=False)
     description = Column(String(255), nullable=True, unique=False)
-
+    #fk
     location_id = Column(Integer, ForeignKey('location.id'), nullable=False, unique=False)
     image_id    = Column(Integer, ForeignKey('image.id'), nullable=False, unique=False)
-    #userid      = Column(Integer, nullable=True, unique=False,)
-    userid      = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
-
-    user        = relationship('User_TB', backref=backref('userid', order_by=id))
+    user_id     = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    #relation
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
@@ -53,11 +54,11 @@ class Check_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, title, description, location_id, image_id, userid):
+    def create(cls, title, description, location_id, image_id, user_id):
         global DBSession
         model = cls(title=title, description=description,
                     location_id=location_id, image_id=image_id, 
-                    userid=userid)
+                    user_id=user_id)
         DBSession.add(model)
         DBSession.flush()
         rtn = (True, model)
@@ -79,18 +80,18 @@ class Check_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, id, title=None, description=None, location_id=None, image_id=None, userid=None):
+    def update(cls, id, title=None, description=None, location_id=None,
+            image_id=None, user_id=None):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
 
         #FIXME
-        if title:        model.title = title
+        if title:       model.title = title
         if description: model.description = description
-        if location_id:  model.location_id = location_id
+        if location_id: model.location_id = location_id
         if image_id:    model.image_id = image_id
-        if address:     model.address = address
-        if userid:      model.userid = userid
+        if user_id:     model.user_id = user_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
         rtn =  (True, model)

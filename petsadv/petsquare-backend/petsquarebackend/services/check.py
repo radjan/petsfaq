@@ -21,7 +21,7 @@ class CheckService(BaseService):
     def list(self, userid=None, offset=0, size=100):
         status = self.status.copy()
         if userid:
-            success, models = Check_TB.list(filattr=('userid', userid),
+            success, models = Check_TB.list(filattr=('user_id', userid),
                                       offset=offset,
                                       size=size)
         else:
@@ -58,7 +58,7 @@ class CheckService(BaseService):
                                          description=data['description'],
                                          location_id=data['location_id'],
                                          image_id=data['image_id'],
-                                         userid=data['userid'],)
+                                         user_id=data['userid'],)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
