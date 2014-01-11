@@ -44,7 +44,7 @@ class Image_TB(Base):
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
-    checks          = relationship('Check_TB',  backref=backref('check.image_id', order_by=id))
+    checks          = relationship('Check_TB',  backref='image')
 
 
     def __init__(self, *args, **kwargs):

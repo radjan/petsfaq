@@ -44,7 +44,7 @@ class Location_TB(Base):
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
-    checks    = relationship('Check_TB',  backref=backref('check.location_id', order_by=id))
+    checks    = relationship('Check_TB',  backref='location')
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()

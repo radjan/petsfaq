@@ -39,10 +39,7 @@ class Check_TB(Base):
     #userid          = Column(Integer, nullable=True, unique=False,)
     userid          = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
 
-    location = relationship('Location_TB', backref=backref('location_id', order_by=id))
-    image = relationship('Image_TB', backref=backref('image_id', order_by=id))
     user = relationship('User_TB', backref=backref('userid', order_by=id))
-
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
