@@ -19,6 +19,7 @@ from ..models.accounts import User_TB
 from ..models.location import Location_TB
 from ..models.image import Image_TB
 from ..models.check import Check_TB
+from ..models.animal import Animal_TB, Animal_Image_TB
 
 import Image as PILImage
 
@@ -39,12 +40,14 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
+        Animal_Image_TB.__table__.drop(engine, checkfirst=True)
         Check_TB.__table__.drop(engine, checkfirst=True)
         Location_TB.__table__.drop(engine, checkfirst=True)
         Image_TB.__table__.drop(engine, checkfirst=True)
         User_TB.__table__.drop(engine, checkfirst=True)
         Group_TB.__table__.drop(engine, checkfirst=True)
         User_TB.__table__.drop(engine, checkfirst=True)
+        Animal_TB.__table__.drop(engine, checkfirst=True)
         Base.metadata.create_all(engine)
 
         #TODO: use model classmethod
