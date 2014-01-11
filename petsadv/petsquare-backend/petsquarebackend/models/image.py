@@ -138,9 +138,9 @@ class Image_TB(Base):
         rtn = cls.delete_by_id(id)
         return rtn
 
-    def __json__(self, request):
-        pass_col = ('image',)
-        return super(Image_TB, self).__json__(request, pass_col)
+    def __json__(self, request, exclude=(), extra=(), exclude_fk=True, max_depth=1):
+        exclude = exclude + ('image',)
+        return super(Image_TB, self).__json__(request, exclude, extra, exclude_fk, max_depth)
 
 
 def main():
