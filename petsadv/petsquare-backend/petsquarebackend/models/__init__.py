@@ -254,6 +254,8 @@ class ModelMixin(object):
         rtn_dict = {}
         for k in rtn_pub:
             value = self.__getattribute__(k)
+            if isinstance(value, ModelMixin):
+                value = self.__getattribute__(k).__json__(request, exclude, extra)
             if k in exclude:
                 continue
             if isinstance(value, datetime.datetime):
