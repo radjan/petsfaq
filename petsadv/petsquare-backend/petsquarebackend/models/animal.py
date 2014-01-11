@@ -46,8 +46,12 @@ class Animal_TB(Base):
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
 
-    finder_id = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
-    owner_id = Column(Integer, ForeignKey('user.id'), nullable=True, unique=False)
+    finder_id       = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    owner_id        = Column(Integer, ForeignKey('user.id'), nullable=True, unique=False)
+
+    find_location_id    = Column(Integer, ForeignKey('location.id'), nullable=True, unique=False)
+    current_location_id = Column(Integer, ForeignKey('location.id'), nullable=True, unique=False)
+
     image_assocs = relationship('Animal_Image_TB', backref='animal')
 
 
@@ -58,14 +62,15 @@ class Animal_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, type, status, description, finder_id):
+    def create(cls, name, type, status, description, finder_id, find_location_id=None):
         global DBSession
 
         model = cls(name=name,
                     type=type,
                     status=status,
                     description=description,
-                    finder_id=finder_id)
+                    finder_id=finder_id,
+                    find_location_id=find_location_id)
         DBSession.add(model)
         DBSession.flush()
         rtn = (True, model)

@@ -47,6 +47,8 @@ class Location_TB(Base):
     explorer_id  = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
     #relation
     checks       = relationship('Check_TB',  backref=backref('location', order_by=id))
+    found_animals = relationship('Animal_TB', backref=backref('find_location', order_by=id))
+    animals_here = relationship('Animal_TB', backref=backref('current_location', order_by=id))
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)

@@ -40,6 +40,7 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager as tm:
+        Animal_Imange_TB.__table__.drop(engine, checkfirst=True)
         Check_TB.__table__.drop(engine, checkfirst=True)
         Location_TB.__table__.drop(engine, checkfirst=True)
         Image_TB.__table__.drop(engine, checkfirst=True)
@@ -64,9 +65,9 @@ def main(argv=sys.argv):
         #location
         success, lmodel = Location_TB.create(name='one', description='1',
                 longtitude=121.5130475, latitude=25.040063, address='taipei', explorer_id=umodel.id)
-        success, lmodel = Location_TB.create(name='two', description='2',
+        success, lmodel2 = Location_TB.create(name='two', description='2',
                 longtitude=121.5130475, latitude=25.040063, address='taipei', explorer_id=umodel.id)
-        success, lmodel = Location_TB.create(name='three', description='3',
+        success, lmodel3 = Location_TB.create(name='three', description='3',
                 longtitude=121.5130475, latitude=25.040063, address='taipei', explorer_id=umodel.id)
 
         #image
@@ -85,4 +86,14 @@ def main(argv=sys.argv):
                 location_id=lmodel.id, image_id=imodel.id, user_id=umodel.id)
 
 
+        success, amodel = Animal_TB.create(name='pochi', type='cat',
+                            status='adopted', description='haha',
+                            finder_id=umodel.id, find_location_id=lmodel.id)
 
+        success, amodel = Animal_TB.create(name='kitty', type='cat',
+                            status='halfway', description='haha',
+                            finder_id=umodel.id, find_location_id=lmodel2.id)
+
+        success, amodel = Animal_TB.create(name='jump', type='dog',
+                            status='halfway', description='haha',
+                            finder_id=umodel.id, find_location_id=lmodel3.id)
