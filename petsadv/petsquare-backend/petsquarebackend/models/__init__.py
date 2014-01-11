@@ -15,6 +15,7 @@ from sqlalchemy.orm import (
 
 from sqlalchemy import desc
 from sqlalchemy import func
+from sqlalchemy.orm.collections import InstrumentedList
 import transaction
 
 import datetime
@@ -50,6 +51,8 @@ def ModelMethod(func):
 
 
 class ModelMixin(object):
+    __public__ = None
+
     @classmethod
     def get_by_id(cls, id, session=DBSession, columns=None, lock_mode=None):
         if hasattr(cls, 'id'):
@@ -233,26 +236,41 @@ class ModelMixin(object):
         rtn.append(False)
         rtn.append({'status':'fail', 'msg':'model error on %s' % ins_stk}) 
         return rtn
-                                   
 
-    def __json__(self, request, pass_col=[]):
+    def __json__(self, request, exclude=(), extra=(), exclude_fk=True, max_depth=2):
+        log.debug('type: %s, id: %s' % (type(self), self.id))
         obj_dict = self.__dict__
         obj_dict = dict((key, obj_dict[key]) for key in obj_dict if not key.startswith("_"))
         foreignkeys = list(self.__table__.foreign_keys)
         foreignkeys = dict([(x.parent.name, x.column.table.name) for x in foreignkeys])
         #foreignkeys = {fk_name: f_table, ...}
 
+        if exclude_fk:
+            exclude = exclude + tuple(foreignkeys.keys())
+            #exclude = list(exclude) + foreignkeys.keys()
+
+        public = self.__public__ + extra if self.__public__ else extra
+        rtn_pub = [x for x in public if x not in exclude]
+
         rtn_dict = {}
-        for k,value in obj_dict.items():
-            #log.debug('key name: %s, value: %s, value type: %s' % (k, value, type(value)))
-            if k in pass_col:
+        for k in rtn_pub:
+            if k in exclude:
                 continue
-            if foreignkeys.get(k, None):
-                value = self.__getattribute__(foreignkeys[k])
-                k = foreignkeys[k]
-                #log.debug(' transform key name: %s, value: %s, value type: %s' % (k[:-3], value, type(value)))
+            value = self.__getattribute__(k)
+            if max_depth == 0 and isinstance(value, (ModelMixin, InstrumentedList)) :
+                continue
+            if isinstance(value, ModelMixin):
+                value = self.__getattribute__(k).__json__(request, exclude,
+                        extra, exclude_fk, max_depth-1)
             if isinstance(value, datetime.datetime):
                 value = value.strftime("%Y-%m-%d, %H:%M:%S")
+            if isinstance(value, InstrumentedList):
+                value_list = []
+                for m in value:
+                    if isinstance(m, ModelMixin):
+                        m = m.__json__(request, exclude, extra, exclude_fk, max_depth-1)
+                    value_list.append(m)
+                value = value_list
             rtn_dict[k] = value
         return rtn_dict
 

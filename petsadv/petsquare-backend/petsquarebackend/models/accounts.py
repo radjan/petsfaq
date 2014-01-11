@@ -30,12 +30,17 @@ import traceback
 
 class Group_TB(Base):
     __tablename__ = 'group'
-    id              = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
-    name            = Column(String(255), nullable=True, unique=False)
-    description     = Column(String(255), nullable=True, unique=False)
-    #image_id        = Column(Integer, ForeignKey('image.id'), nullable=True, unique=False)
+    __public__ = ('id','name','description','users',
+            'createddatetime', 'updateddatetime')
 
-    users = relationship('User_TB', backref=backref('user.group_id', order_by=id))
+
+
+    id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    name        = Column(String(255), nullable=True, unique=False)
+    description = Column(String(255), nullable=True, unique=False)
+    #image_id    = Column(Integer, ForeignKey('image.id'), nullable=True, unique=False)
+
+    users       = relationship('User_TB', backref=backref('user.group_id', order_by=id))
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
@@ -48,20 +53,25 @@ class Group_TB(Base):
 
 class User_TB(Base):
     __tablename__ = 'user'
-    id              = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
-    name            = Column(String(255), nullable=True, unique=False)
-    description     = Column(String(255), nullable=True, unique=False)
-    password        = Column(String(255), nullable=True, unique=False)
-    fb_api_key      = Column(String(255), nullable=True, unique=False)
-    fb_api_secret   = Column(String(255), nullable=True, unique=False)
+    __public__ = ('id','name','description',
+            'password',
+            'fb_api_key','fb_api_secret', 
+            'group_id', 'group',
+            'images', 'checks',
+            'createddatetime', 'updateddatetime')
 
-    group_id = Column(Integer, ForeignKey('group.id'), nullable=False, unique=False)
-    group    = relationship('Group_TB', backref=backref('user.group_id', order_by=id))
+    id            = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    name          = Column(String(255), nullable=True, unique=False)
+    description   = Column(String(255), nullable=True, unique=False)
+    password      = Column(String(255), nullable=True, unique=False)
+    fb_api_key    = Column(String(255), nullable=True, unique=False)
+    fb_api_secret = Column(String(255), nullable=True, unique=False)
 
-    images = relationship('Image_TB', backref=backref('image.userid', order_by=id))
-    checks = relationship('Check_TB', backref=backref('image.userid', order_by=id))
+    group_id      = Column(Integer, ForeignKey('group.id'), nullable=False, unique=False)
+    group         = relationship('Group_TB', backref=backref('user.group_id', order_by=id))
 
-
+    images        = relationship('Image_TB', backref=backref('image.userid', order_by=id))
+    checks        = relationship('Check_TB', backref=backref('image.userid', order_by=id))
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
@@ -70,20 +80,6 @@ class User_TB(Base):
         self.createddatetime = datetime.datetime.now()
         self.updateddatetime = datetime.datetime.now()
         super(User_TB, self).__init__(*args, **kwargs)
-
-
-
-
-
-
-
-
-    checks = relationship('Check_TB', backref=backref('group_id', order_by=id))
-    images = relationship('Image_TB', backref=backref('group_id', order_by=id))
-
-
-
-
 
 def main():
     pass

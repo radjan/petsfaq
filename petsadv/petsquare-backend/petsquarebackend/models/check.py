@@ -29,17 +29,19 @@ import traceback
 
 class Check_TB(Base):
     __tablename__  = 'check'
+    __public__ = ('id','title','description','location_id','image_id','userid',
+            'user', 'createddatetime', 'updateddatetime')
 
-    id              = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
-    title           = Column(String(255), nullable=True, unique=False)
-    description     = Column(String(255), nullable=True, unique=False)
+    id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    title       = Column(String(255), nullable=True, unique=False)
+    description = Column(String(255), nullable=True, unique=False)
 
-    location_id     = Column(Integer, ForeignKey('location.id'), nullable=False, unique=False)
-    image_id        = Column(Integer, ForeignKey('image.id'), nullable=False, unique=False)
-    #userid          = Column(Integer, nullable=True, unique=False,)
-    userid          = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    location_id = Column(Integer, ForeignKey('location.id'), nullable=False, unique=False)
+    image_id    = Column(Integer, ForeignKey('image.id'), nullable=False, unique=False)
+    #userid      = Column(Integer, nullable=True, unique=False,)
+    userid      = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
 
-    user = relationship('User_TB', backref=backref('userid', order_by=id))
+    user        = relationship('User_TB', backref=backref('userid', order_by=id))
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
@@ -99,6 +101,7 @@ class Check_TB(Base):
     def delete(cls, id):
         rtn = cls.delete_by_id(id)
         return rtn
+
 
 def main():
     pass

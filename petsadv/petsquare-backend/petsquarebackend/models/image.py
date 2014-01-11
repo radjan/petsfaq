@@ -31,20 +31,23 @@ import base64
 
 class Image_TB(Base):
     __tablename__ = 'image'
-    id              = Column(Integer, nullable=False, unique=True, 
-                             primary_key=True, autoincrement=True)
-    description     = Column(String(255), nullable=True, unique=False,)
-    filename        = Column(String(255), nullable=False, unique=False,)
-    image           = Column(BLOB)
-    format          = Column(String(20), nullable=False, unique=False,)
+    __public__ = ('id','description','filename','image','format',
+            'userid', 'user', 'checks',
+            'createddatetime', 'updateddatetime')
 
-    #userid          = Column(Integer, nullable=False, unique=False,)
-    userid = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
-    user   = relationship('User_TB', backref=backref('image.userid', order_by=id))
+    id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    description = Column(String(255), nullable=True, unique=False,)
+    filename    = Column(String(255), nullable=False, unique=False,)
+    image       = Column(BLOB)
+    format      = Column(String(20), nullable=False, unique=False,)
 
+    #userid      = Column(Integer, nullable=False, unique=False,)
+    userid      = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    user        = relationship('User_TB', backref=backref('image.userid', order_by=id))
+
+    checks      = relationship('Check_TB',  backref='image')
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
-    checks          = relationship('Check_TB',  backref='image')
 
 
     def __init__(self, *args, **kwargs):
@@ -135,9 +138,9 @@ class Image_TB(Base):
         rtn = cls.delete_by_id(id)
         return rtn
 
-    def __json__(self, request):
-        pass_col = ['image']
-        return super(Image_TB, self).__json__(request, pass_col)
+    def __json__(self, request, exclude=(), extra=(), exclude_fk=True, max_depth=1):
+        exclude = exclude + ('image',)
+        return super(Image_TB, self).__json__(request, exclude, extra, exclude_fk, max_depth)
 
 
 def main():
