@@ -39,8 +39,7 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
-    with transaction.manager:
-        Animal_Image_TB.__table__.drop(engine, checkfirst=True)
+    with transaction.manager as tm:
         Check_TB.__table__.drop(engine, checkfirst=True)
         Location_TB.__table__.drop(engine, checkfirst=True)
         Image_TB.__table__.drop(engine, checkfirst=True)
@@ -54,6 +53,7 @@ def main(argv=sys.argv):
         gmodel = Group_TB(name='one', description='1')
         DBSession.add(gmodel)
         DBSession.flush()
+
         #TODO: use model classmethod
         umodel = User_TB(name='pub user1', description='used as public',
                          password='no password', fb_api_key='fbkey',
@@ -63,26 +63,26 @@ def main(argv=sys.argv):
 
         #location
         success, lmodel = Location_TB.create(name='one', description='1',
-                longtitude=121.5130475, latitude=25.040063, address='taipei', userid=1)
+                longtitude=121.5130475, latitude=25.040063, address='taipei', explorer_id=umodel.id)
         success, lmodel = Location_TB.create(name='two', description='2',
-                longtitude=121.548375, latitude=25.020945, address='taipei', userid=1)
+                longtitude=121.5130475, latitude=25.040063, address='taipei', explorer_id=umodel.id)
         success, lmodel = Location_TB.create(name='three', description='3',
-                longtitude=121.548732, latitude=25.102097, address='taipei', userid=1)
+                longtitude=121.5130475, latitude=25.040063, address='taipei', explorer_id=umodel.id)
 
         #image
         f = open('petsquarebackend/scripts/python.png')
         success, imodel = Image_TB.create(description='1', 
                                           filename='python.png',
                                           image=f,
-                                          userid=1)
+                                          uploader_id=umodel.id)
 
         #check
         success, cmodel = Check_TB.create(title='check1', description='1',
-                location_id=1, image_id=1, userid=1)
+                location_id=lmodel.id, image_id=imodel.id, user_id=umodel.id)
         success, cmodel = Check_TB.create(title='check2', description='2',
-                location_id=1, image_id=1, userid=1)
+                location_id=lmodel.id, image_id=imodel.id, user_id=umodel.id)
         success, cmodel = Check_TB.create(title='check3', description='3',
-                location_id=1, image_id=1, userid=1)
+                location_id=lmodel.id, image_id=imodel.id, user_id=umodel.id)
 
 
 

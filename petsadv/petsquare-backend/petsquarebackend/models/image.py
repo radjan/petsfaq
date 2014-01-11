@@ -32,7 +32,9 @@ import base64
 class Image_TB(Base):
     __tablename__ = 'image'
     __public__ = ('id','description','filename','image','format',
-            'userid', 'user', 'checks',
+            'uploader_id',           #fk
+            'uploader',              #backref
+            'checks',                #relation
             'createddatetime', 'updateddatetime')
 
     id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
@@ -40,12 +42,11 @@ class Image_TB(Base):
     filename    = Column(String(255), nullable=False, unique=False,)
     image       = Column(BLOB)
     format      = Column(String(20), nullable=False, unique=False,)
-
-    #userid      = Column(Integer, nullable=False, unique=False,)
-    userid      = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
-    user        = relationship('User_TB', backref=backref('image.userid', order_by=id))
-
+    #fk
+    uploader_id = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    #relation
     checks      = relationship('Check_TB',  backref='image')
+
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
 
@@ -57,7 +58,7 @@ class Image_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, description, filename, image, userid):
+    def create(cls, description, filename, image, uploader_id):
         global DBSession
         img_string = image.read()
 
@@ -69,7 +70,7 @@ class Image_TB(Base):
                     image=base64.b64encode(img_string),
                     #image=img_string,
                     format=format,
-                    userid=userid)
+                    uploader_id=uploader_id)
         DBSession.add(model)
         DBSession.flush()
         rtn = (True, model)
@@ -89,13 +90,6 @@ class Image_TB(Base):
     def show_img(cls, id):
         global DBSession
         model = cls.get_by_id(id)
-        print '==='
-        print '==='
-        print '==='
-        print '==='
-        print '==='
-        #print model.image
-        #print model.format
         rtn_dict = {}
         if model != None:
             rtn_dict['format'] =  str(model.format).lower()
@@ -115,7 +109,8 @@ class Image_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, id, description=None, filename=filename, image=None, userid=None):
+    def update(cls, id, description=None, filename=filename, image=None,
+            uploader_id=None):
         global DBSession
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
@@ -125,7 +120,7 @@ class Image_TB(Base):
         if description: model.description = description
         if filename:    model.filename = filename
         if image:       model.image = image
-        if userid:      model.userid = userid
+        if uploader_id:      model.uploader_id = uploader_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
         rtn = (True, model)

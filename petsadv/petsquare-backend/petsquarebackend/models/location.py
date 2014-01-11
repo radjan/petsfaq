@@ -30,10 +30,10 @@ import traceback
 
 class Location_TB(Base):
     __tablename__ = 'location'
-    __public__ = ('id','name', 'description',
-            'longtitude', 'latitude',
-            'address',
-            'userid', 'user', 'checks',
+    __public__ = ('id','name', 'description', 'longtitude', 'latitude', 'address',
+            'explorer_id',  #fk
+            'explorer',     #backref
+            'checks',       #relation
             'createddatetime', 'updateddatetime')
 
 
@@ -43,11 +43,10 @@ class Location_TB(Base):
     longtitude  = Column(Float(255), nullable=True, unique=False,)
     latitude    = Column(Float(255), nullable=True, unique=False,)
     address     = Column(String(255), nullable=True, unique=False,)
-
-    #userid      = Column(Integer, nullable=True, unique=False,)
-    userid      = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
-    user        = relationship('User_TB', backref=backref('location.userid', order_by=id))
-    checks      = relationship('Check_TB',  backref='location')
+    #fk
+    explorer_id  = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
+    #relation
+    checks       = relationship('Check_TB',  backref=backref('location', order_by=id))
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
@@ -59,11 +58,12 @@ class Location_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, description, longtitude, latitude, address, userid):
+    def create(cls, name, description, longtitude, latitude, address,
+            explorer_id):
         global DBSession
         model = cls(name=name, description=description,
                 longtitude=longtitude, latitude=latitude, address=address, 
-                userid=userid)
+                explorer_id=explorer_id)
         DBSession.add(model)
         DBSession.flush()
         rtn = (True, model)
@@ -88,7 +88,7 @@ class Location_TB(Base):
     @classmethod
     @ModelMethod
     def update(cls, id, name=None, description=None, longtitude=None,
-            latitude=None, address=None, userid=None):
+            latitude=None, address=None, explorer_id=None):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
@@ -99,7 +99,7 @@ class Location_TB(Base):
         if longtitude:  model.longtitude = longtitude
         if latitude:    model.latitude = latitude
         if address:     model.address = address
-        if userid:      model.userid = userid
+        if explorer_id:      model.explorer_id = explorer_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
         rtn =  (True, model)

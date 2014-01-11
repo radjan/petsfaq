@@ -27,6 +27,7 @@ import traceback
 DBSession = scoped_session(sessionmaker(expire_on_commit=False,
                                         extension=ZTE(keep_session=False)))
 
+MODEL_DEFAULT_DEPTH = 2
 
 def ModelMethod(func):
     def mdl_wrapped(cls, *args, **kwargs):
@@ -52,6 +53,7 @@ def ModelMethod(func):
 
 class ModelMixin(object):
     __public__ = None
+    __default_depth__ = 2
 
     @classmethod
     def get_by_id(cls, id, session=DBSession, columns=None, lock_mode=None):
@@ -237,7 +239,8 @@ class ModelMixin(object):
         rtn.append({'status':'fail', 'msg':'model error on %s' % ins_stk}) 
         return rtn
 
-    def __json__(self, request, exclude=(), extra=(), exclude_fk=True, max_depth=2):
+    def __json__(self, request, exclude=(), extra=(), exclude_fk=True, 
+            max_depth=MODEL_DEFAULT_DEPTH):
         log.debug('type: %s, id: %s' % (type(self), self.id))
         obj_dict = self.__dict__
         obj_dict = dict((key, obj_dict[key]) for key in obj_dict if not key.startswith("_"))
@@ -260,19 +263,22 @@ class ModelMixin(object):
             if max_depth == 0 and isinstance(value, (ModelMixin, InstrumentedList)) :
                 continue
             if isinstance(value, ModelMixin):
-                value = self.__getattribute__(k).__json__(request, exclude,
-                        extra, exclude_fk, max_depth-1)
-            if isinstance(value, datetime.datetime):
-                value = value.strftime("%Y-%m-%d, %H:%M:%S")
-            if isinstance(value, InstrumentedList):
+                value = value.__json__(request, exclude, extra, exclude_fk, max_depth-1)
+            if isinstance(value, (InstrumentedList, list)):
                 value_list = []
                 for m in value:
                     if isinstance(m, ModelMixin):
                         m = m.__json__(request, exclude, extra, exclude_fk, max_depth-1)
                     value_list.append(m)
                 value = value_list
+            elif isinstance(value, datetime.datetime):
+                value = value.strftime("%Y-%m-%d, %H:%M:%S")
             rtn_dict[k] = value
         return rtn_dict
+
+    #def _retrieve_model(self, request, exclude, extra, exclude_fk, max_depth):
+    #    if isinstance(value, ModelMixin):
+    #        value = self.__getattribute__(k).__json__(request, exclude, extra, exclude_fk, max_depth-1)
 
 Base = declarative_base(cls=ModelMixin)
 
