@@ -247,8 +247,6 @@ class ModelMixin(object):
         foreignkeys = list(self.__table__.foreign_keys)
         foreignkeys = dict([(x.parent.name, x.column.table.name) for x in foreignkeys])
         #foreignkeys = {fk_name: f_table, ...}
-<<<<<<< HEAD
-=======
 
         if exclude_fk:
             exclude = exclude + tuple(foreignkeys.keys())
@@ -256,7 +254,6 @@ class ModelMixin(object):
 
         public = self.__public__ + extra if self.__public__ else extra
         rtn_pub = [x for x in public if x not in exclude]
->>>>>>> add_user_group_models
 
         rtn_dict = {}
         for k in rtn_pub:
