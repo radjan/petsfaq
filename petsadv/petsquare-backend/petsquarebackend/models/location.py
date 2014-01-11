@@ -30,6 +30,13 @@ import traceback
 
 class Location_TB(Base):
     __tablename__ = 'location'
+    __public__ = ('id','name', 'description',
+            'longtitude', 'latitude',
+            'address',
+            'userid', 'user', 'checks',
+            'createddatetime', 'updateddatetime')
+
+
     id              = Column(Integer, nullable=False, unique=True, 
             primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=True, unique=False, )
@@ -41,10 +48,10 @@ class Location_TB(Base):
     #userid          = Column(Integer, nullable=True, unique=False,)
     userid          = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
     user   = relationship('User_TB', backref=backref('location.userid', order_by=id))
+    checks    = relationship('Check_TB',  backref='location')
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
-    checks    = relationship('Check_TB',  backref='location')
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()

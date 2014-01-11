@@ -30,6 +30,11 @@ import traceback
 
 class Group_TB(Base):
     __tablename__ = 'group'
+    __public__ = ('id','name','description','users',
+            'createddatetime', 'updateddatetime')
+
+
+
     id              = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=True, unique=False)
     description     = Column(String(255), nullable=True, unique=False)
@@ -48,6 +53,13 @@ class Group_TB(Base):
 
 class User_TB(Base):
     __tablename__ = 'user'
+    __public__ = ('id','name','description',
+            'password',
+            'fb_api_key','fb_api_secret', 
+            'group_id', 'group',
+            'images', 'checks',
+            'createddatetime', 'updateddatetime')
+
     id              = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=True, unique=False)
     description     = Column(String(255), nullable=True, unique=False)
@@ -61,8 +73,6 @@ class User_TB(Base):
     images = relationship('Image_TB', backref=backref('image.userid', order_by=id))
     checks = relationship('Check_TB', backref=backref('image.userid', order_by=id))
 
-
-
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
 
@@ -72,14 +82,6 @@ class User_TB(Base):
         super(User_TB, self).__init__(*args, **kwargs)
 
 
-
-
-
-
-
-
-    checks = relationship('Check_TB', backref=backref('group_id', order_by=id))
-    images = relationship('Image_TB', backref=backref('group_id', order_by=id))
 
 
 

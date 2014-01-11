@@ -29,6 +29,8 @@ import traceback
 
 class Check_TB(Base):
     __tablename__  = 'check'
+    __public__ = ('id','title','description','location_id','image_id','userid',
+            'user', 'createddatetime', 'updateddatetime')
 
     id              = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     title           = Column(String(255), nullable=True, unique=False)
@@ -99,6 +101,7 @@ class Check_TB(Base):
     def delete(cls, id):
         rtn = cls.delete_by_id(id)
         return rtn
+
 
 def main():
     pass
