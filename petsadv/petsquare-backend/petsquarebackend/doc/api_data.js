@@ -69,7 +69,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"1\",\n           title: \"check1\",\n           createddatetime: \"2014-01-03, 20:46:03\",\n           image: {\n               description: \"1\",\n               format: \"PNG\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               userid: 1,\n               filename: \"python.png\",\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1\n           },\n           userid: 1,\n           location: {\n               description: \"1\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               userid: 1,\n               longtitude: 121.5130475,\n               address: \"taipei\",\n               latitude: 25.040063,\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1,\n               name: \"one\"\n           },\n           updateddatetime: \"2014-01-03, 20:46:03\",\n           id: 1\n       }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       title: \"check1\",\n       createddatetime: \"2014-01-12, 23:52:04\",\n      +image: {...},\n      +user: {...},\n       updateddatetime: \"2014-01-12, 23:52:04\",\n       id: 1,\n      +location: {...}\n     }\n   }\n"
         }
       ]
     },
@@ -121,7 +121,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n               msg: \"\",\n               count: 3\n       },\n           data: [\n           {\n               description: \"1\",\n               title: \"check1\",\n               createddatetime: \"2013-12-27, 00:32:11\",\n               image: {\n                   description: \"1\",\n                   format: \"PNG\",\n                   createddatetime: \"2013-12-27, 00:32:11\",\n                   userid: 1,\n                   filename: \"python.png\",\n                   updateddatetime: \"2013-12-27, 00:32:11\",\n                   id: 1\n               },\n               userid: 1,\n               location: {\n                   description: \"1\",\n                   createddatetime: \"2013-12-27, 00:32:11\",\n                   userid: 1,\n                   longtitude: 121.5130475,\n                   address: \"taipei\",\n                   latitude: 25.040063,\n                   updateddatetime: \"2013-12-27, 00:32:11\",\n                   id: 1,\n                   name: \"one\"\n               },\n               updateddatetime: \"2013-12-27, 00:32:11\",\n               id: 1\n           },\n           {\n               description: \"2\",\n               title: \"check2\",\n               createddatetime: \"2013-12-27, 00:32:11\",\n               image: {\n                   description: \"1\",\n                   format: \"PNG\",\n                   createddatetime: \"2013-12-27, 00:32:11\",\n                   userid: 1,\n                   filename: \"python.png\",\n                   updateddatetime: \"2013-12-27, 00:32:11\",\n                   id: 1\n               },\n               userid: 1,\n               location: {\n                   description: \"1\",\n                   createddatetime: \"2013-12-27, 00:32:11\",\n                   userid: 1,\n                   longtitude: 121.5130475,\n                   address: \"taipei\",\n                   latitude: 25.040063,\n                   updateddatetime: \"2013-12-27, 00:32:11\",\n                   id: 1,\n                   name: \"one\"\n               },\n               updateddatetime: \"2013-12-27, 00:32:11\",\n               id: 2\n           },\n           {\n               description: \"3\",\n               title: \"check3\",\n               createddatetime: \"2013-12-27, 00:32:11\",\n               image: {\n                   description: \"1\",\n                   format: \"PNG\",\n                   createddatetime: \"2013-12-27, 00:32:11\",\n                   userid: 1,\n                   filename: \"python.png\",\n                   updateddatetime: \"2013-12-27, 00:32:11\",\n                   id: 1\n               },\n               userid: 1,\n               location: {\n                   description: \"1\",\n                   createddatetime: \"2013-12-27, 00:32:11\",\n                   userid: 1,\n                   longtitude: 121.5130475,\n                   address: \"taipei\",\n                   latitude: 25.040063,\n                   updateddatetime: \"2013-12-27, 00:32:11\",\n                   id: 1,\n                   name: \"one\"\n               },\n               updateddatetime: \"2013-12-27, 00:32:11\",\n               id: 3\n           }\n       ]\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n         msg: \"\",\n         count: 3\n     },\n     data: [\n       {\n         description: \"1\",\n         title: \"check1\",\n         createddatetime: \"2014-01-12, 23:52:04\",\n        +image: {...},\n        +user: {...},\n         updateddatetime: \"2014-01-12, 23:52:04\",\n         id: 1,\n        +location: {...}\n       },\n      +{...},\n       ..\n     ]\n   }\n"
         }
       ]
     },
@@ -267,7 +267,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"1\",\n           title: \"check1\",\n           createddatetime: \"2014-01-03, 20:46:03\",\n           image: {\n               description: \"1\",\n               format: \"PNG\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               userid: 1,\n               filename: \"python.png\",\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1\n           },\n           userid: 1,\n           location: {\n               description: \"1\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               userid: 1,\n               longtitude: 121.5130475,\n               address: \"taipei\",\n               latitude: 25.040063,\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1,\n               name: \"one\"\n           },\n           updateddatetime: \"2014-01-03, 20:46:03\",\n           id: 1\n       }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       title: \"check1\",\n       createddatetime: \"2014-01-12, 23:52:04\",\n      +image: {...},\n      +user: {...},\n       updateddatetime: \"2014-01-12, 23:52:04\",\n       id: 1,\n      +location: {...}\n     }\n   }\n"
         }
       ]
     },
@@ -373,7 +373,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       format: \"PNG\",\n       createddatetime: \"2013-12-27, 02:19:09\",\n       userid: 1,\n       filename: \"python.png\",\n       updateddatetime: \"2013-12-27, 02:19:09\",\n       id: 1\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"Fly Python\",\n       format: \"PNG\",\n       createddatetime: \"2014-01-12, 23:52:04\",\n       filename: \"python.png\",\n      +uploader: {...},\n       id: 1,\n       updateddatetime: \"2014-01-12, 23:52:04\",\n      +checks: [...]\n     }\n   }\n"
         }
       ]
     },
@@ -425,7 +425,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n         msg: \"\",\n         count: 2\n     },\n       data: [\n       {\n         description: \"1\",\n         format: \"PNG\",\n         createddatetime: \"2013-12-27, 02:19:09\",\n         userid: 1,\n         filename: \"python.png\",\n         updateddatetime: \"2013-12-27, 02:19:09\",\n         id: 1\n       },\n       {\n         description: \"2\",\n         format: \"PNG\",\n         createddatetime: \"2013-12-27, 02:19:10\",\n         userid: 1,\n         filename: \"python2.png\",\n         updateddatetime: \"2013-12-27, 02:19:10\",\n         id: 2\n       }\n     ]\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\",\n       count: 2\n     },\n     data: [\n       {\n         description: \"Fly Python\",\n         format: \"PNG\",\n         createddatetime: \"2014-01-13, 00:38:05\",\n         filename: \"python.png\",\n        +uploader: {...},\n         id: 1,\n         updateddatetime: \"2014-01-13, 00:38:05\",\n        +checks: [...]\n       },\n      +{...},\n       ..\n     ]\n   }\n"
         }
       ]
     },
@@ -491,7 +491,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       format: \"PNG\",\n       createddatetime: \"2013-12-27, 02:19:09\",\n       userid: 1,\n       filename: \"python.png\",\n       updateddatetime: \"2013-12-27, 02:19:09\",\n       id: 1\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"Fly Python\",\n       format: \"PNG\",\n       createddatetime: \"2014-01-12, 23:52:04\",\n       filename: \"python.png\",\n      +uploader: {...},\n       id: 1,\n       updateddatetime: \"2014-01-12, 23:52:04\",\n      +checks: [...]\n     }\n   }\n"
         }
       ]
     },
@@ -557,7 +557,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       format: \"PNG\",\n       createddatetime: \"2013-12-27, 02:19:09\",\n       userid: 1,\n       filename: \"python.png\",\n       updateddatetime: \"2013-12-27, 02:19:09\",\n       id: 1\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"Fly Python\",\n       format: \"PNG\",\n       createddatetime: \"2014-01-12, 23:52:04\",\n       filename: \"python.png\",\n      +uploader: {...},\n       id: 1,\n       updateddatetime: \"2014-01-12, 23:52:04\",\n      +checks: [...]\n     }\n   }\n"
         }
       ]
     },
@@ -633,7 +633,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2013-12-24, 02:54:24\",\n       userid: 1,\n       name: \"one\",\n       address: \"taipei\",\n       updateddatetime: \"2013-12-24, 02:54:24\",\n       id: 1,\n       longtitude: 121.5130475,\n       latitude: 25.040063\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longtitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
         }
       ]
     },
@@ -685,7 +685,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n         msg: \"\",\n         count: 3\n     },\n       data: [\n       {\n         description: \"1\",\n         createddatetime: \"2013-12-24, 02:54:24\",\n         userid: 1,\n         name: \"one\",\n         address: \"taipei\",\n         updateddatetime: \"2013-12-24, 02:54:24\",\n         id: 1,\n         longtitude: 121.5130475,\n         latitude: 25.040063\n       },\n       {\n         description: \"1\",\n         createddatetime: \"2013-12-24, 02:54:24\",\n         userid: 1,\n         name: \"one\",\n         address: \"taipei\",\n         updateddatetime: \"2013-12-24, 02:54:24\",\n         id: 2,\n         longtitude: 121.5130475,\n         latitude: 25.040063\n       },\n       {\n         description: \"1\",\n         createddatetime: \"2013-12-24, 02:54:24\",\n         userid: 1,\n         name: \"one\",\n         address: \"taipei\",\n         updateddatetime: \"2013-12-24, 02:54:24\",\n         id: 3,\n         longtitude: 121.5130475,\n         latitude: 25.040063\n       }\n     ]\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\",\n       count: 3\n     },\n     data: [\n       {\n         description: \"1\",\n         createddatetime: \"2014-01-13, 00:47:42\",\n        +explorer: {...}, // user object\n         longtitude: 121.5130475,\n        +checks: [...],\n         address: \"taipei\",\n         latitude: 25.040063,\n         updateddatetime: \"2014-01-13, 00:47:42\",\n         id: 1,\n         name: \"one\"\n       },\n      +{...},\n       ..\n     ]\n   }\n"
         }
       ]
     },
@@ -758,7 +758,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"dd\",\n           createddatetime: \"2013-12-24, 04:22:50\",\n           userid: 1,\n           name: \"nn\",\n           address: \"address\",\n           updateddatetime: \"2013-12-24, 04:22:50\",\n           id: 1,\n           longtitude: 121.5130475,\n           latitude: 25.040063\n       }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longtitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
         }
       ]
     },
@@ -845,7 +845,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"description\",\n           createddatetime: \"2013-12-24, 04:22:50\",\n           userid: 1,\n           name: \"name\",\n           address: \"address\",\n           updateddatetime: \"2013-12-24, 04:25:50\",\n           id: 1,\n           longtitude: 121.5130475,\n           latitude: 25.040063\n       }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longtitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
         }
       ]
     },
