@@ -69,21 +69,21 @@ def main(argv=sys.argv):
         if not success: return
 
         #create location
-        success, lmodel = Location_TB.create(
+        success, lmodel1 = Location_TB.create(
                             name='one', 
                             description='1', 
                             longtitude=121.5130475, 
                             latitude=25.040063, 
                             address='taipei', 
                             explorer_id=umodel.id)
-        success, lmodel = Location_TB.create(
+        success, lmodel2 = Location_TB.create(
                             name='two', 
                             description='2', 
                             longtitude=121.5130475, 
                             latitude=25.040063, 
                             address='taipei', 
                             explorer_id=umodel.id)
-        success, lmodel = Location_TB.create(
+        success, lmodel3 = Location_TB.create(
                             name='three', 
                             description='3',
                             longtitude=121.5130475, 
@@ -94,9 +94,16 @@ def main(argv=sys.argv):
             
         #create image
         f = open('petsquarebackend/scripts/python.png')
-        success, imodel = Image_TB.create(
-                            description='1', 
+        success, imodel1 = Image_TB.create(
+                            description='Fly Python', 
                             filename='python.png',
+                            image=f,
+                            uploader_id=umodel.id)
+        f.close()
+        f = open('petsquarebackend/scripts/xkcd-style-plots.png')
+        success, imodel2 = Image_TB.create(
+                            description='xkcd style plots', 
+                            filename='plot.png',
                             image=f,
                             uploader_id=umodel.id)
         if not success: return
@@ -105,20 +112,20 @@ def main(argv=sys.argv):
         success, cmodel = Check_TB.create(
                             title='check1', 
                             description='1', 
-                            location_id=lmodel.id, 
-                            image_id=imodel.id, 
+                            location_id=lmodel1.id, 
+                            image_id=imodel1.id, 
                             user_id=umodel.id)
         success, cmodel = Check_TB.create(
                             title='check2', 
                             description='2', 
-                            location_id=lmodel.id, 
-                            image_id=imodel.id, 
+                            location_id=lmodel2.id, 
+                            image_id=imodel1.id, 
                             user_id=umodel.id)
         success, cmodel = Check_TB.create(
                             title='check3', 
                             description='3', 
-                            location_id=lmodel.id, 
-                            image_id=imodel.id, 
+                            location_id=lmodel3.id, 
+                            image_id=imodel2.id, 
                             user_id=umodel.id)
         if not success: return
 
