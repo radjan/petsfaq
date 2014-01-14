@@ -134,6 +134,25 @@ class Animal_Image_TB(Base):
 
     image = relationship('Image_TB', backref=backref('animal_assocs', order_by=id))
 
+    def __init__(self, *args, **kwargs):
+        self.createddatetime = datetime.datetime.now()
+        self.updateddatetime = datetime.datetime.now()
+        super(Animal__Image_TB, self).__init__(*args, **kwargs)
+
+    @classmethod
+    @ModelMethod
+    def create(cls, status, description, animal, image):
+        global DBSession
+
+        model = cls(status=status,
+                    description=description,
+                    animal_id=animal.id,
+                    image_id=image.id)
+        DBSession.add(model)
+        DBSession.flush()
+        rtn = (True, model)
+
+        return rtn
 def main():
     pass
 

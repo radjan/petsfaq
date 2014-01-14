@@ -155,3 +155,20 @@ def main(argv=sys.argv):
 
         if not success: return
 
+        success, aimodel = Animal_Image_TB.create(
+                            status='halfway',
+                            description='XD',
+                            animal=amodel1,
+                            image=imodel1)
+
+        success, aimodel = Animal_Image_TB.create(
+                            status='adopted',
+                            description='XD',
+                            animal=amodel1,
+                            image=imodel2)
+
+        success, aimodel = Animal_Image_TB.create(
+                            status='halfway',
+                            description='XD',
+                            animal=amodel2,
+                            image=imodel1)
