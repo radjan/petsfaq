@@ -124,7 +124,7 @@ class Animal_Image_TB(Base):
                   'createddatetime', 'updateddatetime')
 
     animal_id = Column(Integer, ForeignKey('animal.id'), primary_key=True)
-    image_id = Column(Integer, ForeignKey('image.id', primary_key=True)
+    image_id = Column(Integer, ForeignKey('image.id'), primary_key=True)
 
     status          = Column(String(255), nullable=False, unique=False,)
     description     = Column(String(255), nullable=True, unique=False,)

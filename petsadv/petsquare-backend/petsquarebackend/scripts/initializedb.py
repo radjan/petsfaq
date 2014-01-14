@@ -43,7 +43,7 @@ def main(argv=sys.argv):
     with transaction.manager as tm:
 
         #erase the database tables
-        Animal_Imange_TB.__table__.drop(engine, checkfirst=True)
+        Animal_Image_TB.__table__.drop(engine, checkfirst=True)
         Check_TB.__table__.drop(engine,    checkfirst=True) #  ^
         Location_TB.__table__.drop(engine, checkfirst=True) #  |
         Image_TB.__table__.drop(engine,    checkfirst=True) #  |
@@ -54,12 +54,12 @@ def main(argv=sys.argv):
         Base.metadata.create_all(engine)
 
         success = True
-        if not success: return
         #create group
         success, gmodel = Group_TB.create(
                             name='one', 
                             description='1')
         if not success: return
+            raise Exception(gmodel)
 
         #create user
         success, umodel = User_TB.create(
@@ -69,7 +69,8 @@ def main(argv=sys.argv):
                             fb_api_key='fbkey',
                             fb_api_secret='apisecret', 
                             group_id=gmodel.id)
-        if not success: return
+        if not success:
+            raise Exception(umodel)
 
         #create location
         success, lmodel1 = Location_TB.create(
@@ -93,7 +94,8 @@ def main(argv=sys.argv):
                             latitude=25.040063, 
                             address='taipei', 
                             explorer_id=umodel.id)
-        if not success: return
+        if not success:
+            raise Exception(lmodel3)
             
         #create image
         f = open('petsquarebackend/scripts/python.png')
@@ -109,8 +111,8 @@ def main(argv=sys.argv):
                             filename='plot.png',
                             image=f,
                             uploader_id=umodel.id)
-        if not success: return
-
+        if not success:
+            raise Exception(imodel2)
         #create check
         success, cmodel = Check_TB.create(
                             title='check1', 
@@ -130,7 +132,8 @@ def main(argv=sys.argv):
                             location_id=lmodel3.id, 
                             image_id=imodel2.id, 
                             user_id=umodel.id)
-        if not success: return
+        if not success:
+            raise Exception(cmodel)
 
         success, amodel1 = Animal_TB.create(name='pochi',
                             type='cat',
@@ -153,7 +156,8 @@ def main(argv=sys.argv):
                             finder_id=umodel.id,
                             find_location_id=lmodel3.id)
 
-        if not success: return
+        if not success:
+            raise Exception(amodel3)
 
         success, aimodel = Animal_Image_TB.create(
                             status='halfway',
@@ -172,3 +176,5 @@ def main(argv=sys.argv):
                             description='XD',
                             animal=amodel2,
                             image=imodel1)
+        if not success:
+            raise Exception(aimodel)
