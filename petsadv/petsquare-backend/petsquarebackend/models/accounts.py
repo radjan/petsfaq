@@ -48,6 +48,54 @@ class Group_TB(Base):
         self.updateddatetime = datetime.datetime.now()
         super(Group_TB, self).__init__(*args, **kwargs)
 
+    @classmethod
+    @ModelMethod
+    def create(cls, name, description):
+        global DBSession
+        model = cls(name=name, description=description)
+        DBSession.add(model)
+        DBSession.flush()
+        rtn = (True, model)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def list(cls, filattr=None, offset=None, size=None):
+        model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
+        rtn = (True, model_list)
+        return rtn
+
+
+    @classmethod
+    @ModelMethod
+    def show(cls, id):
+        model = cls.get_by_id(id)
+        rtn = (True, model)
+        return rtn
+
+
+    @classmethod
+    @ModelMethod
+    def update(cls, name, description):
+        model = cls.get_by_id(id)
+        updateddatetime = datetime.datetime.now()
+        log.debug('model update: %s' % model)
+
+        #FIXME
+        if name:        model.name = name
+        if description: model.description = description
+        model.updateddatetime = updateddatetime
+        DBSession.merge(model)
+        rtn =  (True, model)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def delete(cls, id):
+        rtn = cls.delete_by_id(id)
+        return rtn
+
+
 
 class User_TB(Base):
     __tablename__ = 'user'
@@ -77,6 +125,58 @@ class User_TB(Base):
         self.createddatetime = datetime.datetime.now()
         self.updateddatetime = datetime.datetime.now()
         super(User_TB, self).__init__(*args, **kwargs)
+
+    @classmethod
+    @ModelMethod
+    def create(cls, name, description, password, fb_api_key, fb_api_secret, group_id):
+        global DBSession
+        model = cls(name=name, description=description,
+                password=password, fb_api_key=fb_api_key,
+                fb_api_secret=fb_api_secret, group_id=group_id)
+        DBSession.add(model)
+        DBSession.flush()
+        rtn = (True, model)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def list(cls, filattr=None, offset=None, size=None):
+        model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
+        rtn = (True, model_list)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def show(cls, id):
+        model = cls.get_by_id(id)
+        rtn = (True, model)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def update(cls, name, description, password, fb_api_key, fb_api_secret, group_id):
+        model = cls.get_by_id(id)
+        updateddatetime = datetime.datetime.now()
+        log.debug('model update: %s' % model)
+
+        #FIXME
+        if name:        model.name = name
+        if description: model.description = description
+        if password:  model.password = password
+        if fb_api_key:    model.fb_api_key = fb_api_key
+        if fb_api_secret:     model.fb_api_secret = fb_api_secret
+        if group_id:      model.group_id = group_id
+        model.updateddatetime = updateddatetime
+        DBSession.merge(model)
+        rtn =  (True, model)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def delete(cls, id):
+        rtn = cls.delete_by_id(id)
+        return rtn
+
 
 def main():
     pass
