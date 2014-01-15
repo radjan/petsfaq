@@ -44,13 +44,13 @@ def main(argv=sys.argv):
 
         #erase the database tables
         Animal_Image_TB.__table__.drop(engine, checkfirst=True)
-        Check_TB.__table__.drop(engine,    checkfirst=True) #  ^
+        Animal_TB.__table__.drop(engine,   checkfirst=True) #  ^
+        Check_TB.__table__.drop(engine,    checkfirst=True) #  |
         Location_TB.__table__.drop(engine, checkfirst=True) #  |
         Image_TB.__table__.drop(engine,    checkfirst=True) #  |
         User_TB.__table__.drop(engine,     checkfirst=True) #  |
         Group_TB.__table__.drop(engine,    checkfirst=True) #  |
         User_TB.__table__.drop(engine,     checkfirst=True) #  |
-        Animal_TB.__table__.drop(engine,   checkfirst=True) #  |
         Base.metadata.create_all(engine)
 
         #create group
