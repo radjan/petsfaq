@@ -53,12 +53,11 @@ def main(argv=sys.argv):
         Animal_TB.__table__.drop(engine,   checkfirst=True) #  |
         Base.metadata.create_all(engine)
 
-        success = True
         #create group
         success, gmodel = Group_TB.create(
                             name='one', 
                             description='1')
-        if not success: return
+        if not success:
             raise Exception(gmodel)
 
         #create user
