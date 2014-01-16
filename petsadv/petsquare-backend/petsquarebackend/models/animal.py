@@ -123,8 +123,10 @@ class Animal_Image_TB(Base):
     __public__ = ('animal', 'image', 'status', 'description',
                   'createddatetime', 'updateddatetime')
 
-    animal_id = Column(Integer, ForeignKey('animal.id'), primary_key=True)
-    image_id = Column(Integer, ForeignKey('image.id'), primary_key=True)
+    id              = Column(Integer, nullable=False, unique=True,
+                             primary_key=True, autoincrement=True)
+    animal_id = Column(Integer, ForeignKey('animal.id'), nullable=False, unique=False)
+    image_id = Column(Integer, ForeignKey('image.id'), nullable=False, unique=False)
 
     status          = Column(String(255), nullable=False, unique=False,)
     description     = Column(String(255), nullable=True, unique=False,)
@@ -137,7 +139,7 @@ class Animal_Image_TB(Base):
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
         self.updateddatetime = datetime.datetime.now()
-        super(Animal__Image_TB, self).__init__(*args, **kwargs)
+        super(Animal_Image_TB, self).__init__(*args, **kwargs)
 
     @classmethod
     @ModelMethod
