@@ -139,7 +139,7 @@ def main(argv=sys.argv):
                             status='adopted',
                             description='haha',
                             finder_id=umodel.id,
-                            find_location_id=lmodel.id)
+                            find_location_id=lmodel1.id)
 
         success, amodel2 = Animal_TB.create(name='hello kitty',
                             type='cat',
