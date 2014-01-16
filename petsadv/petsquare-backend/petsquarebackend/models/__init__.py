@@ -252,7 +252,7 @@ class ModelMixin(object):
             exclude = exclude + tuple(foreignkeys.keys())
             #exclude = list(exclude) + foreignkeys.keys()
 
-        public = self.__public__ + extra if self.__public__ else extra
+        public = tuple(list(self.__public__) + list(extra)) if self.__public__ else extra
         rtn_pub = [x for x in public if x not in exclude]
 
         rtn_dict = {}
@@ -272,7 +272,7 @@ class ModelMixin(object):
                     value_list.append(m)
                 value = value_list
             elif isinstance(value, datetime.datetime):
-                value = value.strftime("%Y-%m-%d, %H:%M:%S")
+                value = value.strftime("%Y-%m-%d %H:%M:%S")
             rtn_dict[k] = value
         return rtn_dict
 
