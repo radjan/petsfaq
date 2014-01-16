@@ -121,6 +121,11 @@ class User_TB(Base):
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
 
+    pets = relationship('Animal_TB', backref=backref('owner', order_by=id),
+                        foreign_keys='[Animal_TB.owner_id]')
+    found_animals = relationship('Animal_TB', backref=backref('finder', order_by=id),
+                        foreign_keys='[Animal_TB.finder_id]')
+
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
         self.updateddatetime = datetime.datetime.now()

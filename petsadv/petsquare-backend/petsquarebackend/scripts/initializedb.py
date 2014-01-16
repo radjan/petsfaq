@@ -19,6 +19,7 @@ from ..models.accounts import User_TB
 from ..models.location import Location_TB
 from ..models.image import Image_TB
 from ..models.check import Check_TB
+from ..models.animal import Animal_TB, Animal_Image_TB
 
 import Image as PILImage
 
@@ -42,7 +43,9 @@ def main(argv=sys.argv):
     with transaction.manager as tm:
 
         #erase the database tables
-        Check_TB.__table__.drop(engine,    checkfirst=True) #  ^
+        Animal_Image_TB.__table__.drop(engine, checkfirst=True)
+        Animal_TB.__table__.drop(engine,   checkfirst=True) #  ^
+        Check_TB.__table__.drop(engine,    checkfirst=True) #  |
         Location_TB.__table__.drop(engine, checkfirst=True) #  |
         Image_TB.__table__.drop(engine,    checkfirst=True) #  |
         User_TB.__table__.drop(engine,     checkfirst=True) #  |
@@ -50,13 +53,12 @@ def main(argv=sys.argv):
         User_TB.__table__.drop(engine,     checkfirst=True) #  |
         Base.metadata.create_all(engine)
 
-        success = True
-        if not success: return
         #create group
         success, gmodel = Group_TB.create(
                             name='one', 
                             description='1')
-        if not success: return
+        if not success:
+            raise Exception(gmodel)
 
         #create user
         success, umodel = User_TB.create(
@@ -66,7 +68,8 @@ def main(argv=sys.argv):
                             fb_api_key='fbkey',
                             fb_api_secret='apisecret', 
                             group_id=gmodel.id)
-        if not success: return
+        if not success:
+            raise Exception(umodel)
 
         #create location
         success, lmodel1 = Location_TB.create(
@@ -90,7 +93,8 @@ def main(argv=sys.argv):
                             latitude=25.040063, 
                             address='taipei', 
                             explorer_id=umodel.id)
-        if not success: return
+        if not success:
+            raise Exception(lmodel3)
             
         #create image
         f = open('petsquarebackend/scripts/python.png')
@@ -106,8 +110,8 @@ def main(argv=sys.argv):
                             filename='plot.png',
                             image=f,
                             uploader_id=umodel.id)
-        if not success: return
-
+        if not success:
+            raise Exception(imodel2)
         #create check
         success, cmodel = Check_TB.create(
                             title='check1', 
@@ -127,5 +131,49 @@ def main(argv=sys.argv):
                             location_id=lmodel3.id, 
                             image_id=imodel2.id, 
                             user_id=umodel.id)
-        if not success: return
+        if not success:
+            raise Exception(cmodel)
 
+        success, amodel1 = Animal_TB.create(name='pochi',
+                            type='cat',
+                            status='adopted',
+                            description='haha',
+                            finder_id=umodel.id,
+                            find_location_id=lmodel1.id)
+
+        success, amodel2 = Animal_TB.create(name='hello kitty',
+                            type='cat',
+                            status='halfway',
+                            description='haha',
+                            finder_id=umodel.id,
+                            find_location_id=lmodel2.id)
+
+        success, amodel3 = Animal_TB.create(name='jump',
+                            type='dog',
+                            status='halfway',
+                            description='haha',
+                            finder_id=umodel.id,
+                            find_location_id=lmodel3.id)
+
+        if not success:
+            raise Exception(amodel3)
+
+        success, aimodel = Animal_Image_TB.create(
+                            status='halfway',
+                            description='XD',
+                            animal=amodel1,
+                            image=imodel1)
+
+        success, aimodel = Animal_Image_TB.create(
+                            status='adopted',
+                            description='XD',
+                            animal=amodel1,
+                            image=imodel2)
+
+        success, aimodel = Animal_Image_TB.create(
+                            status='halfway',
+                            description='XD',
+                            animal=amodel2,
+                            image=imodel1)
+        if not success:
+            raise Exception(aimodel)
