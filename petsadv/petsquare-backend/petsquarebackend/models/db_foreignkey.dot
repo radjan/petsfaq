@@ -1,0 +1,56 @@
+// dot -Tpng db_foreignkey.dot -o db_foreignkey.png
+digraph G {
+    rankdir=LR;
+    group      [shape=box, label="Group_TB"];
+    user       [shape=box, label="User_TB"];
+    animal     [shape=box, label="Animal_TB"];
+    animal_img [shape=box, label="Animal_Image_TB"];
+    check      [shape=box, label="Check_TB"];
+    image      [shape=box, label="Image_TB"];
+    location   [shape=box, label="Location_TB"];
+
+
+    //fk
+    user->group        [label="group_id",            color="red"];
+    animal->user       [label="finder_id",           color="red"];
+    animal->user       [label="owner_id",            color="red"];
+    animal->location   [label="find_location_id",    color="red"];
+    animal->location   [label="current_location_id", color="red"];
+    animal_img->animal [label="animal_id",           color="red"];
+    animal_img->image  [label="image_id",            color="red"];
+    check->location    [label="location_id",         color="red"];
+    check->image       [label="image_id",            color="red"];
+    check->user        [label="user_id",             color="red"];
+    image->user        [label="uploader_id",         color="red"];
+    location->user     [label="explorer_id",         color="red"];
+
+
+    //relationships
+    group->user        [label="users",                                       color="#0072E3", fontcolor="#0072E3"];
+    user->animal       [label="pets(Animal_TB.owner_id)",                    color="#0072E3", fontcolor="#0072E3"];
+    user->animal       [label="found_animalss(Animal_TB.finder_id)",         color="#0072E3", fontcolor="#0072E3"];
+    location->animal   [label="found_animals(Animal_TB.find_location__id)",  color="#0072E3", fontcolor="#0072E3"];
+    location->animal   [label="animals_here(Animal_TB.current_location_id)", color="#0072E3", fontcolor="#0072E3"];
+    animal->animal_img [label="image_assocs",                                color="#0072E3", fontcolor="#0072E3"];
+    image->animal_img  [label="*NOTIMPLEMENTED*",                            color="#0072E3", fontcolor="#0072E3"];
+    location->check    [label="checks",                                      color="#0072E3", fontcolor="#0072E3"];
+    image->check       [label="checks",                                      color="#0072E3", fontcolor="#0072E3"];
+    user->check        [label="checks",                                      color="#0072E3", fontcolor="#0072E3"];
+    user->image        [label="images",                                      color="#0072E3", fontcolor="#0072E3"];
+    user->location     [label="locations",                                   color="#0072E3", fontcolor="#0072E3"];
+    
+
+    //backref
+    user->group        [label="group",            color="#E8E8D0", fontcolor="#A5A552"];
+    animal->user       [label="owner",            color="#E8E8D0", fontcolor="#A5A552"];
+    animal->user       [label="finder",           color="#E8E8D0", fontcolor="#A5A552"];
+    animal->location   [label="find_location",    color="#E8E8D0", fontcolor="#A5A552"];
+    animal->location   [label="current_location", color="#E8E8D0", fontcolor="#A5A552"];
+    animal_img->animal [label="animal",           color="#E8E8D0", fontcolor="#A5A552"];
+    animal_img->image  [label="*NOTIMPLEMENTED*", color="#E8E8D0", fontcolor="#A5A552"];
+    check->location    [label="location",         color="#E8E8D0", fontcolor="#A5A552"];
+    check->image       [label="image",            color="#E8E8D0", fontcolor="#A5A552"];
+    check->user        [label="user",             color="#E8E8D0", fontcolor="#A5A552"];
+    image->user        [label="uploader",         color="#E8E8D0", fontcolor="#A5A552"];
+    location->user     [label="explorer",         color="#E8E8D0", fontcolor="#A5A552"];
+
