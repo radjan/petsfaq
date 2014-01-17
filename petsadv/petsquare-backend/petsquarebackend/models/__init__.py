@@ -249,8 +249,8 @@ class ModelMixin(object):
         #foreignkeys = {fk_name: f_table, ...}
 
         if exclude_fk:
-            exclude = exclude + tuple(foreignkeys.keys())
-            #exclude = list(exclude) + foreignkeys.keys()
+            #exclude = exclude + tuple(foreignkeys.keys())
+            exclude = tuple(list(exclude) + foreignkeys.keys())
 
         public = tuple(list(self.__public__) + list(extra)) if self.__public__ else extra
         rtn_pub = [x for x in public if x not in exclude]
