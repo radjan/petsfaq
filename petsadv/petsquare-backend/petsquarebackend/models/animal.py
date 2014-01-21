@@ -32,8 +32,12 @@ import base64
 class Animal_TB(Base):
     __tablename__ = 'animal'
     __public__ = ('id', 'name', 'type', 'status', 'description',
-                  'createddatetime', 'updateddatetime', 'finder',
-                  'owner', 'image_assocs')
+                  'createddatetime', 'updateddatetime',
+                  # foreign key
+                  'finder_id', 'owner_id',
+                  'find_location_id', 'current_location_id'
+                  # relationship
+                  'finder', 'owner', 'image_assocs')
 
     id              = Column(Integer, nullable=False, unique=True, 
                              primary_key=True, autoincrement=True)
@@ -120,8 +124,13 @@ class Animal_TB(Base):
 
 class Animal_Image_TB(Base):
     __tablename__ = 'animal_image'
-    __public__ = ('animal', 'image', 'status', 'description',
-                  'createddatetime', 'updateddatetime')
+    __public__ = ('id', 'status', 'description',
+                  'createddatetime', 'updateddatetime',
+                  # foreign key
+                  'animal_id', 'image_id',
+                  # relationship
+                  'animal', 'image'
+                 )
 
     id              = Column(Integer, nullable=False, unique=True,
                              primary_key=True, autoincrement=True)
