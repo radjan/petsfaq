@@ -15,7 +15,7 @@ def ServiceMethod(func):
             status = func(self, *args, **kwargs)
         except Exception, e:
             status = self.status.copy()
-            self.serv_exception_rtn(\
+            self.serv_exception_rtn(
                     status=status, 
                     exp=e, 
                     ins_stk=inspect.stack()[0][3],
@@ -24,17 +24,19 @@ def ServiceMethod(func):
     return serv_wrapped
      
 class BaseService(object):
+    status = {'code':0,
+              'success': False,
+              'data': '',
+              'info': ''}
+
     def __init__(self, service_cls, request=None):
         self.service_cls = service_cls
         self.request = request
-        self.status = {'code':0,
-                       'success': False,
-                       'data': '',
-                       'info': ''}
+
     #@classmethod
     def serv_exception_rtn(self, status, exp, ins_stk, tbk):
         err_info = (self.service_cls, ins_stk, tbk)
-        log.debug('%s:%s, traceback:\n %s' % err_info)
+        log.error('%s:%s, traceback:\n %s' % err_info)
         status['data'] = ''
         status['success'] = False
         status['info'] = {'status':'fail',
@@ -42,7 +44,13 @@ class BaseService(object):
         return status
 
     @classmethod
-    def serv_rtn(cls, status, success, model):
+    def new_status(cls):
+        return cls.status.copy()
+
+    @classmethod
+    def serv_rtn(cls, status=None, success=False, model=None):
+        if status is None:
+            status = cls.new_status()
         status['data'] = model if success else ''
         status['success'] = success
         status['info'] = {'status':success, 
