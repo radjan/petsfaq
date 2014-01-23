@@ -35,7 +35,7 @@ class Animal_TB(Base):
                   'createddatetime', 'updateddatetime',
                   # foreign key
                   'finder_id', 'owner_id',
-                  'find_location_id', 'current_location_id'
+                  'find_location_id', 'current_location_id',
                   # relationship
                   'finder', 'owner', 'image_assocs')
 
@@ -43,6 +43,7 @@ class Animal_TB(Base):
                              primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=False, unique=False,)
     type            = Column(String(255), nullable=False, unique=False,)
+    sub_type        = Column(String(255), nullable=False, unique=False,)
     status          = Column(String(255), nullable=False, unique=False,)
 
     description     = Column(String(255), nullable=True, unique=False,)
@@ -66,11 +67,13 @@ class Animal_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, type, status, description, finder_id, find_location_id=None):
+    def create(cls, name, type, sub_type, status, description, finder_id,
+               find_location_id=None):
         global DBSession
 
         model = cls(name=name,
                     type=type,
+                    sub_type=sub_type,
                     status=status,
                     description=description,
                     finder_id=finder_id,
@@ -98,7 +101,8 @@ class Animal_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, id, name=None, type=None, status=None, description=None):
+    def update(cls, id, name=None, type=None, sub_type=None, status=None,
+                description=None, finder_id=None):
         global DBSession
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
@@ -107,8 +111,10 @@ class Animal_TB(Base):
         #FIXME
         if name:        model.name = name
         if type:        model.type = type
+        if sub_type:    model.sub_type = sub_type
         if status:      model.status = status
         if description: model.description = description
+        if finder_id:   model.finder_id = finder_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
         rtn = (True, model)
