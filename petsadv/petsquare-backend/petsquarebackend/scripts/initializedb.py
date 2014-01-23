@@ -1,4 +1,3 @@
-import os
 import sys
 import transaction
 
@@ -136,6 +135,7 @@ def main(argv=sys.argv):
 
         success, amodel1 = Animal_TB.create(name='pochi',
                             type='cat',
+                            sub_type='normal',
                             status='adopted',
                             description='haha',
                             finder_id=umodel.id,
@@ -143,6 +143,7 @@ def main(argv=sys.argv):
 
         success, amodel2 = Animal_TB.create(name='hello kitty',
                             type='cat',
+                            sub_type='kitten',
                             status='halfway',
                             description='haha',
                             finder_id=umodel.id,
@@ -150,6 +151,7 @@ def main(argv=sys.argv):
 
         success, amodel3 = Animal_TB.create(name='jump',
                             type='dog',
+                            sub_type='injected',
                             status='halfway',
                             description='haha',
                             finder_id=umodel.id,
