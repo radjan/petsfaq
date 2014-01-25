@@ -1,5 +1,6 @@
-<section id="map" class="row-fluid">
+<div id="map" class="row-fluid">
 	<div class="span2">
+	<div>
 		<accordion close-others="oneAtATime">
 			<accordion-group heading="{{category.title}}" ng-repeat="category in categories" ng-click="setMarkers(category.type)">
       			<ul>
@@ -10,6 +11,7 @@
     		</accordion-group>
 		</accordion>
 	</div>
+
 	<!-- <h4>Click to add a marker!</h4> -->
 	<!-- <p>{{zoomMessage}}</p> -->
 	<!-- <ul>
@@ -34,12 +36,12 @@
 	 
 	<!-- Giving the div an id="map_canvas" fix problems with twitter bootstrap affecting
 	google maps -->
-	<div class="span8">
+	<div>
 		<div id="map_canvas" ui-map="googleMap" class="map-canvas"
 		  ui-event="{'map-click': 'addMarker($event, $params)', 'map-zoom_changed': 'setZoomMessage(googleMap.getZoom())' }"
 		  ui-options="mapOptions">
 		</div>
 	</div>
-</section>
+</div>
 
 
