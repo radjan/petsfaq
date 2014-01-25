@@ -1,47 +1,51 @@
-<div id="map" class="row-fluid">
-	<!-- <div class="span2"> -->
-<!-- 	<div>
-		<accordion close-others="oneAtATime">
-			<accordion-group heading="{{category.title}}" ng-repeat="category in categories" ng-click="setMarkers(category.type)">
-      			<ul>
-				  <li ng-repeat="marker in googleMarkers">
-				    <a ng-click="googleMap.panTo(marker.getPosition())">{{checksInfo[$index].title}}</a>
-				  </li>
-				</ul>
-    		</accordion-group>
-		</accordion>
-	</div> -->
+<div id="wrapper">
+	<div id="sidebar-wrapper">
+		<ul class="sidebar-nav">
+			<li class="sidebar-brand"><a href="#">PetsAdv</a></li>
+			<accordion close-others="oneAtATime">
+				<accordion-group heading="{{category.title}}" ng-repeat="category in categories" ng-click="setMarkers(category.type)">
+	      			<ul>
+					  <li ng-repeat="marker in googleMarkers">
+					    <a ng-click="googleMap.panTo(marker.getPosition())">{{checksInfo[$index].title}}</a>
+					  </li>
+					</ul>
+	    		</accordion-group>
+			</accordion>
+        </ul>
 
-	<!-- <h4>Click to add a marker!</h4> -->
-	<!-- <p>{{zoomMessage}}</p> -->
-	<!-- <ul>
-	  <li ng-repeat="marker in myMarkers">
-	    <a ng-click="myMap.panTo(marker.getPosition())">Pan to Marker {{$index}}</a>
-	  </li>
-	</ul> -->
+	</div>
+	<!-- <a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i>Hello</a> -->
 
-	 
-	<!-- this is the confusing part. we have to point the map marker directive
-	  at an existing google.maps.Marker object, so it can hook up events -->
-	<div ng-repeat="marker in googleMarkers" ui-map-marker="googleMarkers[$index]"
-	  ui-event="{'map-click': 'openMarkerInfo(marker)'}">
-	</div>
-	 
-	<div ui-map-info-window="currentGoogleInfoWindow" style="height:300px">
-	  <h1>{{currentGoogleMarkerTitle}}</h1>
-	  Lat: <input ng-model="currentGoogleMarkerLat">, Lng: <input ng-model="currentGoogleMarkerLng">
-	  <a class="btn btn-info" ng-click="setMarkerPosition(currentGoogleMarker, currentGoogleMarkerLat, currentGoogleMarkerLng)">Set Position</a>
-	  <!-- <img src="http://hk.huaxia.com/thjq/jsxw/gj/images/2010/12/06/743937.jpg"> -->
-	</div>
-	 
-	<!-- Giving the div an id="map_canvas" fix problems with twitter bootstrap affecting
-	google maps -->
-	<div>
-		<div id="map_canvas" ui-map="googleMap" class="map-canvas"
-		  ui-event="{'map-click': 'addMarker($event, $params)', 'map-zoom_changed': 'setZoomMessage(googleMap.getZoom())' }"
-		  ui-options="mapOptions">
+	<div id="page-content-wrapper">
+		<div id="map" class="row-fluid">
+			<!-- this is the confusing part. we have to point the map marker directive
+			  at an existing google.maps.Marker object, so it can hook up events -->
+			<div ng-repeat="marker in googleMarkers" ui-map-marker="googleMarkers[$index]"
+			  ui-event="{'map-click': 'openMarkerInfo(marker)'}">
+			</div>
+			 
+			<div ui-map-info-window="currentGoogleInfoWindow" style="height:300px">
+			  <h1>{{currentGoogleMarkerTitle}}</h1>
+			  Lat: <input ng-model="currentGoogleMarkerLat">, Lng: <input ng-model="currentGoogleMarkerLng">
+			  <a class="btn btn-info" ng-click="setMarkerPosition(currentGoogleMarker, currentGoogleMarkerLat, currentGoogleMarkerLng)">Set Position</a>
+			  <!-- <img src="http://hk.huaxia.com/thjq/jsxw/gj/images/2010/12/06/743937.jpg"> -->
+			</div>
+			 
+			<!-- Giving the div an id="map_canvas" fix problems with twitter bootstrap affecting
+			google maps -->
+			<div>
+				<div id="map_canvas" ui-map="googleMap" class="map-canvas"
+				  ui-event="{'map-click': 'addMarker($event, $params)', 'map-zoom_changed': 'setZoomMessage(googleMap.getZoom())' }"
+				  ui-options="mapOptions">
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
-
+<script>
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("active");
+});
+</script>
