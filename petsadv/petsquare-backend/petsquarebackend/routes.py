@@ -21,7 +21,11 @@ def api_routes(config):
 
     
 
+
     #static pages
     #config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_static_view('/', path='petsquarebackend:web-frontend/dist', cache_max_age=3600)
+
+    #apex
+    config.include('apex', route_prefix='/auth')
 

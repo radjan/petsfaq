@@ -18,6 +18,8 @@ requires = [
     'formencode',
     'PIL',
     'IPython',
+    'apex',
+    'Paste',
     ]
 
 setup(name='petsquare-backend',

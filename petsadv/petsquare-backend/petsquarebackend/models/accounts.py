@@ -23,10 +23,14 @@ from sqlalchemy.types import (
         DateTime,
         UnicodeText,
         Float,
+        Unicode,
         )
 
 import datetime
 import traceback
+
+#apex
+from apex.models import AuthUser
 
 class Group_TB(Base):
     __tablename__ = 'group'
@@ -100,8 +104,8 @@ class Group_TB(Base):
 class User_TB(Base):
     __tablename__ = 'user'
     __public__ = ('id','name','description', 'password', 'fb_api_key','fb_api_secret', 
-            'group_id',                     #fk
-            'group',                        #backref
+            'group_id',                      #fk
+            'group',                         #backref
             'images', 'locations', 'checks', #relation
             'createddatetime', 'updateddatetime')
 
@@ -125,6 +129,9 @@ class User_TB(Base):
                         foreign_keys='[Animal_TB.owner_id]')
     found_animals = relationship('Animal_TB', backref=backref('finder', order_by=id),
                         foreign_keys='[Animal_TB.finder_id]')
+
+    authuser = relationship('ExtendedProfile', backref=backref('petsquare_user', order_by=id))
+
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
@@ -181,6 +188,14 @@ class User_TB(Base):
     def delete(cls, id):
         rtn = cls.delete_by_id(id)
         return rtn
+
+class ExtendedProfile(AuthUser):
+    #__tablename__ = 'extendedprofile'
+    #__mapper_args__ = {'polymorphic_identify':'profile'}
+
+    first_name = Column(Unicode(80))
+    last_name  = Column(Unicode(80))
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=True)
 
 
 def main():

@@ -22,6 +22,9 @@ from ..models.animal import Animal_TB, Animal_Image_TB
 
 import Image as PILImage
 
+#apex
+from apex.models import AuthUser
+
 def usage(argv):
     cmd = os.path.basename(argv[0])
     print('usage: %s <config_uri>\n'
@@ -42,6 +45,7 @@ def main(argv=sys.argv):
     with transaction.manager as tm:
 
         #erase the database tables
+        AuthUser.__table__.drop(engine, checkfirst=True)
         Animal_Image_TB.__table__.drop(engine, checkfirst=True)
         Animal_TB.__table__.drop(engine,   checkfirst=True) #  ^
         Check_TB.__table__.drop(engine,    checkfirst=True) #  |
