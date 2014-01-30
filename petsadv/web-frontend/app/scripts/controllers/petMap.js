@@ -48,8 +48,7 @@ angular.module('webFrontendApp')
 		{title:'熱門地點', type:'hot'}
 	];
 
-	var setMarkerList = function(result){
-		var data = result.data;
+	var setMarkerList = function(data){
 		var recentMarkers = [];
 		for (var i = 0; i < data.length; i++) {
 			var myLatlng = new google.maps.LatLng(data[i].location.latitude, data[i].location.longtitude);
