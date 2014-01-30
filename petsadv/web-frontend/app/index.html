@@ -17,8 +17,7 @@
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
         <link href="bower_components/angular-bootstrap/assets/bootstrap-responsive.css" rel="stylesheet">
-        
-        
+        <link rel="stylesheet" type="text/css" href="resources/css/simple-sidebar.css">
   </head>
   <body ng-app="webFrontendApp">
     <!--[if lt IE 7]>
@@ -30,11 +29,11 @@
       <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <div ng-include src="'views/topNavBar.html'" ="" ng-controller="TopnavbarCtrl"></div>
+    <!-- <div ng-include src="'views/topNavBar.html'" ="" ng-controller="TopnavbarCtrl"></div> -->
     <!-- Add your site or application content here -->
-    <div class="ngView">
-        <div class="container" ng-view=""></div>
-    </div>
+    <!-- <div class="ngView"> -->
+        <div ng-view=""></div>
+    <!-- </div> -->
     
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -89,6 +88,7 @@
         <script src="scripts/controllers/petMap.js"></script>
         <script src="scripts/services/apiUrlConstant.js"></script>
         <script src="scripts/services/checkApi.js"></script>
+        <script src="scripts/services/httpService.js"></script>
         <!-- endbuild -->
 
 </body>

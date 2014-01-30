@@ -9,7 +9,10 @@ angular.module('webFrontendApp', [
   'ui.map',
   'ezfb'
 ])
-  .config(function ($routeProvider, $FBProvider) {
+  .config(function ($routeProvider, $httpProvider, $FBProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
     $FBProvider.setInitParams({
       // appId : '670257916371189',
       // channelUrl :'72e3cd86ab5e6fa4b680273374705beb',
