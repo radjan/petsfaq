@@ -34,7 +34,10 @@ angular.module('webFrontendApp')
                             type: 'read',
                             url_params: {id: checkId}
                         });
-        result.then(successFunc, httpService.getErrorHandleFunc);
+        result.then(function(r) {
+                      successFunc(r.data);
+                    },
+                    httpService.getErrorHandleFunc);
       },
     };
   }]);

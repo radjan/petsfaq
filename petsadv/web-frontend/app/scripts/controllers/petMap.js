@@ -37,7 +37,7 @@ angular.module('webFrontendApp')
 
     $scope.markerItemClick = function (marker) {
       $scope.googleMap.panTo(marker.getPosition());
-      checkApi.get(function(result){alert("result check id: " + result.data.id)}, marker.id);
+      checkApi.get(function(result){alert("result check id: " + result.id)}, marker.id);
     }
   	 
 	/********nav bar **********/
