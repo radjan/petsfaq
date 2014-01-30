@@ -28,5 +28,13 @@ angular.module('webFrontendApp')
       update: function(successFunc, checkId){
 
       },
+      get: function(successFunc, checkId) {
+        var result = httpService.sendRequest({
+                            api: 'check',
+                            type: 'read',
+                            url_params: {id: checkId}
+                        });
+        result.then(successFunc, httpService.getErrorHandleFunc);
+      },
     };
   }]);
