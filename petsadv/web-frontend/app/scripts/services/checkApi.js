@@ -1,62 +1,32 @@
 'use strict';
 
 angular.module('webFrontendApp')
-  .factory('checkApi', ['$http', 'apiUrlConstant',
-    function($http, apiUrlConstant) {
+  .factory('checkApi', ['httpService', function (httpService) {
+    return{
+      createCheck: function(successFunc, title, desc, locationId, imageId){
+        var bodyData = {
+          'title': title,
+          'description': desc,
+          'location_id': locationId,
+          'imageId': image_id,
+          'userid': httpService.getUserId()
+        };
 
-      //FIXME MOCK DATA
-	  var MOCK_CHECKINS = [
-		{
-			'description': "1",
-			'title': "check1",
-			'createddatetime': "2013-12-27, 00:32:11",
-			'userid': 1,
-			'image_id': 1,
-			'updateddatetime': "2013-12-27, 00:32:11",
-			'location': {
-				'name': 'LOCATION_0001',
-				'description': 'one sentence desc',
-				'lat': 25.04171, //float
-				'lng': 121.548353, //float
-				'address': 'Taipei City 1',
-			},
-			'id': 1
-		},
-		{
-			'description': "1",
-			'title': "check2",
-			'createddatetime': "2013-12-27, 00:32:11",
-			'userid': 1,
-			'image_id': 1,
-			'updateddatetime': "2013-12-27, 00:32:11",
-			'location': {
-				'name': 'LOCATION_0002',
-				'description': 'one sentence desc',
-				'lat': 25.021334,
-				'lng': 121.548205,
-				'address': 'Taipei City 2',
-			},
-			'id': 2
-		},
-	  ];
+        var result = httpService.sendRequest({'api':'check', 'type':'create', 'data':bodyData});
+        result.then(successFunc, httpService.getErrorHandleFunc);
+      },
+      list: function(successFunc, offset, size){
+        var params = {
+          'offset': offset,
+          'size': size,
+          'userid': httpService.getUserId()
+        };
 
-      var CHECK_API_URL = apiUrlConstant['CHECKS'];
+        var result = httpService.sendRequest({'api':'check', 'type':'list', 'params':params});
+        result.then(successFunc, httpService.getErrorHandleFunc);
+      },
+      update: function(successFunc, checkId){
 
-      // Public API here
-      return {
-        list_checks: function(success, error) {
-		  $http.get(CHECK_API_URL)
-            .success(function(result) {
-              // FIXME ignore result
-              success(MOCK_CHECKINS);
-            })
-            .error(function(data) {
-              if (error != undefined) {
-                error(data);
-              }
-            });
-          }
-      };
+      },
+    };
   }]);
-
-
