@@ -46,12 +46,14 @@ class Schema_animal_put(Schema):
 class AnimalAPI(BaseAPI):
     @view_config(route_name='animals', request_method='OPTIONS')
     def animal_options(self):
-        self.XHeaders(methods=['POST'])
+        #self.XHeaders(methods=['POST'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
         return {}
 
     @view_config(route_name='animal', request_method='OPTIONS')
     def animal_option(self):
-        self.XHeaders(methods=['PUT','DELETE'])
+        #self.XHeaders(methods=['PUT','DELETE'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
         return {}
 
     @view_config(route_name='animals', request_method='GET')
@@ -122,7 +124,8 @@ class AnimalAPI(BaseAPI):
         API: POST /animals
         """
         #for X-domain development
-        self.XHeaders(methods=['POST'])
+        #self.XHeaders(methods=['POST'])
+        self.XHeaders()
 
 
         #validation

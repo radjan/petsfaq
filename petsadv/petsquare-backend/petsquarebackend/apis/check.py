@@ -121,7 +121,6 @@ class CheckAPI(BaseAPI):
         API: POST /checks
         """
         #for X-domain development
-        #self.XHeaders(methods=['POST'])
         self.XHeaders()
 
 
@@ -152,7 +151,6 @@ class CheckAPI(BaseAPI):
         API: PUT /check/<id:\d+>
         """
         #for X-domain development
-        #self.XHeaders(headers=['X-Requested-With', 'Content-Type', 'Accept'])
         self.XHeaders()
 
         #validation
