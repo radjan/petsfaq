@@ -40,8 +40,8 @@ angular.module('webFrontendApp')
     };
 
     /***
-      Config.api: calling check, location...
-      Config.type: CRUD, create, read, update, delete, list
+      *Config.api: calling check, location...
+      *Config.type: CRUD, create, read, update, delete, list
       Config.params: query in url
       Config.data: body data
       Config.extendUrl: add url afrer origin url
