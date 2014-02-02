@@ -32,12 +32,19 @@ angular.module('webFrontendApp')
 	};
 	 
 	$scope.setMarkerPosition = function(marker, lat, lng) {
-	  marker.setPosition(new google.maps.LatLng(lat, lng));
+
+		checkApi.update(setMarkerPositionCB, marker.id, marker.title, marker.description, marker.locationId, marker.imageId);
+		marker.setPosition(new google.maps.LatLng(lat, lng));
+	};
+
+	var setMarkerPositionCB = function(data){
+		alert("success!");
 	};
 
     $scope.markerItemClick = function (marker) {
       $scope.googleMap.panTo(marker.getPosition());
-      checkApi.get(function(result){alert("result check id: " + result.id)}, marker.id);
+      $scope.openMarkerInfo(marker);
+      // checkApi.get(function(result){alert("result check id: " + result.id)}, marker.id);
     }
   	 
 	/********nav bar **********/
@@ -55,8 +62,11 @@ angular.module('webFrontendApp')
 			recentMarkers.push(new google.maps.Marker({
 			    map: $scope.googleMap,
 			    position: myLatlng,
-			    title: data[i].title,
                 id: data[i].id, // passing id for later use
+                title: data[i].title,
+                description: data[i].description,
+                locationId: data[i].location.id,
+                imageId: data[i].image.id
 			 }));
 			
 		}
@@ -73,4 +83,12 @@ angular.module('webFrontendApp')
 			$scope.googleMarkers = [];
 		}
 	};
+
+	// $scope.testPost = function(){
+	// 	checkApi.create(testPostCB);
+	// };
+
+	// var testPostCB = function(data){
+	// 	alert(data);
+	// };
   }]);

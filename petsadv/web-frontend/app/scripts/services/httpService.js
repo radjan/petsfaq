@@ -20,12 +20,11 @@ angular.module('webFrontendApp')
         },
         'update': {
           method: 'PUT',
-          url: baseUri + '/check' + extendUrl,
-
+          url: baseUri + '/check/{id}',
         },
         'delete': {
           method: 'delete',
-          url: baseUri + '/check' + extendUrl,
+          url: baseUri + '/check/{id}',
         },
         'read': {
           method: 'GET',
@@ -40,11 +39,11 @@ angular.module('webFrontendApp')
     };
 
     /***
-      *Config.api: calling check, location...
-      *Config.type: CRUD, create, read, update, delete, list
-      Config.params: query in url
-      Config.data: body data
-      Config.extendUrl: add url afrer origin url
+      Config.api: calling check, location... (String)
+      Config.type: CRUD, create, read, update, delete, list (String)
+      Config.params: query in url (Object)
+      Config.data: body data (Object)
+      Config.urlParams: extend url.  (Object)
     ***/
     return {
       sendRequest: function(config){
@@ -53,10 +52,10 @@ angular.module('webFrontendApp')
         var request_config = serverApi[config.api][config.type];
         config['method'] = request_config.method;
         config['url'] = request_config.url;
-        if (config.url_params !== undefined) {
-          for (var k in config.url_params) {
+        if (config.urlParams !== undefined) {
+          for (var k in config.urlParams) {
             config['url'] = config.url.replace('{'+k+'}',
-                                               config.url_params[k]);
+                                               config.urlParams[k]);
           }
         }
 
