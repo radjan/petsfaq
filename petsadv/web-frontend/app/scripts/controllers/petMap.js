@@ -34,6 +34,11 @@ angular.module('webFrontendApp')
 	$scope.setMarkerPosition = function(marker, lat, lng) {
 	  marker.setPosition(new google.maps.LatLng(lat, lng));
 	};
+
+    $scope.markerItemClick = function (marker) {
+      $scope.googleMap.panTo(marker.getPosition());
+      checkApi.get(function(result){alert("result check id: " + result.id)}, marker.id);
+    }
   	 
 	/********nav bar **********/
 	$scope.oneAtATime = true;
@@ -43,15 +48,15 @@ angular.module('webFrontendApp')
 		{title:'熱門地點', type:'hot'}
 	];
 
-	var setMarkerList = function(result){
-		var data = result.data;
+	var setMarkerList = function(data){
 		var recentMarkers = [];
 		for (var i = 0; i < data.length; i++) {
 			var myLatlng = new google.maps.LatLng(data[i].location.latitude, data[i].location.longtitude);
 			recentMarkers.push(new google.maps.Marker({
 			    map: $scope.googleMap,
 			    position: myLatlng,
-			    title: data[i].title
+			    title: data[i].title,
+                id: data[i].id, // passing id for later use
 			 }));
 			
 		}

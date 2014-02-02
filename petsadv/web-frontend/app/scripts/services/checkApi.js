@@ -2,6 +2,14 @@
 
 angular.module('webFrontendApp')
   .factory('checkApi', ['httpService', function (httpService) {
+
+    var resultThen = function(result, successFunc) {
+        result.then(function(r) {
+                      successFunc(r.data);
+                    },
+                    httpService.getErrorHandleFunc);
+    };
+
     return{
       createCheck: function(successFunc, title, desc, locationId, imageId){
         var bodyData = {
@@ -13,7 +21,7 @@ angular.module('webFrontendApp')
         };
 
         var result = httpService.sendRequest({'api':'check', 'type':'create', 'data':bodyData});
-        result.then(successFunc, httpService.getErrorHandleFunc);
+        resultThen(result, successFunc)
       },
       list: function(successFunc, offset, size){
         var params = {
@@ -23,10 +31,18 @@ angular.module('webFrontendApp')
         };
 
         var result = httpService.sendRequest({'api':'check', 'type':'list', 'params':params});
-        result.then(successFunc, httpService.getErrorHandleFunc);
+        resultThen(result, successFunc)
       },
       update: function(successFunc, checkId){
 
+      },
+      get: function(successFunc, checkId) {
+        var result = httpService.sendRequest({
+                            api: 'check',
+                            type: 'read',
+                            url_params: {id: checkId}
+                        });
+        resultThen(result, successFunc)
       },
     };
   }]);

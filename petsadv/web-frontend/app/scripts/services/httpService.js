@@ -29,7 +29,7 @@ angular.module('webFrontendApp')
         },
         'read': {
           method: 'GET',
-          url: baseUri + '/check' + extendUrl,
+          url: baseUri + '/check/{id}',
         }
       },
 
@@ -50,18 +50,22 @@ angular.module('webFrontendApp')
       sendRequest: function(config){
         var send = $q.defer();
         var result = send.promise;
-        var request = serverApi[config.api][config.type];
-        request['params'] = config.params;
-        request['data'] = config.bodyData;
-        if (config.extendUrl !== undefined) {
-          request['url'] += config.extendUrl;
+        var request_config = serverApi[config.api][config.type];
+        config['method'] = request_config.method;
+        config['url'] = request_config.url;
+        if (config.url_params !== undefined) {
+          for (var k in config.url_params) {
+            config['url'] = config.url.replace('{'+k+'}',
+                                               config.url_params[k]);
+          }
         }
 
-        $http(serverApi[config.api][config.type]).success(function(result){
-          send.resolve(result);
+        $http(config)
+        .success(function(r){
+          send.resolve(r);
         })
-        .error(function(result){
-          send.reject(result);
+        .error(function(r){
+          send.reject(r);
         });
 
         return result;
