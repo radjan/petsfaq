@@ -44,7 +44,7 @@ class SSO_API(BaseAPI):
         return result
 
 
-@view_config(context='velruse.AuthenticationDenied')
+@view_config(context='velruse.AuthenticationDenied', renderer='json')
 def SSO_denied_cb(self):
     return {'result': 'denied'}
 
