@@ -130,7 +130,8 @@ class User_TB(Base):
     found_animals = relationship('Animal_TB', backref=backref('finder', order_by=id),
                         foreign_keys='[Animal_TB.finder_id]')
 
-    authuser = relationship('ExtendedProfile', backref=backref('petsquare_user', order_by=id))
+    #authusers = relationship('ExtendedProfile_TB', backref=backref('petsquare_user', order_by=id))
+    #authusers = relationship('ExtendedProfile_TB')
 
 
     def __init__(self, *args, **kwargs):
@@ -189,14 +190,27 @@ class User_TB(Base):
         rtn = cls.delete_by_id(id)
         return rtn
 
-class ExtendedProfile(AuthUser):
-    #__tablename__ = 'extendedprofile'
-    #__mapper_args__ = {'polymorphic_identify':'profile'}
+class ExtendedProfile_TB(AuthUser):
+    __mapper_args__ = {'polymorphic_identity': 'profile'}
 
     first_name = Column(Unicode(80))
     last_name  = Column(Unicode(80))
     user_id = Column(Integer, ForeignKey('user.id'), nullable=True)
 
+    def __init__(self, *args, **kwargs):
+        super(ExtendedProfile_TB, self).__init__(*args, **kwargs)
+
+    @classmethod
+    @ModelMethod
+    def create(cls, first_name, last_name, user_id):
+        global DBSession
+        model = cls(first_name=first_name, 
+                    last_name=last_name,
+                    user_id=user_id)
+        DBSession.add(model)
+        DBSession.flush()
+        rtn = (True, model)
+        return rtn
 
 def main():
     pass

@@ -15,6 +15,7 @@ from ..models import (
 
 from ..models.accounts import Group_TB
 from ..models.accounts import User_TB
+#from ..models.accounts import ExtendedProfile_TB
 from ..models.location import Location_TB
 from ..models.image import Image_TB
 from ..models.check import Check_TB
@@ -24,6 +25,10 @@ import Image as PILImage
 
 #apex
 from apex.models import AuthUser
+from apex.models import AuthGroup
+from apex.models import AuthID
+from apex.models import AuthUserLog
+
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -45,17 +50,25 @@ def main(argv=sys.argv):
     with transaction.manager as tm:
 
         #erase the database tables
+        # apex
+        AuthGroup.__table__.drop(engine, checkfirst=True)
+        AuthID.__table__.drop(engine, checkfirst=True)
         AuthUser.__table__.drop(engine, checkfirst=True)
+        AuthUserLog.__table__.drop(engine, checkfirst=True)
+
+        # petsquare
         Animal_Image_TB.__table__.drop(engine, checkfirst=True)
         Animal_TB.__table__.drop(engine,   checkfirst=True) #  ^
         Check_TB.__table__.drop(engine,    checkfirst=True) #  |
         Location_TB.__table__.drop(engine, checkfirst=True) #  |
         Image_TB.__table__.drop(engine,    checkfirst=True) #  |
         User_TB.__table__.drop(engine,     checkfirst=True) #  |
+        #ExtendedProfile_TB.__table__.drop(engine, checkfirst=True)
         Group_TB.__table__.drop(engine,    checkfirst=True) #  |
         User_TB.__table__.drop(engine,     checkfirst=True) #  |
         Base.metadata.create_all(engine)
 
+        return
         #create group
         success, gmodel = Group_TB.create(
                             name='one', 
@@ -183,3 +196,12 @@ def main(argv=sys.argv):
                             image=imodel1)
         if not success:
             raise Exception(aimodel)
+
+        #success, exmodel = ExtendedProfile_TB.create(
+        #                        first_name='f',
+        #                        last_name='l',
+        #                        user_id=umodel.id)
+        #if not success:
+        #    raise Exception(exmodel)
+
+
