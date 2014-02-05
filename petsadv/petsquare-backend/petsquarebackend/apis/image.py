@@ -45,12 +45,14 @@ class Schema_imagedata_put(Schema):
 class ImageAPI(BaseAPI):
     @view_config(route_name='images', request_method='OPTIONS')
     def image_options(self):
-        self.XHeaders(methods=['POST'])
+        #self.XHeaders(methods=['POST'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
         return {}
 
     @view_config(route_name='image', request_method='OPTIONS')
     def image_option(self):
-        self.XHeaders(methods=['PUT','DELETE'])
+        #self.XHeaders(methods=['PUT','DELETE'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
         return {}
 
     @view_config(route_name='images', request_method='GET')
@@ -156,7 +158,8 @@ class ImageAPI(BaseAPI):
         API: POST /images
         """
         #for X-domain development
-        self.XHeaders(methods=['POST'])
+        self.XHeaders()
+
         #image = self.request.params['image']
         #validation
         success, data, code = self.validate(Schema_images_post, body=False)

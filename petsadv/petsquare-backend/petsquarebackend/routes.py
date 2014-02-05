@@ -19,7 +19,6 @@ def api_routes(config):
     config.add_route('animals', api_prefix + str(main_version) + '/animals')
     config.add_route('animal',  api_prefix + str(main_version) + '/animal/{id:\d+}')
 
-    
 
     #static pages
     #config.add_static_view('static', 'static', cache_max_age=3600)

@@ -45,12 +45,12 @@ class Schema_check_put(Schema):
 class CheckAPI(BaseAPI):
     @view_config(route_name='checks', request_method='OPTIONS')
     def check_options(self):
-        self.XHeaders(methods=['POST'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
         return {}
 
     @view_config(route_name='check', request_method='OPTIONS')
     def check_option(self):
-        self.XHeaders(methods=['PUT','DELETE'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
         return {}
 
     @view_config(route_name='checks', request_method='GET')
@@ -121,7 +121,7 @@ class CheckAPI(BaseAPI):
         API: POST /checks
         """
         #for X-domain development
-        self.XHeaders(methods=['POST'])
+        self.XHeaders()
 
 
         #validation
@@ -129,7 +129,7 @@ class CheckAPI(BaseAPI):
 
         if success:
             serv = CheckService(self.request)
-            serv_rtn = serv.create(name=data['name'],
+            serv_rtn = serv.create(name=data['title'],
                                    description=data['description'],
                                    location_id=data['location_id'],
                                    image_id=data['image_id'],
