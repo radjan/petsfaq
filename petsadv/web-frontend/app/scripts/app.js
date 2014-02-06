@@ -36,6 +36,10 @@ angular.module('webFrontendApp', [
         templateUrl: 'views/petMap.html',
         controller: 'PetmapCtrl'
       })
+      // .when('/login', {
+      //   templateUrl: 'views/login.html',
+      //   controller: 'LoginCtrl'
+      // })
       .otherwise({
         redirectTo: '/'
       });
