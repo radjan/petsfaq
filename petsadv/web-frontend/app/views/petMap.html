@@ -25,7 +25,8 @@
 			</div>
 			 
 			<div ui-map-info-window="currentGoogleInfoWindow" style="height:300px">
-			  <h1>{{currentGoogleMarkerTitle}}</h1>
+			  <!-- <h1>{{currentGoogleMarkerTitle}}</h1> -->
+			  <h1><input ng-model="currentGoogleMarkerTitle"></h1>
 			  Lat: <input ng-model="currentGoogleMarkerLat">, Lng: <input ng-model="currentGoogleMarkerLng">
 			  <a class="btn btn-info" ng-click="setMarkerPosition(currentGoogleMarker, currentGoogleMarkerLat, currentGoogleMarkerLng)">Set Position</a>
 			  <!-- <img src="http://hk.huaxia.com/thjq/jsxw/gj/images/2010/12/06/743937.jpg"> -->

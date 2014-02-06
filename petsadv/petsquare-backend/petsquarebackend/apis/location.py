@@ -48,12 +48,14 @@ class Schema_location_put(Schema):
 class LocationAPI(BaseAPI):
     @view_config(route_name='locations', request_method='OPTIONS')
     def location_options(self):
-        self.XHeaders(methods=['POST'])
+        #self.XHeaders(methods=['POST'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
         return {}
 
     @view_config(route_name='location', request_method='OPTIONS')
     def location_option(self):
-        self.XHeaders(methods=['PUT','DELETE'])
+        #self.XHeaders(methods=['PUT','DELETE'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
         return {}
 
     @view_config(route_name='locations', request_method='GET')
@@ -124,7 +126,7 @@ class LocationAPI(BaseAPI):
         API: POST /locations
         """
         #for X-domain development
-        self.XHeaders(methods=['POST'])
+        self.XHeaders()
 
 
         #validation
