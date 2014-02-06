@@ -26,8 +26,6 @@ from sqlalchemy.types import (
 
 import datetime
 import traceback
-import Image as PILImage
-import base64
 
 class Mission_TB(Base):
     __tablename__ = 'mission'
@@ -51,7 +49,7 @@ class Mission_TB(Base):
     status          = Column(String(255), nullable=False, unique=False,)
     completed       = Column(Boolean, default=False)
     places          = Column(String(255), nullable=False, unique=False,)
-    note            = Column(String(255), nullable=True, unique=False,)
+    note            = Column(String, nullable=True, unique=False,)
     due_time        = Column(DateTime, nullable=True)
 
     createddatetime = Column(DateTime, nullable=False)
