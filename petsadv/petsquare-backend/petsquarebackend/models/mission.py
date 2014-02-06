@@ -117,16 +117,16 @@ class Mission_TB(Base):
         rtn = cls.delete_by_id(id)
         return rtn
 
-class MissionRescue_TB(Mission):
+class MissionRescue_TB(Mission_TB):
     __tablename__ = 'mission_rescue'
     __mapper_args__ = {
         'polymorphic_identity': 'rescue',
     }
     id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
 
-class MissionPickup_TB(Mission):
+class MissionPickup_TB(Mission_TB):
     __tablename__ = 'mission_pickup'
-    __public__ = tuple(list(Mission.__public__) +
+    __public__ = tuple(list(Mission_TB.__public__) +
                        ['from_location_id',
                         'from_location'])
     __mapper_args__ = {
@@ -138,9 +138,9 @@ class MissionPickup_TB(Mission):
                               ForeignKey('location.id'),
                               nullable=True, unique=False)
 
-class MissionStay_TB(Mission):
+class MissionStay_TB(Mission_TB):
     __tablename__ = 'mission_stay'
-    __public__ = tuple(list(Mission.__public__) +
+    __public__ = tuple(list(Mission_TB.__public__) +
                        ['period', 'skill'])
     __mapper_args__ = {
         'polymorphic_identity': 'stay',
@@ -150,20 +150,21 @@ class MissionStay_TB(Mission):
     period = Column(String(255), nullable=True)
     skill = Column(String(255), nullable=True)
 
-class MissionDeliver_TB(Mission):
+class MissionDeliver_TB(Mission_TB):
     __tablename__ = 'mission_deliver'
     __mapper_args__ = {
         'polymorphic_identity': 'deliver',
     }
+    id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
 
-class MissionAdopt_TB(Mission):
+class MissionAdopt_TB(Mission_TB):
     __tablename__ = 'mission_adopt'
-    __public__ = tuple(list(Mission.__public__) +
+    __public__ = tuple(list(Mission_TB.__public__) +
                        ['requirement'])
     __mapper_args__ = {
         'polymorphic_identity': 'adopt',
     }
-
+    id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
     requirement = Column(String, nullable=True)
 
 class Mission_User_TB(Base):
