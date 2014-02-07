@@ -19,6 +19,8 @@ from ..models.location import Location_TB
 from ..models.image import Image_TB
 from ..models.check import Check_TB
 from ..models.animal import Animal_TB, Animal_Image_TB
+from ..models.token import Token_TB
+
 
 import Image as PILImage
 
@@ -37,11 +39,12 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri)
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
-    Base.metadata.create_all(engine)
+    #Base.metadata.create_all(engine)
 
     with transaction.manager as tm:
 
         #erase the database tables
+        Token_TB.__table__.drop(engine, checkfirst=True)
         Animal_Image_TB.__table__.drop(engine, checkfirst=True)
         Animal_TB.__table__.drop(engine,   checkfirst=True) #  ^
         Check_TB.__table__.drop(engine,    checkfirst=True) #  |
@@ -64,8 +67,7 @@ def main(argv=sys.argv):
                             name='pub user1', 
                             description='used as public',
                             password='no password', 
-                            fb_api_key='fbkey',
-                            fb_api_secret='apisecret', 
+                            activated=True,
                             group_id=gmodel.id)
         if not success:
             raise Exception(umodel)
@@ -179,3 +181,34 @@ def main(argv=sys.argv):
                             image=imodel1)
         if not success:
             raise Exception(aimodel)
+
+        #create token
+        success, tkmodel1 = Token_TB.create(user_id=umodel.id)
+        if not success:
+            raise Exception(tkmodel1)
+
+
+        #create token via token service
+        from ..services.token import TokenService
+        service = TokenService('fake request')
+        status = {}
+        status = service.create(
+                                user_id=umodel.id,
+                                authn_by='facebook',
+                                sso_info={"key":"value", "e-mail":"abc@gm.com"},
+                                )
+
+        if not status['success']:
+            raise Exception(status)
+        else:
+            print status
+
+        #check via account service
+        #import time; time.sleep(3)
+        #from ..services.accounts import AccountService
+        #service = AccountService('fake request')
+        #status = service.fb_email_check(email='abc@gm.com')
+        #if status['data']:
+        #    status['data'] = status['data'].__json__('fake request')
+        #print status
+

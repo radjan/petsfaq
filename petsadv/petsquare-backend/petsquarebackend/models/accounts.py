@@ -99,24 +99,24 @@ class Group_TB(Base):
 
 class User_TB(Base):
     __tablename__ = 'user'
-    __public__ = ('id','name','description', 'password', 'fb_api_key','fb_api_secret', 
-            'group_id',                     #fk
-            'group',                        #backref
-            'images', 'locations', 'checks', #relation
+    __public__ = ('id','name','description', 'password', 'activated',
+            'group_id',                               #fk
+            'group',                                  #backref
+            'images', 'locations', 'checks', 'tokens',#relation
             'createddatetime', 'updateddatetime')
 
     id            = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     name          = Column(String(255), nullable=True, unique=False)
     description   = Column(String(255), nullable=True, unique=False)
     password      = Column(String(255), nullable=True, unique=False)
-    fb_api_key    = Column(String(255), nullable=True, unique=False)
-    fb_api_secret = Column(String(255), nullable=True, unique=False)
+    activated     = Column(Boolean,     nullable=True, unique=False)
 
     group_id      = Column(Integer, ForeignKey('group.id'), nullable=False, unique=False)
 
     images        = relationship('Image_TB',    backref=backref('uploader', order_by=id))
     locations     = relationship('Location_TB', backref=backref('explorer', order_by=id))
     checks        = relationship('Check_TB',    backref=backref('user', order_by=id))
+    tokens        = relationship('Token_TB',    backref=backref('user', order_by=id))
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
@@ -133,11 +133,11 @@ class User_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, description, password, fb_api_key, fb_api_secret, group_id):
+    def create(cls, name, description, password, activated, group_id):
         global DBSession
         model = cls(name=name, description=description,
-                password=password, fb_api_key=fb_api_key,
-                fb_api_secret=fb_api_secret, group_id=group_id)
+                password=password, activated=activated,
+                group_id=group_id)
         DBSession.add(model)
         DBSession.flush()
         rtn = (True, model)
@@ -159,7 +159,7 @@ class User_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, name, description, password, fb_api_key, fb_api_secret, group_id):
+    def update(cls, name, description, password, activated, group_id):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
@@ -168,8 +168,7 @@ class User_TB(Base):
         if name:        model.name = name
         if description: model.description = description
         if password:  model.password = password
-        if fb_api_key:    model.fb_api_key = fb_api_key
-        if fb_api_secret:     model.fb_api_secret = fb_api_secret
+        if activated:    model.activated = activated
         if group_id:      model.group_id = group_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
@@ -181,7 +180,7 @@ class User_TB(Base):
     def delete(cls, id):
         rtn = cls.delete_by_id(id)
         return rtn
-
+    
 
 def main():
     pass
