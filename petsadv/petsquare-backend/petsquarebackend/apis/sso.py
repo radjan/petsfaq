@@ -57,7 +57,7 @@ class SSO_API(BaseAPI):
                                          value=context.profile['verifiedEmail'],
                                          sso_info=result)
         api_rtn = self.format_return(serv_rtn)
-        return result
+        return api_rtn
 
 
 @view_config(context='velruse.AuthenticationDenied', renderer='json')
