@@ -23,6 +23,21 @@ def _fk_pragma_on_connect(dbapi_con, con_record):
         dbapi_con.execute('pragma foreign_keys=ON')
 
 
+def add_velruse_login_from_settings(config, settings, prefix):
+    from velruse.providers.twitter import add_twitter_login
+    from velruse.settings import ProviderSettings
+
+    #settings = config.registry.settings
+    p = ProviderSettings(settings, prefix)
+    p.update('consumer_key', required=True)
+    p.update('consumer_secret', required=True)
+    p.update('login_path')
+    p.update('callback_path')
+    p.update('name')
+    add_twitter_login(config, **p.kwargs)
+    return 
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -43,10 +58,13 @@ def main(global_config, **settings):
     config.set_authentication_policy(authn_policy)
     config.set_authorization_policy(authz_policy)
 
-    config.add_twitter_login_from_settings(prefix='velruse.twitter.')
-    config.add_facebook_login_from_settings(prefix='velruse.facebook.')
+    #config.add_twitter_login_from_settings(prefix='velruse.twitter.')
+    #config.add_facebook_login_from_settings(prefix='velruse.facebook.')
+    add_velruse_login_from_settings(config, settings, 'velruse.twitter.web.')
+    add_velruse_login_from_settings(config, settings, 'velruse.twitter.web.m.')
+    add_velruse_login_from_settings(config, settings, 'velruse.facebook.')
+    add_velruse_login_from_settings(config, settings, 'velruse.facebook.m.')
     api_routes(config)
-
 
     if not config.registry.queryUtility(ISessionFactory):
         if not settings.has_key('petsquare.session_secret'):
