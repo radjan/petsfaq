@@ -27,6 +27,12 @@ from sqlalchemy.types import (
 import datetime
 import traceback
 
+MISSION_RESCUE = 'rescue'
+MISSION_PICKUP = 'pickup'
+MISSION_STAY = 'stay'
+MISSION_DELIVER = 'deliver'
+MISSION_ADOPT = 'adopt'
+
 class Mission_TB(Base):
     __tablename__ = 'mission'
     __public__ = ('id', 'name', 'type', 'status', 'completed', 'place',
@@ -118,7 +124,7 @@ class Mission_TB(Base):
 class MissionRescue_TB(Mission_TB):
     __tablename__ = 'mission_rescue'
     __mapper_args__ = {
-        'polymorphic_identity': 'rescue',
+        'polymorphic_identity': MISSION_RESCUE,
     }
     id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
 
@@ -128,7 +134,7 @@ class MissionPickup_TB(Mission_TB):
                        ['from_location_id',
                         'from_location'])
     __mapper_args__ = {
-        'polymorphic_identity': 'pickup',
+        'polymorphic_identity': MISSION_PICKUP,
     }
     id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
 
@@ -141,7 +147,7 @@ class MissionStay_TB(Mission_TB):
     __public__ = tuple(list(Mission_TB.__public__) +
                        ['period', 'skill'])
     __mapper_args__ = {
-        'polymorphic_identity': 'stay',
+        'polymorphic_identity': MISSION_STAY,
     }
     id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
 
@@ -151,7 +157,7 @@ class MissionStay_TB(Mission_TB):
 class MissionDeliver_TB(Mission_TB):
     __tablename__ = 'mission_deliver'
     __mapper_args__ = {
-        'polymorphic_identity': 'deliver',
+        'polymorphic_identity': MISSION_DELIVER,
     }
     id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
 
@@ -160,7 +166,7 @@ class MissionAdopt_TB(Mission_TB):
     __public__ = tuple(list(Mission_TB.__public__) +
                        ['requirement'])
     __mapper_args__ = {
-        'polymorphic_identity': 'adopt',
+        'polymorphic_identity': MISSION_ADOPT,
     }
     id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
     requirement = Column(String, nullable=True)

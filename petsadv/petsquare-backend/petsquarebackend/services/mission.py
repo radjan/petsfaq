@@ -19,12 +19,13 @@ from petsquarebackend.models.mission import (
     MissionDeliver_TB,
     MissionAdopt_TB,
     )
+import petsquarebackend.models.mission as mission_model
 
-MISSION_RESCUE = 'resuce'
-MISSION_PICKUP = 'pickup'
-MISSION_STAY = 'stay'
-MISSION_DELIVER = 'deliver'
-MISSION_ADOPT = 'adopt'
+MISSION_RESCUE = mission_model.MISSION_RESCUE
+MISSION_PICKUP = mission_model.MISSION_PICKUP
+MISSION_STAY = mission_model.MISSION_STAY
+MISSION_DELIVER = mission_model.MISSION_DELIVER
+MISSION_ADOPT = mission_model.MISSION_ADOPT
 
 TYPE_CLASS = {
         MISSION_RESCUE: MissionRescue_TB,
