@@ -83,7 +83,7 @@ def main(argv=sys.argv):
         success, lmodel2 = Location_TB.create(
                             name='two', 
                             description='2', 
-                            longtitude=121.5130475, 
+                            longtitude=120, 
                             latitude=25.040063, 
                             address='taipei', 
                             explorer_id=umodel.id)
@@ -91,7 +91,7 @@ def main(argv=sys.argv):
                             name='three', 
                             description='3',
                             longtitude=121.5130475, 
-                            latitude=25.040063, 
+                            latitude=24, 
                             address='taipei', 
                             explorer_id=umodel.id)
         if not success:
