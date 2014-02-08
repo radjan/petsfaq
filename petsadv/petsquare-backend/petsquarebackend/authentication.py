@@ -23,6 +23,8 @@ class TokenAuthenticationPolicy(CallbackAuthenticationPolicy):
         return []
     def authenticated_userid(self, request):
         token = request.params.get('token', None)
+        if not token:
+            return []
         acc_service = AccountService(request)
         serv_rtn = acc_service.sso_check(token)
         rtn_list = []
