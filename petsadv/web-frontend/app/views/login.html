@@ -1,0 +1,24 @@
+<div>
+    <accordion>
+        <accordion-group is-open="isopen">
+            <accordion-heading>
+                <img ng-src="{{userPicture}}" class="user-picture" ng-show="loginStatus.status === 'connected'">
+                &nbsp;&nbsp;{{username}}        
+            </accordion-heading>
+            <a ng-click="loginByFB()" ng-show="!loginStatus || loginStatus.status!=='connected'">
+                <span class="fa-stack">
+                    <i class="fa fa-square-o fa-stack-2x" style="color:white; background:#3B5998"></i>
+                    <i class="fa fa-facebook fa-stack-1x" style="color:white"></i>
+                </span>
+                &nbsp;登入
+            </a>
+            <a ng-click="logoutByFB()" ng-show="loginStatus.status === 'connected'">
+                <span class="fa-stack">
+                    <i class="fa fa-square-o fa-stack-2x" style="color:white; background:#3B5998"></i>
+                    <i class="fa fa-facebook fa-stack-1x" style="color:white"></i>
+                </span>
+                &nbsp;登出
+            </a>
+        </accordion-group>
+    </accordion>
+</div>

@@ -29,6 +29,16 @@ DBSession = scoped_session(sessionmaker(expire_on_commit=False,
 
 MODEL_DEFAULT_DEPTH = 2
 
+
+#resource tree, rootfactory
+from pyramid.security import (
+        Allow,
+        Everyone,
+        Authenticated,
+        )
+
+
+
 def ModelMethod(func):
     def mdl_wrapped(cls, *args, **kwargs):
 #        with transaction.manager:
@@ -121,7 +131,7 @@ class ModelMixin(object):
             return (True, query.all())
         return (True, None)
 
-    
+
     @classmethod
     def get_all(cls, filattr=None, session=DBSession, columns=None, offset=None, limit=None, order_by=None, lock_mode=None, DESC=False):
         if columns:
@@ -236,12 +246,12 @@ class ModelMixin(object):
         err_info = (cls.__tablename__, ins_stk, tbk)
         log.debug('%s:%s, traceback:\n %s' % err_info)
         rtn.append(False)
-        rtn.append({'status':'fail', 'msg':'model error on %s' % ins_stk}) 
+        rtn.append({'status':'fail', 'msg':'model error on %s' % ins_stk})
         return rtn
 
-    def __json__(self, request, exclude=(), extra=(), exclude_fk=True, 
+    def __json__(self, request, exclude=(), extra=(), exclude_fk=True,
             max_depth=MODEL_DEFAULT_DEPTH):
-        log.debug('type: %s, id: %s' % (type(self), self.id))
+        #log.debug('type: %s, id: %s' % (type(self), self.id))
         obj_dict = self.__dict__
         obj_dict = dict((key, obj_dict[key]) for key in obj_dict if not key.startswith("_"))
         foreignkeys = list(self.__table__.foreign_keys)
@@ -281,6 +291,19 @@ class ModelMixin(object):
     #        value = self.__getattribute__(k).__json__(request, exclude, extra, exclude_fk, max_depth-1)
 
 Base = declarative_base(cls=ModelMixin)
+
+
+class RootFactory(object):
+    __name__ = None
+    __parent__ = None
+
+    __acl__ = [
+            (Allow, Everyone, 'view'),
+            (Allow, Authenticated, 'view'),
+            ]
+    def __init__(self, request):
+        self.reques=request
+
 
 def main():
     pass

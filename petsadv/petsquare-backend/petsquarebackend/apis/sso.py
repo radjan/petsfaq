@@ -18,6 +18,7 @@ from pyramid.view import (
         )
 
 from petsquarebackend.apis import BaseAPI
+from petsquarebackend.services.accounts import AccountService
 
 @view_defaults(renderer='json')
 class SSO_API(BaseAPI):
@@ -30,10 +31,16 @@ class SSO_API(BaseAPI):
                 'profile':       context.profile,
                 'credentials':   context.credentials,
                 }
-        return result
+        #print result
+        acc_service = AccountService(self.request)
+        serv_rtn = acc_service.sso_login(login_type=context.provider_type,
+                                         value=context.profile['accounts'][0]['username'],
+                                         sso_info=result)
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
 
     @view_config(context='velruse.providers.facebook.FacebookAuthenticationComplete')
-    def sso_cb(self):
+    def facebook_logged_in_cb(self):
         context = self.request.context
         result = {
                 'provider_type': context.provider_type,
@@ -41,12 +48,22 @@ class SSO_API(BaseAPI):
                 'profile':       context.profile,
                 'credentials':   context.credentials,
                 }
-        return result
+        #result = {'verifiedEmail': context.profile['verifiedEmail'],
+        #          'credentials':   context.credentials,
+        #          'provider_type': context.provider_type,
+        #          }
+        acc_service = AccountService(self.request)
+        serv_rtn = acc_service.sso_login(login_type=context.provider_type,
+                                         value=context.profile['verifiedEmail'],
+                                         sso_info=result)
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
 
 
 @view_config(context='velruse.AuthenticationDenied', renderer='json')
 def SSO_denied_cb(self):
-    return {'result': 'denied'}
+    return {'info': {'status': 'access denied'},
+            'data': None}
 
 
 def main():

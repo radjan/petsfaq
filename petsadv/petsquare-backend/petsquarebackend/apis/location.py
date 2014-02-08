@@ -16,8 +16,10 @@ from pyramid.view import (
         view_config,
         view_defaults,
         )
+from pyramid.security import authenticated_userid
 
 from petsquarebackend.apis import BaseAPI
+from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.location import LocationService
 
 
@@ -213,6 +215,34 @@ class LocationAPI(BaseAPI):
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
+
+
+@view_defaults(renderer='json')
+class LocationAPP(BaseAPP):
+    @view_config(route_name='app-locations', request_method='GET')
+    def locations_list_app(self):
+        #validation
+        success, data, code = self.validate(Schema_locations_get)
+
+        if success:
+            serv = LocationService(self.request)
+            serv_rtn = serv.list(userid=data['userid'], 
+                                 offset=data['offset'],
+                                 size=data['size'])
+        else:
+            #mock fake serv_rtn
+            serv_rtn = {'data':'', 
+                        'info':data, 
+                        'code':code, 
+                        'success':False}
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+
+
+        
+
 
 
 def main():

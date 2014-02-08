@@ -18,6 +18,8 @@ requires = [
     'formencode',
     'PIL',
     'IPython',
+    'cryptacular',
+    'hashlib',
     ]
 
 setup(name='petsquare-backend',

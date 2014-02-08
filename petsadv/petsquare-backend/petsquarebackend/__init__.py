@@ -14,6 +14,10 @@ from pyramid.interfaces import (IAuthenticationPolicy,
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 
 
+#authentication
+from petsquarebackend.authentication import TokenAuthenticationPolicy
+from pyramid.authorization import ACLAuthorizationPolicy
+
 #add foreign key setting for sqlite, callback function
 def _fk_pragma_on_connect(dbapi_con, con_record):
         dbapi_con.execute('pragma foreign_keys=ON')
@@ -22,6 +26,11 @@ def _fk_pragma_on_connect(dbapi_con, con_record):
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+    #authentication / authorization
+    authn_policy = TokenAuthenticationPolicy()
+    authz_policy = ACLAuthorizationPolicy()
+
+    #sqlalchemy
     engine = engine_from_config(settings, 'sqlalchemy.')
 
     #add foreign key setting for sqlite
@@ -29,7 +38,11 @@ def main(global_config, **settings):
 
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
-    config = Configurator(settings=settings)
+    #group-level security
+    config = Configurator(settings=settings, root_factory='petsquarebackend.models.RootFactory')
+    config.set_authentication_policy(authn_policy)
+    config.set_authorization_policy(authz_policy)
+
     config.add_twitter_login_from_settings(prefix='velruse.twitter.')
     config.add_facebook_login_from_settings(prefix='velruse.facebook.')
     api_routes(config)
