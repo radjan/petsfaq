@@ -23,10 +23,10 @@ class TokenService(BaseService):
         super(TokenService, self).__init__('TokenService', request)
 
     @ServiceMethod
-    def list(self, userid=None, offset=0, size=100):
+    def list(self, user_id=None, offset=0, size=100):
         status = self.status.copy()
-        if userid:
-            success, models = Token_TB.list(filattr=('explorer_id', userid),
+        if user_id:
+            success, models = Token_TB.list(filattr=('explorer_id', user_id),
                                       offset=offset,
                                       size=size)
         else:
@@ -106,7 +106,7 @@ class TokenService(BaseService):
                            longtitude=data['longtitude'],
                            latitude=data['latitude'],
                            address=data['address'],
-                           explorer_id=data['userid'],)
+                           explorer_id=data['user_id'],)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 

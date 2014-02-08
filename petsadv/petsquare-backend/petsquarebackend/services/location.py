@@ -18,10 +18,10 @@ class LocationService(BaseService):
         super(LocationService, self).__init__('LocationService', request)
 
     @ServiceMethod
-    def list(self, userid=None, offset=0, size=100):
+    def list(self, user_id=None, offset=0, size=100):
         status = self.status.copy()
-        if userid:
-            success, models = Location_TB.list(filattr=('explorer_id', userid),
+        if user_id:
+            success, models = Location_TB.list(filattr=('explorer_id', user_id),
                                       offset=offset,
                                       size=size)
         else:
@@ -33,14 +33,14 @@ class LocationService(BaseService):
         return status
 
     @ServiceMethod
-    def create(self, name, description, longtitude, latitude, address, userid):
+    def create(self, name, description, longtitude, latitude, address, user_id):
         status = self.status.copy()
         success, model = Location_TB.create(name=name, 
                                             description=description,
                                             longtitude=longtitude,
                                             latitude=latitude,
                                             address=address, 
-                                            explorer_id=userid)
+                                            explorer_id=user_id)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
@@ -60,7 +60,7 @@ class LocationService(BaseService):
                            longtitude=data['longtitude'],
                            latitude=data['latitude'],
                            address=data['address'],
-                           explorer_id=data['userid'],)
+                           explorer_id=data['user_id'],)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 

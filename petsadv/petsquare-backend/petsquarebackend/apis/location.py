@@ -22,11 +22,11 @@ from petsquarebackend.apis import BaseAPI
 from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.location import LocationService
 
-
 class Schema_locations_get(Schema):
-    offset = validators.Int(if_missing=0)
-    size   = validators.Int(if_missing=100)
-    userid =  validators.Int(if_missing=1)
+    offset  = validators.Int(if_missing=0)
+    size    = validators.Int(if_missing=100)
+    user_id = validators.Int(if_missing=1)
+
 
 class Schema_locations_post(Schema):
     name        = validators.UnicodeString(if_missing=u'PlaceName')
@@ -34,7 +34,8 @@ class Schema_locations_post(Schema):
     longtitude  = validators.Number(if_missing=121.5130475)
     latitude    = validators.Number(if_missing=25.040063)
     address     = validators.UnicodeString(if_missing=u'PlaceAddress')
-    userid      = validators.Int(if_missing=1)
+    user_id     = validators.Int(if_missing=1)
+
 
 class Schema_location_put(Schema):
     name        = validators.UnicodeString()
@@ -42,7 +43,8 @@ class Schema_location_put(Schema):
     longtitude  = validators.Number()
     latitude    = validators.Number()
     address     = validators.UnicodeString()
-    userid      = validators.Int()
+    user_id     = validators.Int()
+
 
 class Base_Location(object):
     """
@@ -54,7 +56,7 @@ class Base_Location(object):
 
         if success:
             serv = LocationService(self.request)
-            serv_rtn = serv.list(userid=data['userid'], 
+            serv_rtn = serv.list(user_id=data['user_id'], 
                                  offset=data['offset'],
                                  size=data['size'])
         else:
@@ -78,7 +80,7 @@ class Base_Location(object):
                                    longtitude=data['longtitude'],
                                    latitude=data['latitude'],
                                    address=data['address'],
-                                   userid=data['userid'])
+                                   user_id=data['user_id'])
         else:
             #mock fake serv_rtn
             serv_rtn = {'data':'', 

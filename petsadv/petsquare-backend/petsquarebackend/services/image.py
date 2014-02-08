@@ -20,10 +20,10 @@ class ImageService(BaseService):
         super(ImageService, self).__init__('ImageService', request)
 
     @ServiceMethod
-    def list(self, userid=None, offset=0, size=100):
+    def list(self, user_id=None, offset=0, size=100):
         status = self.status.copy()
-        if userid:
-            success, models = Image_TB.list(filattr=('uploader_id', userid),
+        if user_id:
+            success, models = Image_TB.list(filattr=('uploader_id', user_id),
                                       offset=offset,
                                       size=size)
         else:
@@ -35,7 +35,7 @@ class ImageService(BaseService):
         return status
 
     @ServiceMethod
-    def create(self, description, image, userid):
+    def create(self, description, image, user_id):
         status = self.status.copy()
 
         image_filename = image.filename
@@ -44,7 +44,7 @@ class ImageService(BaseService):
         success, model = Image_TB.create(description=description,
                                          filename=image_filename,
                                          image=image_file,
-                                         uploader_id=userid)
+                                         uploader_id=user_id)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
@@ -89,7 +89,7 @@ class ImageService(BaseService):
                            description=data['description'],
                            filename=image_filename,
                            image=image_file,
-                           uploader_id=data['userid'],)
+                           uploader_id=data['user_id'],)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 

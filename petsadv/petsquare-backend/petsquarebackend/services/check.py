@@ -18,10 +18,10 @@ class CheckService(BaseService):
         super(CheckService, self).__init__('CheckService', request)
 
     @ServiceMethod
-    def list(self, userid=None, offset=0, size=100):
+    def list(self, user_id=None, offset=0, size=100):
         status = self.status.copy()
-        if userid:
-            success, models = Check_TB.list(filattr=('user_id', userid),
+        if user_id:
+            success, models = Check_TB.list(filattr=('user_id', user_id),
                                       offset=offset,
                                       size=size)
         else:
@@ -33,13 +33,13 @@ class CheckService(BaseService):
         return status
 
     @ServiceMethod
-    def create(self, title, description, location_id, image_id, address, userid):
+    def create(self, title, description, location_id, image_id, address, user_id):
         status = self.status.copy()
         success, model = Check_TB.create(title=title, 
                                          description=description,
                                          location_id=location_id,
                                          image_id=image_id,
-                                         userid=userid)
+                                         user_id=user_id)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
@@ -58,7 +58,7 @@ class CheckService(BaseService):
                                          description=data['description'],
                                          location_id=data['location_id'],
                                          image_id=data['image_id'],
-                                         user_id=data['userid'],)
+                                         user_id=data['user_id'],)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
