@@ -292,6 +292,12 @@ class ModelMixin(object):
 
 Base = declarative_base(cls=ModelMixin)
 
+class tmpObj:
+    pass
+    #def __init__(TB_cls):
+    #    __public__ = TB_cls.__public__
+    #    __name__   = TB_cls.__name__
+
 
 class RootFactory(object):
     __name__ = None
