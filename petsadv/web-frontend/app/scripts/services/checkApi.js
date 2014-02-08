@@ -4,7 +4,7 @@ angular.module('webFrontendApp')
   .factory('checkApi', ['httpService', function (httpService) {
 
     var resultThen = function(result, successFunc) {
-        result.then(successFunc, httpService.getErrorHandleFunc);
+        return result.then(successFunc, httpService.getErrorHandleFunc);
     };
 
     return{
@@ -17,14 +17,14 @@ angular.module('webFrontendApp')
         bodyData['description'] = config.description;
         bodyData['location_id'] = config.locationId;
         bodyData['image_id'] = config.imageId;
-        bodyData['userid'] = httpService.getUserId();
+        bodyData['user_id'] = httpService.getUserId();
 
         var result = httpService.sendRequest({
           'api':'check', 
           'type':'create', 
           'data':bodyData
         });
-        resultThen(result, successFunc);
+        return resultThen(result, successFunc);
       },
       /**
         list params: offset, size
@@ -33,14 +33,14 @@ angular.module('webFrontendApp')
         var paramStr = {};
         paramStr['offset'] = config.offset;
         paramStr['size'] = config.size;
-        paramStr['userid'] = httpService.getUserId();
+        paramStr['user_id'] = httpService.getUserId();
 
         var result = httpService.sendRequest({
           'api':'check', 
           'type':'list', 
           'params':paramStr
         });
-        resultThen(result, successFunc);
+        return resultThen(result, successFunc);
       },
       /**
         update body data: title*, description*, location_id*, image_id*
@@ -52,7 +52,7 @@ angular.module('webFrontendApp')
         bodyData['description'] = config.description;
         bodyData['location_id'] = config.locationId;
         bodyData['image_id'] = config.imageId;
-        bodyData['userid'] = httpService.getUserId();
+        bodyData['user_id'] = httpService.getUserId();
 
         var result = httpService.sendRequest({
           api:'check',
@@ -60,7 +60,7 @@ angular.module('webFrontendApp')
           data: bodyData,
           urlParams: {id:config.id}
         });
-        resultThen(result, successFunc);
+        return resultThen(result, successFunc);
       },
       /**
         get urlParams: id*
@@ -71,7 +71,7 @@ angular.module('webFrontendApp')
             type: 'read',
             urlParams: {id: config.id}
         });
-        resultThen(result, successFunc);
+        return resultThen(result, successFunc);
       },
       /**
         delete urlParams: id*
@@ -82,7 +82,7 @@ angular.module('webFrontendApp')
           type: 'delete',
           urlParams: {id: config.id}
         });
-        resultThen(result, successFunc);
+        return resultThen(result, successFunc);
       }
     };
   }]);

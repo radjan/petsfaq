@@ -7,9 +7,10 @@ angular.module('webFrontendApp', [
   'ngRoute',
   'ui.bootstrap',
   'ui.map',
-  'ezfb'
+  'ezfb',
+  'ui.router'
 ])
-  .config(function ($routeProvider, $httpProvider, $FBProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $FBProvider) {
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
@@ -23,24 +24,56 @@ angular.module('webFrontendApp', [
       xfbml      : true  // parse XFBML
     });
 
-    $routeProvider
-      .when('/', {
+    $urlRouterProvider.otherwise('/index');
+
+    $stateProvider
+      .state('main', {
+        url: '/index',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/register', {
-        templateUrl: 'views/register.html',
-        controller: 'RegisterCtrl'
-      })
-      .when('/petMap', {
+      .state('petMap',{
+        url: '/petMap',
         templateUrl: 'views/petMap.html',
-        controller: 'PetmapCtrl'
+        controller: 'PetmapCtrl',
       })
-      // .when('/login', {
-      //   templateUrl: 'views/login.html',
-      //   controller: 'LoginCtrl'
-      // })
-      .otherwise({
-        redirectTo: '/'
+      .state('petMap.checks',{
+        url: '/:mapMarkerType',
+        templateUrl: 'views/petMapChecks.html',
+        resolve: {
+          checks : function(checkApi){
+            var config = {};
+            config['offset'] = 0;
+            config['size'] = 200;
+            return checkApi.list(config, function(r){ 
+                return r;
+            });
+          }
+        },
+        controller: 'PetmapchecksCtrl'
       });
+    // $routeProvider
+    //   .when('/', {
+    //     templateUrl: 'views/main.html',
+    //     controller: 'MainCtrl'
+    //   })
+    //   .when('/register', {
+    //     templateUrl: 'views/register.html',
+    //     controller: 'RegisterCtrl'
+    //   })
+    //   .when('/petMap', {
+    //     templateUrl: 'views/petMap.html',
+    //     controller: 'PetmapCtrl'
+    //   })
+    //   // .when('/login', {
+    //   //   templateUrl: 'views/login.html',
+    //   //   controller: 'LoginCtrl'
+    //   // })
+    // .when('/petMapChecks', {
+    //   templateUrl: 'views/petMapChecks.html',
+    //   controller: 'PetmapchecksCtrl'
+    // })
+    //   .otherwise({
+    //     redirectTo: '/'
+    //   });
   });

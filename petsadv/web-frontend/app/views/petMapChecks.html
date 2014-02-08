@@ -1,0 +1,17 @@
+<!-- this is the confusing part. we have to point the map marker directive
+              at an existing google.maps.Marker object, so it can hook up events -->
+<div ng-repeat="marker in googleMarkers" ui-map-marker="googleMarkers[$index]"
+  ui-event="{'map-click': 'openMarkerInfo(marker)'}">
+</div>
+ 
+<div ui-map-info-window="currentGoogleInfoWindow" style="height:200px">
+    <p>{{currentCheck.description}}</p>
+    <hr>
+    <p>地點：{{currentCheck.location.name}}</p>
+    <p>人氣：{{currentCheck.location.checks.length}}</p>
+    <p>地址：{{currentCheck.location.address}}</p>
+  <!-- <h1><input ng-model="currentGoogleMarkerTitle"></h1> -->
+  <!-- Lat: <input ng-model="currentGoogleMarkerLat">, Lng: <input ng-model="currentGoogleMarkerLng">
+  <a class="btn btn-info" ng-click="setMarkerPosition(currentGoogleMarker, currentGoogleMarkerLat, currentGoogleMarkerLng)">Set Position</a> -->
+  <!-- <img src="http://hk.huaxia.com/thjq/jsxw/gj/images/2010/12/06/743937.jpg"> -->
+</div>
