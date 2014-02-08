@@ -25,6 +25,7 @@ def _fk_pragma_on_connect(dbapi_con, con_record):
 
 def add_velruse_login_from_settings(config, settings, prefix):
     from velruse.providers.twitter import add_twitter_login
+    from velruse.providers.facebook import add_facebook_login
     from velruse.settings import ProviderSettings
 
     #settings = config.registry.settings
@@ -34,7 +35,12 @@ def add_velruse_login_from_settings(config, settings, prefix):
     p.update('login_path')
     p.update('callback_path')
     p.update('name')
-    add_twitter_login(config, **p.kwargs)
+
+    if 'velruse.facebook.' in prefix:
+        p.update('scope')
+        add_facebook_login(config, **p.kwargs)
+    else:
+        add_twitter_login(config, **p.kwargs)
     return 
 
 
@@ -61,8 +67,8 @@ def main(global_config, **settings):
     #config.add_twitter_login_from_settings(prefix='velruse.twitter.')
     #config.add_facebook_login_from_settings(prefix='velruse.facebook.')
     add_velruse_login_from_settings(config, settings, 'velruse.twitter.web.')
-    add_velruse_login_from_settings(config, settings, 'velruse.twitter.web.m.')
-    add_velruse_login_from_settings(config, settings, 'velruse.facebook.')
+    add_velruse_login_from_settings(config, settings, 'velruse.twitter.m.')
+    add_velruse_login_from_settings(config, settings, 'velruse.facebook.web.')
     add_velruse_login_from_settings(config, settings, 'velruse.facebook.m.')
     api_routes(config)
 
