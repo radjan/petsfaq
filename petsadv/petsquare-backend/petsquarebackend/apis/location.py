@@ -46,7 +46,7 @@ class Schema_location_put(Schema):
     user_id     = validators.Int()
 
 
-class Base_Location(object):
+class BaseLocation(object):
     """
     For Inheritance Only
     """
@@ -165,7 +165,7 @@ class Base_Location(object):
 
 
 @view_defaults(renderer='json')
-class LocationAPI(BaseAPI, Base_Location):
+class LocationAPI(BaseAPI, BaseLocation):
     @view_config(route_name='locations', request_method='OPTIONS')
     def locations_option(self):
         #self.XHeaders(methods=['POST'])
@@ -232,7 +232,7 @@ class LocationAPI(BaseAPI, Base_Location):
 
 
 @view_defaults(renderer='json')
-class LocationAPP(BaseAPP, Base_Location):
+class LocationAPP(BaseAPP, BaseLocation):
     @view_config(route_name='app-locations', request_method='GET')
     def locations_list(self):
         return self._locations_list()
