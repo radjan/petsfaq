@@ -43,10 +43,12 @@ class AccountService(BaseService):
             token_service = TokenService(self.request)
             token_status = token_service.create(new_user_id, authn_by=login_type, sso_info=sso_info)
 
+            #return token from token
             rtn_status = token_status
-            rtn_status['data'] = token_status['data'].tokens[0].token
+            rtn_status['data'] = token_status['data'].token
 
         elif (status['success']) and (status['data'] != None):
+            #return token from user.tokens[0]
             rtn_status = status
             rtn_status['data'] = status['data'].tokens[0].token
         else:
