@@ -62,7 +62,8 @@ class SSO_API(BaseAPI):
 
 @view_config(context='velruse.AuthenticationDenied', renderer='json')
 def SSO_denied_cb(self):
-    return {'result': 'denied'}
+    return {'info': {'status': 'access denied'},
+            'data': None}
 
 
 def main():
