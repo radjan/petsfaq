@@ -20,6 +20,14 @@ from ..models.image import Image_TB
 from ..models.check import Check_TB
 from ..models.animal import Animal_TB, Animal_Image_TB
 from ..models.token import Token_TB
+from ..models.mission import (
+    Mission_TB,
+    MissionRescue_TB,
+    MissionPickup_TB,
+    MissionStay_TB,
+    MissionDeliver_TB,
+    MissionAdopt_TB,
+    )
 
 
 import Image as PILImage
@@ -44,15 +52,16 @@ def main(argv=sys.argv):
     with transaction.manager as tm:
 
         #erase the database tables
-        Token_TB.__table__.drop(engine, checkfirst=True)
-        Animal_Image_TB.__table__.drop(engine, checkfirst=True)
-        Animal_TB.__table__.drop(engine,   checkfirst=True) #  ^
-        Check_TB.__table__.drop(engine,    checkfirst=True) #  |
-        Location_TB.__table__.drop(engine, checkfirst=True) #  |
-        Image_TB.__table__.drop(engine,    checkfirst=True) #  |
-        User_TB.__table__.drop(engine,     checkfirst=True) #  |
-        Group_TB.__table__.drop(engine,    checkfirst=True) #  |
-        User_TB.__table__.drop(engine,     checkfirst=True) #  |
+        TABLES = (
+                  Animal_Image_TB, Animal_TB,
+                  Check_TB, Location_TB,
+                  MissionRescue_TB, MissionPickup_TB, MissionStay_TB,
+                  MissionDeliver_TB, MissionAdopt_TB, Mission_TB,
+                  Image_TB,
+                  Token_TB, User_TB, Group_TB,
+                 )
+        for table in TABLES:
+            table.__table__.drop(engine, checkfirst=True)
         Base.metadata.create_all(engine)
 
         #create group

@@ -19,6 +19,8 @@ def api_routes(config):
     config.add_route('check',         api_prefix + str(main_version) + '/check/{id:\d+}')
     config.add_route('animals',       api_prefix + str(main_version) + '/animals')
     config.add_route('animal',        api_prefix + str(main_version) + '/animal/{id:\d+}')
+    config.add_route('missions',      api_prefix + str(main_version) + '/missions')
+    config.add_route('mission',       api_prefix + str(main_version) + '/mission/{id:\d+}')
 
     #app
     config.add_route('app-locations', app_prefix + str(main_version) + '/locations')
