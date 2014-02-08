@@ -27,11 +27,11 @@ class AccountService(BaseService):
         type: token/facebook/twitter
         """
         status = self.status.copy()
+        rtn_status= self.status.copy()
         type_to_method = {'token':    self.sso_check,
                           'facebook': self.fb_email_check,
                           'twitter':  self.twitter_acc_check}
 
-        
         f = type_to_method.get(login_type, None)
         if f:
             status = f(value)
@@ -42,7 +42,16 @@ class AccountService(BaseService):
 
             token_service = TokenService(self.request)
             token_status = token_service.create(new_user_id, authn_by=login_type, sso_info=sso_info)
-        return status
+
+            rtn_status = token_status
+            rtn_status['data'] = token_status['data'].tokens[0].token
+
+        elif (status['success']) and (status['data'] != None):
+            rtn_status = status
+            rtn_status['data'] = status['data'].tokens[0].token
+        else:
+            rtn_status = status
+        return rtn_status
 
     @ServiceMethod
     def sso_logout(self, token):
