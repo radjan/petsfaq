@@ -20,6 +20,7 @@ requires = [
     'IPython',
     'cryptacular',
     'hashlib',
+    'velruse',
     ]
 
 setup(name='petsquare-backend',
