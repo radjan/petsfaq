@@ -11,7 +11,7 @@ angular.module('webFrontendApp')
 		{title:'熱門地點(location view)', type:'hot'}
 	];
 	$scope.setMarkers = function (type){
-		$location.path('/petMap/'+type);
+		$location.path($location.path()+'/'+type);
 	};
 
 
