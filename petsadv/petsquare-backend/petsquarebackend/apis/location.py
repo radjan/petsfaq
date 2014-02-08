@@ -165,7 +165,7 @@ class Base_Location(object):
 @view_defaults(renderer='json')
 class LocationAPI(BaseAPI, Base_Location):
     @view_config(route_name='locations', request_method='OPTIONS')
-    def location_options(self):
+    def locations_option(self):
         #self.XHeaders(methods=['POST'])
         self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
         return {}
