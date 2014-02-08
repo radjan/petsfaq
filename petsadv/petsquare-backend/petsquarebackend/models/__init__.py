@@ -244,7 +244,7 @@ class ModelMixin(object):
     def model_exception_rtn(cls, exp, ins_stk, tbk):
         rtn = []
         err_info = (cls.__tablename__, ins_stk, tbk)
-        log.debug('%s:%s, traceback:\n %s' % err_info)
+        log.error('%s:%s, traceback:\n %s' % err_info)
         rtn.append(False)
         rtn.append({'status':'fail', 'msg':'model error on %s' % ins_stk})
         return rtn
