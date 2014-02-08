@@ -103,6 +103,7 @@ class User_TB(Base):
             'group_id',                               #fk
             'group',                                  #backref
             'images', 'locations', 'checks', 'tokens',#relation
+            'pets', 'found_animals',
             'createddatetime', 'updateddatetime')
 
     id            = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)

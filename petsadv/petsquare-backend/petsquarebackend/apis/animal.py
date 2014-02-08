@@ -138,7 +138,7 @@ class AnimalAPI(BaseAPI):
                                    longtitude=data['longtitude'],
                                    latitude=data['latitude'],
                                    address=data['address'],
-                                   userid=data['userid'])
+                                   user_id=data['user_id'])
         else:
             #mock fake serv_rtn
             serv_rtn = {'data':'', 

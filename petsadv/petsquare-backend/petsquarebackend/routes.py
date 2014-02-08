@@ -24,6 +24,7 @@ def api_routes(config):
 
     #app
     config.add_route('app-locations', app_prefix + str(main_version) + '/locations')
+    config.add_route('app-location',  app_prefix + str(main_version) + '/location/{id:\d+}')
 
     #static pages
     #config.add_static_view('static', 'static', cache_max_age=3600)

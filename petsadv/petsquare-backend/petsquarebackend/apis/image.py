@@ -25,20 +25,19 @@ from pyramid.response import Response
 import Image as PILImage
 
 class Schema_images_get(Schema):
-    offset = validators.Int(if_missing=0)
-    size   = validators.Int(if_missing=100)
-    userid =  validators.Int(if_missing=1)
+    offset  = validators.Int(if_missing=0)
+    size    = validators.Int(if_missing=100)
+    user_id = validators.Int(if_missing=1)
 
 class Schema_images_post(Schema):
     description = validators.UnicodeString()
-    image       = validators.FieldStorageUploadConverter() 
-    userid      = validators.Int()
+    image       = validators.FieldStorageUploadConverter()
+    user_id     = validators.Int()
 
 class Schema_imagedata_put(Schema):
     description = validators.UnicodeString()
-    image       = validators.FieldStorageUploadConverter() 
-    userid      = validators.Int()
-
+    image       = validators.FieldStorageUploadConverter()
+    user_id     = validators.Int()
 
 
 @view_defaults(renderer='json')
@@ -69,7 +68,7 @@ class ImageAPI(BaseAPI):
 
         if success:
             serv = ImageService(self.request)
-            serv_rtn = serv.list(userid=data['userid'], 
+            serv_rtn = serv.list(user_id=data['user_id'], 
                                  offset=data['offset'],
                                  size=data['size'])
         else:
@@ -168,7 +167,7 @@ class ImageAPI(BaseAPI):
             serv = ImageService(self.request)
             serv_rtn = serv.create(description=data['description'],
                                    image=data['image'],
-                                   userid=data['userid'])
+                                   user_id=data['user_id'])
         else:
             #mock fake serv_rtn
             serv_rtn = {'data':'', 

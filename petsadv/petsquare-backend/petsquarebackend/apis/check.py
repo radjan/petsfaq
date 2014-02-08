@@ -22,23 +22,23 @@ from petsquarebackend.services.check import CheckService
 
 
 class Schema_checks_get(Schema):
-    offset = validators.Int(if_missing=0)
-    size   = validators.Int(if_missing=100)
-    userid =  validators.Int(if_missing=1)
+    offset  = validators.Int(if_missing=0)
+    size    = validators.Int(if_missing=100)
+    user_id = validators.Int(if_missing=1)
 
 class Schema_checks_post(Schema):
     title       = validators.UnicodeString(if_missing=u'CheckTitle')
     description = validators.UnicodeString(if_missing=u'CheckDescription')
     location_id = validators.Int(if_missing=1)
     image_id    = validators.Int(if_missing=1)
-    userid      = validators.Int(if_missing=1)
+    user_id     = validators.Int(if_missing=1)
 
 class Schema_check_put(Schema):
     title       = validators.UnicodeString()
     description = validators.UnicodeString()
     location_id = validators.Int()
     image_id    = validators.Int()
-    userid      = validators.Int()
+    user_id     = validators.Int()
 
 
 @view_defaults(renderer='json')
@@ -67,7 +67,7 @@ class CheckAPI(BaseAPI):
 
         if success:
             serv = CheckService(self.request)
-            serv_rtn = serv.list(userid=data['userid'], 
+            serv_rtn = serv.list(user_id=data['user_id'], 
                                  offset=data['offset'],
                                  size=data['size'])
         else:
@@ -133,7 +133,7 @@ class CheckAPI(BaseAPI):
                                    description=data['description'],
                                    location_id=data['location_id'],
                                    image_id=data['image_id'],
-                                   userid=data['userid'])
+                                   user_id=data['user_id'])
         else:
             #mock fake serv_rtn
             serv_rtn = {'data':'', 
