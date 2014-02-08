@@ -45,7 +45,7 @@ class TokenService(BaseService):
                                          authn_by=authn_by,
                                          sso_info=sso_info,
                                          user_id=user_id)
-        status = self.serv_rtn(status=status, success=success, model=token)
+        status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
     @ServiceMethod
