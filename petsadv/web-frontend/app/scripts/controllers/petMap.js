@@ -29,6 +29,8 @@ angular.module('webFrontendApp')
 		$scope.currentGoogleMarkerLng = marker.getPosition().lng();
 		$scope.currentGoogleMarkerTitle = marker.getTitle();
 		$scope.currentGoogleInfoWindow.open($scope.googleMap, marker);
+
+		$scope.currentCheck = $scope.checksInfo[marker.index];
 	};
 	 
 	$scope.setMarkerPosition = function(marker, lat, lng) {
@@ -38,7 +40,7 @@ angular.module('webFrontendApp')
 		config['locationId'] = marker.locationId;
 		config['imageId'] = marker.imageId;
 		config['id'] = marker.id;
-		
+
 		checkApi.update(config, function(result){
 			$log.info('Update marker status: '+result.info.status + ', msg: '+result.info.msg);
 			$scope.checksInfo[marker.index].title = $scope.currentGoogleMarkerTitle;
@@ -57,9 +59,9 @@ angular.module('webFrontendApp')
 	/********nav bar **********/
 	$scope.oneAtATime = true;
 	$scope.categories = [
-		{title:'最近活動點', type:'recent'},
+		{title:'最近活動點(check view)', type:'recent'},
 		{title:'歷史活動點', type:'history'},
-		{title:'熱門地點', type:'hot'}
+		{title:'熱門地點(location view)', type:'hot'}
 	];
 
 	var setMarkerList = function(result){
