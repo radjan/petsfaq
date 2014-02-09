@@ -133,12 +133,7 @@ class AnimalAPI(BaseAPI):
 
         if success:
             serv = AnimalService(self.request)
-            serv_rtn = serv.create(name=data['name'],
-                                   description=data['description'],
-                                   longtitude=data['longtitude'],
-                                   latitude=data['latitude'],
-                                   address=data['address'],
-                                   user_id=data['user_id'])
+            serv_rtn = serv.create(data)
         else:
             #mock fake serv_rtn
             serv_rtn = {'data':'', 
