@@ -40,29 +40,16 @@ class Schema_imagedata_put(Schema):
     user_id     = validators.Int()
 
 
-@view_defaults(renderer='json')
-class ImageAPI(BaseAPI):
-    @view_config(route_name='images', request_method='OPTIONS')
-    def image_options(self):
-        #self.XHeaders(methods=['POST'])
-        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
-        return {}
+class BaseImage(object):
+    """
+    For Inheritance Only
+    """
 
-    @view_config(route_name='image', request_method='OPTIONS')
-    def image_option(self):
-        #self.XHeaders(methods=['PUT','DELETE'])
-        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
-        return {}
-
-    @view_config(route_name='images', request_method='GET')
-    def images_list(self):
+    def _images_list(self):
         """
         list images
         API: GET /images
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_images_get)
 
@@ -81,15 +68,11 @@ class ImageAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='image', request_method='GET')
-    def image_show(self):
+    def _image_show(self):
         """
         show image
         API: GET /image/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_images_get)
 
@@ -116,15 +99,11 @@ class ImageAPI(BaseAPI):
         return api_rtn
 
 
-    @view_config(route_name='imagedata', request_method='GET')
-    def image_data(self):
+    def _image_data(self):
         """
         show image data
         API: GET /image/data/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_images_get)
 
@@ -148,17 +127,11 @@ class ImageAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-
-    #TODO: test me!
-    @view_config(route_name='images', request_method='POST')
-    def images_create(self):
+    def _images_create(self):
         """
         create image
         API: POST /images
         """
-        #for X-domain development
-        self.XHeaders()
-
         #image = self.request.params['image']
         #validation
         success, data, code = self.validate(Schema_images_post, body=False)
@@ -178,15 +151,11 @@ class ImageAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='image', request_method='PUT')
-    def image_update(self):
+    def _image_update(self):
         """
         update images
         API: PUT /image/data/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_imagedata_put)
 
@@ -210,15 +179,11 @@ class ImageAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='image', request_method='DELETE')
-    def image_delete(self):
+    def _image_delete(self):
         """
         delete image
         API: DELETE /image/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_images_get)
 
@@ -242,6 +207,81 @@ class ImageAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
+
+@view_defaults(renderer='json')
+class ImageAPI(BaseAPI, BaseImage):
+    @view_config(route_name='images', request_method='OPTIONS')
+    def image_options(self):
+        #self.XHeaders(methods=['POST'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
+        return {}
+
+    @view_config(route_name='image', request_method='OPTIONS')
+    def image_option(self):
+        #self.XHeaders(methods=['PUT','DELETE'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
+        return {}
+
+    @view_config(route_name='images', request_method='GET')
+    def images_list(self):
+        """
+        list images
+        API: GET /images
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._images_list()
+
+    @view_config(route_name='image', request_method='GET')
+    def image_show(self):
+        """
+        show image
+        API: GET /image/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._image_show()
+
+    @view_config(route_name='imagedata', request_method='GET')
+    def image_data(self):
+        """
+        show image data
+        API: GET /image/data/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._image_data()
+
+    #TODO: test me!
+    @view_config(route_name='images', request_method='POST')
+    def images_create(self):
+        """
+        create image
+        API: POST /images
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._images_create()
+
+    @view_config(route_name='image', request_method='PUT')
+    def image_update(self):
+        """
+        update images
+        API: PUT /image/data/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._image_update()
+
+    @view_config(route_name='image', request_method='DELETE')
+    def image_delete(self):
+        """
+        delete image
+        API: DELETE /image/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._image_delete()
 
 def main():
     pass
