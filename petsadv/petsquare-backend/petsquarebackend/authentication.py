@@ -30,8 +30,8 @@ class TokenAuthenticationPolicy(CallbackAuthenticationPolicy):
 
     def effective_principals(self, request):
         principals = [Everyone]
-        user = request.app_user
-        if user:
+        app_user = request.app_user
+        if app_user:
             principals += [Authenticated, 'u:%s' % app_user.id]
             principals.extend(('g:%s' % g.name for g in app_user.group))
         return principals
