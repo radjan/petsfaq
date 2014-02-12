@@ -112,6 +112,14 @@ class AccountService(BaseService):
         status = self.serv_rtn(status=status, success=success, model=result)
         return status
 
+    @ServiceMethod
+    def show(self, id):
+        status = self.status.copy()
+        success, model = User_TB.show(id)
+        status = self.serv_rtn(status=status, success=success, model=model)
+        return status
+
+
 
 
 def main():

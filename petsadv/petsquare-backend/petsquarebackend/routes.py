@@ -23,13 +23,15 @@ def api_routes(config):
     config.add_route('mission',       api_prefix + str(main_version) + '/mission/{id:\d+}')
 
     #app
+
+    config.add_route('app-showme',    app_prefix + str(main_version) + '/user/me')
     config.add_route('app-locations', app_prefix + str(main_version) + '/locations')
     config.add_route('app-location',  app_prefix + str(main_version) + '/location/{id:\d+}')
 
 
 
 
-    #login/logout
+    #non-version
     config.add_route('app-logout-facebook', 'm/logout/facebook')
 
     #static pages

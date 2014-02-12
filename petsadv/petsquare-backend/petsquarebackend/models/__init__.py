@@ -305,7 +305,7 @@ class RootFactory(object):
 
     __acl__ = [
             (Allow, Everyone, 'view'),
-            (Allow, Authenticated, 'view'),
+            (Allow, Authenticated, 'login'),
             ]
     def __init__(self, request):
         self.reques=request

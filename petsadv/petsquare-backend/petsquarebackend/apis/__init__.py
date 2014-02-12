@@ -100,8 +100,7 @@ class BaseAPP(object):
             token = to_check_dict.pop('token', None)
             authn_userid = authenticated_userid(self.request)
             #log.debug('authn_userid pop out???: %s' % authn_userid)
-            if authn_userid:
-                to_check_dict['user_id'] = authn_userid[0]
+            to_check_dict['user_id'] = authn_userid
 
             if body == True:
                 target_dict.update(to_check_dict)

@@ -18,7 +18,7 @@ from pyramid.view import (
         )
 
 from petsquarebackend.apis import BaseAPI
-from petsquarebackend.services.accounts import AccountService
+from petsquarebackend.services.account import AccountService
 
 @view_defaults(renderer='json')
 class SSO_API(BaseAPI):
