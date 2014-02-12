@@ -33,7 +33,7 @@ class TokenAuthenticationPolicy(CallbackAuthenticationPolicy):
         app_user = request.app_user
         if app_user:
             principals += [Authenticated, 'u:%s' % app_user.id]
-            principals.extend(('g:%s' % g.name for g in app_user.group))
+            principals.append('g:%s' % app_user.group)
         return principals
 
     def remember(self, request, principal, **wk):
