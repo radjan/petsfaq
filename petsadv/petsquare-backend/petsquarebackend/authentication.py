@@ -56,7 +56,7 @@ def get_app_user(request):
         else:
             return None
     except Exception, e:
-        log.error('error' % str(e))
+        log.error('error: %s' % str(e))
         return None
 
 
