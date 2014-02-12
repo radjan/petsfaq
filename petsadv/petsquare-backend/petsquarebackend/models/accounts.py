@@ -99,7 +99,7 @@ class Group_TB(Base):
 
 class User_TB(Base):
     __tablename__ = 'user'
-    __public__ = ('id','name','description', 'password', 'activated',
+    __public__ = ('id','name','description', 'password', 'email', 'activated',
             'group_id',                               #fk
             'group',                                  #backref
             'images', 'locations', 'checks', 'tokens',#relation
@@ -110,6 +110,7 @@ class User_TB(Base):
     name          = Column(String(255), nullable=True, unique=False)
     description   = Column(String(255), nullable=True, unique=False)
     password      = Column(String(255), nullable=True, unique=False)
+    email         = Column(String(255), nullable=True, unique=False)
     activated     = Column(Boolean,     nullable=True, unique=False)
 
     group_id      = Column(Integer, ForeignKey('group.id'), nullable=False, unique=False)
@@ -134,11 +135,10 @@ class User_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, description, password, activated, group_id):
+    def create(cls, name, description, password, email, activated, group_id):
         global DBSession
-        model = cls(name=name, description=description,
-                password=password, activated=activated,
-                group_id=group_id)
+        model = cls(name=name, description=description, password=password, 
+                email=email, activated=activated, group_id=group_id)
         DBSession.add(model)
         DBSession.flush()
         rtn = (True, model)
@@ -160,17 +160,18 @@ class User_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, name, description, password, activated, group_id):
+    def update(cls, name, description, password, email, activated, group_id):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
 
         #FIXME
-        if name:        model.name = name
+        if name:        model.name        = name
         if description: model.description = description
-        if password:  model.password = password
-        if activated:    model.activated = activated
-        if group_id:      model.group_id = group_id
+        if password:    model.password    = password
+        if email:       model.email       = email
+        if activated:   model.activated   = activated
+        if group_id:    model.group_id    = group_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
         rtn =  (True, model)

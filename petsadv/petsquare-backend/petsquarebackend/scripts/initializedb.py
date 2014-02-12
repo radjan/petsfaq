@@ -76,6 +76,7 @@ def main(argv=sys.argv):
                             name='pub user1', 
                             description='used as public',
                             password='no password', 
+                            email='fake@fake.com',
                             activated=True,
                             group_id=gmodel.id)
         if not success:
@@ -221,3 +222,9 @@ def main(argv=sys.argv):
         #    status['data'] = status['data'].__json__('fake request')
         #print status
 
+        print 'Done'
+        print 'Done'
+        print 'Done'
+        print 'Done'
+        print 'Done'
+        print 'Done'

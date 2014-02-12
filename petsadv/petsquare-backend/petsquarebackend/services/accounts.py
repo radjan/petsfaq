@@ -85,17 +85,14 @@ class AccountService(BaseService):
         return status
 
     @ServiceMethod
-    def web_create(self, name, description=None, password=None, 
+    def web_create(self, name, description=None, password=None, email=None,
                    activated=False, group_id=1):
         status = self.status.copy()
         success, model = User_TB.create(name=name, description=description,
-                                        password=password,activated=activated, 
-                                        group_id=group_id)
+                                        password=password,email=email,
+                                        activated=activated, group_id=group_id)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
-
-
-
 
 
 def main():
@@ -103,3 +100,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
