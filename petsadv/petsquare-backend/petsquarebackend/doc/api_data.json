@@ -110,9 +110,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
@@ -176,9 +176,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
@@ -187,7 +187,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"1\",\n           title: \"check1\",\n           createddatetime: \"2014-01-03, 20:46:03\",\n           image: {\n               description: \"1\",\n               format: \"PNG\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               userid: 1,\n               filename: \"python.png\",\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1\n           },\n           userid: 1,\n           location: {\n               description: \"1\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               userid: 1,\n               longtitude: 121.5130475,\n               address: \"taipei\",\n               latitude: 25.040063,\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1,\n               name: \"one\"\n           },\n           updateddatetime: \"2014-01-03, 20:46:03\",\n           id: 1\n       }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"1\",\n           title: \"check1\",\n           createddatetime: \"2014-01-03, 20:46:03\",\n           image: {\n               description: \"1\",\n               format: \"PNG\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               user_id: 1,\n               filename: \"python.png\",\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1\n           },\n           user_id: 1,\n           location: {\n               description: \"1\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               user_id: 1,\n               longtitude: 121.5130475,\n               address: \"taipei\",\n               latitude: 25.040063,\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1,\n               name: \"one\"\n           },\n           updateddatetime: \"2014-01-03, 20:46:03\",\n           id: 1\n       }\n   }\n"
         }
       ]
     },
@@ -256,9 +256,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
@@ -414,9 +414,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
@@ -480,9 +480,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
@@ -546,9 +546,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
@@ -674,9 +674,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
@@ -747,9 +747,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
@@ -834,9 +834,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "userid",
+            "field": "user_id",
             "optional": false,
-            "description": "userid"
+            "description": "user_id"
           }
         ]
       }
