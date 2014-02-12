@@ -28,29 +28,33 @@ class AccountService(BaseService):
         """
         status = self.status.copy()
         rtn_status= self.status.copy()
-        type_to_method = {'token':    self.sso_check,
-                          'facebook': self.fb_email_check,
-                          'twitter':  self.twitter_acc_check}
 
-        f = type_to_method.get(login_type, None)
-        if f:
-            status = f(value)
+        if login_type == 'facebook':
+            fb_name  = sso_info['profile']['preferredUsername']
+            fb_email = sso_info['profile']['verifiedEmail']
+            fb_id    = ''
+            for acc in sso_info['profile']['accounts']:
+                if acc['domain'] == 'facebook.com':
+                    fb_id = acc['userid']
 
-        if (status['success']) and (status['data'] == None):
-            acc_status = self.web_create(name='')
-            new_user_id = acc_status['data'].id
+            serv_rtn = self.search_user_by_email(fb_email)
+            if serv_rtn['success'] and serv_rtn['data']:
+                token_service = TokenService(self.request)
+                token_status = token_service.create(serv_rtn['data'].id, authn_by=login_type, sso_info=sso_info)
+            elif serv_rtn['success']:
+                acc_status = self.web_create(name=fb_name, email=fb_email, fb_id=fb_id)
+                new_user_id = acc_status['data'].id
 
-            token_service = TokenService(self.request)
-            token_status = token_service.create(new_user_id, authn_by=login_type, sso_info=sso_info)
+                token_service = TokenService(self.request)
+                token_status = token_service.create(new_user_id, authn_by=login_type, sso_info=sso_info)
+            else:
+                token_status = self.status.copy()
+                token_status['info']['msg'] = 'create token fail.'
 
             #return token from token
             rtn_status = token_status
             rtn_status['data'] = token_status['data'].token
 
-        elif (status['success']) and (status['data'] != None):
-            #return token from user.tokens[0]
-            rtn_status = status
-            rtn_status['data'] = status['data'].tokens[0].token
         else:
             rtn_status = status
         return rtn_status
@@ -70,19 +74,19 @@ class AccountService(BaseService):
         status = service.token_validate(token)
         return status
 
-    @ServiceMethod
-    def fb_email_check(self, email):
-        status = self.status.copy()
-        service = TokenService(self.request)
-        status = service.fb_email_validate(email)
-        return status
+    #@ServiceMethod
+    #def fb_email_check(self, email):
+    #    status = self.status.copy()
+    #    service = TokenService(self.request)
+    #    status = service.fb_email_validate(email)
+    #    return status
 
-    @ServiceMethod
-    def twitter_acc_check(self, account):
-        status = self.status.copy()
-        service = TokenService(self.request)
-        status = service.twitter_acc_validate(account)
-        return status
+    #@ServiceMethod
+    #def twitter_acc_check(self, account):
+    #    status = self.status.copy()
+    #    service = TokenService(self.request)
+    #    status = service.twitter_acc_validate(account)
+    #    return status
 
     @ServiceMethod
     def web_create(self, name, description=None, password=None, email=None,
@@ -94,6 +98,18 @@ class AccountService(BaseService):
                                         group_id=group_id)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
+
+    @ServiceMethod
+    def search_user_by_email(self, email):
+        status = self.status.copy()
+        attr = ('email', email)
+        success, model_list = User_TB.list(filattr=attr)
+        hit_data = [m for m in model_list if (email == m.email)]
+        result = hit_data[0] if len(hit_data) > 0 else None
+
+        status = self.serv_rtn(status=status, success=success, model=result)
+        return status
+
 
 
 def main():

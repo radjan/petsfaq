@@ -205,7 +205,7 @@ def main(argv=sys.argv):
         status = {}
         status = service.create(
                                 user_id=umodel.id,
-                                authn_by='facebook',
+                                authn_by='fakebook',
                                 sso_info={"key":"value", "e-mail":"abc@gm.com"},
                                 )
 

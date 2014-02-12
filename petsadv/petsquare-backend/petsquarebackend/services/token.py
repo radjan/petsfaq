@@ -57,21 +57,21 @@ class TokenService(BaseService):
 
     @ServiceMethod
     def token_validate(self, token):
+        #return self.request.app_user
         status = self.status.copy()
         model = Token_TB.get_by_attr(attr='token', value=token)
         status = self.serv_rtn(status=status, success=True, model=model)
         if status['data']:
-            model.update(model.id)
+            model.update(model.id)      #update latest access time
             status['data'] = model.user
         return status
 
     @ServiceMethod
     def fb_email_validate(self, email):
         status = self.status.copy()
-        attrs = [('authn_by', 'facebook')]
-        success, model_list = Token_TB.get_by_attrs(attrs=attrs)
-
-        hit_data = [m for m in model_list if (email in m.sso_info)]
+        attr = ('authn_by', 'facebook')
+        success, model_list = Token_TB.list(filattr=attr)
+        hit_data = [m for m in model_list if (email == m.sso_info['profile']['verifiedEmail'])]
         result = hit_data[0] if len(hit_data) > 0 else None
 
         status = self.serv_rtn(status=status, success=success, model=result)
@@ -84,9 +84,8 @@ class TokenService(BaseService):
     def twitter_acc_validate(self, account):
         log.debug('twitter account validation, acc: %s' % account)
         status = self.status.copy()
-        attrs = [('authn_by', 'twitter')]
-        success, model_list = Token_TB.get_by_attrs(attrs=attrs)
-
+        attrs = ('authn_by', 'twitter')
+        success, model_list = Token_TB.list(filattr=attr)
         hit_data = [m for m in model_list if (account in m.sso_info)]
         result = hit_data[0] if len(hit_data) > 0 else None
 
