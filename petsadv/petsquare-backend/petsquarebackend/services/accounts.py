@@ -62,6 +62,8 @@ class AccountService(BaseService):
     @ServiceMethod
     def sso_logout(self, token):
         status = self.status.copy()
+        if not token:
+            return status
         service = TokenService(self.request)
         status = service.delete_by_token(token)
         status = self.serv_rtn(status=status, success=success, model=model)

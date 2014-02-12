@@ -59,6 +59,12 @@ class SSO_API(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
+    @view_config(route_name='app-logout-facebook', request_method='DELETE')
+    def facebook_logged_out(self):
+        acc_service = AccountService(self.request)
+        serv_rtn = acc_service.sso_logout(self.request.params.get('token', None))
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
 
 @view_config(context='velruse.AuthenticationDenied', renderer='json')
 def SSO_denied_cb(self):

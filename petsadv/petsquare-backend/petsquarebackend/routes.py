@@ -23,6 +23,8 @@ def api_routes(config):
     config.add_route('mission',       api_prefix + str(main_version) + '/mission/{id:\d+}')
 
     #app
+    config.add_route('app-logout-facebook', app_prefix + str(main_version) + '/m/logout/facebook')
+
     config.add_route('app-locations', app_prefix + str(main_version) + '/locations')
     config.add_route('app-location',  app_prefix + str(main_version) + '/location/{id:\d+}')
 

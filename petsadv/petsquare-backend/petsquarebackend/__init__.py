@@ -67,10 +67,8 @@ def main(global_config, **settings):
     config.set_authorization_policy(authz_policy)
 
 
-    #config.add_twitter_login_from_settings(prefix='velruse.twitter.')
-    #config.add_facebook_login_from_settings(prefix='velruse.facebook.')
-    add_velruse_login_from_settings(config, settings, 'velruse.twitter.web.')
-    add_velruse_login_from_settings(config, settings, 'velruse.twitter.m.')
+    #add_velruse_login_from_settings(config, settings, 'velruse.twitter.web.')
+    #add_velruse_login_from_settings(config, settings, 'velruse.twitter.m.')
     add_velruse_login_from_settings(config, settings, 'velruse.facebook.web.')
     add_velruse_login_from_settings(config, settings, 'velruse.facebook.m.')
     api_routes(config)
