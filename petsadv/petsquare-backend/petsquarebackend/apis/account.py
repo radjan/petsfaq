@@ -35,7 +35,7 @@ class Schema_user_get(Schema):
 
 class BaseAccount(object):
     def _showme(self):
-        success, data, code = self.validate(Schema_users_get)
+        success, data, code = self.validate(Schema_user_get)
         if success:
             serv = AccountService(self.request)
             serv_rtn = serv.show(data['user_id'])
