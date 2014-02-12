@@ -77,6 +77,7 @@ def main(argv=sys.argv):
                             description='used as public',
                             password='no password', 
                             email='fake@fake.com',
+                            fb_id='1122334455667788',
                             activated=True,
                             group_id=gmodel.id)
         if not success:

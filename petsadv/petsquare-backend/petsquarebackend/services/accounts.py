@@ -86,11 +86,12 @@ class AccountService(BaseService):
 
     @ServiceMethod
     def web_create(self, name, description=None, password=None, email=None,
-                   activated=False, group_id=1):
+                   fb_id=None, activated=False, group_id=1):
         status = self.status.copy()
         success, model = User_TB.create(name=name, description=description,
                                         password=password,email=email,
-                                        activated=activated, group_id=group_id)
+                                        fb_id=fb_id, activated=activated,
+                                        group_id=group_id)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
