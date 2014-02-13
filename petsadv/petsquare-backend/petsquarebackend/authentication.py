@@ -15,7 +15,7 @@ from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.util import DottedNameResolver
 
-from petsquarebackend.services.accounts import AccountService
+from petsquarebackend.services.account import AccountService
 
 @implementer(IAuthenticationPolicy)
 class TokenAuthenticationPolicy(CallbackAuthenticationPolicy):

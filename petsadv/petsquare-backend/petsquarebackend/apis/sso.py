@@ -22,25 +22,17 @@ from petsquarebackend.services.account import AccountService
 
 @view_defaults(renderer='json')
 class SSO_API(BaseAPI):
-    @view_config(context='velruse.providers.twitter.TwitterAuthenticationComplete')
-    def twitter_logged_in_cb(self):
-        context = self.request.context
-        result = {
-                'provider_type': context.provider_type,
-                'provider_name': context.provider_name,
-                'profile':       context.profile,
-                'credentials':   context.credentials,
-                }
-        #print result
-        acc_service = AccountService(self.request)
-        serv_rtn = acc_service.sso_login(login_type=context.provider_type,
-                                         value=context.profile['accounts'][0]['username'],
-                                         sso_info=result)
-        api_rtn = self.format_return(serv_rtn)
-        return api_rtn
-
     @view_config(context='velruse.providers.facebook.FacebookAuthenticationComplete')
     def facebook_logged_in_cb(self):
+        context = self.request.context
+        p_name = context.provider_name
+        if p_name == 'facebook_mobile':
+            self._facebook_logged_in_cb_mobile()
+        else:
+            self._facebook_logged_in_cb_web()
+
+
+    def _facebook_logged_in_cb_mobile(self):
         context = self.request.context
         result = {
                 'provider_type': context.provider_type,
@@ -59,12 +51,41 @@ class SSO_API(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
+    def _facebook_logged_in_cb_mobile(self):
+        context = self.request.context
+        result = {
+                'provider_type': context.provider_type,
+                'provider_name': context.provider_name,
+                'profile':       context.profile,
+                'credentials':   context.credentials,
+                }
+        return {'info': 'facebook sso web callback not ready yet.',
+                'data': result}
+
     @view_config(route_name='app-logout-facebook', request_method='DELETE')
     def facebook_logged_out(self):
         acc_service = AccountService(self.request)
         serv_rtn = acc_service.sso_logout(self.request.params.get('token', None))
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
+
+    @view_config(context='velruse.providers.twitter.TwitterAuthenticationComplete')
+    def twitter_logged_in_cb(self):
+        context = self.request.context
+        result = {
+                'provider_type': context.provider_type,
+                'provider_name': context.provider_name,
+                'profile':       context.profile,
+                'credentials':   context.credentials,
+                }
+        #print result
+        acc_service = AccountService(self.request)
+        serv_rtn = acc_service.sso_login(login_type=context.provider_type,
+                                         value=context.profile['accounts'][0]['username'],
+                                         sso_info=result)
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
 
 @view_config(context='velruse.AuthenticationDenied', renderer='json')
 def SSO_denied_cb(self):
