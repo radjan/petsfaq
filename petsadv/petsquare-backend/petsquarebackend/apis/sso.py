@@ -27,9 +27,9 @@ class SSO_API(BaseAPI):
         context = self.request.context
         p_name = context.provider_name
         if p_name == 'facebook_mobile':
-            self._facebook_logged_in_cb_mobile()
+            return self._facebook_logged_in_cb_mobile()
         else:
-            self._facebook_logged_in_cb_web()
+            return self._facebook_logged_in_cb_web()
 
 
     def _facebook_logged_in_cb_mobile(self):
@@ -51,7 +51,7 @@ class SSO_API(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    def _facebook_logged_in_cb_mobile(self):
+    def _facebook_logged_in_cb_web(self):
         context = self.request.context
         result = {
                 'provider_type': context.provider_type,
