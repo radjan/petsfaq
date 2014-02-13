@@ -29,6 +29,9 @@ def api_routes(config):
     config.add_route('app-animal',    app_prefix + str(main_version) + '/animal/{id:\d+}')
     config.add_route('app-checks',    app_prefix + str(main_version) + '/checks')
     config.add_route('app-check',     app_prefix + str(main_version) + '/check/{id:\d+}')
+    config.add_route('app-images',    app_prefix + str(main_version) + '/images')
+    config.add_route('app-imagedata', app_prefix + str(main_version) + '/image/data/{id:\d+}')
+    config.add_route('app-image',     app_prefix + str(main_version) + '/image/{id:\d+}')
 
 
     #static pages

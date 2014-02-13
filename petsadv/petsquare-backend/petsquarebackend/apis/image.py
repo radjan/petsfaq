@@ -18,6 +18,7 @@ from pyramid.view import (
         )
 
 from petsquarebackend.apis import BaseAPI
+from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.image import ImageService
 
 from pyramid.response import FileResponse
@@ -282,6 +283,34 @@ class ImageAPI(BaseAPI, BaseImage):
         #for X-domain development
         self.XHeaders()
         return self._image_delete()
+
+
+@view_defaults(renderer='json')
+class ImageAPP(BaseAPP, BaseImage):
+    @view_config(route_name='app-images', request_method='GET')
+    def images_list(self):
+        return self._images_list()
+
+    @view_config(route_name='app-images', request_method='POST')
+    def images_create(self):
+        return self._images_create()
+
+    @view_config(route_name='app-image', request_method='GET')
+    def image_show(self):
+        return self._image_show()
+
+    @view_config(route_name='app-image', request_method='PUT')
+    def image_update(self):
+        return self._image_update()
+
+    @view_config(route_name='app-image', request_method='DELETE')
+    def image_delete(self):
+        return self._image_delete()
+
+    @view_config(route_name='app-imagedata', request_method='GET')
+    def image_data(self):
+        return self._image_data()
+
 
 def main():
     pass
