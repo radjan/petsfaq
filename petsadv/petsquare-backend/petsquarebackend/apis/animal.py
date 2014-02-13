@@ -18,6 +18,7 @@ from pyramid.view import (
         )
 
 from petsquarebackend.apis import BaseAPI
+from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.animal import AnimalService
 
 
@@ -239,6 +240,30 @@ class AnimalAPI(BaseAPI, BaseAnimal):
         #for X-domain development
         self.XHeaders()
         return slef._animal_delete()
+
+
+@view_defaults(renderer='json')
+class AnimalAPP(BaseAPP, BaseAnimal):
+    @view_config(route_name='app-animals', request_method='GET')
+    def animals_list(self):
+        return self._animals_list()
+
+    @view_config(route_name='app-animals', request_method='POST')
+    def animals_create(self):
+        return self._animals_create()
+
+    @view_config(route_name='app-animal', request_method='GET')
+    def animal_show(self):
+        return self._animal_show()
+
+    @view_config(route_name='app-animal', request_method='PUT')
+    def animal_update(self):
+        return self._animal_update()
+
+    @view_config(route_name='app-animal', request_method='DELETE')
+    def animal_delete(self):
+        return self._animal_delete()
+
 
 def main():
     pass
