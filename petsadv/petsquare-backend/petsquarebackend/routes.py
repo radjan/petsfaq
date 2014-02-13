@@ -27,6 +27,9 @@ def api_routes(config):
     config.add_route('app-location',  app_prefix + str(main_version) + '/location/{id:\d+}')
     config.add_route('app-animals',   app_prefix + str(main_version) + '/animals')
     config.add_route('app-animal',    app_prefix + str(main_version) + '/animal/{id:\d+}')
+    config.add_route('app-checks',    app_prefix + str(main_version) + '/checks')
+    config.add_route('app-check',     app_prefix + str(main_version) + '/check/{id:\d+}')
+
 
     #static pages
     #config.add_static_view('static', 'static', cache_max_age=3600)

@@ -18,6 +18,7 @@ from pyramid.view import (
         )
 
 from petsquarebackend.apis import BaseAPI
+from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.check import CheckService
 
 
@@ -241,6 +242,30 @@ class CheckAPI(BaseAPI, BaseCheck):
         #for X-domain development
         self.XHeaders()
         self._check_delete()
+
+
+@view_defaults(renderer='json')
+class CheckAPP(BaseAPP, BaseCheck):
+    @view_config(route_name='app-checks', request_method='GET')
+    def checks_list(self):
+        return self._checks_list()
+
+    @view_config(route_name='app-checks', request_method='POST')
+    def checks_create(self):
+        return self._checks_create()
+
+    @view_config(route_name='app-check', request_method='GET')
+    def check_show(self):
+        return self._check_show()
+
+    @view_config(route_name='app-check', request_method='PUT')
+    def check_update(self):
+        return self._check_update()
+
+    @view_config(route_name='app-check', request_method='DELETE')
+    def check_delete(self):
+        return self._check_delete()
+
 
 def main():
     pass
