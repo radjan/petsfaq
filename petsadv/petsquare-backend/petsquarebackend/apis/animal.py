@@ -18,6 +18,7 @@ from pyramid.view import (
         )
 
 from petsquarebackend.apis import BaseAPI
+from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.animal import AnimalService
 
 
@@ -42,29 +43,15 @@ class Schema_animal_put(Schema):
     description = validators.UnicodeString()
     finder_id   = validators.Int()
 
-@view_defaults(renderer='json')
-class AnimalAPI(BaseAPI):
-    @view_config(route_name='animals', request_method='OPTIONS')
-    def animal_options(self):
-        #self.XHeaders(methods=['POST'])
-        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
-        return {}
-
-    @view_config(route_name='animal', request_method='OPTIONS')
-    def animal_option(self):
-        #self.XHeaders(methods=['PUT','DELETE'])
-        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
-        return {}
-
-    @view_config(route_name='animals', request_method='GET')
-    def animals_list(self):
+class BaseAnimal(object):
+    """
+    For Inheritance only
+    """
+    def _animals_list(self):
         """
         list animals
         API: GET /animals
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_animals_get)
 
@@ -83,15 +70,11 @@ class AnimalAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='animal', request_method='GET')
-    def animal_show(self):
+    def _animal_show(self):
         """
         show animal
         API: GET /animal/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_animals_get)
 
@@ -115,19 +98,11 @@ class AnimalAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-
-    #TODO: test me!
-    @view_config(route_name='animals', request_method='POST')
-    def animals_create(self):
+    def _animals_create(self):
         """
         create animal
         API: POST /animals
         """
-        #for X-domain development
-        #self.XHeaders(methods=['POST'])
-        self.XHeaders()
-
-
         #validation
         success, data, code = self.validate(Schema_animals_post)
 
@@ -144,15 +119,11 @@ class AnimalAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='animal', request_method='PUT')
-    def animal_update(self):
+    def _animal_update(self):
         """
         update animals
         API: PUT /animal/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_animal_put)
 
@@ -176,15 +147,11 @@ class AnimalAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='animal', request_method='DELETE')
-    def animal_delete(self):
+    def _animal_delete(self):
         """
         delete animal
         API: DELETE /animal/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_animals_get)
 
@@ -207,6 +174,95 @@ class AnimalAPI(BaseAPI):
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
+
+@view_defaults(renderer='json')
+class AnimalAPI(BaseAPI, BaseAnimal):
+    @view_config(route_name='animals', request_method='OPTIONS')
+    def animal_options(self):
+        #self.XHeaders(methods=['POST'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
+        return {}
+
+    @view_config(route_name='animal', request_method='OPTIONS')
+    def animal_option(self):
+        #self.XHeaders(methods=['PUT','DELETE'])
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
+        return {}
+
+    @view_config(route_name='animals', request_method='GET')
+    def animals_list(self):
+        """
+        list animals
+        API: GET /animals
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._animals_list()
+
+    @view_config(route_name='animal', request_method='GET')
+    def animal_show(self):
+        """
+        show animal
+        API: GET /animal/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._animal_show()
+
+    #TODO: test me!
+    @view_config(route_name='animals', request_method='POST')
+    def animals_create(self):
+        """
+        create animal
+        API: POST /animals
+        """
+        #for X-domain development
+        #self.XHeaders(methods=['POST'])
+        self.XHeaders()
+        return self._animals_create()
+
+    @view_config(route_name='animal', request_method='PUT')
+    def animal_update(self):
+        """
+        update animals
+        API: PUT /animal/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._animal_update()
+
+    @view_config(route_name='animal', request_method='DELETE')
+    def animal_delete(self):
+        """
+        delete animal
+        API: DELETE /animal/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return slef._animal_delete()
+
+
+@view_defaults(renderer='json')
+class AnimalAPP(BaseAPP, BaseAnimal):
+    @view_config(route_name='app-animals', request_method='GET')
+    def animals_list(self):
+        return self._animals_list()
+
+    @view_config(route_name='app-animals', request_method='POST')
+    def animals_create(self):
+        return self._animals_create()
+
+    @view_config(route_name='app-animal', request_method='GET')
+    def animal_show(self):
+        return self._animal_show()
+
+    @view_config(route_name='app-animal', request_method='PUT')
+    def animal_update(self):
+        return self._animal_update()
+
+    @view_config(route_name='app-animal', request_method='DELETE')
+    def animal_delete(self):
+        return self._animal_delete()
 
 
 def main():

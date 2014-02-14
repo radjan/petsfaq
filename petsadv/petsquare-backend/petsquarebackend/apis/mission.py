@@ -18,6 +18,7 @@ from pyramid.view import (
         )
 
 from petsquarebackend.apis import BaseAPI
+from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.mission import MissionService
 
 
@@ -244,6 +245,29 @@ class MissionAPI(BaseAPI, BaseMission):
         #for X-domain development
         self.XHeaders()
         self._mission_delete()
+
+@view_defaults(renderer='json')
+class MissionAPP(BaseAPP, BaseMission):
+    @view_config(route_name='app-missions', request_method='GET')
+    def missions_list(self):
+        return self._missions_list()
+
+    @view_config(route_name='app-missions', request_method='POST')
+    def missions_create(self):
+        return self._missions_create()
+
+    @view_config(route_name='app-mission', request_method='GET')
+    def mission_show(self):
+        return self._mission_show()
+
+    @view_config(route_name='app-mission', request_method='PUT')
+    def mission_update(self):
+        return self._mission_update()
+
+    @view_config(route_name='app-mission', request_method='DELETE')
+    def mission_delete(self):
+        return self._mission_delete()
+
 
 def main():
     pass

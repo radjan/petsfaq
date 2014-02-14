@@ -27,6 +27,16 @@ def api_routes(config):
     config.add_route('app-showme',    app_prefix + str(main_version) + '/user/me')
     config.add_route('app-locations', app_prefix + str(main_version) + '/locations')
     config.add_route('app-location',  app_prefix + str(main_version) + '/location/{id:\d+}')
+    config.add_route('app-animals',   app_prefix + str(main_version) + '/animals')
+    config.add_route('app-animal',    app_prefix + str(main_version) + '/animal/{id:\d+}')
+    config.add_route('app-checks',    app_prefix + str(main_version) + '/checks')
+    config.add_route('app-check',     app_prefix + str(main_version) + '/check/{id:\d+}')
+    config.add_route('app-images',    app_prefix + str(main_version) + '/images')
+    config.add_route('app-imagedata', app_prefix + str(main_version) + '/image/data/{id:\d+}')
+    config.add_route('app-image',     app_prefix + str(main_version) + '/image/{id:\d+}')
+    config.add_route('app-missions',  app_prefix + str(main_version) + '/missions')
+    config.add_route('app-mission',   app_prefix + str(main_version) + '/mission/{id:\d+}')
+
 
 
 

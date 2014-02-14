@@ -18,6 +18,7 @@ from pyramid.view import (
         )
 
 from petsquarebackend.apis import BaseAPI
+from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.check import CheckService
 
 
@@ -41,27 +42,15 @@ class Schema_check_put(Schema):
     user_id     = validators.Int()
 
 
-@view_defaults(renderer='json')
-class CheckAPI(BaseAPI):
-    @view_config(route_name='checks', request_method='OPTIONS')
-    def check_options(self):
-        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
-        return {}
-
-    @view_config(route_name='check', request_method='OPTIONS')
-    def check_option(self):
-        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
-        return {}
-
-    @view_config(route_name='checks', request_method='GET')
-    def checks_list(self):
+class BaseCheck(object):
+    """
+    For Inheritance only
+    """
+    def _checks_list(self):
         """
         list checks
         API: GET /checks
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_checks_get)
 
@@ -80,15 +69,11 @@ class CheckAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='check', request_method='GET')
-    def check_show(self):
+    def _check_show(self):
         """
         show check
         API: GET /check/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_checks_get)
 
@@ -113,17 +98,11 @@ class CheckAPI(BaseAPI):
         return api_rtn
 
 
-    #TODO: test me!
-    @view_config(route_name='checks', request_method='POST')
-    def checks_create(self):
+    def _checks_create(self):
         """
         create check
         API: POST /checks
         """
-        #for X-domain development
-        self.XHeaders()
-
-
         #validation
         success, data, code = self.validate(Schema_checks_post)
 
@@ -144,15 +123,11 @@ class CheckAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='check', request_method='PUT')
-    def check_update(self):
+    def _check_update(self):
         """
         update checks
         API: PUT /check/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_check_put)
 
@@ -176,15 +151,11 @@ class CheckAPI(BaseAPI):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
-    @view_config(route_name='check', request_method='DELETE')
-    def check_delete(self):
+    def _check_delete(self):
         """
         delete check
         API: DELETE /check/<id:\d+>
         """
-        #for X-domain development
-        self.XHeaders()
-
         #validation
         success, data, code = self.validate(Schema_checks_get)
 
@@ -207,6 +178,93 @@ class CheckAPI(BaseAPI):
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
+
+@view_defaults(renderer='json')
+class CheckAPI(BaseAPI, BaseCheck):
+    @view_config(route_name='checks', request_method='OPTIONS')
+    def check_options(self):
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['POST'])
+        return {}
+
+    @view_config(route_name='check', request_method='OPTIONS')
+    def check_option(self):
+        self.XHeaders(headers=['Content-Type','Accept'], methods=['PUT','DELETE'])
+        return {}
+
+    @view_config(route_name='checks', request_method='GET')
+    def checks_list(self):
+        """
+        list checks
+        API: GET /checks
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._checks_list()
+
+    @view_config(route_name='check', request_method='GET')
+    def check_show(self):
+        """
+        show check
+        API: GET /check/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._check_show()
+
+    #TODO: test me!
+    @view_config(route_name='checks', request_method='POST')
+    def checks_create(self):
+        """
+        create check
+        API: POST /checks
+        """
+        #for X-domain development
+        self.XHeaders()
+        self._checks_create()
+
+
+    @view_config(route_name='check', request_method='PUT')
+    def check_update(self):
+        """
+        update checks
+        API: PUT /check/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        self._check_update()
+
+    @view_config(route_name='check', request_method='DELETE')
+    def check_delete(self):
+        """
+        delete check
+        API: DELETE /check/<id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        self._check_delete()
+
+
+@view_defaults(renderer='json')
+class CheckAPP(BaseAPP, BaseCheck):
+    @view_config(route_name='app-checks', request_method='GET')
+    def checks_list(self):
+        return self._checks_list()
+
+    @view_config(route_name='app-checks', request_method='POST')
+    def checks_create(self):
+        return self._checks_create()
+
+    @view_config(route_name='app-check', request_method='GET')
+    def check_show(self):
+        return self._check_show()
+
+    @view_config(route_name='app-check', request_method='PUT')
+    def check_update(self):
+        return self._check_update()
+
+    @view_config(route_name='app-check', request_method='DELETE')
+    def check_delete(self):
+        return self._check_delete()
 
 
 def main():
