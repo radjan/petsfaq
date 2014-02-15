@@ -86,7 +86,9 @@ class LoginAPP(BaseAPP, BaseLogin):
     def facebook_logout(self):
         return self._token_logout()
 
-    def _check_fb_verified(self, fb_id, fb_access_token):
+    def _check_fb_verified(self, fb_id=None, fb_access_token=None):
+        if (not fb_access_token) or (not fb_id):
+            return (False, 'error: fb_id or fb_acceess_token is empty parameter.')
         try:
             validation_api_prefix = 'https://graph.facebook.com/me?fields=username,id,email&access_token='
             validation_api = validation_api_prefix + fb_access_token
