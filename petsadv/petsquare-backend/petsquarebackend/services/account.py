@@ -43,10 +43,10 @@ class AccountService(BaseService):
                 token_status = token_service.create(serv_rtn['data'].id, authn_by=login_type, sso_info=sso_info)
             elif serv_rtn['success']:
                 acc_status = self.web_create(name=fb_name, email=fb_email, fb_id=fb_id)
-                new_user_id = acc_status['data'].id
+                exist_user_id = acc_status['data'].id
 
                 token_service = TokenService(self.request)
-                token_status = token_service.create(new_user_id, authn_by=login_type, sso_info=sso_info)
+                token_status = token_service.create(exist_user_id, authn_by=login_type, sso_info=sso_info)
             else:
                 token_status = self.status.copy()
                 token_status['info']['msg'] = 'create token fail.'
@@ -59,15 +59,69 @@ class AccountService(BaseService):
             rtn_status = status
         return rtn_status
 
+
     @ServiceMethod
-    def sso_logout(self, token):
+    def fb_access_token_login(self, fb_id, fb_access_token, fb_username, fb_email):
+        status = self.status.copy()
+        token_service = TokenService(self.request)
+        token_serv_rtn = token_service.fb_access_token_validate(fb_access_token)
+
+        """
+        check fb_access_token exists in token table
+        """
+        if token_serv_rtn['success'] and token_serv_rtn['data']:
+            """
+            1a. return token
+            """
+            status['info'] = {'msg':'access_token verified'}
+            status['data'] = token_serv_rtn['data'].token
+        elif token_serv_rtn['success']:
+            """
+            1b. find user via fb_id, and return token
+            """
+            fbjs_info = {'id':fb_id,
+                         'access_token':fb_access_token,
+                         'username':fb_username,
+                         'email':fb_email}
+            acc_serv_rtn = self.search_user_by_fb_id(fb_id)
+            if acc_serv_rtn['success'] and acc_serv_rtn['data']:
+                #exist user
+                exist_user_id = acc_serv_rtn['data'].id
+                token_status = token_service.create(user_id=exist_user_id, 
+                                                    authn_by='facebook_js', 
+                                                    sso_info=fbjs_info)
+                status['info'] = {'msg': 'token created'}
+                status['data'] = token_status['data'].token
+            elif acc_serv_rtn['success']:
+                #create new user
+                new_acc_status = self.web_create(name=fb_username, fb_id=fb_id)
+                new_user_id = new_acc_status['data'].id
+                token_status = token_service.create(user_id=new_user_id, 
+                                                    authn_by='facebook_js', 
+                                                    sso_info=fbjs_info)
+                status['info'] = {'msg': 'token created'}
+                status['data'] = token_status['data'].token
+            else:
+                status = self.status.copy()
+                status['info']['msg'] = 'user not exist, create user fail.'
+        else:
+            status = self.status.copy()
+            status['info']= {'msg': 'user not exist, create token fail.'}
+        return status
+
+
+    @ServiceMethod
+    def token_logout(self, token):
         status = self.status.copy()
         if not token:
             return status
         service = TokenService(self.request)
-        status = service.delete_by_token(token)
-        status = self.serv_rtn(status=status, success=success, model=model)
-        return status
+        success, delete_msg = service.delete_by_token(token)
+        if success:
+            delete_msg['info'] = {'msg': 'logout'}
+            return delete_msg
+        else:
+            return status
 
     @ServiceMethod
     def sso_check(self, token):
@@ -75,20 +129,6 @@ class AccountService(BaseService):
         service = TokenService(self.request)
         status = service.token_validate(token)
         return status
-
-    #@ServiceMethod
-    #def fb_email_check(self, email):
-    #    status = self.status.copy()
-    #    service = TokenService(self.request)
-    #    status = service.fb_email_validate(email)
-    #    return status
-
-    #@ServiceMethod
-    #def twitter_acc_check(self, account):
-    #    status = self.status.copy()
-    #    service = TokenService(self.request)
-    #    status = service.twitter_acc_validate(account)
-    #    return status
 
     @ServiceMethod
     def web_create(self, name, description=None, password=None, email=None,
@@ -113,13 +153,22 @@ class AccountService(BaseService):
         return status
 
     @ServiceMethod
+    def search_user_by_fb_id(self, fb_id):
+        status = self.status.copy()
+        attr = ('fb_id', fb_id)
+        success, model_list = User_TB.list(filattr=attr)
+        hit_data = [m for m in model_list if (fb_id == m.fb_id)]
+        result = hit_data[0] if len(hit_data) > 0 else None
+
+        status = self.serv_rtn(status=status, success=success, model=result)
+        return status
+
+    @ServiceMethod
     def show(self, id):
         status = self.status.copy()
         success, model = User_TB.show(id)
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
-
-
 
 
 def main():

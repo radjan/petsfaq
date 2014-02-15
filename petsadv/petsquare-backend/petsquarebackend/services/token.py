@@ -67,36 +67,6 @@ class TokenService(BaseService):
         return status
 
     @ServiceMethod
-    def fb_email_validate(self, email):
-        status = self.status.copy()
-        attr = ('authn_by', 'facebook')
-        success, model_list = Token_TB.list(filattr=attr)
-        hit_data = [m for m in model_list if (email == m.sso_info['profile']['verifiedEmail'])]
-        result = hit_data[0] if len(hit_data) > 0 else None
-
-        status = self.serv_rtn(status=status, success=success, model=result)
-        if result:
-            result.update(result.id)
-            status['data'] = result.user
-        return status
-
-    @ServiceMethod
-    def twitter_acc_validate(self, account):
-        log.debug('twitter account validation, acc: %s' % account)
-        status = self.status.copy()
-        attrs = ('authn_by', 'twitter')
-        success, model_list = Token_TB.list(filattr=attr)
-        hit_data = [m for m in model_list if (account in m.sso_info)]
-        result = hit_data[0] if len(hit_data) > 0 else None
-
-        status = self.serv_rtn(status=status, success=success, model=result)
-        if result:
-            result.update(result.id)
-            status['data'] = result.user
-        return status
-
-
-    @ServiceMethod
     def update(self, id, data):
         status = self.status.copy()
         success, model = Token_TB.update(id=id,
@@ -124,7 +94,7 @@ class TokenService(BaseService):
         if status['data']:
             success, model = model.delete(id=model.id)
             status = self.serv_rtn(status=status, success=True, model=model)
-        return status
+        return (True, status)
 
     @ServiceMethod
     def _create_token(self, length):
@@ -134,6 +104,55 @@ class TokenService(BaseService):
             word += random.choice(string.ascii_letters)
         m.update(word)
         return unicode(m.hexdigest()[:length])
+
+    @ServiceMethod
+    def fb_access_token_validate(self, fb_access_token):
+        status = self.status.copy()
+        attr = ('authn_by', 'facebook_js')
+        success, model_list = Token_TB.list(filattr=attr)
+        hit_data = [m for m in model_list if (fb_access_token == m.sso_info['access_token'])]
+        result = hit_data[0] if len(hit_data) > 0 else None
+
+        status = self.serv_rtn(status=status, success=success, model=result)
+        if result:
+            result.update(result.id)
+            status['data'] = result
+        return status
+
+
+    #TODO(REFACTOR):
+    #
+    #  fix fb_email_validate/twitter_acc_validate
+    #  return token obj instead of user obj
+    #
+    @ServiceMethod
+    def fb_email_validate(self, email):
+        status = self.status.copy()
+        attr = ('authn_by', 'facebook')
+        success, model_list = Token_TB.list(filattr=attr)
+        hit_data = [m for m in model_list if (email == m.sso_info['profile']['verifiedEmail'])]
+        result = hit_data[0] if len(hit_data) > 0 else None
+
+        status = self.serv_rtn(status=status, success=success, model=result)
+        if result:
+            result.update(result.id)
+            status['data'] = result.user
+        return status
+
+    @ServiceMethod
+    def twitter_acc_validate(self, account):
+        log.debug('twitter account validation, acc: %s' % account)
+        status = self.status.copy()
+        attrs = ('authn_by', 'twitter')
+        success, model_list = Token_TB.list(filattr=attr)
+        hit_data = [m for m in model_list if (account in m.sso_info)]
+        result = hit_data[0] if len(hit_data) > 0 else None
+
+        status = self.serv_rtn(status=status, success=success, model=result)
+        if result:
+            result.update(result.id)
+            status['data'] = result.user
+        return status
 
 
 def main():

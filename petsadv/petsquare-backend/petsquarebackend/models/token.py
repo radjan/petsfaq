@@ -59,6 +59,7 @@ class Token_TB(Base):
         DBSession.add(model)
         DBSession.flush()
         rtn_model = tmpObj()
+        rtn_model.update = cls.update
         rtn_model.id              = model.id
         rtn_model.token           = model.token
         rtn_model.authn_by        = model.authn_by
@@ -79,6 +80,7 @@ class Token_TB(Base):
         rtn_list = []
         for model in model_list:
             rtn_model = tmpObj()
+            rtn_model.update = cls.update
             rtn_model.id              = model.id
             rtn_model.token           = model.token
             rtn_model.authn_by        = model.authn_by
@@ -98,6 +100,7 @@ class Token_TB(Base):
         """
         model = cls.get_by_id(id)
         rtn_model = tmpObj()
+        rtn_model.update = cls.update
         rtn_model.id              = model.id
         rtn_model.token           = model.token
         rtn_model.authn_by        = model.authn_by
@@ -127,6 +130,7 @@ class Token_TB(Base):
         DBSession.merge(model)
 
         rtn_model = tmpObj()
+        rtn_model.update = cls.update
         rtn_model.id              = model.id
         rtn_model.token           = model.token
         rtn_model.authn_by        = model.authn_by

@@ -42,9 +42,10 @@ def api_routes(config):
 
 
     #non-version
-    config.add_route('app-logout-facebook', 'm/logout/facebook')
+    config.add_route('app-ssologout-facebook', 'm/ssologout/facebook')
 
-    config.add_route('app-login-facebook',  'm/login/facebook')
+    config.add_route('app-login-facebook',     'm/login/facebook')
+    config.add_route('app-logout-facebook',    'm/logout/facebook')
 
     #static pages
     #config.add_static_view('static', 'static', cache_max_age=3600)
