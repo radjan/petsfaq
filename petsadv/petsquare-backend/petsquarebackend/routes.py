@@ -44,6 +44,8 @@ def api_routes(config):
     #non-version
     config.add_route('app-logout-facebook', 'm/logout/facebook')
 
+    config.add_route('app-login-facebook',  'm/login/facebook')
+
     #static pages
     #config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_static_view('/', path='petsquarebackend:web-frontend/dist', cache_max_age=3600)
