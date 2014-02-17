@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">寵物救援</string>
+    <string name="action_settings">設定</string>
+    <string name="action_about">關於</string>
+    
+    <string name="menu_new_quest">浪貓犬發現!</string>
+    <string name="menu_quest_pager">戰隊出動!</string>
+
+    <string name="text_pet_name">名字</string>
+    <string name="text_pet_type">類型</string>
+    <string name="text_quest_location">地點</string>
+    <string name="text_pet_health">健康狀態</string>
+    <string name="text_pet_caught">已抓到</string>
+    <string name="text_pet_photo">照片</string>
+    <string name="text_quest_note">備註</string>
+
+    <string name="button_cancel">取消</string>
+    <string name="button_new_quest">公佈</string>
+    <string name="button_ok">確定</string>
+
+    <string name="title_quest_ongoing">救援中</string>
+    <string name="title_quest_available">待救援</string>
+    <string name="title_quest_tracked">追蹤</string>
+    <string name="title_quest_completed">已完成</string>
+
+    <string name="quest_list_empty">沒任務</string>
+
+    <string name="quest_type_catch">捕捉</string>
+    <string name="quest_type_transport">運送</string>
+    <string name="quest_type_halfway">中途</string>
+    <string name="quest_type_adopt">認養</string>
+    <string name="quest_type_donate">捐助</string>
+
+    <string name="text_quest_type">任務: </string>
+
+    <string name="button_edit_quest">編輯</string>
+    <string name="button_start_quest">開始任務</string>
+    <string name="button_cancel_quest">放棄任務</string>
+
+</resources>

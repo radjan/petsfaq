@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pet_type">
+        <item>Cat</item>
+        <item>Dog</item>
+    </string-array>
+    <string-array name="pet_subtype_cat">
+        <item>Adult</item>
+        <item>Kitten</item>
+    </string-array>
+    <string-array name="pet_subtype_dog">
+        <item>Big</item>
+        <item>Small</item>
+    </string-array>
+    <string-array name="pet_health">
+        <item>Healthy</item>
+        <item>Unhealthy</item>
+    </string-array>
+</resources>
