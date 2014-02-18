@@ -169,7 +169,7 @@ class User_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, name, description, password, email, fb_id, activated, group_id):
+    def update(cls, id, name, description, password, email, fb_id, activated, group_id):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
