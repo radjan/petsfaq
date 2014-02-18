@@ -170,6 +170,28 @@ class AccountService(BaseService):
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
+    @ServiceMethod
+    def update(self, id, data):
+        status = self.status.copy()
+        name        = data.get('name', None)
+        description = data.get('description', None)
+        password    = data.get('password', None)
+        email       = data.get('email', None)
+        fb_id       = data.get('fb_id', None)
+        activated   = data.get('activated', None)
+        group_id    = data.get('group_id', None)
+
+        success, model = User_TB.update(id=id,
+                                        name=name,
+                                        description=description,
+                                        password=password,
+                                        email=email,
+                                        fb_id=fb_id,
+                                        activated=activated,
+                                        group_id=group_id)
+
+        status = self.serv_rtn(status=status, success=success, model=model)
+        return status
 
 def main():
     pass
