@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import sys
 import transaction
 
@@ -27,7 +29,9 @@ from ..models.mission import (
     MissionStay_TB,
     MissionDeliver_TB,
     MissionAdopt_TB,
+    Mission_User_TB
     )
+from ..models import mission as mission_model
 
 
 import Image as PILImage
@@ -55,6 +59,7 @@ def main(argv=sys.argv):
         TABLES = (
                   Animal_Image_TB, Animal_TB,
                   Check_TB, Location_TB,
+                  Mission_User_TB,
                   MissionRescue_TB, MissionPickup_TB, MissionStay_TB,
                   MissionDeliver_TB, MissionAdopt_TB, Mission_TB,
                   Image_TB,
@@ -157,7 +162,7 @@ def main(argv=sys.argv):
         success, amodel2 = Animal_TB.create(name='hello kitty',
                             type='cat',
                             sub_type='kitten',
-                            status='halfway',
+                            status='stray',
                             description='haha',
                             finder_id=umodel.id,
                             find_location_id=lmodel2.id)
@@ -192,6 +197,53 @@ def main(argv=sys.argv):
                             image=imodel1)
         if not success:
             raise Exception(aimodel)
+
+        success, m_model1 = MissionRescue_TB.create(
+                             name=u'救小貓',
+                             status='new',
+                             completed=False,
+                             place=u'新店陽光橋橋下',
+                             note=u'傍晚出沒，怕人，用罐頭吸引也不會過來',
+                             due_time=None,
+                             reporter_id=umodel.id,
+                             host_id=umodel.id,
+                             animal_id=amodel2.id,
+                             dest_location_id=None,
+                            )
+
+        success, m_model2 = MissionAdopt_TB.create(
+                             name=u'黑白貓送養',
+                             status='colsed',
+                             completed=True,
+                             place=u'新竹',
+                             note=u'卓别林賓士貓，踏雪尋梅',
+                             due_time=None,
+                             reporter_id=umodel.id,
+                             host_id=umodel.id,
+                             animal_id=amodel1.id,
+                             dest_location_id=None,
+                            )
+        if not success:
+            raise Exception(m_model2)
+
+        success, mu_model = Mission_User_TB.create(
+                             mission_id=m_model1.id,
+                             user_id=umodel.id,
+                             status='accepted',
+                             is_owner=False,
+                             description=None
+                            )
+
+        success, mu_model = Mission_User_TB.create(
+                             mission_id=m_model2.id,
+                             user_id=umodel.id,
+                             status='assigned',
+                             is_owner=True,
+                             description=u'認養成功'
+                            )
+
+        if not success:
+            raise Exception(mu_model)
 
         #create token
         success, tkmodel1 = Token_TB.create(user_id=umodel.id)
