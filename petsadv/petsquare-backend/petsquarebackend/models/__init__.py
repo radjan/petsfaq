@@ -236,7 +236,7 @@ class ModelMixin(object):
             err_exp = str(e)
             #err_msg = err_exp + ', ' + err_tbk
             err_msg = err_exp
-            log.debug(err_tbk)
+            log.error(err_tbk)
             rtn = (False, err_msg)
         return rtn
 
