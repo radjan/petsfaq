@@ -106,6 +106,13 @@ define({ api: [
             "field": "size",
             "optional": false,
             "description": "size"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "user_id",
+            "optional": false,
+            "description": "user_id"
           }
         ]
       }
@@ -474,13 +481,6 @@ define({ api: [
             "field": "image_id",
             "optional": false,
             "description": "image_id"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -554,13 +554,6 @@ define({ api: [
             "field": "image_id",
             "optional": false,
             "description": "image_id"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -712,13 +705,6 @@ define({ api: [
             "field": "size",
             "optional": false,
             "description": "size"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -778,13 +764,6 @@ define({ api: [
             "field": "description",
             "optional": false,
             "description": "description"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -844,13 +823,6 @@ define({ api: [
             "field": "description",
             "optional": false,
             "description": "description"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -972,13 +944,6 @@ define({ api: [
             "field": "size",
             "optional": false,
             "description": "size"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -1045,13 +1010,6 @@ define({ api: [
             "field": "address",
             "optional": false,
             "description": "address"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -1132,13 +1090,6 @@ define({ api: [
             "field": "address",
             "optional": false,
             "description": "address"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -1260,6 +1211,13 @@ define({ api: [
             "field": "size",
             "optional": false,
             "description": "size"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "user_id",
+            "optional": false,
+            "description": "user_id"
           }
         ]
       }
