@@ -2,6 +2,7 @@ package cc.petera.petsrescue;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -241,6 +242,7 @@ public class MainActivity extends FragmentActivity {
         Log.d(TAG, "keyhash: " + KeyHash.getKeyHash(this, "cc.petera.petsrescue"));
         mUserSettingsFragment = (UserSettingsFragment) this.getSupportFragmentManager().findFragmentById(R.id.fragment_login);
         mUserSettingsFragment.setSessionStatusCallback(mSessionStatusCallback);
+        mUserSettingsFragment.setReadPermissions(Arrays.asList("email", "user_birthday"));
     }
 
     @Override
@@ -420,7 +422,7 @@ public class MainActivity extends FragmentActivity {
             }
         }
         else {
-            Request.newMeRequest(session, new Request.GraphUserCallback() {
+            Request meRequest = Request.newMeRequest(session, new Request.GraphUserCallback() {
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
                     if (user == null) {
@@ -436,7 +438,8 @@ public class MainActivity extends FragmentActivity {
 
                     login(user.getId(), session.getAccessToken());
                 }
-            }).executeAsync();
+            });
+            meRequest.executeAsync();
         }
     }
 
