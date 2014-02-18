@@ -100,7 +100,7 @@ class Group_TB(Base):
 class User_TB(Base):
     __tablename__ = 'user'
     __public__ = (
-            'id','name','description', 'password', 'email', 'activated', 
+            'id','name','description', 'email', 'activated', # 'password'
             'fb_id',#sso
             'group_id',                               #fk
             'group',                                  #backref
