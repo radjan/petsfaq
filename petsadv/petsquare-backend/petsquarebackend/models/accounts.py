@@ -106,6 +106,7 @@ class User_TB(Base):
             'group',                                  #backref
             'images', 'locations', 'checks', 'tokens',#relation
             'pets', 'found_animals',
+            'report_missions', 'host_missions',
             'createddatetime', 'updateddatetime')
 
     id            = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
@@ -130,6 +131,11 @@ class User_TB(Base):
                         foreign_keys='[Animal_TB.owner_id]')
     found_animals = relationship('Animal_TB', backref=backref('finder', order_by=id),
                         foreign_keys='[Animal_TB.finder_id]')
+
+    report_missions = relationship('Mission_TB', backref=backref('reporter', order_by=id),
+                        foreign_keys='[Mission_TB.reporter_id]')
+    host_missions = relationship('Mission_TB', backref=backref('host', order_by=id),
+                        foreign_keys='[Mission_TB.host_id]')
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()

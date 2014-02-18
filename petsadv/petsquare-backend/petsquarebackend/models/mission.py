@@ -54,7 +54,7 @@ class Mission_TB(Base):
     name            = Column(String(255), nullable=False, unique=False,)
     status          = Column(String(255), nullable=False, unique=False,)
     completed       = Column(Boolean, default=False)
-    places          = Column(String(255), nullable=False, unique=False,)
+    place           = Column(String(255), nullable=True, unique=False,)
     note            = Column(String, nullable=True, unique=False,)
     due_time        = Column(DateTime, nullable=True)
 
@@ -76,8 +76,8 @@ class Mission_TB(Base):
                               ForeignKey('location.id'),
                               nullable=True, unique=False)
 
-    accepter_assocs    = relationship('Mission_User_TB',
-                                      backref='mission')
+    accepter_assocs  = relationship('Mission_User_TB',
+                                    backref='mission')
 
 
     def __init__(self, *args, **kwargs):
@@ -88,7 +88,7 @@ class Mission_TB(Base):
     @classmethod
     @ModelMethod
     def create(cls, *args, **kwargs):
-        if cls is Mission:
+        if cls is Mission_TB:
             raise Exception('create unknown mission type, '
                             'use child create instead')
         return _create(cls, *args, **kwargs)

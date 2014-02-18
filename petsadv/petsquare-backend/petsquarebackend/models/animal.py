@@ -59,6 +59,8 @@ class Animal_TB(Base):
 
     image_assocs = relationship('Animal_Image_TB', backref='animal')
 
+    related_missions = relationship('Mission_TB', backref=backref('animal', order_by=id))
+
 
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()

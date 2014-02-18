@@ -33,7 +33,7 @@ class Location_TB(Base):
     __public__ = ('id','name', 'description', 'longtitude', 'latitude', 'address',
             'explorer_id',  #fk
             'explorer',     #backref
-            'checks',       #relation
+            'checks', 'missions', 'pickup_missions_from'       #relation
             'createddatetime', 'updateddatetime')
 
 
@@ -53,6 +53,12 @@ class Location_TB(Base):
     animals_here = relationship('Animal_TB',
                                  backref=backref('current_location', order_by=id),
                                  foreign_keys='[Animal_TB.current_location_id]')
+
+    missions = relationship('Mission_TB', backref=backref('dest_location', order_by=id),
+                        foreign_keys='[Mission_TB.dest_location_id]')
+
+    pickup_missions_from = relationship('MissionPickup_TB', backref=backref('from_location', order_by=id),
+                        foreign_keys='[MissionPickup_TB.from_location_id]')
 
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
