@@ -33,16 +33,24 @@ class BaseAPI(object):
             #log.debug('request param: %s' % self.request.params)
             #log.debug('request body: %s'  % self.request.body)
             target_dict = dict()
+            to_check_dict = dict(self.request.params.copy())
+            token = to_check_dict.pop('token', None)
+            authn_userid = authenticated_userid(self.request)
+
+            #FIXME: by using
+            #authn_userid = authenticated_userid(self.request)
+            authn_userid = to_check_dict.pop('user_id', 1) 
 
             if body == True:
-                target_dict.update(dict(self.request.params.copy()))
+                target_dict.update(to_check_dict)
                 if len(self.request.body) > 0:
                     target_dict.update(dict(self.request.json_body.copy()))
             else:
-                target_dict.update(dict(self.request.params.copy()))
+                target_dict.update(to_check_dict)
 
             data = dict(target_dict)
             data = schema.to_python(data)
+            data['user_id'] = authn_userid
             rtn = (True, data, 200)
 
         except Invalid, e:
@@ -100,7 +108,7 @@ class BaseAPP(object):
             token = to_check_dict.pop('token', None)
             authn_userid = authenticated_userid(self.request)
             #log.debug('authn_userid pop out???: %s' % authn_userid)
-            to_check_dict['user_id'] = authn_userid
+            #to_check_dict['user_id'] = authn_userid
 
             if body == True:
                 target_dict.update(to_check_dict)
@@ -111,6 +119,7 @@ class BaseAPP(object):
 
             data = dict(target_dict)
             data = schema.to_python(data)
+            data['user_id'] = authn_userid
             rtn = (True, data, 200)
 
         except Invalid, e:

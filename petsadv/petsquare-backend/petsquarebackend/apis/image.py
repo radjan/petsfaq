@@ -28,17 +28,17 @@ import Image as PILImage
 class Schema_images_get(Schema):
     offset  = validators.Int(if_missing=0)
     size    = validators.Int(if_missing=100)
-    user_id = validators.Int(if_missing=1)
+    #user_id = validators.Int(if_missing=1)
 
 class Schema_images_post(Schema):
     description = validators.UnicodeString()
     image       = validators.FieldStorageUploadConverter()
-    user_id     = validators.Int()
+    #user_id     = validators.Int()
 
 class Schema_imagedata_put(Schema):
     description = validators.UnicodeString()
     image       = validators.FieldStorageUploadConverter()
-    user_id     = validators.Int()
+    #user_id     = validators.Int()
 
 
 class BaseImage(object):

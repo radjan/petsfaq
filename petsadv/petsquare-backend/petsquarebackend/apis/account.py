@@ -24,7 +24,7 @@ from petsquarebackend.services.account import AccountService
 
 class Schema_users_post(Schema):
     name        = validators.UnicodeString(if_missing=u'PlaceName')
-    user_id     = validators.Int(if_missing=1)
+    #user_id     = validators.Int(if_missing=1)
 
 class Schema_user_put(Schema):
     name        = validators.UnicodeString(if_missing=None)
@@ -34,12 +34,15 @@ class Schema_user_put(Schema):
     fb_id       = validators.UnicodeString(if_missing=None)
     activated   = validators.Bool(if_missing=None)
     group_id    = validators.Int(if_missing=None)
-    user_id     = validators.Int(if_missing=1)
+    #user_id     = validators.Int(if_missing=1)
 
     
 class Schema_user_get(Schema):
-    user_id     = validators.Int(if_missing=1)
-    
+    offset  = validators.Int(if_missing=0)
+    size    = validators.Int(if_missing=100)
+    #user_id = validators.Int(if_missing=1)
+
+
 
 class BaseAccount(object):
     def _showme(self):

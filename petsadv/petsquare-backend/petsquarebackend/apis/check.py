@@ -25,21 +25,21 @@ from petsquarebackend.services.check import CheckService
 class Schema_checks_get(Schema):
     offset  = validators.Int(if_missing=0)
     size    = validators.Int(if_missing=100)
-    user_id = validators.Int(if_missing=1)
+    #user_id = validators.Int(if_missing=1)
 
 class Schema_checks_post(Schema):
     title       = validators.UnicodeString(if_missing=u'CheckTitle')
     description = validators.UnicodeString(if_missing=u'CheckDescription')
     location_id = validators.Int(if_missing=1)
     image_id    = validators.Int(if_missing=1)
-    user_id     = validators.Int(if_missing=1)
+    #user_id     = validators.Int(if_missing=1)
 
 class Schema_check_put(Schema):
     title       = validators.UnicodeString()
     description = validators.UnicodeString()
     location_id = validators.Int()
     image_id    = validators.Int()
-    user_id     = validators.Int()
+    #user_id     = validators.Int()
 
 
 class BaseCheck(object):

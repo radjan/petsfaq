@@ -25,7 +25,7 @@ from petsquarebackend.services.location import LocationService
 class Schema_locations_get(Schema):
     offset  = validators.Int(if_missing=0)
     size    = validators.Int(if_missing=100)
-    user_id = validators.Int(if_missing=1)
+    #user_id = validators.Int(if_missing=1)
 
 
 class Schema_locations_post(Schema):
@@ -34,7 +34,7 @@ class Schema_locations_post(Schema):
     longtitude  = validators.Number(if_missing=121.5130475)
     latitude    = validators.Number(if_missing=25.040063)
     address     = validators.UnicodeString(if_missing=u'PlaceAddress')
-    user_id     = validators.Int(if_missing=1)
+    #user_id     = validators.Int(if_missing=1)
 
 
 class Schema_location_put(Schema):
@@ -43,7 +43,7 @@ class Schema_location_put(Schema):
     longtitude  = validators.Number()
     latitude    = validators.Number()
     address     = validators.UnicodeString()
-    user_id     = validators.Int()
+    #user_id     = validators.Int()
 
 
 class BaseLocation(object):
