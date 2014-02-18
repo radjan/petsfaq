@@ -25,6 +25,7 @@ def api_routes(config):
     #app
 
     config.add_route('app-showme',    app_prefix + str(main_version) + '/user/me')
+    config.add_route('app-user',      app_prefix + str(main_version) + '/user/{id:\d+}')
     config.add_route('app-locations', app_prefix + str(main_version) + '/locations')
     config.add_route('app-location',  app_prefix + str(main_version) + '/location/{id:\d+}')
     config.add_route('app-animals',   app_prefix + str(main_version) + '/animals')

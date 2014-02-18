@@ -24,13 +24,21 @@ from petsquarebackend.services.account import AccountService
 
 class Schema_users_post(Schema):
     name        = validators.UnicodeString(if_missing=u'PlaceName')
+    user_id     = validators.Int(if_missing=1)
 
 class Schema_user_put(Schema):
-    name        = validators.UnicodeString()
+    name        = validators.UnicodeString(if_missing=None)
+    description = validators.UnicodeString(if_missing=None)
+    password    = validators.UnicodeString(if_missing=None)
+    email       = validators.UnicodeString(if_missing=None)
+    fb_id       = validators.UnicodeString(if_missing=None)
+    activated   = validators.Bool(if_missing=None)
+    group_id    = validators.Int(if_missing=None)
+    user_id     = validators.Int(if_missing=1)
+
     
 class Schema_user_get(Schema):
     user_id     = validators.Int(if_missing=1)
-    
     
 
 class BaseAccount(object):
@@ -46,6 +54,32 @@ class BaseAccount(object):
                         'info':data, 
                         'code':code, 
                         'success':False}
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+    def _user_update(self):
+        #validation
+        success, data, code = self.validate(Schema_user_put)
+
+        log.debug('user updated after valided.')
+        try:
+            #get id from route_path
+            userid = self.request.matchdict['id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+        if success:
+            serv = AccountService(self.request)
+            serv_rtn = serv.update(id=userid, data=data)
+            log.debug('updated return status: %s' % serv_rtn)
+        else:
+            log.debug('error: %s' % data)
+            #mock fake serv_rtn
+            serv_rtn = {'data':'',
+                        'info':data,
+                        'code':code,
+                        'success':False,
+                        }
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
@@ -117,30 +151,7 @@ class BaseAccount(object):
 #
 #        api_rtn = self.format_return(serv_rtn)
 #        return api_rtn
-#
-#    def _user_update(self):
-#        #validation
-#        success, data, code = self.validate(Schema_user_put)
-#
-#        try:
-#            #get id from route_path
-#            userid = self.request.matchdict['id'].encode('utf-8', 'ignore')
-#        except Exception, e:
-#            success = False
-#
-#        if success:
-#            serv = AccountService(self.request)
-#            serv_rtn = serv.update(id=userid, data=data)
-#        else:
-#            #mock fake serv_rtn
-#            serv_rtn = {'data':'',
-#                        'info':data,
-#                        'code':code,
-#                        'success':False,
-#                        }
-#
-#        api_rtn = self.format_return(serv_rtn)
-#        return api_rtn
+
 #
 #    def _user_delete(self):
 #        #validation
@@ -239,6 +250,7 @@ class AccountAPP(BaseAPP, BaseAccount):
     @view_config(route_name='app-showme', request_method='GET', permission='login')
     def showme(self):
         return self._showme()
+
     #@view_config(route_name='app-users', request_method='GET')
     #def accounts_list(self):
     #    return self._accounts_list()
@@ -251,9 +263,9 @@ class AccountAPP(BaseAPP, BaseAccount):
     #def user_show(self):
     #    return self._user_show()
 
-    #@view_config(route_name='app-user', request_method='PUT')
-    #def user_update(self):
-    #    return self._user_update()
+    @view_config(route_name='app-user', request_method='PUT')
+    def user_update(self):
+        return self._user_update()
 
     #@view_config(route_name='app-user', request_method='DELETE')
     #def user_delete(self):
