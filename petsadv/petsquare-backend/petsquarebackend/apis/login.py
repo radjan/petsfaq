@@ -73,7 +73,8 @@ class LoginAPP(BaseAPP, BaseLogin):
             acc_service = AccountService(self.request)
             serv_rtn = acc_service.fb_access_token_login(fb_id=fb_info['id'],
                                                          fb_access_token=fb_access_token,
-                                                         fb_username=fb_info['username'])
+                                                         fb_username=fb_info['username'],
+                                                         fb_email=fb_info['email'])
             serv_rtn['data'] = {'token': serv_rtn['data']}
             api_rtn = self.format_return(serv_rtn)
         else:

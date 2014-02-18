@@ -61,7 +61,7 @@ class AccountService(BaseService):
 
 
     @ServiceMethod
-    def fb_access_token_login(self, fb_id, fb_access_token, fb_username):
+    def fb_access_token_login(self, fb_id, fb_access_token, fb_username, fb_email):
         status = self.status.copy()
         token_service = TokenService(self.request)
         token_serv_rtn = token_service.fb_access_token_validate(fb_access_token)
@@ -94,7 +94,7 @@ class AccountService(BaseService):
                 status['data'] = token_status['data'].token
             elif acc_serv_rtn['success']:
                 #create new user
-                new_acc_status = self.web_create(name=fb_username, fb_id=fb_id, email=fbjs_info['email'])
+                new_acc_status = self.web_create(name=fb_username, fb_id=fb_id)
                 new_user_id = new_acc_status['data'].id
                 token_status = token_service.create(user_id=new_user_id, 
                                                     authn_by='facebook_js', 
