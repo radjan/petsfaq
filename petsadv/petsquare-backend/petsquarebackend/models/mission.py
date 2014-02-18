@@ -204,7 +204,7 @@ class Mission_User_TB(Base):
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
         self.updateddatetime = datetime.datetime.now()
-        super(Mission_Image_TB, self).__init__(*args, **kwargs)
+        super(Mission_User_TB, self).__init__(*args, **kwargs)
 
     @classmethod
     @ModelMethod

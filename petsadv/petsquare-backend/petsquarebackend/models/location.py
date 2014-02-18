@@ -33,7 +33,7 @@ class Location_TB(Base):
     __public__ = ('id','name', 'description', 'longtitude', 'latitude', 'address',
             'explorer_id',  #fk
             'explorer',     #backref
-            'checks', 'missions', 'pickup_missions_from'       #relation
+            'checks', 'missions', 'pickup_missions_from',       #relation
             'createddatetime', 'updateddatetime')
 
 
