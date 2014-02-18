@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+ #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __date__= 'Dec 04, 2013 '
 __author__= 'samuel'
@@ -259,8 +259,11 @@ class ModelMixin(object):
         #foreignkeys = {fk_name: f_table, ...}
 
         if exclude_fk:
-            #exclude = exclude + tuple(foreignkeys.keys())
-            exclude = tuple(list(exclude) + foreignkeys.keys())
+            fks = foreignkeys.keys()
+            # not exclude id
+            if 'id' in fks:
+                fks.remove('id')
+            exclude = tuple(list(exclude) + fks)
 
         public = tuple(list(self.__public__) + list(extra)) if self.__public__ else extra
         rtn_pub = [x for x in public if x not in exclude]
