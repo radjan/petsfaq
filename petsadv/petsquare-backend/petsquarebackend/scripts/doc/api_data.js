@@ -1,6 +1,322 @@
 define({ api: [
   {
     "type": "delete",
+    "url": "/animal/:id",
+    "title": "5. Delete a Animal",
+    "version": "1.0.0",
+    "name": "DeleteAnimal",
+    "group": "Animal",
+    "description": "Delete Animal",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Animal-ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true, \n       msg: \"\" \n     }, \n     data: null\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "get",
+    "url": "/animal/:id",
+    "title": "3. Read data of a Animal",
+    "version": "1.0.0",
+    "name": "GetAnimal",
+    "group": "Animal",
+    "description": "Show Animal",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Animal-ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "get",
+    "url": "/animals",
+    "title": "2. List Animals",
+    "version": "1.0.0",
+    "name": "ListAnimals",
+    "group": "Animal",
+    "description": "List Animals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "offset",
+            "optional": false,
+            "description": "offset"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "size",
+            "optional": false,
+            "description": "size"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "user_id",
+            "optional": false,
+            "description": "user_id"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n         msg: \"\",\n         count: 3\n     },\n     data: [\n       {\n         status: \"adopted\",\n         description: \"haha\",\n         createddatetime: \"2014-02-19 00:18:28\",\n         owner: null,\n         updateddatetime: \"2014-02-19 00:18:28\",\n         image_assocs: [],\n         type: \"cat\",\n         id: 1,\n         finder: {},\n         name: \"pochi\"\n       },\n      +{...},\n       ..\n     ]\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "post",
+    "url": "/animals",
+    "title": "1. Create a new Animal",
+    "version": "1.0.0",
+    "name": "PostAnimals",
+    "group": "Animal",
+    "description": "Create Animal",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Body",
+            "field": "__Body__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "*Required, animal name"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "type",
+            "optional": false,
+            "description": "*Required, speicies types // cat, dog, ..."
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "sub_type",
+            "optional": false,
+            "description": "*Required, condition types // TBD: sick, newborn"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "*Required, status // TBD"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "description",
+            "optional": false,
+            "description": "description"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "owner_id",
+            "optional": false,
+            "description": "user_id // in case the animal is a pet"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "find_location_id",
+            "optional": false,
+            "description": "location_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "current_location_id",
+            "optional": false,
+            "description": "location_id"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n         id: 1,\n         status: true,\n         msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "put",
+    "url": "/animal/:id",
+    "title": "4. Change a new Animal",
+    "version": "1.0.0",
+    "name": "PutAnimal",
+    "group": "Animal",
+    "description": "Update Animal",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Animal-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Body",
+            "field": "__Body__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "*Required, animal name"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "type",
+            "optional": false,
+            "description": "*Required, speicies types // cat, dog, ..."
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "sub_type",
+            "optional": false,
+            "description": "*Required, condition types // sick, newborn"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "*Required, status // TBD"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "description",
+            "optional": false,
+            "description": "description"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "owner_id",
+            "optional": false,
+            "description": "user_id // in case the animal is a pet"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "find_location_id",
+            "optional": false,
+            "description": "location_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "current_location_id",
+            "optional": false,
+            "description": "location_id"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "delete",
     "url": "/check/:id",
     "title": "5. Delete a Check",
     "version": "1.0.0",
@@ -850,5 +1166,405 @@ define({ api: [
       ]
     },
     "filename": "api/location.js"
+  },
+  {
+    "type": "delete",
+    "url": "/mission/:id",
+    "title": "5. Delete a Mission",
+    "version": "1.0.0",
+    "name": "DeleteMission",
+    "group": "Mission",
+    "description": "Delete Mission",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Mission-ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true, \n       msg: \"\" \n     }, \n     data: null\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/mission.js"
+  },
+  {
+    "type": "get",
+    "url": "/mission/:id",
+    "title": "3. Read data of a Mission",
+    "version": "1.0.0",
+    "name": "GetMission",
+    "group": "Mission",
+    "description": "Show Mission",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Mission-ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       id: 1,\n       status: \"new\",\n       animal_id: 2,\n       name: \"救小貓\",\n       dest_location_id: null,\n       reporter: {},\n       createddatetime: \"2014-02-19 00:18:28\",\n       completed: false,\n       reporter_id: 1,\n       note: \"傍晚出沒，怕人，用罐頭吸引也不會過來\",\n       due_time: null,\n       dest_location: null,\n       place: \"新店陽光橋橋下\",\n       animal: {},\n       host_id: 1,\n       host: {},\n       updateddatetime: \"2014-02-19 00:18:28\",\n       type: \"rescue\",\n       accepter_assocs: [\n         {\n           mission: {},\n           user: {},\n           status: \"accepted\",\n           createddatetime: \"2014-02-19 00:18:28\",\n           is_owner: false,\n           description: null,\n           updateddatetime: \"2014-02-19 00:18:28\"\n         }\n       ]\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/mission.js"
+  },
+  {
+    "type": "get",
+    "url": "/missions",
+    "title": "2. List Missions",
+    "version": "1.0.0",
+    "name": "ListMissions",
+    "group": "Mission",
+    "description": "List Missions",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "offset",
+            "optional": false,
+            "description": "offset"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "size",
+            "optional": false,
+            "description": "size"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "user_id",
+            "optional": false,
+            "description": "user_id"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n         msg: \"\",\n         count: 3\n     },\n     data: [\n       {\n         id: 1,\n         status: \"new\",\n         animal_id: 2,\n         name: \"救小貓\",\n         dest_location_id: null,\n         reporter: {},\n         createddatetime: \"2014-02-19 00:18:28\",\n         completed: false,\n         reporter_id: 1,\n         note: \"傍晚出沒，怕人，用罐頭吸引也不會過來\",\n         due_time: null,\n         dest_location: null,\n         place: \"新店陽光橋橋下\",\n         animal: {},\n         host_id: 1,\n         host: {},\n         updateddatetime: \"2014-02-19 00:18:28\",\n         type: \"rescue\",\n         accepter_assocs: [\n           {\n             mission: {},\n             user: {},\n             status: \"accepted\",\n             createddatetime: \"2014-02-19 00:18:28\",\n             is_owner: false,\n             description: null,\n             updateddatetime: \"2014-02-19 00:18:28\"\n           }\n         ]\n       },\n      +{...},\n       ..\n     ]\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/mission.js"
+  },
+  {
+    "type": "post",
+    "url": "/missions",
+    "title": "1. Create a new Mission",
+    "version": "1.0.0",
+    "name": "PostMissions",
+    "group": "Mission",
+    "description": "Create Mission",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Body",
+            "field": "__Body__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "mission name *Required"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "type",
+            "optional": false,
+            "description": "valid mission types: rescue, pickup, stay, deliver, adopt *Required"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "status *Required // TBD"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "place",
+            "optional": false,
+            "description": "place description"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "note",
+            "optional": false,
+            "description": "note"
+          },
+          {
+            "group": "Parameter",
+            "type": "Datetime",
+            "field": "due_time",
+            "optional": false,
+            "description": "mission due time"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "field": "completed",
+            "optional": false,
+            "description": "completed"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "animal_id",
+            "optional": false,
+            "description": "animal_id *Required"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "dest_location_id",
+            "optional": false,
+            "description": "location_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "host_id",
+            "optional": false,
+            "description": "user_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "from_location_id",
+            "optional": false,
+            "description": "location_id // pickup mission only"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "requirement",
+            "optional": false,
+            "description": "adopt requirement // adopt mission only"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "period",
+            "optional": false,
+            "description": "description for staying period // stay mission only"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "skill",
+            "optional": false,
+            "description": "description if special skill is needed // stay mission only"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n         id: 1,\n         status: true,\n         msg: \"\"\n     },\n     data: {\n       id: 1,\n       status: \"new\",\n       animal_id: 2,\n       name: \"救小貓\",\n       dest_location_id: null,\n       reporter: {},\n       createddatetime: \"2014-02-19 00:18:28\",\n       completed: false,\n       reporter_id: 1,\n       note: \"傍晚出沒，怕人，用罐頭吸引也不會過來\",\n       due_time: null,\n       dest_location: null,\n       place: \"新店陽光橋橋下\",\n       animal: {},\n       host_id: 1,\n       host: {},\n       updateddatetime: \"2014-02-19 00:18:28\",\n       type: \"rescue\",\n       accepter_assocs: []\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/mission.js"
+  },
+  {
+    "type": "put",
+    "url": "/mission/:id",
+    "title": "4. Change a new Mission",
+    "version": "1.0.0",
+    "name": "PutMission",
+    "group": "Mission",
+    "description": "Update Mission",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Mission-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Body",
+            "field": "__Body__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "*Required, mission name"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "type",
+            "optional": false,
+            "description": "*Required but can not change, valid mission types: rescue, pickup, stay, deliver, adopt"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "*Required, status // TBD"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "place",
+            "optional": false,
+            "description": "place description"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "note",
+            "optional": false,
+            "description": "note"
+          },
+          {
+            "group": "Parameter",
+            "type": "Datetime",
+            "field": "due_time",
+            "optional": false,
+            "description": "mission due time"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "field": "completed",
+            "optional": false,
+            "description": "completed"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "animal_id",
+            "optional": false,
+            "description": "*Required, animal_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "dest_location_id",
+            "optional": false,
+            "description": "location_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "host_id",
+            "optional": false,
+            "description": "user_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "from_location_id",
+            "optional": false,
+            "description": "location_id // pickup mission only"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "requirement",
+            "optional": false,
+            "description": "adopt requirement // adopt mission only"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "period",
+            "optional": false,
+            "description": "description for staying period // stay mission only"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "skill",
+            "optional": false,
+            "description": "description if special skill is needed // stay mission only"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       id: 1,\n       status: \"new\",\n       animal_id: 2,\n       name: \"救小貓\",\n       dest_location_id: null,\n       reporter: {},\n       createddatetime: \"2014-02-19 00:18:28\",\n       completed: false,\n       reporter_id: 1,\n       note: \"傍晚出沒，怕人，用罐頭吸引也不會過來\",\n       due_time: null,\n       dest_location: null,\n       place: \"新店陽光橋橋下\",\n       animal: {},\n       host_id: 1,\n       host: {},\n       updateddatetime: \"2014-02-19 00:18:28\",\n       type: \"rescue\",\n       accepter_assocs: [\n         {\n           mission: {},\n           user: {},\n           status: \"accepted\",\n           createddatetime: \"2014-02-19 00:18:28\",\n           is_owner: false,\n           description: null,\n           updateddatetime: \"2014-02-19 00:18:28\"\n         }\n       ]\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/mission.js"
   }
 ] });
