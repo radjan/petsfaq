@@ -106,13 +106,6 @@ define({ api: [
             "field": "size",
             "optional": false,
             "description": "size"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -422,13 +415,6 @@ define({ api: [
             "field": "size",
             "optional": false,
             "description": "size"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }
@@ -1274,13 +1260,6 @@ define({ api: [
             "field": "size",
             "optional": false,
             "description": "size"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "field": "user_id",
-            "optional": false,
-            "description": "user_id"
           }
         ]
       }

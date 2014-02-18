@@ -54,7 +54,6 @@ function show() {return;}
  * @apiParam {QueryString} __QueryString__ 
  * @apiParam {Number} offset offset
  * @apiParam {Number} size   size
- * @apiParam {Number} user_id user_id
  * 
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
@@ -95,7 +94,6 @@ function list() {return;}
  * @apiParam {POST-Params} __POST-Params__ 
  * @apiParam {File}     image           image file
  * @apiParam {String}   description     description 
- * @apiParam {Number}   user_id          user_id      
  *
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
@@ -131,7 +129,6 @@ function create() {return;}
  * @apiParam {POST-Params} __POST-Params__ 
  * @apiParam {File}     image           image file
  * @apiParam {String}   description     description 
- * @apiParam {Number}   user_id          user_id      
  *
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK

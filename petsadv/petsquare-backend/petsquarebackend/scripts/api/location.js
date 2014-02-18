@@ -42,7 +42,6 @@ function show() {return;}
  * @apiParam {QueryString} __QueryString__ 
  * @apiParam {Number} offset offset
  * @apiParam {Number} size   size
- * @apiParam {Number} user_id user_id
  * 
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
@@ -86,7 +85,6 @@ function list() {return;}
  * @apiParam {Number}   longtitude      longtitude         
  * @apiParam {Number}   latitude        latitude         
  * @apiParam {String}   address         address     
- * @apiParam {Number}   user_id          user_id      
  *
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
@@ -127,7 +125,6 @@ function create() {return;}
  * @apiParam {Number}   longtitude      longtitude         
  * @apiParam {Number}   latitude        latitude         
  * @apiParam {String}   address         address     
- * @apiParam {Number}   user_id          user_id      
  *
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
