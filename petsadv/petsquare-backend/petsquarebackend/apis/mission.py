@@ -112,6 +112,7 @@ class BaseMission(object):
 
         if success:
             serv = MissionService(self.request)
+            data['reporter_id'] = data.pop['user_id']
             serv_rtn = serv.create(**data)
         else:
             #mock fake serv_rtn
