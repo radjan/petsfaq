@@ -108,6 +108,7 @@ class BaseAnimal(object):
 
         if success:
             serv = AnimalService(self.request)
+            data['finder_id'] = data.pop['user_id']
             serv_rtn = serv.create(data)
         else:
             #mock fake serv_rtn
