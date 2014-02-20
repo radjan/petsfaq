@@ -71,6 +71,20 @@ class LocationService(BaseService):
         status = self.serv_rtn(status=status, success=success, model=model)
         return status
 
+    def search_latlng(self, user_id, latitude, longitude, radius=0.00449661, size=100):
+        status = self.status.copy()
+        success, models = Location_TB.search_latlng_with_radius(latitude,
+                                                       longitude,
+                                                       radius,
+                                                       size)
+        status = self.serv_rtn(status=status, success=success, model=models)
+        models_len = len(models)
+        status['info']['count'] = models_len
+        if models_len > size:
+            status['info']['msg'] = 'radius too large.'
+        return status
+
+
 def main():
     pass
 

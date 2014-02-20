@@ -12,6 +12,7 @@ from petsquarebackend.models import ModelMethod
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
+from sqlalchemy import and_
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
 
@@ -122,6 +123,17 @@ class Location_TB(Base):
     def delete(cls, id):
         rtn = cls.delete_by_id(id)
         return rtn
+
+    @classmethod
+    @ModelMethod
+    def search_latlng_with_radius(cls, latitude, longitude, radius, size):
+        query=DBSession.query(cls)
+        models = query.filter(and_(cls.latitude  < (latitude+radius),
+                                   cls.latitude  > (latitude-radius),
+                                   cls.longitude < (longitude+radius),
+                                   cls.longitude > (longitude-radius))
+                             ).limit(size+1).all()
+        return (True, models)
 
 def main():
     pass

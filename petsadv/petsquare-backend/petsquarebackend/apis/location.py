@@ -31,8 +31,8 @@ class Schema_locations_get(Schema):
 class Schema_locations_post(Schema):
     name        = validators.UnicodeString(if_missing=u'PlaceName')
     description = validators.UnicodeString(if_missing=u'PlaceDescription')
-    longitude   = validators.Number(if_missing=121.5130475)
     latitude    = validators.Number(if_missing=25.040063)
+    longitude   = validators.Number(if_missing=121.5130475)
     address     = validators.UnicodeString(if_missing=u'PlaceAddress')
     #user_id     = validators.Int(if_missing=1)
 
@@ -40,10 +40,16 @@ class Schema_locations_post(Schema):
 class Schema_location_put(Schema):
     name        = validators.UnicodeString()
     description = validators.UnicodeString()
-    longitude   = validators.Number()
     latitude    = validators.Number()
+    longitude   = validators.Number()
     address     = validators.UnicodeString()
     #user_id     = validators.Int()
+
+class Schema_locations_search(Schema):
+    latitude  = validators.Number(if_missing=25.040063)
+    longitude = validators.Number(if_missing=121.5130475)
+    radius    = validators.Number(if_missing=0.00449661)
+    size      = validators.Int(if_missing=100)
 
 
 class BaseLocation(object):
@@ -163,6 +169,28 @@ class BaseLocation(object):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
+    def _locations_search_latlng(self):
+        #validation
+        success, data, code = self.validate(Schema_locations_search)
+
+        if success:
+            serv = LocationService(self.request)
+            serv_rtn = serv.search_latlng(user_id=data['user_id'], 
+                                          latitude=data['latitude'],
+                                          longitude=data['longitude'],
+                                          radius=data['radius'],
+                                          size=data['size'])
+        else:
+            #mock fake serv_rtn
+            serv_rtn = {'data':'', 
+                        'info':data, 
+                        'code':code, 
+                        'success':False}
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+
 
 @view_defaults(renderer='json')
 class LocationAPI(BaseAPI, BaseLocation):
@@ -252,6 +280,11 @@ class LocationAPP(BaseAPP, BaseLocation):
     @view_config(route_name='app-location', request_method='DELETE')
     def location_delete(self):
         return self._location_delete()
+
+    @view_config(route_name='app-locations-search', request_method='GET')
+    def locations_search_latlng(self):
+        return self._locations_search_latlng()
+
 
 def main():
     pass
