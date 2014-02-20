@@ -76,7 +76,7 @@ class Group_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, name, description):
+    def update(cls, id, name, description):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
