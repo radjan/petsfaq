@@ -121,6 +121,18 @@ class Mission_TB(Base):
         rtn = cls.delete_by_id(id)
         return rtn
 
+    @classmethod
+    @ModelMethod
+    def user_missions(cls, user_id, filattr=None, offset=None, size=None):
+        global DBSession
+        query = DBSession.query(cls)\
+                    .join(Mission_User_TB,
+                          Mission_TB.id==Mission_User_TB.mission_id)\
+                    .filter(Mission_User_TB.user_id==user_id)
+        return (True,
+                cls.query_with_criteria(query, filattr=filattr, offset=offset,
+                                        limit=size))
+
 class MissionRescue_TB(Mission_TB):
     __tablename__ = 'mission_rescue'
     __mapper_args__ = {
