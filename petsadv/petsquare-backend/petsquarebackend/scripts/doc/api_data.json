@@ -959,6 +959,65 @@
     "filename": "api/location.js"
   },
   {
+    "type": "get",
+    "url": "/locations/search",
+    "title": "6. Search Locations(by latlng)",
+    "version": "1.0.0",
+    "name": "LocationsSearch",
+    "group": "Location",
+    "description": "Search Locations(by latlng)",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "latitude",
+            "optional": false,
+            "description": "latitude"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "longitude",
+            "optional": false,
+            "description": "longitude"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "radius",
+            "optional": false,
+            "description": "offset by degree (default: 0.00449661)"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "size",
+            "optional": false,
+            "description": "return record counts (default: 100)"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\",\n       count: 1\n     },\n     data: [\n       {\n        +missions: [...],\n         description: \"1\",\n         createddatetime: \"2014-01-13, 00:47:42\",\n        +explorer: {...}, // user object\n         longitude: 121.5130475,\n        +checks: [...],\n        +pickup_missions_from: [...],\n         address: \"taipei\",\n         latitude: 25.040063,\n         updateddatetime: \"2014-01-13, 00:47:42\",\n         id: 1,\n         name: \"one\"\n       },\n      +{...},\n       ..\n     ]\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/location.js"
+  },
+  {
     "type": "post",
     "url": "/locations",
     "title": "1. Create a new Location",

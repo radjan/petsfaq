@@ -173,3 +173,47 @@ function update() {return;}
 
 function delete() {return;}
 
+/**
+ * @api {get} /locations/search 6. Search Locations(by latlng)
+ * @apiVersion 1.0.0
+ * @apiName LocationsSearch
+ * @apiGroup Location
+ * @apiDescription  Search Locations(by latlng)
+ *
+ * @apiParam {QueryString} __QueryString__ 
+ * @apiParam {Number} latitude  latitude
+ * @apiParam {Number} longitude longitude
+ * @apiParam {Number} radius    offset by degree (default: 0.00449661)
+ * @apiParam {Number} size      return record counts (default: 100)
+ * 
+ * @apiSuccessExample Successful Response Body:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       info: {
+ *         status: true,
+ *         msg: "",
+ *         count: 1
+ *       },
+ *       data: [
+ *         {
+ *          +missions: [...],
+ *           description: "1",
+ *           createddatetime: "2014-01-13, 00:47:42",
+ *          +explorer: {...}, // user object
+ *           longitude: 121.5130475,
+ *          +checks: [...],
+ *          +pickup_missions_from: [...],
+ *           address: "taipei",
+ *           latitude: 25.040063,
+ *           updateddatetime: "2014-01-13, 00:47:42",
+ *           id: 1,
+ *           name: "one"
+ *         },
+ *        +{...},
+ *         ..
+ *       ]
+ *     }
+ */
+function search() {return;}
+
+
