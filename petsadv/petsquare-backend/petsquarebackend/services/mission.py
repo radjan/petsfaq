@@ -40,8 +40,13 @@ class MissionService(BaseService):
         super(MissionService, self).__init__('MissionService', request)
 
     @ServiceMethod
-    def list(self, offset=0, size=100):
-        success, models = Mission_TB.list(offset=offset,
+    def list(self, params=None, offset=0, size=100):
+        filattr = None
+        if params:
+            filattr = [item for item in params.items()]
+        success, models = Mission_TB.list(
+                                      filattr=filattr,
+                                      offset=offset,
                                       size=size)
 
         status = self.serv_rtn(success=success, model=models)
@@ -72,6 +77,21 @@ class MissionService(BaseService):
 
     def _get_value(self, data, key):
         return data.get(key, None)
+
+    @ServiceMethod
+    def user_missions(self, user_id, params=None, offset=0, size=100):
+        filattr = None
+        if params:
+            filattr = [item for item in params.items()]
+        success, models = Mission_TB.user_missions(
+                                      user_id,
+                                      filattr=filattr,
+                                      offset=offset,
+                                      size=size)
+
+        status = self.serv_rtn(success=success, model=models)
+        status['info']['count'] = len(models)
+        return status
 
 def main():
     pass
