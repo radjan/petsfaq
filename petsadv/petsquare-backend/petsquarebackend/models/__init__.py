@@ -144,8 +144,17 @@ class ModelMixin(object):
                     query = query.select_from(cls)
         else:
             query = session.query(cls)
+        return cls.query_with_criteria(query, filattr=filattr, offset=offset,
+                                       limit=limit, order_by=order_by,
+                                       lock_mode=lock_mode, DESC=DESC)
+
+    @classmethod
+    def query_with_criteria(cls, query, filattr=None, offset=None, limit=None,
+                            order_by=None, lock_mode=None, DESC=False):
         if filattr:
-            query = query.filter(cls.__dict__.get(filattr[0]) == filattr[1])
+            for attr in filattr:
+                print attr
+                query = query.filter(cls.__dict__.get(attr[0]) == attr[1])
         #add desc
         if order_by is not None:
             if isinstance(order_by, (tuple, list)):
