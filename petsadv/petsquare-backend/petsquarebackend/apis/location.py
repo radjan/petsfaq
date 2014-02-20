@@ -31,7 +31,7 @@ class Schema_locations_get(Schema):
 class Schema_locations_post(Schema):
     name        = validators.UnicodeString(if_missing=u'PlaceName')
     description = validators.UnicodeString(if_missing=u'PlaceDescription')
-    longtitude  = validators.Number(if_missing=121.5130475)
+    longitude   = validators.Number(if_missing=121.5130475)
     latitude    = validators.Number(if_missing=25.040063)
     address     = validators.UnicodeString(if_missing=u'PlaceAddress')
     #user_id     = validators.Int(if_missing=1)
@@ -40,7 +40,7 @@ class Schema_locations_post(Schema):
 class Schema_location_put(Schema):
     name        = validators.UnicodeString()
     description = validators.UnicodeString()
-    longtitude  = validators.Number()
+    longitude   = validators.Number()
     latitude    = validators.Number()
     address     = validators.UnicodeString()
     #user_id     = validators.Int()
@@ -77,7 +77,7 @@ class BaseLocation(object):
             serv = LocationService(self.request)
             serv_rtn = serv.create(name=data['name'],
                                    description=data['description'],
-                                   longtitude=data['longtitude'],
+                                   longitude=data['longitude'],
                                    latitude=data['latitude'],
                                    address=data['address'],
                                    user_id=data['user_id'])

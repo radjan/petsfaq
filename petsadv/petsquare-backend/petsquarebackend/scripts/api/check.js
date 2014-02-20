@@ -106,7 +106,7 @@ function list() {return;}
  *                 description: "1",
  *                 createddatetime: "2014-01-03, 20:46:03",
  *                 user_id: 1,
- *                 longtitude: 121.5130475,
+ *                 longitude: 121.5130475,
  *                 address: "taipei",
  *                 latitude: 25.040063,
  *                 updateddatetime: "2014-01-03, 20:46:03",

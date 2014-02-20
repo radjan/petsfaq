@@ -30,7 +30,7 @@ import traceback
 
 class Location_TB(Base):
     __tablename__ = 'location'
-    __public__ = ('id','name', 'description', 'longtitude', 'latitude', 'address',
+    __public__ = ('id','name', 'description', 'longitude', 'latitude', 'address',
             'explorer_id',  #fk
             'explorer',     #backref
             'checks', 'missions', 'pickup_missions_from',       #relation
@@ -40,7 +40,7 @@ class Location_TB(Base):
     id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     name        = Column(String(255), nullable=True, unique=False, )
     description = Column(String(255), nullable=True, unique=False,)
-    longtitude  = Column(Float(255), nullable=True, unique=False,)
+    longitude   = Column(Float(255), nullable=True, unique=False,)
     latitude    = Column(Float(255), nullable=True, unique=False,)
     address     = Column(String(255), nullable=True, unique=False,)
     #fk
@@ -70,11 +70,11 @@ class Location_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, description, longtitude, latitude, address,
+    def create(cls, name, description, longitude, latitude, address,
             explorer_id):
         global DBSession
         model = cls(name=name, description=description,
-                longtitude=longtitude, latitude=latitude, address=address, 
+                longitude=longitude, latitude=latitude, address=address, 
                 explorer_id=explorer_id)
         DBSession.add(model)
         DBSession.flush()
@@ -99,7 +99,7 @@ class Location_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, id, name=None, description=None, longtitude=None,
+    def update(cls, id, name=None, description=None, longitude=None,
             latitude=None, address=None, explorer_id=None):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
@@ -108,7 +108,7 @@ class Location_TB(Base):
         #FIXME
         if name:        model.name = name
         if description: model.description = description
-        if longtitude:  model.longtitude = longtitude
+        if longitude:   model.longitude = longitude
         if latitude:    model.latitude = latitude
         if address:     model.address = address
         if explorer_id:      model.explorer_id = explorer_id

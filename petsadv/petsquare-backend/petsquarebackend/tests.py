@@ -23,7 +23,7 @@ class TestMyView(unittest.TestCase):
         Base.metadata.create_all(engine)
         with transaction.manager:
             success, model = Location_TB.create(name='one', description='1',
-                    longtitude=121.5130475, latitude=25.040063,
+                    longitude=121.5130475, latitude=25.040063,
                     address='taipei', user_id=1)
             if not success:
                 raise Exception(model)
@@ -50,7 +50,7 @@ class TestMyView(unittest.TestCase):
 
         self.assertEqual(response['data'][0].name, 'one')
         self.assertEqual(response['data'][0].description, '1')
-        self.assertEqual(response['data'][0].longtitude, 121.5130475)
+        self.assertEqual(response['data'][0].longitude, 121.5130475)
         self.assertEqual(response['data'][0].latitude, 25.040063)
         self.assertEqual(response['data'][0].address, 'taipei')
         self.assertEqual(response['data'][0].user_id, 1)

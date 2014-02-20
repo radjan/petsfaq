@@ -117,7 +117,7 @@ class BaseAccount(object):
 #            serv = AccountService(self.request)
 #            serv_rtn = serv.create(name=data['name'],
 #                                   description=data['description'],
-#                                   longtitude=data['longtitude'],
+#                                   longitude=data['longitude'],
 #                                   latitude=data['latitude'],
 #                                   address=data['address'],
 #                                   user_id=data['user_id'])

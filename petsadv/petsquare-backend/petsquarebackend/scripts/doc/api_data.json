@@ -489,7 +489,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"1\",\n           title: \"check1\",\n           createddatetime: \"2014-01-03, 20:46:03\",\n           image: {\n               description: \"1\",\n               format: \"PNG\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               user_id: 1,\n               filename: \"python.png\",\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1\n           },\n           user_id: 1,\n           location: {\n               description: \"1\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               user_id: 1,\n               longtitude: 121.5130475,\n               address: \"taipei\",\n               latitude: 25.040063,\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1,\n               name: \"one\"\n           },\n           updateddatetime: \"2014-01-03, 20:46:03\",\n           id: 1\n       }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n       info: {\n           status: true,\n           msg: \"\"\n       },\n       data: {\n           description: \"1\",\n           title: \"check1\",\n           createddatetime: \"2014-01-03, 20:46:03\",\n           image: {\n               description: \"1\",\n               format: \"PNG\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               user_id: 1,\n               filename: \"python.png\",\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1\n           },\n           user_id: 1,\n           location: {\n               description: \"1\",\n               createddatetime: \"2014-01-03, 20:46:03\",\n               user_id: 1,\n               longitude: 121.5130475,\n               address: \"taipei\",\n               latitude: 25.040063,\n               updateddatetime: \"2014-01-03, 20:46:03\",\n               id: 1,\n               name: \"one\"\n           },\n           updateddatetime: \"2014-01-03, 20:46:03\",\n           id: 1\n       }\n   }\n"
         }
       ]
     },
@@ -907,7 +907,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longtitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
         }
       ]
     },
@@ -952,7 +952,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\",\n       count: 3\n     },\n     data: [\n       {\n         description: \"1\",\n         createddatetime: \"2014-01-13, 00:47:42\",\n        +explorer: {...}, // user object\n         longtitude: 121.5130475,\n        +checks: [...],\n         address: \"taipei\",\n         latitude: 25.040063,\n         updateddatetime: \"2014-01-13, 00:47:42\",\n         id: 1,\n         name: \"one\"\n       },\n      +{...},\n       ..\n     ]\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\",\n       count: 3\n     },\n     data: [\n       {\n         description: \"1\",\n         createddatetime: \"2014-01-13, 00:47:42\",\n        +explorer: {...}, // user object\n         longitude: 121.5130475,\n        +checks: [...],\n         address: \"taipei\",\n         latitude: 25.040063,\n         updateddatetime: \"2014-01-13, 00:47:42\",\n         id: 1,\n         name: \"one\"\n       },\n      +{...},\n       ..\n     ]\n   }\n"
         }
       ]
     },
@@ -993,9 +993,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "longtitude",
+            "field": "longitude",
             "optional": false,
-            "description": "longtitude"
+            "description": "longitude"
           },
           {
             "group": "Parameter",
@@ -1018,7 +1018,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longtitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
         }
       ]
     },
@@ -1073,9 +1073,9 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "longtitude",
+            "field": "longitude",
             "optional": false,
-            "description": "longtitude"
+            "description": "longitude"
           },
           {
             "group": "Parameter",
@@ -1098,7 +1098,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longtitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       description: \"1\",\n       createddatetime: \"2014-01-13, 00:47:42\",\n      +explorer: {...},\n       longitude: 121.5130475,\n      +checks: [...],\n       address: \"taipei\",\n       latitude: 25.040063,\n       updateddatetime: \"2014-01-13, 00:47:42\",\n       id: 1,\n       name: \"one\"\n     }\n   }\n"
         }
       ]
     },

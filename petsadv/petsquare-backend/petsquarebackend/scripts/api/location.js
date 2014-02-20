@@ -20,7 +20,7 @@
  *         description: "1",
  *         createddatetime: "2014-01-13, 00:47:42",
  *        +explorer: {...},
- *         longtitude: 121.5130475,
+ *         longitude: 121.5130475,
  *        +checks: [...],
  *         address: "taipei",
  *         latitude: 25.040063,
@@ -56,7 +56,7 @@ function show() {return;}
  *           description: "1",
  *           createddatetime: "2014-01-13, 00:47:42",
  *          +explorer: {...}, // user object
- *           longtitude: 121.5130475,
+ *           longitude: 121.5130475,
  *          +checks: [...],
  *           address: "taipei",
  *           latitude: 25.040063,
@@ -82,7 +82,7 @@ function list() {return;}
  * @apiParam {Body} __Body__
  * @apiParam {String}   name            name        
  * @apiParam {String}   description     description 
- * @apiParam {Number}   longtitude      longtitude         
+ * @apiParam {Number}   longitude       longitude         
  * @apiParam {Number}   latitude        latitude         
  * @apiParam {String}   address         address     
  *
@@ -97,7 +97,7 @@ function list() {return;}
  *         description: "1",
  *         createddatetime: "2014-01-13, 00:47:42",
  *        +explorer: {...},
- *         longtitude: 121.5130475,
+ *         longitude: 121.5130475,
  *        +checks: [...],
  *         address: "taipei",
  *         latitude: 25.040063,
@@ -122,7 +122,7 @@ function create() {return;}
  * @apiParam {Body} __Body__
  * @apiParam {String}   name            name        
  * @apiParam {String}   description     description 
- * @apiParam {Number}   longtitude      longtitude         
+ * @apiParam {Number}   longitude       longitude         
  * @apiParam {Number}   latitude        latitude         
  * @apiParam {String}   address         address     
  *
@@ -137,7 +137,7 @@ function create() {return;}
  *         description: "1",
  *         createddatetime: "2014-01-13, 00:47:42",
  *        +explorer: {...},
- *         longtitude: 121.5130475,
+ *         longitude: 121.5130475,
  *        +checks: [...],
  *         address: "taipei",
  *         latitude: 25.040063,
