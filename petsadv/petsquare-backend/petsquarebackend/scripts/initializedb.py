@@ -213,7 +213,7 @@ def main(argv=sys.argv):
 
         success, m_model2 = MissionAdopt_TB.create(
                              name=u'黑白貓送養',
-                             status='colsed',
+                             status='closed',
                              completed=True,
                              place=u'新竹',
                              note=u'卓别林賓士貓，踏雪尋梅',
