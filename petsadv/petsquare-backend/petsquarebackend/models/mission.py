@@ -242,11 +242,11 @@ def _create(cls, *args, **kwargs):
 # XXX trying
 def _update(cls, *args, **kwargs):
     global DBSession
+    id = args[0]
     model = cls.get_by_id(id)
     updateddatetime = datetime.datetime.now()
     log.debug('model update: %s' % model)
 
-    id = args[0]
     for k, v in kwargs.items():
         if v is not None:
             model.__setattribute__(k, v)
