@@ -22,10 +22,13 @@ from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.mission import MissionService
 
 
+RESERVED = ('offset', 'size', 'order_by', 'desc', 'user_id')
+IGNORE = ('ignore',)
+
 class SchemaMissionsGet(Schema):
     offset = validators.Int(if_missing=0)
     size   = validators.Int(if_missing=100)
-    #reporter_id = validators.Int(if_missing=1)
+    status = validators.UnicodeString(if_missing=IGNORE)
 
 class SchemaMissionPost(Schema):
     name        = validators.UnicodeString(if_missing=u'MissionName')
@@ -62,7 +65,10 @@ class BaseMission(object):
 
         if success:
             serv = MissionService(self.request)
-            serv_rtn = serv.list(offset=data['offset'],
+            params = dict((k, v) for k, v in data.items()
+                                    if k not in RESERVED and v is not IGNORE)
+            serv_rtn = serv.list(params=params,
+                                 offset=data['offset'],
                                  size=data['size'])
         else:
             #mock fake serv_rtn
@@ -180,6 +186,33 @@ class BaseMission(object):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
+    def _my_missions(self):
+        """
+        list my missions
+        API: GET /user/me/missions
+        """
+        #validation
+        success, data, code = self.validate(SchemaMissionsGet)
+
+        if success:
+            serv = MissionService(self.request)
+            params = dict((k, v) for k, v in data.items()
+                                    if k not in RESERVED and v is not IGNORE)
+            serv_rtn = serv.user_missions(
+                                data['user_id'],
+                                params,
+                                offset=data['offset'],
+                                size=data['size'])
+        else:
+            #mock fake serv_rtn
+            serv_rtn = {'data':'',
+                        'info':data,
+                        'code':code,
+                        'success':False}
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
 
 @view_defaults(renderer='json')
 class MissionAPI(BaseAPI, BaseMission):
@@ -247,6 +280,12 @@ class MissionAPI(BaseAPI, BaseMission):
         self.XHeaders()
         self._mission_delete()
 
+    @view_config(route_name='my-missions', request_method='GET')
+    def my_missions(self):
+        #for X-domain development
+        self.XHeaders()
+        return self._my_missions()
+
 @view_defaults(renderer='json')
 class MissionAPP(BaseAPP, BaseMission):
     @view_config(route_name='app-missions', request_method='GET')
@@ -269,6 +308,9 @@ class MissionAPP(BaseAPP, BaseMission):
     def mission_delete(self):
         return self._mission_delete()
 
+    @view_config(route_name='app-my-missions', request_method='GET')
+    def my_missions(self):
+        return self._my_missions()
 
 def main():
     pass

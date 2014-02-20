@@ -22,6 +22,9 @@ def api_routes(config):
     config.add_route('missions',      api_prefix + str(main_version) + '/missions')
     config.add_route('mission',       api_prefix + str(main_version) + '/mission/{id:\d+}')
 
+    config.add_route('my-missions',   api_prefix + str(main_version) + '/user/me/missions')
+
+
     #app
 
     config.add_route('app-showme',    app_prefix + str(main_version) + '/user/me')
@@ -38,7 +41,7 @@ def api_routes(config):
     config.add_route('app-missions',  app_prefix + str(main_version) + '/missions')
     config.add_route('app-mission',   app_prefix + str(main_version) + '/mission/{id:\d+}')
 
-
+    config.add_route('app-my-missions', app_prefix + str(main_version) + '/user/me/missions')
 
 
 
