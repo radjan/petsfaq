@@ -104,7 +104,7 @@ class User_TB(Base):
             'fb_id',#sso
             'group_id',                               #fk
             'group',                                  #backref
-            'images', 'locations', 'checks', 'tokens',#relation
+            'images', 'locations', 'checks',          #relation 'tokens'
             'pets', 'found_animals',
             'report_missions', 'host_missions',
             'createddatetime', 'updateddatetime')
