@@ -1273,10 +1273,59 @@ define({ api: [
           },
           {
             "group": "Parameter",
+            "type": "String",
+            "field": "type",
+            "optional": false,
+            "description": "mission types: rescue, pickup, stay, deliver, adopt"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "mission status"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "field": "completed",
+            "optional": false,
+            "description": "completed"
+          },
+          {
+            "group": "Parameter",
             "type": "Number",
-            "field": "user_id",
+            "field": "animal_id",
+            "optional": false,
+            "description": "animal_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "reporter_id",
             "optional": false,
             "description": "user_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "host_id",
+            "optional": false,
+            "description": "user_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "dest_location_id",
+            "optional": false,
+            "description": "location_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "from_location_id",
+            "optional": false,
+            "description": "location_id"
           }
         ]
       }
@@ -1298,7 +1347,7 @@ define({ api: [
     "version": "1.0.0",
     "name": "PostMissions",
     "group": "Mission",
-    "description": "Create Mission",
+    "description": "Create Mission, auto assign the login user as the reporter",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1314,21 +1363,21 @@ define({ api: [
             "type": "String",
             "field": "name",
             "optional": false,
-            "description": "mission name *Required"
+            "description": "*Required, mission name"
           },
           {
             "group": "Parameter",
             "type": "String",
             "field": "type",
             "optional": false,
-            "description": "valid mission types: rescue, pickup, stay, deliver, adopt *Required"
+            "description": "*Required, valid mission types: rescue, pickup, stay, deliver, adopt"
           },
           {
             "group": "Parameter",
             "type": "String",
             "field": "status",
             "optional": false,
-            "description": "status *Required // TBD"
+            "description": "*Required, status // TBD"
           },
           {
             "group": "Parameter",
@@ -1349,7 +1398,7 @@ define({ api: [
             "type": "Datetime",
             "field": "due_time",
             "optional": false,
-            "description": "mission due time"
+            "description": "mission due time, format example: 2014-02-21 16:15:00"
           },
           {
             "group": "Parameter",
@@ -1363,7 +1412,7 @@ define({ api: [
             "type": "Number",
             "field": "animal_id",
             "optional": false,
-            "description": "animal_id *Required"
+            "description": "*Required, animal_id"
           },
           {
             "group": "Parameter",
@@ -1492,7 +1541,7 @@ define({ api: [
             "type": "Datetime",
             "field": "due_time",
             "optional": false,
-            "description": "mission due time"
+            "description": "mission due time, format example: 2014-02-21 16:15:00"
           },
           {
             "group": "Parameter",
@@ -1514,6 +1563,13 @@ define({ api: [
             "field": "dest_location_id",
             "optional": false,
             "description": "location_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "reporter_id",
+            "optional": false,
+            "description": "user_id"
           },
           {
             "group": "Parameter",
