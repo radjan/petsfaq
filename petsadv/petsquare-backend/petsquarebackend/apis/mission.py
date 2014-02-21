@@ -66,14 +66,14 @@ class SchemaMissionPost(Schema):
     period           = validators.UnicodeString(if_missing=IGNORE)
     skill            = validators.UnicodeString(if_missing=IGNORE)
 
+    # overwrited in create, valid in update
+    reporter_id = validators.Int(if_missing=IGNORE)
 
 class SchemaMissionPut(SchemaMissionPost):
     # required
     id          = validators.Int()
-    # optional
-    reporter_id = validators.Int(if_missing=IGNORE)
 
-    # allow these attributes, they are overwrited anyway
+    # allow these attributes, not interested anyway
     reporter    = validators.UnicodeString(if_missing=IGNORE)
     host        = validators.UnicodeString(if_missing=IGNORE)
     animal      = validators.UnicodeString(if_missing=IGNORE)
