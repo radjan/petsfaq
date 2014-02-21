@@ -32,7 +32,7 @@ class AnimalService(BaseService):
         return status
 
     @ServiceMethod
-    def create(cls, animal_dict):
+    def create(self, animal_dict):
         # XXX not consistent with other, try to simplify the signature
         success, model = Animal_TB.create(**animal_dict)
         return self.serv_rtn(success=success, model=model)

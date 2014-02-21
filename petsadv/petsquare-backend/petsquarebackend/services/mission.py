@@ -13,7 +13,7 @@ from petsquarebackend.services import BaseService
 from petsquarebackend.services import ServiceMethod
 from petsquarebackend.models.mission import (
     Mission_TB,
-    MissionRescue_TB, 
+    MissionRescue_TB,
     MissionPickup_TB,
     MissionStay_TB,
     MissionDeliver_TB,
@@ -32,7 +32,7 @@ TYPE_CLASS = {
         MISSION_PICKUP: MissionPickup_TB,
         MISSION_STAY: MissionStay_TB,
         MISSION_DELIVER: MissionDeliver_TB,
-        MISSION_ADOPT: MissionAdopt_TB, 
+        MISSION_ADOPT: MissionAdopt_TB,
     }
 
 class MissionService(BaseService):
@@ -54,9 +54,9 @@ class MissionService(BaseService):
         return status
 
     @ServiceMethod
-    def create(cls, *args, **kwargs):
+    def create(self, *args, **kwargs):
         real_class = TYPE_CLASS[kwargs.pop('type')]
-        success, model = Mission_TB.create(*args, **kwargs)
+        success, model = real_class.create(*args, **kwargs)
         return self.serv_rtn(success=success, model=model)
 
     @ServiceMethod
