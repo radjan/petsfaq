@@ -72,6 +72,11 @@ class SchemaMissionPost(Schema):
 class SchemaMissionPut(SchemaMissionPost):
     # required
     id          = validators.Int()
+    type        = validators.UnicodeString()
+    # optinal: overwrite
+    name        = validators.UnicodeString(if_missing=IGNORE)
+    status      = validators.UnicodeString(if_missing=IGNORE)
+    animal_id   = validators.Int(if_missing=IGNORE)
 
     # allow these attributes, not interested anyway
     reporter    = validators.UnicodeString(if_missing=IGNORE)
