@@ -59,9 +59,16 @@ function show() {return;}
  * @apiDescription  List Missions
  *
  * @apiParam {QueryString} __QueryString__ 
- * @apiParam {Number} offset offset
- * @apiParam {Number} size   size
- * @apiParam {Number} user_id user_id
+ * @apiParam {Number} offset    offset
+ * @apiParam {Number} size      size
+ * @apiParam {String} type      mission types: rescue, pickup, stay, deliver, adopt
+ * @apiParam {String} status    mission status
+ * @apiParam {Boolean} completed    completed
+ * @apiParam {Number} animal_id     animal_id
+ * @apiParam {Number} reporter_id   user_id
+ * @apiParam {Number} host_id       user_id
+ * @apiParam {Number} dest_location_id  location_id
+ * @apiParam {Number} from_location_id  location_id
  * 
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
@@ -116,17 +123,17 @@ function list() {return;}
  * @apiName PostMissions
  * @apiGroup Mission
  *
- * @apiDescription Create Mission
+ * @apiDescription Create Mission, auto assign the login user as the reporter 
  * 
  * @apiParam {Body} __Body__
- * @apiParam {String}   name                mission name *Required
- * @apiParam {String}   type                valid mission types: rescue, pickup, stay, deliver, adopt *Required
- * @apiParam {String}   status              status *Required // TBD
+ * @apiParam {String}   name                *Required, mission name
+ * @apiParam {String}   type                *Required, valid mission types: rescue, pickup, stay, deliver, adopt
+ * @apiParam {String}   status              *Required, status // TBD
  * @apiParam {String}   place               place description 
  * @apiParam {String}   note                note
- * @apiParam {Datetime} due_time            mission due time
+ * @apiParam {Datetime} due_time            mission due time, format example: 2014-02-21 16:15:00
  * @apiParam {Boolean}  completed           completed
- * @apiParam {Number}   animal_id           animal_id *Required
+ * @apiParam {Number}   animal_id           *Required, animal_id
  * @apiParam {Number}   dest_location_id    location_id         
  * @apiParam {Number}   host_id             user_id
  * @apiParam {Number}   from_location_id    location_id // pickup mission only
@@ -184,10 +191,11 @@ function create() {return;}
  * @apiParam {String}   status              *Required, status // TBD       
  * @apiParam {String}   place               place description 
  * @apiParam {String}   note                note
- * @apiParam {Datetime} due_time            mission due time
+ * @apiParam {Datetime} due_time            mission due time, format example: 2014-02-21 16:15:00
  * @apiParam {Boolean}  completed           completed
  * @apiParam {Number}   animal_id           *Required, animal_id         
  * @apiParam {Number}   dest_location_id    location_id         
+ * @apiParam {Number}   reporter_id         user_id
  * @apiParam {Number}   host_id             user_id
  * @apiParam {Number}   from_location_id    location_id // pickup mission only
  * @apiParam {String}   requirement         adopt requirement // adopt mission only
