@@ -21,40 +21,79 @@ from petsquarebackend.apis import BaseAPI
 from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.mission import MissionService
 
-
+PARAMS = ('id', 'name', 'type', 'status', 'animal_id',
+          'description', 'place', 'note', 'completed', 'due_time', 'host_id',
+          'dest_location_id', 'from_location_id', 'requirement', 'period',
+          'skill',)
 RESERVED = ('offset', 'size', 'order_by', 'desc', 'user_id')
 IGNORE = ('ignore',)
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
 
 class SchemaMissionsGet(Schema):
-    offset = validators.Int(if_missing=0)
-    size   = validators.Int(if_missing=100)
-    status = validators.UnicodeString(if_missing=IGNORE)
+    offset      = validators.Int(if_missing=0)
+    size        = validators.Int(if_missing=100)
+
+    type        = validators.UnicodeString(if_missing=IGNORE)
+    status      = validators.UnicodeString(if_missing=IGNORE)
+    completed   = validators.StringBool(if_missing=IGNORE)
+    animal_id   = validators.Int(if_missing=IGNORE)
+    reporter_id = validators.Int(if_missing=IGNORE)
+    host_id     = validators.Int(if_missing=IGNORE)
+    dest_location_id = validators.Int(if_missing=IGNORE)
+
+    from_location_id = validators.Int(if_missing=IGNORE)
+
 
 class SchemaMissionPost(Schema):
-    name        = validators.UnicodeString(if_missing=u'MissionName')
-    type        = validators.UnicodeString(if_missing=u'type')
-    status      = validators.UnicodeString(if_missing=u'help')
-    description = validators.UnicodeString(if_missing=u'')
-    places      = validators.UnicodeString(if_missing=u'')
-    note        = validators.UnicodeString(if_missing=u'')
-    reporter_id = validators.Int(if_missing=1)
-    animal_id   = validators.Int(if_missing=1)
-
-class SchemaMissionPut(Schema):
-    id          = validators.Int()
+    # required
     name        = validators.UnicodeString()
     type        = validators.UnicodeString()
     status      = validators.UnicodeString()
-    description = validators.UnicodeString()
-    places      = validators.UnicodeString()
-    note        = validators.UnicodeString()
-    reporter_id = validators.Int()
     animal_id   = validators.Int()
+    # optional
+    description = validators.UnicodeString(if_missing=IGNORE)
+    place      = validators.UnicodeString(if_missing=IGNORE)
+    note        = validators.UnicodeString(if_missing=IGNORE)
+    completed   = validators.StringBool(if_missing=IGNORE)
+    # TODO due_time = validators.DateConverter(month_style='yyyy-mm-dd hh:MM:ss', if_missing=IGNORE)
+    due_time    = validators.UnicodeString(if_missing=IGNORE)
+    host_id     = validators.Int(if_missing=IGNORE)
+    dest_location_id = validators.Int(if_missing=IGNORE)
+
+    from_location_id = validators.Int(if_missing=IGNORE)
+    requirement      = validators.UnicodeString(if_missing=IGNORE)
+    period           = validators.UnicodeString(if_missing=IGNORE)
+    skill            = validators.UnicodeString(if_missing=IGNORE)
+
+
+class SchemaMissionPut(SchemaMissionPost):
+    # required
+    id          = validators.Int()
+    # optional
+    reporter_id = validators.Int(if_missing=IGNORE)
+
+    # allow these attributes, they are overwrited anyway
+    reporter    = validators.UnicodeString(if_missing=IGNORE)
+    host        = validators.UnicodeString(if_missing=IGNORE)
+    animal      = validators.UnicodeString(if_missing=IGNORE)
+    createddatetime = validators.UnicodeString(if_missing=IGNORE)
+    updateddatetime = validators.UnicodeString(if_missing=IGNORE)
+    accepter_assocs = validators.UnicodeString(if_missing=IGNORE)
+
 
 class BaseMission(object):
     """
     For Inheritance only
     """
+
+    def _validation_error(self, data, code):
+        # mock fake serv_rtn
+        return {'data':'',
+                'info':data,
+                'code':code,
+                'success':False}
+
     def _missions_list(self):
         """
         list missions
@@ -66,16 +105,12 @@ class BaseMission(object):
         if success:
             serv = MissionService(self.request)
             params = dict((k, v) for k, v in data.items()
-                                    if k not in RESERVED and v is not IGNORE)
+                                    if k in PARAMS and v is not IGNORE)
             serv_rtn = serv.list(params=params,
                                  offset=data['offset'],
                                  size=data['size'])
         else:
-            #mock fake serv_rtn
-            serv_rtn = {'data':'', 
-                        'info':data, 
-                        'code':code, 
-                        'success':False}
+            serv_rtn = self._validation_error(data, code)
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
@@ -98,12 +133,7 @@ class BaseMission(object):
             serv = MissionService(self.request)
             serv_rtn = serv.show(id=mission_id)
         else:
-            #mock fake serv_rtn
-            serv_rtn = {'data':'',
-                        'info':data,
-                        'code':code,
-                        'success':False,
-                        }
+            serv_rtn = self._validation_error(data, code)
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
@@ -118,14 +148,16 @@ class BaseMission(object):
 
         if success:
             serv = MissionService(self.request)
-            data['reporter_id'] = data.pop['user_id']
-            serv_rtn = serv.create(**data)
+            params = dict((k, v) for k, v in data.items()
+                                    if k in PARAMS and v is not IGNORE)
+            params['reporter_id'] = data['user_id']
+            # TODO use validator
+            if 'due_time' in params:
+                params['due_time'] = datetime.strptime(params['due_time'],
+                                                       DATETIME_FORMAT)
+            serv_rtn = serv.create(**params)
         else:
-            #mock fake serv_rtn
-            serv_rtn = {'data':'', 
-                        'info':data, 
-                        'code':code, 
-                        'success':False}
+            serv_rtn = self._validation_error(data, code)
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
@@ -145,15 +177,16 @@ class BaseMission(object):
             success = False
 
         if success:
+            params = dict((k, v) for k, v in data.items()
+                                    if k in PARAMS and v is not IGNORE)
+            # TODO use validator
+            if 'due_time' in params:
+                params['due_time'] = datetime.strptime(params['due_time'],
+                                                       DATETIME_FORMAT)
             serv = MissionService(self.request)
-            serv_rtn = serv.update(id=mission_id, data=data)
+            serv_rtn = serv.update(id=mission_id, data=params)
         else:
-            #mock fake serv_rtn
-            serv_rtn = {'data':'',
-                        'info':data,
-                        'code':code,
-                        'success':False,
-                        }
+            serv_rtn = self._validation_error(data, code)
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
@@ -176,12 +209,7 @@ class BaseMission(object):
             serv = MissionService(self.request)
             serv_rtn = serv.delete(id=mission_id)
         else:
-            #mock fake serv_rtn
-            serv_rtn = {'data':'',
-                        'info':data,
-                        'code':code,
-                        'success':False,
-                        }
+            serv_rtn = self._validation_error(data, code)
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
@@ -197,18 +225,14 @@ class BaseMission(object):
         if success:
             serv = MissionService(self.request)
             params = dict((k, v) for k, v in data.items()
-                                    if k not in RESERVED and v is not IGNORE)
+                                    if k in PARAMS and v is not IGNORE)
             serv_rtn = serv.user_missions(
                                 data['user_id'],
                                 params,
                                 offset=data['offset'],
                                 size=data['size'])
         else:
-            #mock fake serv_rtn
-            serv_rtn = {'data':'',
-                        'info':data,
-                        'code':code,
-                        'success':False}
+            serv_rtn = self._validation_error(data, code)
 
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
