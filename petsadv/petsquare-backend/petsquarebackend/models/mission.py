@@ -44,7 +44,7 @@ class Mission_TB(Base):
                   'reporter', 'host', 'animal', 'dest_location',
                   'accepter_assocs')
 
-    id              = Column(Integer, nullable=False, unique=True, 
+    id              = Column(Integer, nullable=False, unique=True,
                              primary_key=True, autoincrement=True)
     type            = Column(String(255), nullable=False, unique=False,)
     __mapper_args__ = {
