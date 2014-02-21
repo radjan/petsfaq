@@ -1618,5 +1618,106 @@ define({ api: [
       ]
     },
     "filename": "api/mission.js"
+  },
+  {
+    "type": "get",
+    "url": "/user/me/missions",
+    "title": "1. List Missions of Current Login User",
+    "version": "1.0.0",
+    "name": "GetMissionOfUser",
+    "group": "UserMe",
+    "description": "Show Mission of Current Login User.",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "offset",
+            "optional": false,
+            "description": "offset"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "size",
+            "optional": false,
+            "description": "size"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "type",
+            "optional": false,
+            "description": "mission types: rescue, pickup, stay, deliver, adopt"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "mission status"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "field": "completed",
+            "optional": false,
+            "description": "completed"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "animal_id",
+            "optional": false,
+            "description": "animal_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "reporter_id",
+            "optional": false,
+            "description": "user_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "host_id",
+            "optional": false,
+            "description": "user_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "dest_location_id",
+            "optional": false,
+            "description": "location_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "from_location_id",
+            "optional": false,
+            "description": "location_id"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n         msg: \"\",\n         count: 3\n     },\n     data: [\n       {\n         id: 1,\n         status: \"new\",\n         animal_id: 2,\n         name: \"救小貓\",\n         dest_location_id: null,\n         reporter: {},\n         createddatetime: \"2014-02-19 00:18:28\",\n         completed: false,\n         reporter_id: 1,\n         note: \"傍晚出沒，怕人，用罐頭吸引也不會過來\",\n         due_time: null,\n         dest_location: null,\n         place: \"新店陽光橋橋下\",\n         animal: {},\n         host_id: 1,\n         host: {},\n         updateddatetime: \"2014-02-19 00:18:28\",\n         type: \"rescue\",\n         accepter_assocs: [\n           {\n             mission: {},\n             user: {},\n             status: \"accepted\",\n             createddatetime: \"2014-02-19 00:18:28\",\n             is_owner: false,\n             description: null,\n             updateddatetime: \"2014-02-19 00:18:28\"\n           }\n         ]\n       },\n      +{...},\n       ..\n     ]\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/userme.js"
   }
 ] });
