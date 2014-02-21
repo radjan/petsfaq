@@ -152,9 +152,12 @@ class ModelMixin(object):
     def query_with_criteria(cls, query, filattr=None, offset=None, limit=None,
                             order_by=None, lock_mode=None, DESC=False):
         if filattr:
-            for attr in filattr:
-                print attr
-                query = query.filter(cls.__dict__.get(attr[0]) == attr[1])
+            # XXX temp workaround
+            if type(filattr) is list:
+                for attr in filattr:
+                    query = query.filter(cls.__dict__.get(attr[0]) == attr[1])
+            else:
+                query = query.filter(cls.__dict__.get(filattr[0]) == filattr[1])
         #add desc
         if order_by is not None:
             if isinstance(order_by, (tuple, list)):
