@@ -16,12 +16,13 @@ class BaseAPI(object):
         """
         Handle status returned from Services
         """
+        code = serv_rtn.get('code', None)
         status = serv_rtn
         if status['success'] == True:
-            self.request.status_int = scode
+            self.request.response.status = code if code is not None else scode
             rtn = {'data': status['data'], 'info': status['info']}
         else:
-            self.request.status_int = fcode
+            self.request.response.status = code if code is not None else fcode
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
@@ -39,7 +40,8 @@ class BaseAPI(object):
 
             #FIXME: by using
             #authn_userid = authenticated_userid(self.request)
-            authn_userid = to_check_dict.pop('user_id', 1) 
+            log.warn('default user_id may be used')
+            authn_userid = to_check_dict.pop('user_id', 1)
 
             if body == True:
                 target_dict.update(to_check_dict)
@@ -87,12 +89,13 @@ class BaseAPP(object):
         """
         Handle status returned from Services
         """
+        code = serv_rtn.get('code', None)
         status = serv_rtn
         if status['success'] == True:
-            self.request.status_int = scode
+            self.request.response.status = code if code is not None else scode
             rtn = {'data': status['data'], 'info': status['info']}
         else:
-            self.request.status_int = fcode
+            self.request.response.status = code if code is not None else fcode
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
