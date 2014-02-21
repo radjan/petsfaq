@@ -5,6 +5,7 @@ __author__= 'rad'
 
 import traceback
 import json
+from datetime import datetime
 import logging
 log = logging.getLogger(__name__)
 
@@ -71,7 +72,6 @@ class SchemaMissionPost(Schema):
 
 class SchemaMissionPut(SchemaMissionPost):
     # required
-    id          = validators.Int()
     type        = validators.UnicodeString()
     # optinal: overwrite
     name        = validators.UnicodeString(if_missing=IGNORE)
@@ -79,6 +79,7 @@ class SchemaMissionPut(SchemaMissionPost):
     animal_id   = validators.Int(if_missing=IGNORE)
 
     # allow these attributes, not interested anyway
+    id          = validators.Int(if_missing=IGNORE)
     reporter    = validators.UnicodeString(if_missing=IGNORE)
     host        = validators.UnicodeString(if_missing=IGNORE)
     animal      = validators.UnicodeString(if_missing=IGNORE)
@@ -189,7 +190,7 @@ class BaseMission(object):
                 params['due_time'] = datetime.strptime(params['due_time'],
                                                        DATETIME_FORMAT)
             serv = MissionService(self.request)
-            serv_rtn = serv.update(id=mission_id, data=params)
+            serv_rtn = serv.update(id=mission_id, data=params, type=params['type'])
         else:
             serv_rtn = self._validation_error(data, code)
 
