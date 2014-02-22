@@ -67,7 +67,7 @@ class MissionService(BaseService):
     @ServiceMethod
     def update(self, id, data, type):
         real_class = TYPE_CLASS.get(type)
-        success, model = real_class.update(**data)
+        success, model = real_class.update(id, **data)
         return self.serv_rtn(success=success, model=model)
 
     @ServiceMethod
