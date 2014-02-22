@@ -69,7 +69,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       sub_type: \"normal\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
         }
       ]
     },
@@ -110,9 +110,65 @@
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "user_id",
+            "field": "id",
+            "optional": false,
+            "description": "animal_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "animal name"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "type",
+            "optional": false,
+            "description": "speicies types // cat, dog, ..."
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "sub_type",
+            "optional": false,
+            "description": "condition types // TBD: sick, newborn"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "status // TBD"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "finder_id",
             "optional": false,
             "description": "user_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "owner_id",
+            "optional": false,
+            "description": "user_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "find_location_id",
+            "optional": false,
+            "description": "location_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "current_location_id",
+            "optional": false,
+            "description": "location_id"
           }
         ]
       }
@@ -134,7 +190,7 @@
     "version": "1.0.0",
     "name": "PostAnimals",
     "group": "Animal",
-    "description": "Create Animal",
+    "description": "Create Animal, auto assign the login user as the finder",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -208,7 +264,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n         id: 1,\n         status: true,\n         msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n         id: 1,\n         status: true,\n         msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       sub_type: \"normal\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
         }
       ]
     },
@@ -251,28 +307,28 @@
             "type": "String",
             "field": "name",
             "optional": false,
-            "description": "*Required, animal name"
+            "description": "animal name"
           },
           {
             "group": "Parameter",
             "type": "String",
             "field": "type",
             "optional": false,
-            "description": "*Required, speicies types // cat, dog, ..."
+            "description": "speicies types // cat, dog, ..."
           },
           {
             "group": "Parameter",
             "type": "String",
             "field": "sub_type",
             "optional": false,
-            "description": "*Required, condition types // sick, newborn"
+            "description": "condition types // sick, newborn"
           },
           {
             "group": "Parameter",
             "type": "String",
             "field": "status",
             "optional": false,
-            "description": "*Required, status // TBD"
+            "description": "status"
           },
           {
             "group": "Parameter",
@@ -280,6 +336,13 @@
             "field": "description",
             "optional": false,
             "description": "description"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "finder_id",
+            "optional": false,
+            "description": "user_id"
           },
           {
             "group": "Parameter",
@@ -309,7 +372,7 @@
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       sub_type: \"normal\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
         }
       ]
     },
