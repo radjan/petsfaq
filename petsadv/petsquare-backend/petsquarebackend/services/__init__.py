@@ -24,7 +24,7 @@ def ServiceMethod(func):
     return serv_wrapped
      
 class BaseService(object):
-    status = {'code':0,
+    status = {'code':200,
               'success': False,
               'data': '',
               'info': ''}
