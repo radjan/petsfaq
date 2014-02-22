@@ -28,8 +28,8 @@ DATETIME_FORMAT = apis.DATETIME_FORMAT
 
 PARAMS = ('id', 'name', 'type', 'status', 'animal_id',
           'description', 'place', 'note', 'completed', 'due_time', 'host_id',
-          'dest_location_id', 'from_location_id', 'requirement', 'period',
-          'skill',)
+          'reporter_id', 'dest_location_id',
+          'from_location_id', 'requirement', 'period', 'skill',)
 
 
 class SchemaMissionsGet(Schema):
