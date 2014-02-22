@@ -91,7 +91,7 @@ class Mission_TB(Base):
         if cls is Mission_TB:
             raise Exception('create unknown mission type, '
                             'use child create instead')
-        return _create(cls, *args, **kwargs)
+        return cls._create(*args, **kwargs)
 
     @classmethod
     @ModelMethod
@@ -112,7 +112,7 @@ class Mission_TB(Base):
     @classmethod
     @ModelMethod
     def update(cls, *args, **kwargs):
-        return _update(cls, *args, **kwargs)
+        return cls._update(*args, **kwargs)
 
     @classmethod
     @ModelMethod
@@ -221,44 +221,12 @@ class Mission_User_TB(Base):
     @classmethod
     @ModelMethod
     def create(cls, *args, **kwargs):
-        return _create(cls, *args, **kwargs)
+        return cls._create(cls, *args, **kwargs)
 
-# XXX trying
-def _create(cls, *args, **kwargs):
-    global DBSession
-
-    for k, v in kwargs.items():
-        if isinstance(v, Base):
-            kwargs.pop(k)
-            # XXX assume naming convention
-            kwargs[k + '_id'] = v.id
-    model = cls(**kwargs)
-    DBSession.add(model)
-    DBSession.flush()
-    rtn = (True, model)
-
-    return rtn
-
-# XXX trying
-def _update(cls, *args, **kwargs):
-    global DBSession
-    id = args[0]
-    model = cls.get_by_id(id)
-    updateddatetime = datetime.datetime.now()
-    log.debug('model update: %s' % model)
-    # TODO common things out
-    for key in ('id', 'createddatetime'):
-        if key in kwargs:
-            del kwargs[key]
-
-    for k, v in kwargs.items():
-        if v is not None:
-            model.__setattr__(k, v)
-    model.updateddatetime = updateddatetime
-    DBSession.merge(model)
-    rtn = (True, model)
-    return rtn
-    
+    @classmethod
+    @ModelMethod
+    def update(cls, *args, **kwargs):
+        return cls._update(cls, *args, **kwargs)
 
 def main():
     pass

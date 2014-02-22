@@ -301,6 +301,39 @@ class ModelMixin(object):
             rtn_dict[k] = value
         return rtn_dict
 
+    @classmethod
+    def _create(*args, **kwargs):
+        global DBSession
+        cls = args[0] # args = (cls, )
+        for k, v in kwargs.items():
+            if isinstance(v, Base):
+                kwargs.pop(k)
+                # XXX assume naming convention
+                kwargs[k + '_id'] = v.id
+        model = cls(**kwargs)
+        DBSession.add(model)
+        DBSession.flush()
+        return (True, model)
+
+    @classmethod
+    def _update(*args, **kwargs):
+        print args
+        cls, id = args # args = (cls, id)
+        global DBSession
+        model = cls.get_by_id(id)
+        updateddatetime = datetime.datetime.now()
+        log.debug('model update: %s' % model)
+        for key in ('id', 'createddatetime'):
+            if key in kwargs:
+                del kwargs[key]
+
+        for k, v in kwargs.items():
+            if v is not None:
+                model.__setattr__(k, v)
+        model.updateddatetime = updateddatetime
+        DBSession.merge(model)
+        return (True, model)
+
     #def _retrieve_model(self, request, exclude, extra, exclude_fk, max_depth):
     #    if isinstance(value, ModelMixin):
     #        value = self.__getattribute__(k).__json__(request, exclude, extra, exclude_fk, max_depth-1)
