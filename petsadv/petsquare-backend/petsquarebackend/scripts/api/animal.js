@@ -24,6 +24,7 @@
  *         updateddatetime: "2014-02-19 00:18:28",
  *         image_assocs: [],
  *         type: "cat",
+ *         sub_type: "normal",
  *         id: 1,
  *         finder: {},
  *         name: "pochi"
@@ -40,9 +41,17 @@ function show() {return;}
  * @apiDescription  List Animals
  *
  * @apiParam {QueryString} __QueryString__ 
- * @apiParam {Number} offset offset
- * @apiParam {Number} size   size
- * @apiParam {Number} user_id user_id
+ * @apiParam {Number} offset    offset
+ * @apiParam {Number} size      size
+ * @apiParam {Number} id        animal_id
+ * @apiParam {String} name      animal name
+ * @apiParam {String} type      speicies types // cat, dog, ...
+ * @apiParam {String} sub_type  condition types // TBD: sick, newborn
+ * @apiParam {String} status    status // TBD
+ * @apiParam {Number} finder_id user_id
+ * @apiParam {Number} owner_id  user_id
+ * @apiParam {Number} find_location_id      location_id
+ * @apiParam {Number} current_location_id   location_id
  * 
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
@@ -78,7 +87,7 @@ function list() {return;}
  * @apiName PostAnimals
  * @apiGroup Animal
  *
- * @apiDescription Create Animal
+ * @apiDescription Create Animal, auto assign the login user as the finder
  * 
  * @apiParam {Body} __Body__
  * @apiParam {String}   name                *Required, animal name
@@ -106,6 +115,7 @@ function list() {return;}
  *         updateddatetime: "2014-02-19 00:18:28",
  *         image_assocs: [],
  *         type: "cat",
+ *         sub_type: "normal",
  *         id: 1,
  *         finder: {},
  *         name: "pochi"
@@ -126,11 +136,12 @@ function create() {return;}
  * @apiParam {QueryString} __QueryString__ 
  * @apiParam {Number}   id                  Animal-ID
  * @apiParam {Body} __Body__
- * @apiParam {String}   name                *Required, animal name
- * @apiParam {String}   type                *Required, speicies types // cat, dog, ...
- * @apiParam {String}   sub_type            *Required, condition types // sick, newborn
- * @apiParam {String}   status              *Required, status // TBD
+ * @apiParam {String}   name                animal name
+ * @apiParam {String}   type                speicies types // cat, dog, ...
+ * @apiParam {String}   sub_type            condition types // sick, newborn
+ * @apiParam {String}   status              status
  * @apiParam {String}   description         description
+ * @apiParam {Number}   finder_id           user_id
  * @apiParam {Number}   owner_id            user_id // in case the animal is a pet
  * @apiParam {Number}   find_location_id    location_id
  * @apiParam {Number}   current_location_id location_id
@@ -150,6 +161,7 @@ function create() {return;}
  *         updateddatetime: "2014-02-19 00:18:28",
  *         image_assocs: [],
  *         type: "cat",
+ *         sub_type: "normal",
  *         id: 1,
  *         finder: {},
  *         name: "pochi"
