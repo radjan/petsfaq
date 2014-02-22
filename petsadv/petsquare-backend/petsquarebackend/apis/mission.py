@@ -72,8 +72,6 @@ class SchemaMissionPost(Schema):
     reporter_id = validators.Int(if_missing=IGNORE)
 
 class SchemaMissionPut(SchemaMissionPost):
-    # required
-    type        = validators.UnicodeString()
     # optinal: overwrite
     name        = validators.UnicodeString(if_missing=IGNORE)
     status      = validators.UnicodeString(if_missing=IGNORE)
@@ -93,14 +91,6 @@ class BaseMission(object):
     """
     For Inheritance only
     """
-
-    def _validation_error(self, data, code):
-        # mock fake serv_rtn
-        return {'data':'',
-                'info':data,
-                'code':code,
-                'success':False}
-
     def _missions_list(self):
         """
         list missions

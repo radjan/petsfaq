@@ -11,7 +11,17 @@ RESERVED = ('offset', 'size', 'order_by', 'desc', 'user_id')
 IGNORE = ('ignore',)
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-class BaseAPI(object):
+
+class Base(object):
+    # TODO move common logic here
+    def _validation_error(self, data, code):
+        # mock fake serv_rtn
+        return {'data':'',
+                'info':data,
+                'code':code,
+                'success':False}
+
+class BaseAPI(Base):
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -84,7 +94,7 @@ class BaseAPI(object):
         if len(methods) != 0:
             self.request.response.headers.add('Access-Control-Allow-Methods', method)
 
-class BaseAPP(object):
+class BaseAPP(Base):
     def __init__(self, context, request):
         self.context = context
         self.request = request
