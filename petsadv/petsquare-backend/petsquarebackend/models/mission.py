@@ -111,8 +111,8 @@ class Mission_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, id, **kwargs):
-        return _update(cls, id, **kwargs)
+    def update(cls, *args, **kwargs):
+        return _update(cls, *args, **kwargs)
 
     @classmethod
     @ModelMethod
@@ -246,10 +246,14 @@ def _update(cls, *args, **kwargs):
     model = cls.get_by_id(id)
     updateddatetime = datetime.datetime.now()
     log.debug('model update: %s' % model)
+    # TODO common things out
+    for key in ('id', 'createddatetime'):
+        if key in kwargs:
+            del kwargs[key]
 
     for k, v in kwargs.items():
         if v is not None:
-            model.__setattribute__(k, v)
+            model.__setattr__(k, v)
     model.updateddatetime = updateddatetime
     DBSession.merge(model)
     rtn = (True, model)
