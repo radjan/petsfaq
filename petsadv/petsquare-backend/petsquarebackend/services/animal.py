@@ -18,14 +18,13 @@ class AnimalService(BaseService):
         super(AnimalService, self).__init__('AnimalService', request)
 
     @ServiceMethod
-    def list(self, finder_id, offset=0, size=100):
-        if finder_id:
-            success, models = Animal_TB.list(filattr=('finder_id', finder_id),
-                                      offset=offset,
-                                      size=size)
-        else:
-            success, models = Animal_TB.list(offset=offset,
-                                      size=size)
+    def list(self, params=None, offset=0, size=100):
+        filattr = None
+        if params:
+            filattr = [item for item in params.items()]
+        success, models = Animal_TB.list(filattr=filattr,
+                                         offset=offset,
+                                         size=size)
 
         status = self.serv_rtn(success=success, model=models)
         status['info']['count'] = len(models)
