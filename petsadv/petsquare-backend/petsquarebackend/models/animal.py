@@ -31,7 +31,7 @@ import base64
 
 class Animal_TB(Base):
     __tablename__ = 'animal'
-    __public__ = ('id', 'name', 'type', 'status', 'description',
+    __public__ = ('id', 'name', 'type', 'sub_type', 'status', 'description',
                   'createddatetime', 'updateddatetime',
                   # foreign key
                   'finder_id', 'owner_id',
