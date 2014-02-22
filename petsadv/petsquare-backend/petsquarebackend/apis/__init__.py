@@ -36,7 +36,8 @@ class BaseAPI(Base):
             self.request.response.status = code if code is not None else scode
             rtn = {'data': status['data'], 'info': status['info']}
         else:
-            self.request.response.status = code if code is not None else fcode
+            self.request.response.status = code if code not in (None,
+                                                                200) else fcode
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
