@@ -221,12 +221,12 @@ class Mission_User_TB(Base):
     @classmethod
     @ModelMethod
     def create(cls, *args, **kwargs):
-        return cls._create(cls, *args, **kwargs)
+        return cls._create(*args, **kwargs)
 
     @classmethod
     @ModelMethod
     def update(cls, *args, **kwargs):
-        return cls._update(cls, *args, **kwargs)
+        return cls._update(*args, **kwargs)
 
 def main():
     pass
