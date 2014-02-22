@@ -17,18 +17,19 @@ from pyramid.view import (
         view_config,
         view_defaults,
         )
-
+from petsquarebackend import apis
 from petsquarebackend.apis import BaseAPI
 from petsquarebackend.apis import BaseAPP
 from petsquarebackend.services.mission import MissionService
+
+RESERVED = apis.RESERVED
+IGNORE = apis.IGNORE
+DATETIME_FORMAT = apis.DATETIME_FORMAT
 
 PARAMS = ('id', 'name', 'type', 'status', 'animal_id',
           'description', 'place', 'note', 'completed', 'due_time', 'host_id',
           'dest_location_id', 'from_location_id', 'requirement', 'period',
           'skill',)
-RESERVED = ('offset', 'size', 'order_by', 'desc', 'user_id')
-IGNORE = ('ignore',)
-DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 class SchemaMissionsGet(Schema):

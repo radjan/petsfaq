@@ -7,6 +7,10 @@ log = logging.getLogger(__name__)
 from formencode import Invalid
 from pyramid.security import authenticated_userid
 
+RESERVED = ('offset', 'size', 'order_by', 'desc', 'user_id')
+IGNORE = ('ignore',)
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
 class BaseAPI(object):
     def __init__(self, context, request):
         self.context = context
