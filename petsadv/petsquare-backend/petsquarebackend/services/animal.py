@@ -43,13 +43,7 @@ class AnimalService(BaseService):
 
     @ServiceMethod
     def update(self, id, data):
-        success, model = Animal_TB.update(id=id,
-                           name=data.get('name', None),
-                           type=data.get('type', None),
-                           sub_type=data.get('sub_type', None),
-                           description=data.get('description', None),
-                           finder_id=data.get('finder_id', None),
-                           find_location_id=data.get('find_location_id', None),)
+        success, model = Animal_TB.update(id, **data)
         return self.serv_rtn(success=success, model=model)
 
     @ServiceMethod
