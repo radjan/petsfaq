@@ -28,6 +28,8 @@ def ServiceMethod(func):
     return serv_wrapped
      
 class BaseService(object):
+    # XXX TODO eliminate self.status.copy()
+    status = util.return_dict(code=200)
 
     def __init__(self, service_cls, request=None):
         self.service_cls = service_cls
