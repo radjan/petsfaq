@@ -1,7 +1,7 @@
 'use strict';
 angular.module('webFrontendApp')
-  .controller('PetmapCtrl', ['$scope', 'checkApi', '$log', '$location', '$stateParams',
-  	function ($scope, checkApi, $log, $location, $stateParams) {
+  .controller('PetmapCtrl', ['$scope', 'checkApi', '$log', '$location', '$stateParams', '$state',
+  	function ($scope, checkApi, $log, $location, $stateParams, $state) {
     /******** nav bar **********/
     $scope.markers = [];
     $scope.googleMarkers = [];
@@ -18,7 +18,6 @@ angular.module('webFrontendApp')
 		{title:'熱門地點(location view)', type:'hot'}
 	];
 	$scope.setMarkers = function (type){
-        
         if($scope.type === type) return;
         switch(type){
             case $scope.categories[0].type:
@@ -71,6 +70,7 @@ angular.module('webFrontendApp')
     $scope.openMarkerInfo = function(marker, index) {
         $scope.currentGoogleInfoWindow.open($scope.googleMap, marker);
         $scope.currentCheck = $scope.markers[index];
+        $state.go('petMap.detail', {checksType:$scope.type, id:$scope.currentCheck.id});
     }; 
 	 
 	$scope.addMarker = function($event, $params) {

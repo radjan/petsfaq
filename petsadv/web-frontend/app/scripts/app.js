@@ -25,6 +25,8 @@ angular.module('webFrontendApp', [
     });
 
     $urlRouterProvider.when('/petMap', '/petMap/main');
+    $urlRouterProvider.when('/petMap/', '/petMap/main');
+    
     $urlRouterProvider.otherwise('/index');
 
     $stateProvider
@@ -44,8 +46,23 @@ angular.module('webFrontendApp', [
         views: {
           'leftSide':{
             templateUrl: 'views/petMapLeftSide.html',
+          }
+        }
+      })
+      .state('petMap.detail', {
+        url:'/:checksType/:id',
+        views: {
+          'leftSide': {
+            templateUrl: 'views/petMapLeftSide.html', 
           },
-          'rightSide': {}
+          'rightSide': {
+            templateUrl: 'views/petMapRightSide.html', 
+          }
         }
       });
+
+    //   .when('/petMapRightSide', {
+    //   templateUrl: 'views/petMapRightSide.html',
+    //   controller: 'PetmaprightsideCtrl'
+    // })
   });
