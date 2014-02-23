@@ -6,7 +6,7 @@
             <accordion-group heading="{{category.title}}" ng-repeat="category in categories" ng-click="setMarkers(category.type)">
                 <ul>
                   <li ng-repeat="googleMarker in googleMarkers">
-                    <a ng-click="markerItemClick(googleMarker)">{{markers[$index].title}}</a>
+                    <a ng-click="markerItemClick(googleMarker, $index)">{{markers[$index].title}}</a>
                   </li>
                 </ul>
             </accordion-group>

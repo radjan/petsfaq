@@ -44,56 +44,8 @@ angular.module('webFrontendApp', [
         views: {
           'leftSide':{
             templateUrl: 'views/petMapLeftSide.html',
-            // controller: 'PetmapleftsideCtrl'
-          },
-          'markers': {
-            templateUrl: 'views/petMapChecks.html'
           },
           'rightSide': {}
         }
       });
-      // .state('petMap.checks',{
-      //   url: '/:mapMarkerType',
-      //   templateUrl: 'views/petMapChecks.html',
-      //   resolve: {
-      //     checks : function(checkApi){
-      //       var config = {};
-      //       config['offset'] = 0;
-      //       config['size'] = 200;
-      //       return checkApi.list(config, function(r){ 
-      //           return r;
-      //       });
-      //     }
-      //   },
-      //   controller: 'PetmapchecksCtrl'
-      // })
-      
-    // $routeProvider
-    //   .when('/', {
-    //     templateUrl: 'views/main.html',
-    //     controller: 'MainCtrl'
-    //   })
-    //   .when('/register', {
-    //     templateUrl: 'views/register.html',
-    //     controller: 'RegisterCtrl'
-    //   })
-    //   .when('/petMap', {
-    //     templateUrl: 'views/petMap.html',
-    //     controller: 'PetmapCtrl'
-    //   })
-    //   // .when('/login', {
-    //   //   templateUrl: 'views/login.html',
-    //   //   controller: 'LoginCtrl'
-    //   // })
-    // .when('/petMapChecks', {
-    //   templateUrl: 'views/petMapChecks.html',
-    //   controller: 'PetmapchecksCtrl'
-    // })
-    // .when('/petMapLeftSide', {
-    //   templateUrl: 'views/petMapLeftSide.html',
-    //   controller: 'PetmapleftsideCtrl'
-    // })
-    //   .otherwise({
-    //     redirectTo: '/'
-    //   });
   });

@@ -9,6 +9,7 @@ angular.module('webFrontendApp')
     $scope.$watch('type', function(){
         $location.url('/petMap/'+ $scope.type);
     });
+    $scope.currentGoogleInfoWindow;
 
   	/******** nav bar **********/
 	$scope.categories = [
@@ -17,10 +18,11 @@ angular.module('webFrontendApp')
 		{title:'熱門地點(location view)', type:'hot'}
 	];
 	$scope.setMarkers = function (type){
-        $scope.googleMarkers = [];
-        // if($scope.type === type) return;
+        
+        if($scope.type === type) return;
         switch(type){
             case $scope.categories[0].type:
+                $scope.googleMarkers = [];
                 $scope.type = type;
                 var params = {
                     offset: 0,
@@ -38,15 +40,17 @@ angular.module('webFrontendApp')
                 });
                 break;
             case $scope.categories[1].type:
+                $scope.googleMarkers = [];
                 $scope.type = type;
                 break;
             case $scope.categories[2].type:
+                $scope.googleMarkers = [];
                 $scope.type = type;
                 break;
             default:
+                $scope.googleMarkers = [];
                 $scope.type = 'main';     
         }
-		// $location.path($location.path()+'/'+type);
 	};
 
     
@@ -58,13 +62,16 @@ angular.module('webFrontendApp')
 		mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    $scope.googleMarkers = [];
-
-    $scope.markerItemClick = function (marker) {
+    $scope.markerItemClick = function (marker, index) {
       $scope.googleMap.panTo(marker.getPosition());
-      // $scope.openMarkerInfo(marker);
+      $scope.openMarkerInfo(marker, index);
       // checkApi.get(function(result){alert("result check id: " + result.id)}, marker.id);
     }
+
+    $scope.openMarkerInfo = function(marker, index) {
+        $scope.currentGoogleInfoWindow.open($scope.googleMap, marker);
+        $scope.currentCheck = $scope.markers[index];
+    }; 
 	 
 	$scope.addMarker = function($event, $params) {
 		$scope.googleMarkers.push(new google.maps.Marker({

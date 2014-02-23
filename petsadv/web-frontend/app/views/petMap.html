@@ -28,7 +28,18 @@
 				  ui-options="mapOptions">
 				</div>
 			</div>
-			<div ui-view="markers"></div>
+			<div ng-repeat="marker in googleMarkers" ui-map-marker="googleMarkers[$index]"
+			  ui-event="{'map-click': 'openMarkerInfo(marker, $index)'}">
+			</div>
+			 
+			<div ui-map-info-window="currentGoogleInfoWindow" style="height:200px">
+			    <p>{{currentCheck.description}}</p>
+			    <hr>
+			    <p>地點：{{currentCheck.location.name}}</p>
+			    <p>人氣：{{currentCheck.location.checks.length}}</p>
+			    <p>地址：{{currentCheck.location.address}}</p>
+			</div>
+			
 		</div>
 	</div>
 </div>
