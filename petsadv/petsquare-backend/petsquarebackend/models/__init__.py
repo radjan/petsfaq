@@ -24,11 +24,12 @@ import json
 import inspect
 import traceback
 
+from petsquarebackend import common
+
 DBSession = scoped_session(sessionmaker(expire_on_commit=False,
                                         extension=ZTE(keep_session=False)))
 
 MODEL_DEFAULT_DEPTH = 2
-
 
 #resource tree, rootfactory
 from pyramid.security import (
@@ -237,11 +238,14 @@ class ModelMixin(object):
     def delete_by_id(cls, id, session=DBSession):
         try:
             model = cls.get_by_attr(attr='id', value=id)
-            DBSession.delete(model)
-            #DBSession.flush()
-            #do not use commit() method manually
-            #DBSession.commit()
-            rtn = (True, None)
+            if model:
+                DBSession.delete(model)
+                #DBSession.flush()
+                #do not use commit() method manually
+                #DBSession.commit()
+                rtn = (True, None)
+            else:
+                rtn = (False, common.ERROR_MODEL_OBJECT_NOT_FOUND)
         except Exception, e:
             import traceback
             err_tbk = traceback.format_exc()
@@ -357,7 +361,10 @@ class ModelMixin(object):
     def show(cls, id):
         global DBSession
         model = cls.get_by_id(id)
-        rtn = (True, model)
+        if model:
+            rtn = (True, model)
+        else:
+            rtn = (False, common.ERROR_MODEL_OBJECT_NOT_FOUND)
         return rtn
 
     @classmethod
