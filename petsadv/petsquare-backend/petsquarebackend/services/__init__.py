@@ -71,6 +71,7 @@ class BaseService(object):
                                       code=code)
         else:
             status['code'] = code
+            status['success'] = success
         return status
 
 
