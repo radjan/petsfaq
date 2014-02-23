@@ -344,6 +344,28 @@ class ModelMixin(object):
     def update(cls, *args, **kwargs):
         return cls._update(*args, **kwargs)
 
+    @classmethod
+    @ModelMethod
+    def list(cls, filattr=None, offset=None, size=None):
+        global DBSession
+        model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
+        rtn = (True, model_list)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def show(cls, id):
+        global DBSession
+        model = cls.get_by_id(id)
+        rtn = (True, model)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def delete(cls, id):
+        global DBSession
+        rtn = cls.delete_by_id(id)
+        return rtn
     #def _retrieve_model(self, request, exclude, extra, exclude_fk, max_depth):
     #    if isinstance(value, ModelMixin):
     #        value = self.__getattribute__(k).__json__(request, exclude, extra, exclude_fk, max_depth-1)

@@ -61,35 +61,10 @@ class Animal_TB(Base):
 
     related_missions = relationship('Mission_TB', backref=backref('animal', order_by=id))
 
-
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
         self.updateddatetime = datetime.datetime.now()
         super(Animal_TB, self).__init__(*args, **kwargs)
-
-
-    @classmethod
-    @ModelMethod
-    def list(cls, filattr=None, offset=None, size=None):
-        global DBSession
-        model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
-        rtn = (True, model_list)
-        return rtn
-
-    @classmethod
-    @ModelMethod
-    def show(cls, id):
-        global DBSession
-        model = cls.get_by_id(id)
-        rtn = (True, model)
-        return rtn
-
-    @classmethod
-    @ModelMethod
-    def delete(cls, id):
-        global DBSession
-        rtn = cls.delete_by_id(id)
-        return rtn
 
 class Animal_Image_TB(Base):
     __tablename__ = 'animal_image'
