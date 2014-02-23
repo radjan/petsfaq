@@ -15,7 +15,8 @@
     "angular-bootstrap": "https://github.com/angular-ui/bootstrap/archive/gh-pages.zip",
     "angular-ui-utils": "0.1.0",
     "angular-ui-map": "~0.5.0",
-    "angular-easyfb": "~0.2.2"
+    "angular-easyfb": "~0.2.2",
+    "angular-ui-router": "https://github.com/angular-ui/ui-router/archive/0.2.7.zip"
   },
   "devDependencies": {
     "angular-mocks": "1.2.5",

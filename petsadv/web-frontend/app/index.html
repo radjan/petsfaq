@@ -32,8 +32,9 @@
     <!-- <div ng-include src="'views/topNavBar.html'" ="" ng-controller="TopnavbarCtrl"></div> -->
     <!-- Add your site or application content here -->
     <!-- <div class="ngView"> -->
-    <div ng-view=""></div>
+    <!-- <div ng-view=""></div> -->
     <!-- </div> -->
+    <div ui-view></div>
     
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -53,6 +54,7 @@
     <script src="bower_components/angular-ui-map/ui-map.min.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCIdlGWQ-GB7lDs3FaiDzKpa91OqzqFCn8&sensor=true"></script>
     <script src="bower_components/angular-easyfb/angular-easyfb.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     
 
 
@@ -90,6 +92,8 @@
         <script src="scripts/services/checkApi.js"></script>
         <script src="scripts/services/httpService.js"></script>
         <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/controllers/petMapChecks.js"></script>
+        <script src="scripts/controllers/petMapLeftSide.js"></script>
         <!-- endbuild -->
 
 </body>

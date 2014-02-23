@@ -7,9 +7,10 @@ angular.module('webFrontendApp', [
   'ngRoute',
   'ui.bootstrap',
   'ui.map',
-  'ezfb'
+  'ezfb',
+  'ui.router'
 ])
-  .config(function ($routeProvider, $httpProvider, $FBProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $FBProvider) {
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
@@ -23,24 +24,28 @@ angular.module('webFrontendApp', [
       xfbml      : true  // parse XFBML
     });
 
-    $routeProvider
-      .when('/', {
+    $urlRouterProvider.when('/petMap', '/petMap/main');
+    $urlRouterProvider.otherwise('/index');
+
+    $stateProvider
+      .state('main', {
+        url: '/index',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/register', {
-        templateUrl: 'views/register.html',
-        controller: 'RegisterCtrl'
-      })
-      .when('/petMap', {
+      .state('petMap',{
+        abstract: true,
+        url: '/petMap',
         templateUrl: 'views/petMap.html',
-        controller: 'PetmapCtrl'
+        controller: 'PetmapCtrl',
       })
-      // .when('/login', {
-      //   templateUrl: 'views/login.html',
-      //   controller: 'LoginCtrl'
-      // })
-      .otherwise({
-        redirectTo: '/'
+      .state('petMap.checks', {
+        url:'/:checksType',
+        views: {
+          'leftSide':{
+            templateUrl: 'views/petMapLeftSide.html',
+          },
+          'rightSide': {}
+        }
       });
   });
