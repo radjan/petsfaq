@@ -256,7 +256,7 @@ class AnimalAPI(BaseAPI, BaseAnimal):
         """
         #for X-domain development
         self.XHeaders()
-        return slef._animal_delete()
+        return self._animal_delete()
 
 
 @view_defaults(renderer='json')
