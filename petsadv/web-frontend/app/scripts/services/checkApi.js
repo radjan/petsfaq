@@ -17,7 +17,7 @@ angular.module('webFrontendApp')
         bodyData['description'] = config.description;
         bodyData['location_id'] = config.locationId;
         bodyData['image_id'] = config.imageId;
-        bodyData['userid'] = httpService.getUserId();
+        bodyData['user_id'] = httpService.getUserId();
 
         var result = httpService.sendRequest({
           'api':'check', 
@@ -33,7 +33,7 @@ angular.module('webFrontendApp')
         var paramStr = {};
         paramStr['offset'] = config.offset;
         paramStr['size'] = config.size;
-        paramStr['userid'] = httpService.getUserId();
+        paramStr['user_id'] = httpService.getUserId();
 
         var result = httpService.sendRequest({
           'api':'check', 
@@ -52,7 +52,7 @@ angular.module('webFrontendApp')
         bodyData['description'] = config.description;
         bodyData['location_id'] = config.locationId;
         bodyData['image_id'] = config.imageId;
-        bodyData['userid'] = httpService.getUserId();
+        bodyData['user_id'] = httpService.getUserId();
 
         var result = httpService.sendRequest({
           api:'check',
