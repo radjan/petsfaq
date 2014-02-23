@@ -1,19 +1,55 @@
 'use strict';
 angular.module('webFrontendApp')
-  .controller('PetmapCtrl', ['$scope', 'checkApi', '$log', '$location',
-  	function ($scope, checkApi, $log, $location) {
+  .controller('PetmapCtrl', ['$scope', 'checkApi', '$log', '$location', '$stateParams',
+  	function ($scope, checkApi, $log, $location, $stateParams) {
+    /******** nav bar **********/
+    $scope.markers = [];
+    $scope.googleMarkers = [];
+    $scope.type = 'main';
+    $scope.$watch('type', function(){
+        $location.url('/petMap/'+ $scope.type);
+    });
 
   	/******** nav bar **********/
-	$scope.oneAtATime = true;
 	$scope.categories = [
-		{title:'最近活動點(check view)', type:'checks'},
+		{title:'最近活動點(check view)', type:'recent'},
 		{title:'歷史活動點', type:'history'},
 		{title:'熱門地點(location view)', type:'hot'}
 	];
 	$scope.setMarkers = function (type){
-		$location.path($location.path()+'/'+type);
+        $scope.googleMarkers = [];
+        // if($scope.type === type) return;
+        switch(type){
+            case $scope.categories[0].type:
+                $scope.type = type;
+                var params = {
+                    offset: 0,
+                    size: 200
+                };
+                checkApi.list(params, function(data){
+                    $scope.markers = data.data;
+                    for (var i = 0; i < $scope.markers.length; i++) {
+                        var marker = $scope.markers[i];
+                        $scope.googleMarkers.push(new google.maps.Marker({
+                            map: $scope.googleMap,
+                            position: new google.maps.LatLng(marker.location.latitude, marker.location.longitude),
+                        }));
+                    };
+                });
+                break;
+            case $scope.categories[1].type:
+                $scope.type = type;
+                break;
+            case $scope.categories[2].type:
+                $scope.type = type;
+                break;
+            default:
+                $scope.type = 'main';     
+        }
+		// $location.path($location.path()+'/'+type);
 	};
 
+    
 
 	/******** Map **********/
 	$scope.mapOptions = {

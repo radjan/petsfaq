@@ -24,6 +24,7 @@ angular.module('webFrontendApp', [
       xfbml      : true  // parse XFBML
     });
 
+    $urlRouterProvider.when('/petMap', '/petMap/main');
     $urlRouterProvider.otherwise('/index');
 
     $stateProvider
@@ -33,25 +34,40 @@ angular.module('webFrontendApp', [
         controller: 'MainCtrl'
       })
       .state('petMap',{
+        abstract: true,
         url: '/petMap',
         templateUrl: 'views/petMap.html',
         controller: 'PetmapCtrl',
       })
-      .state('petMap.checks',{
-        url: '/:mapMarkerType',
-        templateUrl: 'views/petMapChecks.html',
-        resolve: {
-          checks : function(checkApi){
-            var config = {};
-            config['offset'] = 0;
-            config['size'] = 200;
-            return checkApi.list(config, function(r){ 
-                return r;
-            });
-          }
-        },
-        controller: 'PetmapchecksCtrl'
+      .state('petMap.checks', {
+        url:'/:checksType',
+        views: {
+          'leftSide':{
+            templateUrl: 'views/petMapLeftSide.html',
+            // controller: 'PetmapleftsideCtrl'
+          },
+          'markers': {
+            templateUrl: 'views/petMapChecks.html'
+          },
+          'rightSide': {}
+        }
       });
+      // .state('petMap.checks',{
+      //   url: '/:mapMarkerType',
+      //   templateUrl: 'views/petMapChecks.html',
+      //   resolve: {
+      //     checks : function(checkApi){
+      //       var config = {};
+      //       config['offset'] = 0;
+      //       config['size'] = 200;
+      //       return checkApi.list(config, function(r){ 
+      //           return r;
+      //       });
+      //     }
+      //   },
+      //   controller: 'PetmapchecksCtrl'
+      // })
+      
     // $routeProvider
     //   .when('/', {
     //     templateUrl: 'views/main.html',
@@ -72,6 +88,10 @@ angular.module('webFrontendApp', [
     // .when('/petMapChecks', {
     //   templateUrl: 'views/petMapChecks.html',
     //   controller: 'PetmapchecksCtrl'
+    // })
+    // .when('/petMapLeftSide', {
+    //   templateUrl: 'views/petMapLeftSide.html',
+    //   controller: 'PetmapleftsideCtrl'
     // })
     //   .otherwise({
     //     redirectTo: '/'

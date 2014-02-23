@@ -1,5 +1,6 @@
 <div id="wrapper">
-	<div id="sidebar-wrapper">
+	<div ui-view="leftSide"></div>
+	<!-- <div id="sidebar-wrapper">
 		<ul class="sidebar-nav">
 			<li class="sidebar-brand"><a href="#">PetsAdv</a></li>
 			<div ng-include src="'views/login.html'" ="" ng-controller="LoginCtrl"></div>
@@ -13,7 +14,7 @@
 	    		</accordion-group>
 			</accordion>
         </ul>
-	</div>
+	</div> -->
 	<!-- <div id="menu-toggle" href="#"><i class="icon-reorder"></i>Hello</div> -->
 	<a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i>Hello</a>
 
@@ -27,7 +28,7 @@
 				  ui-options="mapOptions">
 				</div>
 			</div>
-			<div ui-view></div>
+			<div ui-view="markers"></div>
 		</div>
 	</div>
 </div>
