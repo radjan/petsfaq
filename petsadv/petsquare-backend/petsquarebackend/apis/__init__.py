@@ -7,7 +7,21 @@ log = logging.getLogger(__name__)
 from formencode import Invalid
 from pyramid.security import authenticated_userid
 
-class BaseAPI(object):
+RESERVED = ('offset', 'size', 'order_by', 'desc', 'user_id')
+IGNORE = ('ignore',)
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
+
+class Base(object):
+    # TODO move common logic here
+    def _validation_error(self, data, code):
+        # mock fake serv_rtn
+        return {'data':'',
+                'info':data,
+                'code':code,
+                'success':False}
+
+class BaseAPI(Base):
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -16,12 +30,14 @@ class BaseAPI(object):
         """
         Handle status returned from Services
         """
+        code = serv_rtn.get('code', None)
         status = serv_rtn
         if status['success'] == True:
-            self.request.status_int = scode
+            self.request.response.status = code if code is not None else scode
             rtn = {'data': status['data'], 'info': status['info']}
         else:
-            self.request.status_int = fcode
+            self.request.response.status = code if code not in (None,
+                                                                200) else fcode
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
@@ -33,16 +49,25 @@ class BaseAPI(object):
             #log.debug('request param: %s' % self.request.params)
             #log.debug('request body: %s'  % self.request.body)
             target_dict = dict()
+            to_check_dict = dict(self.request.params.copy())
+            token = to_check_dict.pop('token', None)
+            authn_userid = authenticated_userid(self.request)
+
+            #FIXME: by using
+            #authn_userid = authenticated_userid(self.request)
+            log.warn('default user_id may be used')
+            authn_userid = to_check_dict.pop('user_id', 1)
 
             if body == True:
-                target_dict.update(dict(self.request.params.copy()))
+                target_dict.update(to_check_dict)
                 if len(self.request.body) > 0:
                     target_dict.update(dict(self.request.json_body.copy()))
             else:
-                target_dict.update(dict(self.request.params.copy()))
+                target_dict.update(to_check_dict)
 
             data = dict(target_dict)
             data = schema.to_python(data)
+            data['user_id'] = authn_userid
             rtn = (True, data, 200)
 
         except Invalid, e:
@@ -70,7 +95,7 @@ class BaseAPI(object):
         if len(methods) != 0:
             self.request.response.headers.add('Access-Control-Allow-Methods', method)
 
-class BaseAPP(object):
+class BaseAPP(Base):
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -79,12 +104,13 @@ class BaseAPP(object):
         """
         Handle status returned from Services
         """
+        code = serv_rtn.get('code', None)
         status = serv_rtn
         if status['success'] == True:
-            self.request.status_int = scode
+            self.request.response.status = code if code is not None else scode
             rtn = {'data': status['data'], 'info': status['info']}
         else:
-            self.request.status_int = fcode
+            self.request.response.status = code if code is not None else fcode
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
@@ -100,8 +126,7 @@ class BaseAPP(object):
             token = to_check_dict.pop('token', None)
             authn_userid = authenticated_userid(self.request)
             #log.debug('authn_userid pop out???: %s' % authn_userid)
-            if authn_userid:
-                to_check_dict['userid'] = authn_userid[0]
+            #to_check_dict['user_id'] = authn_userid
 
             if body == True:
                 target_dict.update(to_check_dict)
@@ -112,6 +137,7 @@ class BaseAPP(object):
 
             data = dict(target_dict)
             data = schema.to_python(data)
+            data['user_id'] = authn_userid
             rtn = (True, data, 200)
 
         except Invalid, e:

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import sys
 import transaction
 
@@ -20,6 +22,16 @@ from ..models.image import Image_TB
 from ..models.check import Check_TB
 from ..models.animal import Animal_TB, Animal_Image_TB
 from ..models.token import Token_TB
+from ..models.mission import (
+    Mission_TB,
+    MissionRescue_TB,
+    MissionPickup_TB,
+    MissionStay_TB,
+    MissionDeliver_TB,
+    MissionAdopt_TB,
+    Mission_User_TB
+    )
+from ..models import mission as mission_model
 
 
 import Image as PILImage
@@ -44,15 +56,17 @@ def main(argv=sys.argv):
     with transaction.manager as tm:
 
         #erase the database tables
-        Token_TB.__table__.drop(engine, checkfirst=True)
-        Animal_Image_TB.__table__.drop(engine, checkfirst=True)
-        Animal_TB.__table__.drop(engine,   checkfirst=True) #  ^
-        Check_TB.__table__.drop(engine,    checkfirst=True) #  |
-        Location_TB.__table__.drop(engine, checkfirst=True) #  |
-        Image_TB.__table__.drop(engine,    checkfirst=True) #  |
-        User_TB.__table__.drop(engine,     checkfirst=True) #  |
-        Group_TB.__table__.drop(engine,    checkfirst=True) #  |
-        User_TB.__table__.drop(engine,     checkfirst=True) #  |
+        TABLES = (
+                  Animal_Image_TB, Animal_TB,
+                  Check_TB, Location_TB,
+                  Mission_User_TB,
+                  MissionRescue_TB, MissionPickup_TB, MissionStay_TB,
+                  MissionDeliver_TB, MissionAdopt_TB, Mission_TB,
+                  Image_TB,
+                  Token_TB, User_TB, Group_TB,
+                 )
+        for table in TABLES:
+            table.__table__.drop(engine, checkfirst=True)
         Base.metadata.create_all(engine)
 
         #create group
@@ -67,6 +81,8 @@ def main(argv=sys.argv):
                             name='pub user1', 
                             description='used as public',
                             password='no password', 
+                            email='fake@fake.com',
+                            fb_id='1122334455667788',
                             activated=True,
                             group_id=gmodel.id)
         if not success:
@@ -76,22 +92,22 @@ def main(argv=sys.argv):
         success, lmodel1 = Location_TB.create(
                             name='one', 
                             description='1', 
-                            longtitude=121.5130475, 
+                            longitude=121.5130475, 
                             latitude=25.040063, 
                             address='taipei', 
                             explorer_id=umodel.id)
         success, lmodel2 = Location_TB.create(
                             name='two', 
                             description='2', 
-                            longtitude=121.5130475, 
+                            longitude=120, 
                             latitude=25.040063, 
                             address='taipei', 
                             explorer_id=umodel.id)
         success, lmodel3 = Location_TB.create(
                             name='three', 
                             description='3',
-                            longtitude=121.5130475, 
-                            latitude=25.040063, 
+                            longitude=121.5130475, 
+                            latitude=24, 
                             address='taipei', 
                             explorer_id=umodel.id)
         if not success:
@@ -146,7 +162,7 @@ def main(argv=sys.argv):
         success, amodel2 = Animal_TB.create(name='hello kitty',
                             type='cat',
                             sub_type='kitten',
-                            status='halfway',
+                            status='stray',
                             description='haha',
                             finder_id=umodel.id,
                             find_location_id=lmodel2.id)
@@ -182,6 +198,53 @@ def main(argv=sys.argv):
         if not success:
             raise Exception(aimodel)
 
+        success, m_model1 = MissionRescue_TB.create(
+                             name=u'救小貓',
+                             status='new',
+                             completed=False,
+                             place=u'新店陽光橋橋下',
+                             note=u'傍晚出沒，怕人，用罐頭吸引也不會過來',
+                             due_time=None,
+                             reporter_id=umodel.id,
+                             host_id=umodel.id,
+                             animal_id=amodel2.id,
+                             dest_location_id=None,
+                            )
+
+        success, m_model2 = MissionAdopt_TB.create(
+                             name=u'黑白貓送養',
+                             status='closed',
+                             completed=True,
+                             place=u'新竹',
+                             note=u'卓别林賓士貓，踏雪尋梅',
+                             due_time=None,
+                             reporter_id=umodel.id,
+                             host_id=umodel.id,
+                             animal_id=amodel1.id,
+                             dest_location_id=None,
+                            )
+        if not success:
+            raise Exception(m_model2)
+
+        success, mu_model = Mission_User_TB.create(
+                             mission_id=m_model1.id,
+                             user_id=umodel.id,
+                             status='accepted',
+                             is_owner=False,
+                             description=None
+                            )
+
+        success, mu_model = Mission_User_TB.create(
+                             mission_id=m_model2.id,
+                             user_id=umodel.id,
+                             status='assigned',
+                             is_owner=True,
+                             description=u'認養成功'
+                            )
+
+        if not success:
+            raise Exception(mu_model)
+
         #create token
         success, tkmodel1 = Token_TB.create(user_id=umodel.id)
         if not success:
@@ -194,7 +257,7 @@ def main(argv=sys.argv):
         status = {}
         status = service.create(
                                 user_id=umodel.id,
-                                authn_by='facebook',
+                                authn_by='fakebook',
                                 sso_info={"key":"value", "e-mail":"abc@gm.com"},
                                 )
 
@@ -212,3 +275,9 @@ def main(argv=sys.argv):
         #    status['data'] = status['data'].__json__('fake request')
         #print status
 
+        print 'Done'
+        print 'Done'
+        print 'Done'
+        print 'Done'
+        print 'Done'
+        print 'Done'

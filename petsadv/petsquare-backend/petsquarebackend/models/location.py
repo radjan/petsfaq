@@ -12,6 +12,7 @@ from petsquarebackend.models import ModelMethod
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
+from sqlalchemy import and_
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
 
@@ -30,17 +31,17 @@ import traceback
 
 class Location_TB(Base):
     __tablename__ = 'location'
-    __public__ = ('id','name', 'description', 'longtitude', 'latitude', 'address',
+    __public__ = ('id','name', 'description', 'longitude', 'latitude', 'address',
             'explorer_id',  #fk
             'explorer',     #backref
-            'checks',       #relation
+            'checks', 'missions', 'pickup_missions_from',       #relation
             'createddatetime', 'updateddatetime')
 
 
     id          = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     name        = Column(String(255), nullable=True, unique=False, )
     description = Column(String(255), nullable=True, unique=False,)
-    longtitude  = Column(Float(255), nullable=True, unique=False,)
+    longitude   = Column(Float(255), nullable=True, unique=False,)
     latitude    = Column(Float(255), nullable=True, unique=False,)
     address     = Column(String(255), nullable=True, unique=False,)
     #fk
@@ -54,6 +55,12 @@ class Location_TB(Base):
                                  backref=backref('current_location', order_by=id),
                                  foreign_keys='[Animal_TB.current_location_id]')
 
+    missions = relationship('Mission_TB', backref=backref('dest_location', order_by=id),
+                        foreign_keys='[Mission_TB.dest_location_id]')
+
+    pickup_missions_from = relationship('MissionPickup_TB', backref=backref('from_location', order_by=id),
+                        foreign_keys='[MissionPickup_TB.from_location_id]')
+
     createddatetime = Column(DateTime, nullable=False)
     updateddatetime = Column(DateTime, nullable=False)
 
@@ -64,11 +71,11 @@ class Location_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, description, longtitude, latitude, address,
+    def create(cls, name, description, longitude, latitude, address,
             explorer_id):
         global DBSession
         model = cls(name=name, description=description,
-                longtitude=longtitude, latitude=latitude, address=address, 
+                longitude=longitude, latitude=latitude, address=address, 
                 explorer_id=explorer_id)
         DBSession.add(model)
         DBSession.flush()
@@ -93,7 +100,7 @@ class Location_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, id, name=None, description=None, longtitude=None,
+    def update(cls, id, name=None, description=None, longitude=None,
             latitude=None, address=None, explorer_id=None):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
@@ -102,7 +109,7 @@ class Location_TB(Base):
         #FIXME
         if name:        model.name = name
         if description: model.description = description
-        if longtitude:  model.longtitude = longtitude
+        if longitude:   model.longitude = longitude
         if latitude:    model.latitude = latitude
         if address:     model.address = address
         if explorer_id:      model.explorer_id = explorer_id
@@ -116,6 +123,17 @@ class Location_TB(Base):
     def delete(cls, id):
         rtn = cls.delete_by_id(id)
         return rtn
+
+    @classmethod
+    @ModelMethod
+    def search_latlng_with_radius(cls, latitude, longitude, radius, size):
+        query=DBSession.query(cls)
+        models = query.filter(and_(cls.latitude  < (latitude+radius),
+                                   cls.latitude  > (latitude-radius),
+                                   cls.longitude < (longitude+radius),
+                                   cls.longitude > (longitude-radius))
+                             ).limit(size+1).all()
+        return (True, models)
 
 def main():
     pass

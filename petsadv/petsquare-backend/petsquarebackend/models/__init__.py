@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+ #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __date__= 'Dec 04, 2013 '
 __author__= 'samuel'
@@ -144,8 +144,20 @@ class ModelMixin(object):
                     query = query.select_from(cls)
         else:
             query = session.query(cls)
+        return cls.query_with_criteria(query, filattr=filattr, offset=offset,
+                                       limit=limit, order_by=order_by,
+                                       lock_mode=lock_mode, DESC=DESC)
+
+    @classmethod
+    def query_with_criteria(cls, query, filattr=None, offset=None, limit=None,
+                            order_by=None, lock_mode=None, DESC=False):
         if filattr:
-            query = query.filter(cls.__dict__.get(filattr[0]) == filattr[1])
+            # XXX temp workaround
+            if type(filattr) is list:
+                for attr in filattr:
+                    query = query.filter(cls.__dict__.get(attr[0]) == attr[1])
+            else:
+                query = query.filter(cls.__dict__.get(filattr[0]) == filattr[1])
         #add desc
         if order_by is not None:
             if isinstance(order_by, (tuple, list)):
@@ -236,7 +248,7 @@ class ModelMixin(object):
             err_exp = str(e)
             #err_msg = err_exp + ', ' + err_tbk
             err_msg = err_exp
-            log.debug(err_tbk)
+            log.error(err_tbk)
             rtn = (False, err_msg)
         return rtn
 
@@ -244,7 +256,7 @@ class ModelMixin(object):
     def model_exception_rtn(cls, exp, ins_stk, tbk):
         rtn = []
         err_info = (cls.__tablename__, ins_stk, tbk)
-        log.debug('%s:%s, traceback:\n %s' % err_info)
+        log.error('%s:%s, traceback:\n %s' % err_info)
         rtn.append(False)
         rtn.append({'status':'fail', 'msg':'model error on %s' % ins_stk})
         return rtn
@@ -259,8 +271,11 @@ class ModelMixin(object):
         #foreignkeys = {fk_name: f_table, ...}
 
         if exclude_fk:
-            #exclude = exclude + tuple(foreignkeys.keys())
-            exclude = tuple(list(exclude) + foreignkeys.keys())
+            fks = foreignkeys.keys()
+            # not exclude id
+            if 'id' in fks:
+                fks.remove('id')
+            exclude = tuple(list(exclude) + fks)
 
         public = tuple(list(self.__public__) + list(extra)) if self.__public__ else extra
         rtn_pub = [x for x in public if x not in exclude]
@@ -286,11 +301,50 @@ class ModelMixin(object):
             rtn_dict[k] = value
         return rtn_dict
 
+    @classmethod
+    def _create(*args, **kwargs):
+        global DBSession
+        cls = args[0] # args = (cls, )
+        for k, v in kwargs.items():
+            if isinstance(v, Base):
+                kwargs.pop(k)
+                # XXX assume naming convention
+                kwargs[k + '_id'] = v.id
+        model = cls(**kwargs)
+        DBSession.add(model)
+        DBSession.flush()
+        return (True, model)
+
+    @classmethod
+    def _update(*args, **kwargs):
+        print args
+        cls, id = args # args = (cls, id)
+        global DBSession
+        model = cls.get_by_id(id)
+        updateddatetime = datetime.datetime.now()
+        log.debug('model update: %s' % model)
+        for key in ('id', 'createddatetime'):
+            if key in kwargs:
+                del kwargs[key]
+
+        for k, v in kwargs.items():
+            if v is not None:
+                model.__setattr__(k, v)
+        model.updateddatetime = updateddatetime
+        DBSession.merge(model)
+        return (True, model)
+
     #def _retrieve_model(self, request, exclude, extra, exclude_fk, max_depth):
     #    if isinstance(value, ModelMixin):
     #        value = self.__getattribute__(k).__json__(request, exclude, extra, exclude_fk, max_depth-1)
 
 Base = declarative_base(cls=ModelMixin)
+
+class tmpObj:
+    pass
+    #def __init__(TB_cls):
+    #    __public__ = TB_cls.__public__
+    #    __name__   = TB_cls.__name__
 
 
 class RootFactory(object):
@@ -299,7 +353,7 @@ class RootFactory(object):
 
     __acl__ = [
             (Allow, Everyone, 'view'),
-            (Allow, Authenticated, 'view'),
+            (Allow, Authenticated, 'login'),
             ]
     def __init__(self, request):
         self.reques=request

@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="UseCompoundDrawables" >
+
+    <ImageView
+        android:id="@+id/image_main_menu"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        tools:ignore="ContentDescription" />
+    <TextView
+        android:id="@+id/text_main_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:gravity="left|center_vertical"
+        style="@style/text_main_menu" />
+
+</LinearLayout>

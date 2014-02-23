@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pet_type">
+        <item>貓</item>
+        <item>犬</item>
+    </string-array>
+    <string-array name="pet_subtype_cat">
+        <item>成貓</item>
+        <item>奶貓</item>
+    </string-array>
+    <string-array name="pet_subtype_dog">
+        <item>大型犬</item>
+        <item>小型犬</item>
+    </string-array>
+    <string-array name="pet_health">
+        <item>健康</item>
+        <item>不健康</item>
+    </string-array>
+</resources>

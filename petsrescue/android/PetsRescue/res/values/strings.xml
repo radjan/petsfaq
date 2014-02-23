@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id" translatable="false">1423437094565204</string>
+
+    <string name="app_name">Pets Rescue</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_about">About</string>
+
+    <string name="menu_new_quest">Strays found!</string>
+    <string name="menu_quest_pager">Action!</string>
+    
+    <string name="toast_facebook_login_failed">Facebook login failed</string>
+
+    <string name="text_pet_name">Name</string>
+    <string name="text_pet_type">Type</string>
+    <string name="text_quest_location">Locaiton</string>
+    <string name="text_pet_health">Health</string>
+    <string name="text_pet_caught">Have been caught</string>
+    <string name="text_pet_photo">Photo</string>
+    <string name="text_quest_note">Note</string>
+
+    <string name="button_cancel">Cancel</string>
+    <string name="button_new_quest">Upload</string>
+    <string name="button_ok">OK</string>
+
+    <string name="title_quest_ongoing">Ongoing</string>
+    <string name="title_quest_available">Available</string>
+    <string name="title_quest_tracked">Tracked</string>
+    <string name="title_quest_completed">Completed</string>
+
+    <string name="quest_list_empty">Empty</string>
+
+    <string name="quest_type_catch">Catch</string>
+    <string name="quest_type_transport">Transport</string>
+    <string name="quest_type_halfway">Halfway</string>
+    <string name="quest_type_adopt">Adopt</string>
+    <string name="quest_type_donate">Donate</string>
+
+    <string name="text_quest_type">Mission: </string>
+
+    <string name="button_edit_quest">Edit</string>
+    <string name="button_start_quest">Start quest</string>
+    <string name="button_cancel_quest">Cancel quest</string>
+
+    <string name="text_about_link" translatable="false">http://www.petera.cc</string>
+
+</resources>

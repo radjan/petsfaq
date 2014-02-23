@@ -7,7 +7,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from petsquarebackend.models import DBSession
-from petsquarebackend.models import Base, MODEL_DEFAULT_DEPTH
+from petsquarebackend.models import Base, MODEL_DEFAULT_DEPTH, tmpObj
 from petsquarebackend.models import ModelMethod
 
 from sqlalchemy import Column
@@ -58,13 +58,15 @@ class Token_TB(Base):
         model = cls(token=token, authn_by=authn_by, sso_info=json.dumps(sso_info), user_id=user_id)
         DBSession.add(model)
         DBSession.flush()
-        rtn_model = {}
-        rtn_model['id']              = model.id
-        rtn_model['token']           = model.token
-        rtn_model['authn_by']        = model.authn_by
-        rtn_model['sso_info']        = json.loads(model.sso_info)
-        rtn_model['updateddatetime'] = model.updateddatetime
-        rtn_model['createddatetime'] = model.createddatetime
+        rtn_model = tmpObj()
+        rtn_model.update = cls.update
+        rtn_model.id              = model.id
+        rtn_model.token           = model.token
+        rtn_model.authn_by        = model.authn_by
+        rtn_model.sso_info        = json.loads(model.sso_info)
+        rtn_model.updateddatetime = model.updateddatetime
+        rtn_model.createddatetime = model.createddatetime
+        rtn_model.user = model.user
         rtn = (True, rtn_model)
         return rtn
 
@@ -77,13 +79,15 @@ class Token_TB(Base):
         model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
         rtn_list = []
         for model in model_list:
-            rtn_model = {}
-            rtn_model['id']              = model.id
-            rtn_model['token']           = model.token
-            rtn_model['authn_by']        = model.authn_by
-            rtn_model['sso_info']        = json.loads(model.sso_info)
-            rtn_model['updateddatetime'] = model.updateddatetime
-            rtn_model['createddatetime'] = model.createddatetime
+            rtn_model = tmpObj()
+            rtn_model.update = cls.update
+            rtn_model.id              = model.id
+            rtn_model.token           = model.token
+            rtn_model.authn_by        = model.authn_by
+            rtn_model.sso_info        = json.loads(model.sso_info)
+            rtn_model.updateddatetime = model.updateddatetime
+            rtn_model.createddatetime = model.createddatetime
+            rtn_model.user = model.user
             rtn_list.append(rtn_model)
         rtn = (True, rtn_list)
         return rtn
@@ -95,13 +99,15 @@ class Token_TB(Base):
         return type: dict
         """
         model = cls.get_by_id(id)
-        rtn_model = {}
-        rtn_model['id']              = model.id
-        rtn_model['token']           = model.token
-        rtn_model['authn_by']        = model.authn_by
-        rtn_model['sso_info']        = json.loads(model.sso_info)
-        rtn_model['updateddatetime'] = model.updateddatetime
-        rtn_model['createddatetime'] = model.createddatetime
+        rtn_model = tmpObj()
+        rtn_model.update = cls.update
+        rtn_model.id              = model.id
+        rtn_model.token           = model.token
+        rtn_model.authn_by        = model.authn_by
+        rtn_model.sso_info        = json.loads(model.sso_info)
+        rtn_model.updateddatetime = model.updateddatetime
+        rtn_model.createddatetime = model.createddatetime
+        rtn_model.user = model.user
         rtn = (True, rtn_model)
         return rtn
 
@@ -122,13 +128,16 @@ class Token_TB(Base):
         if user_id:  model.user_id = user_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
-        rtn_model = {}
-        rtn_model['id']              = model.id
-        rtn_model['token']           = model.token
-        rtn_model['authn_by']        = model.authn_by
-        rtn_model['sso_info']        = json.loads(model.sso_info)
-        rtn_model['updateddatetime'] = model.updateddatetime
-        rtn_model['createddatetime'] = model.createddatetime
+
+        rtn_model = tmpObj()
+        rtn_model.update = cls.update
+        rtn_model.id              = model.id
+        rtn_model.token           = model.token
+        rtn_model.authn_by        = model.authn_by
+        rtn_model.sso_info        = json.loads(model.sso_info)
+        rtn_model.updateddatetime = model.updateddatetime
+        rtn_model.createddatetime = model.createddatetime
+        rtn_model.user = model.user
         rtn = (True, rtn_model)
         return rtn
 

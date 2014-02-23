@@ -76,7 +76,7 @@ class Group_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, name, description):
+    def update(cls, id, name, description):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
@@ -99,16 +99,22 @@ class Group_TB(Base):
 
 class User_TB(Base):
     __tablename__ = 'user'
-    __public__ = ('id','name','description', 'password', 'activated',
+    __public__ = (
+            'id','name','description', 'email', 'activated', # 'password'
+            'fb_id',#sso
             'group_id',                               #fk
             'group',                                  #backref
-            'images', 'locations', 'checks', 'tokens',#relation
+            'images', 'locations', 'checks',          #relation 'tokens'
+            'pets', 'found_animals',
+            'report_missions', 'host_missions',
             'createddatetime', 'updateddatetime')
 
     id            = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     name          = Column(String(255), nullable=True, unique=False)
     description   = Column(String(255), nullable=True, unique=False)
     password      = Column(String(255), nullable=True, unique=False)
+    email         = Column(String(255), nullable=True, unique=False)
+    fb_id         = Column(String(255), nullable=True, unique=False)
     activated     = Column(Boolean,     nullable=True, unique=False)
 
     group_id      = Column(Integer, ForeignKey('group.id'), nullable=False, unique=False)
@@ -126,6 +132,11 @@ class User_TB(Base):
     found_animals = relationship('Animal_TB', backref=backref('finder', order_by=id),
                         foreign_keys='[Animal_TB.finder_id]')
 
+    report_missions = relationship('Mission_TB', backref=backref('reporter', order_by=id),
+                        foreign_keys='[Mission_TB.reporter_id]')
+    host_missions = relationship('Mission_TB', backref=backref('host', order_by=id),
+                        foreign_keys='[Mission_TB.host_id]')
+
     def __init__(self, *args, **kwargs):
         self.createddatetime = datetime.datetime.now()
         self.updateddatetime = datetime.datetime.now()
@@ -133,11 +144,10 @@ class User_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, name, description, password, activated, group_id):
+    def create(cls, name, description, password, email, fb_id, activated, group_id):
         global DBSession
-        model = cls(name=name, description=description,
-                password=password, activated=activated,
-                group_id=group_id)
+        model = cls(name=name, description=description, password=password, 
+                email=email, fb_id=fb_id, activated=activated, group_id=group_id)
         DBSession.add(model)
         DBSession.flush()
         rtn = (True, model)
@@ -159,17 +169,19 @@ class User_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update(cls, name, description, password, activated, group_id):
+    def update(cls, id, name, description, password, email, fb_id, activated, group_id):
         model = cls.get_by_id(id)
         updateddatetime = datetime.datetime.now()
         log.debug('model update: %s' % model)
 
         #FIXME
-        if name:        model.name = name
+        if name:        model.name        = name
         if description: model.description = description
-        if password:  model.password = password
-        if activated:    model.activated = activated
-        if group_id:      model.group_id = group_id
+        if password:    model.password    = password
+        if email:       model.email       = email
+        if fb_id:       model.fb_id       = fb_id
+        if activated:   model.activated   = activated
+        if group_id:    model.group_id    = group_id
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
         rtn =  (True, model)

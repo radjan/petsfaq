@@ -18,29 +18,22 @@ class AnimalService(BaseService):
         super(AnimalService, self).__init__('AnimalService', request)
 
     @ServiceMethod
-    def list(self, finder_id, offset=0, size=100):
-        if finder_id:
-            success, models = Animal_TB.list(filattr=('finder_id', finder_id),
-                                      offset=offset,
-                                      size=size)
-        else:
-            success, models = Animal_TB.list(offset=offset,
-                                      size=size)
+    def list(self, params=None, offset=0, size=100):
+        filattr = None
+        if params:
+            filattr = [item for item in params.items()]
+        success, models = Animal_TB.list(filattr=filattr,
+                                         offset=offset,
+                                         size=size)
 
         status = self.serv_rtn(success=success, model=models)
         status['info']['count'] = len(models)
         return status
 
     @ServiceMethod
-    def create(cls, name, type, sub_type, status, description, finder_id,
-               find_location_id=None):
-        success, model = Animal_TB.create(name=name,
-                                          type=type,
-                                          sub_type=sub_type,
-                                          status=status,
-                                          description=description,
-                                          finder_id=finder_id,
-                                          find_location_id=find_location_id)
+    def create(self, animal_dict):
+        # XXX not consistent with other, try to simplify the signature
+        success, model = Animal_TB.create(**animal_dict)
         return self.serv_rtn(success=success, model=model)
 
     @ServiceMethod
