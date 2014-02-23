@@ -334,6 +334,16 @@ class ModelMixin(object):
         DBSession.merge(model)
         return (True, model)
 
+    @classmethod
+    @ModelMethod
+    def create(cls, *args, **kwargs):
+        return cls._create(*args, **kwargs)
+
+    @classmethod
+    @ModelMethod
+    def update(cls, *args, **kwargs):
+        return cls._update(*args, **kwargs)
+
     #def _retrieve_model(self, request, exclude, extra, exclude_fk, max_depth):
     #    if isinstance(value, ModelMixin):
     #        value = self.__getattribute__(k).__json__(request, exclude, extra, exclude_fk, max_depth-1)

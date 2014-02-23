@@ -67,15 +67,6 @@ class Animal_TB(Base):
         self.updateddatetime = datetime.datetime.now()
         super(Animal_TB, self).__init__(*args, **kwargs)
 
-    @classmethod
-    @ModelMethod
-    def create(cls, *args, **kwargs):
-        return cls._create(*args, **kwargs)
-
-    @classmethod
-    @ModelMethod
-    def update(cls, *args, **kwargs):
-        return cls._update(*args, **kwargs)
 
     @classmethod
     @ModelMethod
@@ -128,20 +119,6 @@ class Animal_Image_TB(Base):
         self.updateddatetime = datetime.datetime.now()
         super(Animal_Image_TB, self).__init__(*args, **kwargs)
 
-    @classmethod
-    @ModelMethod
-    def create(cls, status, description, animal, image):
-        global DBSession
-
-        model = cls(status=status,
-                    description=description,
-                    animal_id=animal.id,
-                    image_id=image.id)
-        DBSession.add(model)
-        DBSession.flush()
-        rtn = (True, model)
-
-        return rtn
 def main():
     pass
 
