@@ -6,6 +6,7 @@ log = logging.getLogger(__name__)
 
 from formencode import Invalid
 from pyramid.security import authenticated_userid
+from petsquarebackend.common import util
 
 RESERVED = ('offset', 'size', 'order_by', 'desc', 'user_id')
 IGNORE = ('ignore',)
@@ -16,10 +17,7 @@ class Base(object):
     # TODO move common logic here
     def _validation_error(self, data, code):
         # mock fake serv_rtn
-        return {'data':'',
-                'info':data,
-                'code':code,
-                'success':False}
+        return util.return_dict(success=False, data='', info=data, code=code)
 
 class BaseAPI(Base):
     def __init__(self, context, request):
