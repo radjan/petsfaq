@@ -8,6 +8,7 @@ log = logging.getLogger(__name__)
 from petsquarebackend.models import DBSession
 from petsquarebackend.models import Base
 from petsquarebackend.models import ModelMethod
+from petsquarebackend import common
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -66,6 +67,47 @@ class Animal_TB(Base):
         self.updateddatetime = datetime.datetime.now()
         super(Animal_TB, self).__init__(*args, **kwargs)
 
+    @classmethod
+    @ModelMethod
+    def link_image(cls, id, image_id, desc_dict):
+        success, assoc_obj = Animal_Image_TB.get_associate_obj(id, image_id)
+        if not success and assoc_obj is common.ERROR_MODEL_OBJECT_NOT_FOUND:
+            desc_dict['animal_id'] = id
+            desc_dict['image_id'] = image_id
+            rtn = Animal_Image_TB.create(**desc_dict)
+        elif success:
+            rtn = (False, common.ERROR_RESOURCE_EXISTS)
+        else:
+            rtn = (success, assoc_obj)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def show_image_meta(cls, id, image_id):
+        return Animal_Image_TB.get_associate_obj(id, image_id)
+
+    @classmethod
+    @ModelMethod
+    def update_image_meta(cls, id, image_id, desc_dict):
+        success, assoc_obj = Animal_Image_TB.get_associate_obj(id, image_id)
+        if success and assoc_obj:
+            desc_dict['animal_id'] = id
+            desc_dict['image_id'] = image_id
+            rtn = Animal_Image_TB.update(assoc_obj.id, **desc_dict)
+        else:
+            rtn = (success, assoc_obj)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def unlink_image(cls, id, image_id):
+        success, assoc_obj = Animal_Image_TB.get_associate_obj(id, image_id)
+        if success and assoc_obj:
+            rtn = Animal_Image_TB.delete(assoc_obj.id)
+        else:
+            rtn = (success, assoc_obj)
+        return rtn
+
 class Animal_Image_TB(Base):
     __tablename__ = 'animal_image'
     __public__ = ('id', 'status', 'description',
@@ -81,7 +123,7 @@ class Animal_Image_TB(Base):
     animal_id = Column(Integer, ForeignKey('animal.id'), nullable=False, unique=False)
     image_id = Column(Integer, ForeignKey('image.id'), nullable=False, unique=False)
 
-    status          = Column(String(255), nullable=False, unique=False,)
+    status          = Column(String(255), nullable=True, unique=False,)
     description     = Column(String(255), nullable=True, unique=False,)
 
     createddatetime = Column(DateTime, nullable=False)
@@ -93,6 +135,21 @@ class Animal_Image_TB(Base):
         self.createddatetime = datetime.datetime.now()
         self.updateddatetime = datetime.datetime.now()
         super(Animal_Image_TB, self).__init__(*args, **kwargs)
+
+    @classmethod
+    @ModelMethod
+    def get_associate_obj(cls, animal_id, image_id):
+        success, items = cls.list(filattr=[('animal_id', animal_id),
+                                           ('image_id', image_id)])
+        if success and items:
+            if len(items) > 1:
+                log.error('get_associate_obj: not unique associate'
+                          ' (animal: %s, image: %s)' % (animal_id, image_id))
+            return (True, items[0])
+        elif success:
+            return (False, common.ERROR_MODEL_OBJECT_NOT_FOUND)
+        else:
+            return (success, items)
 
 def main():
     pass
