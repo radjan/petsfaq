@@ -61,9 +61,12 @@ class BaseService(object):
         # give default values
         if success and code is None:
             code = common.DEFAULT_SUCCESS_CODE
-        elif code is None:
+        elif code is None and isinstance(data, str):
             code = common.ERROR_CODE_MAPPING.get(data,
                                                  common.DEFAULT_ERROR_CODE)
+        elif code is None:
+            code = common.DEFAULT_ERROR_CODE
+
         if status is None:
             status = util.return_dict(success=success,
                                       data='',
