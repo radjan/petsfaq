@@ -1,15 +1,77 @@
 'use strict';
 angular.module('webFrontendApp')
-  .controller('PetmapCtrl', ['$scope', 'checkApi', '$log',
-  	function ($scope, checkApi, $log) {
+  .controller('PetmapCtrl', ['$scope', 'checkApi', '$log', '$location', '$stateParams', '$state',
+  	function ($scope, checkApi, $log, $location, $stateParams, $state) {
+    /******** nav bar **********/
+    $scope.markers = [];
+    $scope.googleMarkers = [];
+    $scope.type = 'main';
+    $scope.$watch('type', function(){
+        $location.url('/petMap/'+ $scope.type);
+    });
+    $scope.currentGoogleInfoWindow;
 
-  	$scope.googleMarkers = [];
- 
+  	/******** nav bar **********/
+	$scope.categories = [
+		{title:'最近活動點(check view)', type:'recent'},
+		{title:'歷史活動點', type:'history'},
+		{title:'熱門地點(location view)', type:'hot'}
+	];
+	$scope.setMarkers = function (type){
+        if($scope.type === type) return;
+        switch(type){
+            case $scope.categories[0].type:
+                $scope.googleMarkers = [];
+                $scope.type = type;
+                var params = {
+                    offset: 0,
+                    size: 200
+                };
+                checkApi.list(params, function(data){
+                    $scope.markers = data.data;
+                    for (var i = 0; i < $scope.markers.length; i++) {
+                        var marker = $scope.markers[i];
+                        $scope.googleMarkers.push(new google.maps.Marker({
+                            map: $scope.googleMap,
+                            position: new google.maps.LatLng(marker.location.latitude, marker.location.longitude),
+                        }));
+                    };
+                });
+                break;
+            case $scope.categories[1].type:
+                $scope.googleMarkers = [];
+                $scope.type = type;
+                break;
+            case $scope.categories[2].type:
+                $scope.googleMarkers = [];
+                $scope.type = type;
+                break;
+            default:
+                $scope.googleMarkers = [];
+                $scope.type = 'main';     
+        }
+	};
+
+    
+
+	/******** Map **********/
 	$scope.mapOptions = {
     	center: new google.maps.LatLng(23.5, 121),
 		zoom: 8,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
     };
+
+    $scope.markerItemClick = function (marker, index) {
+      $scope.googleMap.panTo(marker.getPosition());
+      $scope.openMarkerInfo(marker, index);
+      // checkApi.get(function(result){alert("result check id: " + result.id)}, marker.id);
+    }
+
+    $scope.openMarkerInfo = function(marker, index) {
+        $scope.currentGoogleInfoWindow.open($scope.googleMap, marker);
+        $scope.currentCheck = $scope.markers[index];
+        $state.go('petMap.detail', {checksType:$scope.type, id:$scope.currentCheck.id});
+    }; 
 	 
 	$scope.addMarker = function($event, $params) {
 		$scope.googleMarkers.push(new google.maps.Marker({
@@ -23,13 +85,6 @@ angular.module('webFrontendApp')
 	 	console.log(zoom,'zoomed');
 	};
 	 
-	$scope.openMarkerInfo = function(marker) {
-		$scope.currentGoogleMarker = marker;
-		$scope.currentGoogleMarkerLat = marker.getPosition().lat();
-		$scope.currentGoogleMarkerLng = marker.getPosition().lng();
-		$scope.currentGoogleMarkerTitle = marker.getTitle();
-		$scope.currentGoogleInfoWindow.open($scope.googleMap, marker);
-	};
 	 
 	$scope.setMarkerPosition = function(marker, lat, lng) {
 		var config = {};
@@ -38,7 +93,7 @@ angular.module('webFrontendApp')
 		config['locationId'] = marker.locationId;
 		config['imageId'] = marker.imageId;
 		config['id'] = marker.id;
-		
+
 		checkApi.update(config, function(result){
 			$log.info('Update marker status: '+result.info.status + ', msg: '+result.info.msg);
 			$scope.checksInfo[marker.index].title = $scope.currentGoogleMarkerTitle;
@@ -48,59 +103,4 @@ angular.module('webFrontendApp')
 		
 	};
 
-    $scope.markerItemClick = function (marker) {
-      $scope.googleMap.panTo(marker.getPosition());
-      $scope.openMarkerInfo(marker);
-      // checkApi.get(function(result){alert("result check id: " + result.id)}, marker.id);
-    }
-  	 
-	/********nav bar **********/
-	$scope.oneAtATime = true;
-	$scope.categories = [
-		{title:'最近活動點', type:'recent'},
-		{title:'歷史活動點', type:'history'},
-		{title:'熱門地點', type:'hot'}
-	];
-
-	var setMarkerList = function(result){
-		var recentMarkers = [];
-		var data = result.data;
-		for (var i = 0; i < data.length; i++) {
-			var myLatlng = new google.maps.LatLng(data[i].location.latitude, data[i].location.longtitude);
-			recentMarkers.push(new google.maps.Marker({
-			    'map': $scope.googleMap,
-			    'index': i,
-			    'position': myLatlng,
-                'id': data[i].id, // passing id for later use
-                'title': data[i].title,
-                'description': data[i].description,
-                'locationId': data[i].location.id,
-                'imageId': data[i].image.id
-			 }));
-			
-		}
-		$scope.googleMarkers = recentMarkers;
-		$scope.checksInfo = data;
-	};
-
-	$scope.setMarkers = function (type){
-		if (type === 'recent') {
-			var config = {};
-			config['offset'] = 0;
-			config['size'] = 200;
-			checkApi.list(config, setMarkerList);
-		} else if (type === 'history'){
-			$scope.googleMarkers = [];
-		} else if (type === 'hot'){
-			$scope.googleMarkers = [];
-		}
-	};
-
-	// $scope.testPost = function(){
-	// 	checkApi.create(testPostCB);
-	// };
-
-	// var testPostCB = function(data){
-	// 	alert(data);
-	// };
   }]);

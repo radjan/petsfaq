@@ -1,38 +1,9 @@
 <div id="wrapper">
-	<div id="sidebar-wrapper">
-		<ul class="sidebar-nav">
-			<li class="sidebar-brand"><a href="#">PetsAdv</a></li>
-			<div ng-include src="'views/login.html'" ="" ng-controller="LoginCtrl"></div>
-			<accordion close-others="oneAtATime">
-				<accordion-group heading="{{category.title}}" ng-repeat="category in categories" ng-click="setMarkers(category.type)">
-	      			<ul>
-					  <li ng-repeat="marker in googleMarkers">
-					    <a ng-click="markerItemClick(marker)">{{checksInfo[$index].title}}</a>
-					  </li>
-					</ul>
-	    		</accordion-group>
-			</accordion>
-        </ul>
-	</div>
-	<!-- <div id="menu-toggle" href="#"><i class="icon-reorder"></i>Hello</div> -->
+	<div ui-view="leftSide"></div>
 	<a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i>Hello</a>
 
 	<div id="page-content-wrapper">
 		<div id="map" class="row-fluid">
-			<!-- this is the confusing part. we have to point the map marker directive
-			  at an existing google.maps.Marker object, so it can hook up events -->
-			<div ng-repeat="marker in googleMarkers" ui-map-marker="googleMarkers[$index]"
-			  ui-event="{'map-click': 'openMarkerInfo(marker)'}">
-			</div>
-			 
-			<div ui-map-info-window="currentGoogleInfoWindow" style="height:300px">
-			  <!-- <h1>{{currentGoogleMarkerTitle}}</h1> -->
-			  <h1><input ng-model="currentGoogleMarkerTitle"></h1>
-			  Lat: <input ng-model="currentGoogleMarkerLat">, Lng: <input ng-model="currentGoogleMarkerLng">
-			  <a class="btn btn-info" ng-click="setMarkerPosition(currentGoogleMarker, currentGoogleMarkerLat, currentGoogleMarkerLng)">Set Position</a>
-			  <!-- <img src="http://hk.huaxia.com/thjq/jsxw/gj/images/2010/12/06/743937.jpg"> -->
-			</div>
-			 
 			<!-- Giving the div an id="map_canvas" fix problems with twitter bootstrap affecting
 			google maps -->
 			<div>
@@ -41,8 +12,22 @@
 				  ui-options="mapOptions">
 				</div>
 			</div>
+			<div ng-repeat="marker in googleMarkers" ui-map-marker="googleMarkers[$index]"
+			  ui-event="{'map-click': 'openMarkerInfo(marker, $index)'}">
+			</div>
+			 
+			<div ui-map-info-window="currentGoogleInfoWindow" style="height:200px">
+			    <p>{{currentCheck.description}}</p>
+			    <hr>
+			    <p>地點：{{currentCheck.location.name}}</p>
+			    <p>人氣：{{currentCheck.location.checks.length}}</p>
+			    <p>地址：{{currentCheck.location.address}}</p>
+			</div>
+			
 		</div>
 	</div>
+
+	<div ui-view="rightSide"></div>
 </div>
 
 <script>
