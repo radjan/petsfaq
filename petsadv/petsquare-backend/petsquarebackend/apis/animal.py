@@ -76,6 +76,15 @@ class SchemaAnimalPut(SchemaAnimalsPost):
     updateddatetime = validators.UnicodeString(if_missing=IGNORE)
     accepter_assocs = validators.UnicodeString(if_missing=IGNORE)
 
+class SchemaAnimalImagesPost(Schema):
+    image_id    = validators.Int()
+    status      = validators.UnicodeString(if_missing=IGNORE)
+    description = validators.UnicodeString(if_missing=IGNORE)
+
+class SchemaAnimalImage(Schema):
+    status      = validators.UnicodeString(if_missing=IGNORE)
+    description = validators.UnicodeString(if_missing=IGNORE)
+
 class BaseAnimal(object):
     """
     For Inheritance only
@@ -192,6 +201,105 @@ class BaseAnimal(object):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
+    def _animal_images_link(self):
+        """
+        link animal image
+        API: POST /animal/<id:\d+>/images
+        """
+        #validation
+        success, data, code = self.validate(SchemaAnimalImagesPost)
+
+        try:
+            #get id from route_path
+            animal_id = self.request.matchdict['id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = AnimalService(self.request)
+            params = dict((k, v) for k, v in data.items()
+                                    if k in PARAMS and v is not IGNORE)
+            serv_rtn = serv.link_image(animal_id, data['image_id'], data)
+        else:
+            serv_rtn = self._validation_error(data, code)
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+    def _animal_image_show(self):
+        """
+        show animal image meta
+        API: GET /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        #validation
+        success, data, code = self.validate(SchemaAnimalImage)
+
+        try:
+            #get id from route_path
+            animal_id = self.request.matchdict['id'].encode('utf-8', 'ignore')
+            image_id = self.request.matchdict['image_id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = AnimalService(self.request)
+            serv_rtn = serv.show_image_meta(animal_id, image_id)
+        else:
+            serv_rtn = self._validation_error(data, code)
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+    def _animal_image_update(self):
+        """
+        update animal image meta
+        API: PUT /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        #validation
+        success, data, code = self.validate(SchemaAnimalImage)
+
+        try:
+            #get id from route_path
+            animal_id = self.request.matchdict['id'].encode('utf-8', 'ignore')
+            image_id = self.request.matchdict['image_id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = AnimalService(self.request)
+            params = dict((k, v) for k, v in data.items()
+                                    if k in PARAMS and v is not IGNORE)
+            serv_rtn = serv.update_image_meta(animal_id, image_id, data)
+        else:
+            serv_rtn = self._validation_error(data, code)
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+    def _animal_image_unlink(self):
+        """
+        unlink animal image
+        API: DELETE /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        #validation
+        success, data, code = self.validate(SchemaAnimalImage)
+
+        try:
+            #get id from route_path
+            animal_id = self.request.matchdict['id'].encode('utf-8', 'ignore')
+            image_id = self.request.matchdict['image_id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = AnimalService(self.request)
+            serv_rtn = serv.unlink_image(animal_id, image_id)
+        else:
+            serv_rtn = self._validation_error(data, code)
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
 @view_defaults(renderer='json')
 class AnimalAPI(BaseAPI, BaseAnimal):
     @view_config(route_name='animals', request_method='OPTIONS')
@@ -258,6 +366,45 @@ class AnimalAPI(BaseAPI, BaseAnimal):
         self.XHeaders()
         return self._animal_delete()
 
+    @view_config(route_name='animal-images', request_method='POST')
+    def animal_images_link(self):
+        """
+        link animal image
+        API: POST /animal/<id:\d+>/images
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._animal_images_link()
+
+    @view_config(route_name='animal-image', request_method='GET')
+    def animal_images_show(self):
+        """
+        show animal image meta
+        API: GET /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._animal_image_show()
+
+    @view_config(route_name='animal-image', request_method='PUT')
+    def animal_images_update(self):
+        """
+        update animal image meta
+        API: PUT /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._animal_image_update()
+
+    @view_config(route_name='animal-image', request_method='DELETE')
+    def animal_images_unlink(self):
+        """
+        unlink animal image
+        API: DELETE /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        #for X-domain development
+        self.XHeaders()
+        return self._animal_image_unlink()
 
 @view_defaults(renderer='json')
 class AnimalAPP(BaseAPP, BaseAnimal):
@@ -281,6 +428,37 @@ class AnimalAPP(BaseAPP, BaseAnimal):
     def animal_delete(self):
         return self._animal_delete()
 
+    @view_config(route_name='app-animal-images', request_method='POST')
+    def animal_images_link(self):
+        """
+        link animal image
+        API: POST /animal/<id:\d+>/images
+        """
+        return self._animal_images_link()
+
+    @view_config(route_name='app-animal-image', request_method='GET')
+    def animal_images_show(self):
+        """
+        show animal image meta
+        API: GET /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        return self._animal_image_show()
+
+    @view_config(route_name='app-animal-image', request_method='PUT')
+    def animal_images_update(self):
+        """
+        update animal image meta
+        API: PUT /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        return self._animal_image_update()
+
+    @view_config(route_name='app-animal-image', request_method='DELETE')
+    def animal_images_unlink(self):
+        """
+        unlink animal image
+        API: DELETE /animal/<id:\d+>/image/<image_id:\d+>
+        """
+        return self._animal_image_unlink()
 
 def main():
     pass
