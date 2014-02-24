@@ -51,6 +51,32 @@ class AnimalService(BaseService):
         success, model = Animal_TB.delete(id=id)
         return self.serv_rtn(success=success, model=model)
 
+    @ServiceMethod
+    def link_image(self, id, image_id, desc_dict=None):
+        if desc_dict is None:
+            desc_dict = {}
+        success, model = Animal_TB.link_image(id, image_id, desc_dict)
+        return self.serv_rtn(success=success, model=model)
+
+    @ServiceMethod
+    def show_image_meta(self, id, image_id):
+        success, model = Animal_TB.show_image_meta(id, image_id)
+        return self.serv_rtn(success=success, model=model)
+
+    @ServiceMethod
+    def update_image_meta(self, id, image_id, desc_dict=None):
+        if desc_dict is None:
+            desc_dict = {}
+        success, model = Animal_TB.update_image_meta(id, image_id, desc_dict)
+        return self.serv_rtn(success=success, model=model)
+
+    @ServiceMethod
+    def unlink_image(self, id, image_id, desc_dict=None):
+        if desc_dict is None:
+            desc_dict = {}
+        success, model = Animal_TB.unlink_image(id, image_id, desc_dict)
+        return self.serv_rtn(success=success, model=model)
+
 def main():
     pass
 
