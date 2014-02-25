@@ -39,7 +39,7 @@
             android:text="@string/text_quest_location"
             style="@style/text_detail_label" />
         <TextView
-            android:id="@+id/text_quest_location"
+            android:id="@+id/text_quest_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/text_detail" />

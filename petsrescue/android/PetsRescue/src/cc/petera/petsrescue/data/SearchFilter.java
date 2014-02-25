@@ -1,16 +1,16 @@
 package cc.petera.petsrescue.data;
 
 public class SearchFilter {
-    public boolean checkOwnerId = true;
-    public long ownerId;
-    public boolean checkFinished = true;
-    public boolean finished;
+    public boolean checkHostId = true;
+    public long host_id;
+    public boolean checkCompleted = true;
+    public boolean completed;
 
-    public boolean filter(Quest quest) {
-        if (checkOwnerId && this.ownerId != quest.ownerId) {
+    public boolean filter(Mission mission) {
+        if (checkHostId && this.host_id != mission.host_id) {
             return false;
         }
-        else if (checkFinished && this.finished != quest.finished) {
+        else if (checkCompleted && this.completed != mission.completed) {
             return false;
         }
 

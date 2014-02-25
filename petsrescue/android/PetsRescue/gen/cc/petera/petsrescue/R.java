@@ -255,8 +255,8 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f040018;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f040019;
         public static final int edit_pet_name=0x7f04001b;
-        public static final int edit_quest_location=0x7f04001e;
         public static final int edit_quest_note=0x7f040022;
+        public static final int edit_quest_place=0x7f04001e;
         public static final int fragment_container=0x7f040003;
         public static final int fragment_login=0x7f040005;
         public static final int fragment_main_menu=0x7f040004;
@@ -276,8 +276,8 @@ containing a value of this type.
         public static final int text_pet_health=0x7f040029;
         public static final int text_pet_name=0x7f040026;
         public static final int text_pet_type=0x7f040027;
-        public static final int text_quest_location=0x7f040028;
         public static final int text_quest_note=0x7f04002a;
+        public static final int text_quest_place=0x7f040028;
         public static final int text_type=0x7f040032;
     }
     public static final class layout {
@@ -297,11 +297,11 @@ containing a value of this type.
         public static final int com_facebook_search_bar_layout=0x7f03000d;
         public static final int com_facebook_usersettingsfragment=0x7f03000e;
         public static final int fragment_about=0x7f03000f;
-        public static final int fragment_edit_quest=0x7f030010;
-        public static final int fragment_quest_detail=0x7f030011;
-        public static final int fragment_quest_list=0x7f030012;
+        public static final int fragment_edit_mission=0x7f030010;
+        public static final int fragment_mission_detail=0x7f030011;
+        public static final int fragment_mission_list=0x7f030012;
         public static final int item_main_menu=0x7f030013;
-        public static final int item_quest=0x7f030014;
+        public static final int item_mission=0x7f030014;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
@@ -345,11 +345,11 @@ containing a value of this type.
         public static final int menu_new_quest=0x7f07001d;
         public static final int menu_quest_pager=0x7f07001e;
         public static final int quest_list_empty=0x7f07002e;
-        public static final int quest_type_adopt=0x7f070032;
-        public static final int quest_type_catch=0x7f07002f;
-        public static final int quest_type_donate=0x7f070033;
-        public static final int quest_type_halfway=0x7f070031;
-        public static final int quest_type_transport=0x7f070030;
+        public static final int quest_type_adopt=0x7f070033;
+        public static final int quest_type_deliver=0x7f070032;
+        public static final int quest_type_pickup=0x7f070030;
+        public static final int quest_type_rescue=0x7f07002f;
+        public static final int quest_type_stay=0x7f070031;
         public static final int text_about_link=0x7f070038;
         public static final int text_pet_caught=0x7f070024;
         public static final int text_pet_health=0x7f070023;
