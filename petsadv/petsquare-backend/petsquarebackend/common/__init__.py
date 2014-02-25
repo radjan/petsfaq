@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__date__= 'Fan 23, 2014 '
+__date__= 'Feb 23, 2014 '
 __author__= 'rad'
 import logging
 log = logging.getLogger(__name__)
