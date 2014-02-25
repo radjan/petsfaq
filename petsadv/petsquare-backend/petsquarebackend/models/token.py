@@ -60,7 +60,7 @@ class Token_TB(Base):
         model = cls(token=token, authn_by=authn_by, sso_info=json.dumps(sso_info), user_id=user_id)
         DBSession.add(model)
         DBSession.flush()
-        rtn_model = return_tmpObj()
+        rtn_model = return_tmpObj(cls)
         rtn_model.id              = model.id
         rtn_model.token           = model.token
         rtn_model.authn_by        = model.authn_by
@@ -80,7 +80,7 @@ class Token_TB(Base):
         model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
         rtn_list = []
         for model in model_list:
-            rtn_model = return_tmpObj()
+            rtn_model = return_tmpObj(cls)
             cls.update()
             rtn_model.id              = model.id
             rtn_model.token           = model.token
@@ -100,7 +100,7 @@ class Token_TB(Base):
         return type: dict
         """
         model = cls.get_by_id(id)
-        rtn_model = return_tmpObj()
+        rtn_model = return_tmpObj(cls)
         cls.update()
         rtn_model.id              = model.id
         rtn_model.token           = model.token
@@ -130,7 +130,7 @@ class Token_TB(Base):
         model.updateddatetime = updateddatetime
         DBSession.merge(model)
 
-        rtn_model = return_tmpObj()
+        rtn_model = return_tmpObj(cls)
         rtn_model.id              = model.id
         rtn_model.token           = model.token
         rtn_model.authn_by        = model.authn_by
