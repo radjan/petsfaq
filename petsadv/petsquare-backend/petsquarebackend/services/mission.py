@@ -18,6 +18,7 @@ from petsquarebackend.models.mission import (
     MissionStay_TB,
     MissionDeliver_TB,
     MissionAdopt_TB,
+    MissionSupport_TB,
     )
 import petsquarebackend.models.mission as mission_model
 
@@ -26,6 +27,7 @@ MISSION_PICKUP = mission_model.MISSION_PICKUP
 MISSION_STAY = mission_model.MISSION_STAY
 MISSION_DELIVER = mission_model.MISSION_DELIVER
 MISSION_ADOPT = mission_model.MISSION_ADOPT
+MISSION_SUPPORT = mission_model.MISSION_SUPPORT
 
 TYPE_CLASS = {
         MISSION_RESCUE: MissionRescue_TB,
@@ -33,6 +35,7 @@ TYPE_CLASS = {
         MISSION_STAY: MissionStay_TB,
         MISSION_DELIVER: MissionDeliver_TB,
         MISSION_ADOPT: MissionAdopt_TB,
+        MISSION_SUPPORT: MissionSupport_TB,
     }
 
 class MissionService(BaseService):

@@ -29,6 +29,7 @@ from ..models.mission import (
     MissionStay_TB,
     MissionDeliver_TB,
     MissionAdopt_TB,
+    MissionSupport_TB,
     Mission_User_TB
     )
 from ..models import mission as mission_model
@@ -61,7 +62,8 @@ def main(argv=sys.argv):
                   Check_TB, Location_TB,
                   Mission_User_TB,
                   MissionRescue_TB, MissionPickup_TB, MissionStay_TB,
-                  MissionDeliver_TB, MissionAdopt_TB, Mission_TB,
+                  MissionDeliver_TB, MissionAdopt_TB, MissionSupport_TB,
+                  Mission_TB,
                   Image_TB,
                   Token_TB, User_TB, Group_TB,
                  )

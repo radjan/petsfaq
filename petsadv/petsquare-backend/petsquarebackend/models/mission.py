@@ -32,6 +32,7 @@ MISSION_PICKUP = 'pickup'
 MISSION_STAY = 'stay'
 MISSION_DELIVER = 'deliver'
 MISSION_ADOPT = 'adopt'
+MISSION_SUPPORT = 'support'
 
 class Mission_TB(Base):
     __tablename__ = 'mission'
@@ -182,6 +183,17 @@ class MissionAdopt_TB(Mission_TB):
     }
     id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
     requirement = Column(String, nullable=True)
+
+class MissionSupport_TB(Mission_TB):
+    __tablename__ = 'mission_support'
+    __public__ = tuple(list(Mission_TB.__public__) +
+                       ['requirement', 'update'])
+    __mapper_args__ = {
+        'polymorphic_identity': MISSION_SUPPORT,
+    }
+    id = Column(Integer, ForeignKey('mission.id'), primary_key=True)
+    requirement = Column(String, nullable=True)
+    update = Column(String, nullable=True)
 
 class Mission_User_TB(Base):
     __tablename__ = 'mission_user'
