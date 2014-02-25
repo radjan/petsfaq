@@ -70,10 +70,10 @@ public class MainMenuFragment extends ListFragment {
         MainActivity mainActivity = (MainActivity) this.getActivity();
         switch (position) {
         case 0:
-            mainActivity.showNewQuestPage();
+            mainActivity.showNewMissionPage();
             break;
         case 1:
-            mainActivity.showQuestPagerPage(QuestPagerFragment.TAB_ONGOING);
+            mainActivity.showMissionPagerPage(MissionPagerFragment.TAB_ONGOING);
             break;
         }
     }

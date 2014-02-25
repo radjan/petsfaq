@@ -13,11 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import cc.petera.petsrescue.MainActivity;
 import cc.petera.petsrescue.R;
-import cc.petera.petsrescue.data.Quest;
 import cc.petera.petsrescue.data.SearchFilter;
+import cc.petera.petsrescue.provider.MissionProvider;
 
-public class QuestPagerFragment extends Fragment {
-    private static final String TAG = "RescueListFragment";
+public class MissionPagerFragment extends Fragment {
+    private static final String TAG = "MissionPagerFragment";
 
     public static final int TAB_ONGOING = 0;
     public static final int TAB_AVAILABLE = 1;
@@ -61,11 +61,11 @@ public class QuestPagerFragment extends Fragment {
     ViewPager mViewPager;
     RescueListPagerAdapter mAdapter;
     int mDefaultTab = TAB_ONGOING;
-    QuestListFragment[] mFragments;
+    MissionListFragment[] mFragments;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewPager = (ViewPager) inflater.inflate(R.layout.fragment_quest_list, container, false);
+        mViewPager = (ViewPager) inflater.inflate(R.layout.fragment_mission_list, container, false);
 
         createFragments();
         mAdapter = new RescueListPagerAdapter(this.getChildFragmentManager());
@@ -105,25 +105,25 @@ public class QuestPagerFragment extends Fragment {
 
         //TODO:
 
-        mFragments = new QuestListFragment[TAB_COUNT];
-        mFragments[TAB_ONGOING] = new QuestListFragment();
+        mFragments = new MissionListFragment[TAB_COUNT];
+        mFragments[TAB_ONGOING] = new MissionListFragment();
         SearchFilter filter = new SearchFilter();
-        filter.ownerId = ((MainActivity) getActivity()).getOwnerId();
-        filter.finished = false;
+        filter.host_id = ((MainActivity) this.getActivity()).getUserId();
+        filter.completed = false;
         mFragments[TAB_ONGOING].setSearchFilter(filter);
 
-        mFragments[TAB_AVAILABLE] = new QuestListFragment();
+        mFragments[TAB_AVAILABLE] = new MissionListFragment();
         filter = new SearchFilter();
-        filter.ownerId = Quest.OWNER_ID_NONE;
-        filter.finished = false;
+        filter.host_id = MissionProvider.INVALID_ID;
+        filter.completed = false;
         mFragments[TAB_AVAILABLE].setSearchFilter(filter);
 
-        mFragments[TAB_TRACKED] = new QuestListFragment();
+        mFragments[TAB_TRACKED] = new MissionListFragment();
 
-        mFragments[TAB_COMPLETED] = new QuestListFragment();
+        mFragments[TAB_COMPLETED] = new MissionListFragment();
         filter = new SearchFilter();
-        filter.ownerId = ((MainActivity) getActivity()).getOwnerId();
-        filter.finished = true;
+        filter.host_id = ((MainActivity) getActivity()).getUserId();
+        filter.completed = true;
         mFragments[TAB_COMPLETED].setSearchFilter(filter);
     }
 
@@ -131,7 +131,7 @@ public class QuestPagerFragment extends Fragment {
         if (null == mFragments) {
             return;
         }
-        for (QuestListFragment fragment : mFragments) {
+        for (MissionListFragment fragment : mFragments) {
             fragment.refresh();
         }
     }

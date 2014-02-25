@@ -28,25 +28,25 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import cc.petera.petsrescue.MainActivity;
 import cc.petera.petsrescue.R;
-import cc.petera.petsrescue.data.Pet;
-import cc.petera.petsrescue.data.Quest;
+import cc.petera.petsrescue.data.Animal;
+import cc.petera.petsrescue.data.Mission;
 
-public class EditQuestFragment extends Fragment {
-    private static final String TAG = "EditQuestFragment";
+public class EditMissionFragment extends Fragment {
+    private static final String TAG = "EditMissionFragment";
 
     public interface Listener {
-        void onCancel(EditQuestFragment fragment);
-        void onOK(EditQuestFragment fragment, Quest quest);
+        void onCancel(EditMissionFragment fragment);
+        void onOK(EditMissionFragment fragment, Mission mission);
     }
 
     Listener mListener;
     Bitmap mPhoto;
-    Quest mQuest;
+    Mission mMission;
 
     EditText mNameEdit;
     Spinner mTypeSpinner;
     Spinner mSubtypeSpinner;
-    EditText mLocationEdit;
+    EditText mPlaceEdit;
     Spinner mHealthSpinner;
     CheckBox mCaughtCheck;
     ImageView mPhotoView;
@@ -75,11 +75,11 @@ public class EditQuestFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ScrollView scrollView = (ScrollView) inflater.inflate(R.layout.fragment_edit_quest, container, false);
+        ScrollView scrollView = (ScrollView) inflater.inflate(R.layout.fragment_edit_mission, container, false);
         mNameEdit = (EditText) scrollView.findViewById(R.id.edit_pet_name);
         mTypeSpinner = (Spinner) scrollView.findViewById(R.id.spinner_pet_type);
         mSubtypeSpinner = (Spinner) scrollView.findViewById(R.id.spinner_pet_subtype);
-        mLocationEdit = (EditText) scrollView.findViewById(R.id.edit_quest_location);
+        mPlaceEdit = (EditText) scrollView.findViewById(R.id.edit_quest_place);
         mHealthSpinner = (Spinner) scrollView.findViewById(R.id.spinner_pet_health);
         mCaughtCheck = (CheckBox) scrollView.findViewById(R.id.check_pet_caught);
         mPhotoView = (ImageView) scrollView.findViewById(R.id.image_pet_photo);
@@ -117,7 +117,7 @@ public class EditQuestFragment extends Fragment {
             }
         });
 
-        mLocationEdit.addTextChangedListener(new TextWatcher() {
+        mPlaceEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -144,16 +144,16 @@ public class EditQuestFragment extends Fragment {
             public void onClick(View v) {
                 clear();
                 hideKeyboard();
-                mListener.onCancel(EditQuestFragment.this);
+                mListener.onCancel(EditMissionFragment.this);
             }
         });
         mOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Quest quest = getQuest();
+                Mission mission = getMission();
                 clear();
                 hideKeyboard();
-                mListener.onOK(EditQuestFragment.this, quest);
+                mListener.onOK(EditMissionFragment.this, mission);
             }
         });
         updateViews();
@@ -165,8 +165,8 @@ public class EditQuestFragment extends Fragment {
         mListener = listener;
     }
 
-    public void setQuest(Quest quest) {
-        mQuest = quest;
+    public void setMission(Mission mission) {
+        mMission = mission;
     }
 
     void clear() {
@@ -174,11 +174,11 @@ public class EditQuestFragment extends Fragment {
     }
 
     public void updateViews() {
-        if (null == mQuest) {
+        if (null == mMission) {
             mNameEdit.setText("");
             mTypeSpinner.setSelection(0);
             mHealthSpinner.setSelection(0);
-            mLocationEdit.setText("");
+            mPlaceEdit.setText("");
             mCaughtCheck.setVisibility(View.VISIBLE);
             mCaughtCheck.setChecked(false);
             mPhotoView.setImageBitmap(null);
@@ -186,45 +186,41 @@ public class EditQuestFragment extends Fragment {
             mOkButton.setText(R.string.button_new_quest);
         }
         else {
-            mNameEdit.setText(mQuest.pet.name);
-            mTypeSpinner.setSelection(mQuest.pet.type);
-            mHealthSpinner.setSelection(mQuest.pet.subtype);
-            mLocationEdit.setText(mQuest.location);
+            mNameEdit.setText(mMission.animal.name);
+            mTypeSpinner.setSelection(mMission.animal.type);
+            mHealthSpinner.setSelection(mMission.animal.subtype);
+            mPlaceEdit.setText(mMission.place);
             mCaughtCheck.setVisibility(View.GONE);
-            mPhotoView.setImageBitmap(mQuest.pet.photo);
-            mNoteEdit.setText(mQuest.note);
+            mPhotoView.setImageBitmap(mMission.animal.photo);
+            mNoteEdit.setText(mMission.note);
             mOkButton.setText(R.string.button_ok);
         }
 
         updateOkButton();
     }
 
-    Quest getQuest() {
-        Quest quest = new Quest();
-        quest.pet = new Pet();
-        if (null == mQuest) {
-            quest.id = Quest.ID_UNKNOWN;
-            quest.type = mCaughtCheck.isChecked() ? Quest.Type.HALFWAY : Quest.Type.CATCH;
-            quest.ownerId = Quest.OWNER_ID_NONE;
-            quest.finished = false;
-            quest.pet.id = Quest.ID_UNKNOWN;
+    Mission getMission() {
+        Mission mission = new Mission();
+        mission.animal = new Animal();
+        if (null == mMission) {
+            mission.type = mCaughtCheck.isChecked() ? Mission.TYPE_STAY : Mission.TYPE_RESCUE;
+            mission.completed = false;
         }
         else {
-            quest.id = mQuest.id;
-            quest.type = mQuest.type;
-            quest.ownerId = mQuest.ownerId;
-            quest.finished = mQuest.finished;
-            quest.pet.id = mQuest.pet.id;
+            mission.id = mMission.id;
+            mission.type = mMission.type;
+            mission.completed = mMission.completed;
+            mission.animal.id = mMission.animal.id;
         }
-        quest.pet.name = mNameEdit.getText().toString();
-        quest.pet.type = (int) mTypeSpinner.getSelectedItemId();
-        quest.pet.subtype = (int) mSubtypeSpinner.getSelectedItemId();
-        quest.pet.health = (int) mHealthSpinner.getSelectedItemId();
-        quest.pet.photo = mPhoto;
-        quest.location = mLocationEdit.getText().toString();
-        quest.note = mNoteEdit.getText().toString();
+        mission.animal.name = mNameEdit.getText().toString();
+        mission.animal.type = (int) mTypeSpinner.getSelectedItemId();
+        mission.animal.subtype = (int) mSubtypeSpinner.getSelectedItemId();
+        mission.animal.health = (int) mHealthSpinner.getSelectedItemId();
+        mission.animal.photo = mPhoto;
+        mission.place = mPlaceEdit.getText().toString();
+        mission.note = mNoteEdit.getText().toString();
 
-        return quest;
+        return mission;
     }
 
     void updateOkButton() {
@@ -232,7 +228,7 @@ public class EditQuestFragment extends Fragment {
             mOkButton.setEnabled(false);
             return;
         }
-        else if (0 == mLocationEdit.length()) {
+        else if (0 == mPlaceEdit.length()) {
             mOkButton.setEnabled(false);
             return;
         }

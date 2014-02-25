@@ -27,11 +27,12 @@
 
     <string name="quest_list_empty">沒任務</string>
 
-    <string name="quest_type_catch">捕捉</string>
-    <string name="quest_type_transport">運送</string>
-    <string name="quest_type_halfway">中途</string>
+    
+    <string name="quest_type_rescue">救援</string>
+    <string name="quest_type_pickup">接</string>
+    <string name="quest_type_stay">留</string>
+    <string name="quest_type_deliver">送</string>
     <string name="quest_type_adopt">認養</string>
-    <string name="quest_type_donate">捐助</string>
 
     <string name="text_quest_type">任務: </string>
 

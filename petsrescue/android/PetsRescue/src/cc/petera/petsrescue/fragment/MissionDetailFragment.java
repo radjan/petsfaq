@@ -11,21 +11,22 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import cc.petera.petsrescue.MainActivity;
 import cc.petera.petsrescue.R;
-import cc.petera.petsrescue.data.Quest;
+import cc.petera.petsrescue.data.Mission;
+import cc.petera.petsrescue.provider.MissionProvider;
 
-public class QuestDetailFragment extends Fragment {
+public class MissionDetailFragment extends Fragment {
 
     public interface Listener {
         //TODO:
     }
 
     Listener mListener;
-    Quest mQuest;
+    Mission mMission;
 
     Button mEditButton;
     TextView mNameView;
     TextView mTypeView;
-    TextView mLocationView;
+    TextView mPlaceView;
     TextView mHealthView;
     ImageView mPhotoView;
     TextView mNoteView;
@@ -34,11 +35,11 @@ public class QuestDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ScrollView scrollView = (ScrollView) inflater.inflate(R.layout.fragment_quest_detail, container, false);
+        ScrollView scrollView = (ScrollView) inflater.inflate(R.layout.fragment_mission_detail, container, false);
         mEditButton = (Button) scrollView.findViewById(R.id.button_edit_quest);
         mNameView = (TextView) scrollView.findViewById(R.id.text_pet_name);
         mTypeView = (TextView) scrollView.findViewById(R.id.text_pet_type);
-        mLocationView = (TextView) scrollView.findViewById(R.id.text_quest_location);
+        mPlaceView = (TextView) scrollView.findViewById(R.id.text_quest_place);
         mHealthView = (TextView) scrollView.findViewById(R.id.text_pet_health);
         mPhotoView = (ImageView) scrollView.findViewById(R.id.image_pet_photo);
         mNoteView = (TextView) scrollView.findViewById(R.id.text_quest_note);
@@ -48,21 +49,21 @@ public class QuestDetailFragment extends Fragment {
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editQuest();
+                editMission();
             }
         });
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startQuest();
+                startMission();
             }
         });
 
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelQuest();
+                cancelMission();
             }
         });
 
@@ -75,8 +76,8 @@ public class QuestDetailFragment extends Fragment {
         mListener = listener;
     }
 
-    public void setQuest(Quest quest) {
-        mQuest = quest;
+    public void setMission(Mission mission) {
+        mMission = mission;
         updateViews();
     }
 
@@ -85,35 +86,35 @@ public class QuestDetailFragment extends Fragment {
             return;
         }
         MainActivity mainActivity = (MainActivity) getActivity();
-        mNameView.setText(mQuest.pet.name);
-        mTypeView.setText(mainActivity.getPetSubtypeString(mQuest.pet.type, mQuest.pet.subtype));
-        mLocationView.setText(mQuest.location);
-        mHealthView.setText(mainActivity.getPetHealthString(mQuest.pet.health));
-        mPhotoView.setImageBitmap(mQuest.pet.photo);
-        mNoteView.setText(mQuest.note);
+        mNameView.setText(mMission.animal.name);
+        mTypeView.setText(mainActivity.getPetSubtypeString(mMission.animal.type, mMission.animal.subtype));
+        mPlaceView.setText(mMission.place);
+        mHealthView.setText(mainActivity.getPetHealthString(mMission.animal.health));
+        mPhotoView.setImageBitmap(mMission.animal.photo);
+        mNoteView.setText(mMission.note);
 
         mStartButton.setVisibility(View.GONE);
         mCancelButton.setVisibility(View.GONE);
-        long ownerId = ((MainActivity) getActivity()).getOwnerId();
-        if (ownerId == mQuest.ownerId) {
+        long userId = ((MainActivity) getActivity()).getUserId();
+        if (userId == mMission.host_id) {
             mCancelButton.setVisibility(View.VISIBLE);
         }
-        else if (Quest.OWNER_ID_NONE == mQuest.ownerId) {
+        else if (MissionProvider.INVALID_ID == mMission.host_id) {
             mStartButton.setVisibility(View.VISIBLE);
         }
     }
 
-    void editQuest() {
-        ((MainActivity) getActivity()).showEditQuestPage(mQuest);
+    void editMission() {
+        ((MainActivity) getActivity()).showEditMissionPage(mMission);
     }
 
-    void startQuest() {
+    void startMission() {
         //TODO: confirm dialog
-        ((MainActivity) getActivity()).startQuest(mQuest);
+        ((MainActivity) getActivity()).startMission(mMission);
     }
 
-    void cancelQuest() {
+    void cancelMission() {
         //TODO: confirm dialog
-        ((MainActivity) getActivity()).cancelQuest(mQuest);
+        ((MainActivity) getActivity()).cancelMission(mMission);
     }
 }

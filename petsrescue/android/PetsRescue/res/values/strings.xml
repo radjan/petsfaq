@@ -30,11 +30,11 @@
 
     <string name="quest_list_empty">Empty</string>
 
-    <string name="quest_type_catch">Catch</string>
-    <string name="quest_type_transport">Transport</string>
-    <string name="quest_type_halfway">Halfway</string>
+    <string name="quest_type_rescue">Rescue</string>
+    <string name="quest_type_pickup">Pickup</string>
+    <string name="quest_type_stay">Stay</string>
+    <string name="quest_type_deliver">Deliver</string>
     <string name="quest_type_adopt">Adopt</string>
-    <string name="quest_type_donate">Donate</string>
 
     <string name="text_quest_type">Mission: </string>
 

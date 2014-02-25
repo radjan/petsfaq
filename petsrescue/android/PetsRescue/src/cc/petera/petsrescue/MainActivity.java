@@ -1,22 +1,6 @@
 package cc.petera.petsrescue;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,14 +14,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import cc.petera.petsrescue.data.Quest;
+import cc.petera.petsrescue.data.Mission;
 import cc.petera.petsrescue.fragment.AboutFragment;
-import cc.petera.petsrescue.fragment.EditQuestFragment;
+import cc.petera.petsrescue.fragment.EditMissionFragment;
 import cc.petera.petsrescue.fragment.MainMenuFragment;
-import cc.petera.petsrescue.fragment.QuestDetailFragment;
-import cc.petera.petsrescue.fragment.QuestPagerFragment;
-import cc.petera.petsrescue.provider.LocalQuestProvider;
-import cc.petera.petsrescue.provider.QuestProvider;
+import cc.petera.petsrescue.fragment.MissionDetailFragment;
+import cc.petera.petsrescue.fragment.MissionPagerFragment;
+import cc.petera.petsrescue.provider.CloudMissionProvider;
+import cc.petera.petsrescue.provider.ContextProvider;
+import cc.petera.petsrescue.provider.MissionProvider;
 import cc.petera.petsrescue.util.KeyHash;
 
 import com.facebook.Request;
@@ -50,16 +35,16 @@ import com.facebook.widget.UserSettingsFragment;
 public class MainActivity extends FragmentActivity {
     private static final String TAG = "MainActivity";
 
-    public static final String TAG_NEW_QUEST = "NEW_QUEST";
-    public static final String TAG_QUEST_PAGER = "QUEST_PAGER";
-    public static final String TAG_QUEST_DETAIL = "QUEST_DETAIL";
+    public static final String TAG_NEW_MISSION = "NEW_MISSION";
+    public static final String TAG_MISSION_PAGER = "MISSION_PAGER";
+    public static final String TAG_MISSION_DETAIL = "MISSION_DETAIL";
     public static final String TAG_ABOUT = "ABOUT";
 
     public static final int REQUEST_PICK_PHOTO = 1;
 
     public enum Page {
-        NEW_QUEST,
-        QUEST_PAGER,
+        NEW_MISSION,
+        MISSION_PAGER,
         ABOUT,
     }
 
@@ -67,91 +52,13 @@ public class MainActivity extends FragmentActivity {
         void onActivityResult(int resultCode, Intent returnedIntent);
     }
 
-    class FacebookLoginRunnable implements Runnable {
-        String mFacebookId;
-        String mFacebookToken;
-        public FacebookLoginRunnable(String id, String token) {
-            mFacebookId = id;
-            mFacebookToken = token;
-        }
-
-        @Override
-        public void run() {
-            if (null == mFacebookId || 0 == mFacebookId.length() ||
-                    null == mFacebookToken || 0 == mFacebookToken.length()) {
-                return;
-            }
-
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://www.petsfaq.info:6543/m/login/facebook");
-
-            try {
-                List<NameValuePair> params = new ArrayList<NameValuePair>(2);
-                params.add(new BasicNameValuePair("fb_id", mFacebookId));
-                params.add(new BasicNameValuePair("fb_access_token", mFacebookToken));
-                httpPost.setEntity(new UrlEncodedFormEntity(params));
-                HttpResponse response = httpClient.execute(httpPost);
-                if (null == response) {
-                    Log.d(TAG, "Login response=null");
-                    return;
-                }
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode != 200) {
-                    Log.d(TAG, "Login response status-code=" + statusCode);
-                    return;
-                }
-                JSONObject responseJson = new JSONObject(EntityUtils.toString(response.getEntity()));
-                JSONObject responseData = responseJson.getJSONObject("data");
-                if (null == responseData) {
-                    Log.d(TAG, "Login response data=" + null);
-                    return;
-                }
-                mToken = responseData.getString("token");
-            }
-            catch (ClientProtocolException e) {
-            }
-            catch (IOException e) {
-            }
-            catch (JSONException e) {
-            }
-
-            showFacebookLoginFragment(false);
-        }
-    }
-
-    class LogoutRunnable implements Runnable {
-        String mLogoutToken;
-        public LogoutRunnable(String token) {
-            mLogoutToken = token;
-        }
-
-        @Override
-        public void run() {
-            if (null == mLogoutToken || 0 == mLogoutToken.length()) {
-                return;
-            }
-
-            HttpClient httpClient = new DefaultHttpClient();
-            //TODO: url encode?
-            HttpDelete httpDelete = new HttpDelete("http://www.petsfaq.info:6543/m/logout?token=" + mLogoutToken);
-
-            try {
-                httpClient.execute(httpDelete);
-            } catch (ClientProtocolException e) {
-                Log.d(TAG, e.toString());
-            } catch (IOException e) {
-                Log.d(TAG, e.toString());
-            }
-        }
-    };
-
     Handler mHandler = new Handler();
-    QuestProvider mQuestProvider;
+    MissionProvider mMissionProvider;
     MainMenuFragment mMainMenuFragment;
-    EditQuestFragment mNewQuestFragment;
-    QuestPagerFragment mQuestPagerFragment;
-    QuestDetailFragment mQuestDetailFragment;
-    EditQuestFragment mEditQuestFragment;
+    EditMissionFragment mNewMissionFragment;
+    MissionPagerFragment mMissionPagerFragment;
+    MissionDetailFragment mMissionDetailFragment;
+    EditMissionFragment mEditMissionFragment;
     AboutFragment mAboutFragment;
 
     ActivityResultListener mPickPhotoListener;
@@ -170,18 +77,7 @@ public class MainActivity extends FragmentActivity {
         }
     };
 
-    QuestProvider.Observer mQuestObserver = new QuestProvider.Observer() {
-        @Override
-        public Handler getHandler() {
-            return mHandler;
-        }
-        @Override
-        public void onQuestUpdated() {
-            mQuestPagerFragment.refresh();
-        }
-    };
-
-    QuestProvider.CreateQuestListener mCreateQuestListener = new QuestProvider.CreateQuestListener() {
+    ContextProvider mContextProvider = new ContextProvider() {
         @Override
         public Handler getHandler() {
             return mHandler;
@@ -191,7 +87,51 @@ public class MainActivity extends FragmentActivity {
             return MainActivity.this;
         }
         @Override
-        public void onFinished(boolean success, Quest quest) {
+        public String getToken() {
+            return mToken;
+        }
+    };
+
+    MissionProvider.Observer mQuestObserver = new MissionProvider.Observer() {
+        @Override
+        public ContextProvider getContextProvider() {
+            return mContextProvider;
+        }
+        @Override
+        public void onMissionUpdated() {
+            mMissionPagerFragment.refresh();
+        }
+    };
+
+    MissionProvider.FacebookLoginListener mFacebookLoginListener = new MissionProvider.FacebookLoginListener() {
+        @Override
+        public ContextProvider getContextProvider() {
+            return mContextProvider;
+        }
+        @Override
+        public void onFinished(String token) {
+            mToken = token;
+            showFacebookLoginFragment(false);
+        }
+    };
+
+    MissionProvider.LogoutListener mLogoutListener = new MissionProvider.LogoutListener() {
+        @Override
+        public ContextProvider getContextProvider() {
+            return mContextProvider;
+        }
+        @Override
+        public void onFinished() {
+        }
+    };
+
+    MissionProvider.CreateMissionListener mCreateMissionListener = new MissionProvider.CreateMissionListener() {
+        @Override
+        public ContextProvider getContextProvider() {
+            return mContextProvider;
+        }
+        @Override
+        public void onFinished(boolean success, Mission mission) {
             if (success) {
                 //TODO:
             }
@@ -201,17 +141,13 @@ public class MainActivity extends FragmentActivity {
         }
     };
 
-    QuestProvider.UpdateQuestListener mUpdateQuestListener = new QuestProvider.UpdateQuestListener() {
+    MissionProvider.UpdateMissionListener mUpdateMissionListener = new MissionProvider.UpdateMissionListener() {
         @Override
-        public Handler getHandler() {
-            return mHandler;
+        public ContextProvider getContextProvider() {
+            return mContextProvider;
         }
         @Override
-        public Context getContext() {
-            return MainActivity.this;
-        }
-        @Override
-        public void onFinished(boolean success, Quest quest) {
+        public void onFinished(boolean success, Mission mission) {
             if (success) {
                 //TODO:
             }
@@ -229,8 +165,8 @@ public class MainActivity extends FragmentActivity {
         FragmentManager fm = this.getSupportFragmentManager();
         mMainMenuFragment = (MainMenuFragment) fm.findFragmentById(R.id.fragment_main_menu);
 
-        mQuestProvider = new LocalQuestProvider();
-        mQuestProvider.addObserver(mQuestObserver);
+        mMissionProvider = new CloudMissionProvider();
+        mMissionProvider.addObserver(mQuestObserver);
 
         mPetTypeArray = getResources().getStringArray(R.array.pet_type);
         mCatSubtypeArray = getResources().getStringArray(R.array.pet_subtype_cat);
@@ -247,8 +183,8 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
-        mQuestProvider.removeObserver(mQuestObserver);
-        logout(mToken);
+        mMissionProvider.removeObserver(mQuestObserver);
+        mMissionProvider.logout(mToken, mLogoutListener);
         super.onDestroy();
     }
 
@@ -279,32 +215,36 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public QuestProvider getQuestProvider() {
-        return mQuestProvider;
+    public MissionProvider getMissionProvider() {
+        return mMissionProvider;
     }
 
-    public long getOwnerId() {
+    public String getToken() {
+        return mToken;
+    }
+
+    public long getUserId() {
         //TODO:
         return 1;
     }
 
-    public void showNewQuestPage() {
-        pushFragment(mNewQuestFragment, TAG_NEW_QUEST);
+    public void showNewMissionPage() {
+        pushFragment(mNewMissionFragment, TAG_NEW_MISSION);
     }
 
-    public void showQuestPagerPage(int tab) {
-        mQuestPagerFragment.setDefaultTab(tab);
-        pushFragment(mQuestPagerFragment, TAG_QUEST_PAGER);
+    public void showMissionPagerPage(int tab) {
+        mMissionPagerFragment.setDefaultTab(tab);
+        pushFragment(mMissionPagerFragment, TAG_MISSION_PAGER);
     }
 
-    public void showQuestDetailPage(Quest quest) {
-        mQuestDetailFragment.setQuest(quest);
-        pushFragment(mQuestDetailFragment, TAG_QUEST_DETAIL);
+    public void showMissionDetailPage(Mission mission) {
+        mMissionDetailFragment.setMission(mission);
+        pushFragment(mMissionDetailFragment, TAG_MISSION_DETAIL);
     }
 
-    public void showEditQuestPage(Quest quest) {
-        mEditQuestFragment.setQuest(quest);
-        pushFragment(mEditQuestFragment, TAG_QUEST_DETAIL);
+    public void showEditMissionPage(Mission mission) {
+        mEditMissionFragment.setMission(mission);
+        pushFragment(mEditMissionFragment, TAG_MISSION_DETAIL);
     }
 
     public void showAboutPage() {
@@ -346,11 +286,11 @@ public class MainActivity extends FragmentActivity {
         startActivityForResult(intent, REQUEST_PICK_PHOTO);
     }
 
-    public void startQuest(Quest quest) {
+    public void startMission(Mission mission) {
         //TODO:
     }
 
-    public void cancelQuest(Quest quest) {
+    public void cancelMission(Mission mission) {
         //TODO:
     }
 
@@ -368,36 +308,36 @@ public class MainActivity extends FragmentActivity {
     }
 
     void createFragments() {
-        mNewQuestFragment = new EditQuestFragment();
-        mNewQuestFragment.setListener(new EditQuestFragment.Listener() {
+        mNewMissionFragment = new EditMissionFragment();
+        mNewMissionFragment.setListener(new EditMissionFragment.Listener() {
             @Override
-            public void onCancel(EditQuestFragment fragment) {
+            public void onCancel(EditMissionFragment fragment) {
                 popFragment(fragment);
             }
             @Override
-            public void onOK(EditQuestFragment fragment, Quest quest) {
-                mQuestProvider.createQuest(quest, mCreateQuestListener);
+            public void onOK(EditMissionFragment fragment, Mission mission) {
+                mMissionProvider.createMission(mission, mCreateMissionListener);
                 popFragment(fragment);
-                showQuestPagerPage(QuestPagerFragment.TAB_AVAILABLE);
-            }
-        });
-
-        mEditQuestFragment = new EditQuestFragment();
-        mEditQuestFragment.setListener(new EditQuestFragment.Listener() {
-            @Override
-            public void onCancel(EditQuestFragment fragment) {
-                popFragment(fragment);
-            }
-            @Override
-            public void onOK(EditQuestFragment fragment, Quest quest) {
-                mQuestProvider.updateQuest(quest, mUpdateQuestListener);
-                popFragment(fragment);
-                mQuestDetailFragment.setQuest(quest);
+                showMissionPagerPage(MissionPagerFragment.TAB_AVAILABLE);
             }
         });
 
-        mQuestPagerFragment = new QuestPagerFragment();
-        mQuestDetailFragment = new QuestDetailFragment();
+        mEditMissionFragment = new EditMissionFragment();
+        mEditMissionFragment.setListener(new EditMissionFragment.Listener() {
+            @Override
+            public void onCancel(EditMissionFragment fragment) {
+                popFragment(fragment);
+            }
+            @Override
+            public void onOK(EditMissionFragment fragment, Mission mission) {
+                mMissionProvider.updateMission(mission, mUpdateMissionListener);
+                popFragment(fragment);
+                mMissionDetailFragment.setMission(mission);
+            }
+        });
+
+        mMissionPagerFragment = new MissionPagerFragment();
+        mMissionDetailFragment = new MissionDetailFragment();
         mAboutFragment = new AboutFragment();
     }
 
@@ -436,20 +376,10 @@ public class MainActivity extends FragmentActivity {
                         return;
                     }
 
-                    login(user.getId(), session.getAccessToken());
+                    mMissionProvider.facebookLogin(user.getId(), session.getAccessToken(), mFacebookLoginListener);
                 }
             });
             meRequest.executeAsync();
         }
-    }
-
-    void login(String id, String token) {
-        Thread thread = new Thread(new FacebookLoginRunnable(id, token));
-        thread.start();
-    }
-
-    void logout(String token) {
-        Thread thread = new Thread(new LogoutRunnable(token));
-        thread.start();
     }
 }
