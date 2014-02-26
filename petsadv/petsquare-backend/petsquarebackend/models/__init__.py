@@ -321,7 +321,6 @@ class ModelMixin(object):
 
     @classmethod
     def _update(*args, **kwargs):
-        print args
         cls, id = args # args = (cls, id)
         global DBSession
         model = cls.get_by_id(id)

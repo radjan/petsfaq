@@ -40,7 +40,7 @@ class Animal_TB(Base):
                   # relationship
                   'finder', 'owner', 'image_assocs')
 
-    id              = Column(Integer, nullable=False, unique=True, 
+    id              = Column(Integer, nullable=False, unique=True,
                              primary_key=True, autoincrement=True)
     name            = Column(String(255), nullable=False, unique=False,)
     type            = Column(String(255), nullable=False, unique=False,)
