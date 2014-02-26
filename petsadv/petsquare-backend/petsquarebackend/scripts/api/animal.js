@@ -231,7 +231,7 @@ function linkAnimalImage() {return;}
 /**
  * @api {get} /animal/:id/image/:image_id 7. Get the Metadata of the Animal-Image Linkage
  * @apiVersion 1.0.0
- * @apiName LinkAnimalImage
+ * @apiName ShowAnimalImageMeta
  * @apiGroup Animal
  *
  * @apiDescription Show the Metadata of an Animal-Image Linkage
