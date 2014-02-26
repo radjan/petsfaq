@@ -6,9 +6,9 @@
  *
  * @apiDescription Show Animal
  *
- * @apiParam {QueryString} __QueryString__ 
+ * @apiParam {QueryString} __QueryString__
  * @apiParam {Number} id Animal-ID
- * 
+ *
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
  *     {
@@ -40,7 +40,7 @@ function show() {return;}
  * @apiGroup Animal
  * @apiDescription  List Animals
  *
- * @apiParam {QueryString} __QueryString__ 
+ * @apiParam {QueryString} __QueryString__
  * @apiParam {Number} offset    offset
  * @apiParam {Number} size      size
  * @apiParam {Number} id        animal_id
@@ -52,7 +52,7 @@ function show() {return;}
  * @apiParam {Number} owner_id  user_id
  * @apiParam {Number} find_location_id      location_id
  * @apiParam {Number} current_location_id   location_id
- * 
+ *
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
  *     {
@@ -78,7 +78,7 @@ function show() {return;}
  *         ..
  *       ]
  *     }
- */     
+ */
 function list() {return;}
 
 /**
@@ -88,7 +88,7 @@ function list() {return;}
  * @apiGroup Animal
  *
  * @apiDescription Create Animal, auto assign the login user as the finder
- * 
+ *
  * @apiParam {Body} __Body__
  * @apiParam {String}   name                *Required, animal name
  * @apiParam {String}   type                *Required, speicies types // cat, dog, ...
@@ -133,7 +133,7 @@ function create() {return;}
  *
  * @apiDescription Update Animal
  *
- * @apiParam {QueryString} __QueryString__ 
+ * @apiParam {QueryString} __QueryString__
  * @apiParam {Number}   id                  Animal-ID
  * @apiParam {Body} __Body__
  * @apiParam {String}   name                animal name
@@ -178,18 +178,144 @@ function update() {return;}
  *
  * @apiDescription Delete Animal
  *
- * @apiParam {QueryString} __QueryString__ 
+ * @apiParam {QueryString} __QueryString__
  * @apiParam {Number} id Animal-ID
  *
  * @apiSuccessExample Successful Response Body:
  *     HTTP/1.1 200 OK
  *     {
  *       info: {
- *         status: true, 
- *         msg: "" 
- *       }, 
+ *         status: true,
+ *         msg: ""
+ *       },
  *       data: null
- *     } 
+ *     }
  */
 function delete() {return;}
+
+/**
+ * @api {post} /animal/:id/images 6. Link the Animal with a Image
+ * @apiVersion 1.0.0
+ * @apiName LinkAnimalImage
+ * @apiGroup Animal
+ *
+ * @apiDescription Link the Animal with a Image
+ *
+ * @apiParam {QueryString} __QueryString__
+ * @apiParam {Number} id Animal-ID
+ * @apiParam {Body} __Body__
+ * @apiParam {Number}   image_id        *Required, a existed image_id
+ * @apiParam {String}   status          status
+ * @apiParam {String}   description     description
+ *
+ * @apiSuccessExample Successful Response Body:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       info: {
+ *         status: true,
+ *         msg: ""
+ *       },
+ *       data: {
+ *          status: "halfway",
+ *          description: "XD",
+ *          createddatetime: "2014-02-22 14:45:29",
+ *          image: {...},
+ *          animal: {...},
+ *          updateddatetime: "2014-02-22 14:45:29",
+ *          id: 1
+ *        }
+ *     }
+ */
+function linkAnimalImage() {return;}
+
+/**
+ * @api {get} /animal/:id/image/:image_id 7. Get the Metadata of the Animal-Image Linkage
+ * @apiVersion 1.0.0
+ * @apiName LinkAnimalImage
+ * @apiGroup Animal
+ *
+ * @apiDescription Show the Metadata of an Animal-Image Linkage
+ *
+ * @apiParam {QueryString} __QueryString__
+ * @apiParam {Number} id Animal-ID
+ * @apiParam {Number} image_id  Image-ID
+ *
+ * @apiSuccessExample Successful Response Body:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       info: {
+ *         status: true,
+ *         msg: ""
+ *       },
+ *       data: {
+ *          status: "halfway",
+ *          description: "XD",
+ *          createddatetime: "2014-02-22 14:45:29",
+ *          image: {...},
+ *          animal: {...},
+ *          updateddatetime: "2014-02-22 14:45:29",
+ *          id: 1
+ *        }
+ *     }
+ */
+function showAnimalImageMeta() {return;}
+
+/**
+ * @api {put} /animal/:id/image/:image_id 8. Update the Metadata of the Animal-Image Linkage
+ * @apiVersion 1.0.0
+ * @apiName UpdateAnimalImageMeta
+ * @apiGroup Animal
+ *
+ * @apiDescription Update the Metadata of an Animal-Image Linkage
+ *
+ * @apiParam {QueryString} __QueryString__
+ * @apiParam {Number} id Animal-ID
+ * @apiParam {Number} image_id  Image-ID
+ * @apiParam {Body} __Body__
+ * @apiParam {String}   status          status
+ * @apiParam {String}   description     description
+ *
+ * @apiSuccessExample Successful Response Body:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       info: {
+ *         status: true,
+ *         msg: ""
+ *       },
+ *       data: {
+ *          status: "halfway",
+ *          description: "XD",
+ *          createddatetime: "2014-02-22 14:45:29",
+ *          image: {...},
+ *          animal: {...},
+ *          updateddatetime: "2014-02-22 14:45:29",
+ *          id: 1
+ *        }
+ *     }
+ */
+function updateAnimalImageMeta() {return;}
+
+/**
+ * @api {delete} /animal/:id/image/:image_id 9. Unlink the Animal with a Image
+ * @apiVersion 1.0.0
+ * @apiName UnlinkAnimalImage
+ * @apiGroup Animal
+ *
+ * @apiDescription Unink the Animal with a Image
+ *
+ * @apiParam {QueryString} __QueryString__
+ * @apiParam {Number} id Animal-ID
+ * @apiParam {Number} image_id  Image-ID
+ *
+ * @apiSuccessExample Successful Response Body:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       info: {
+ *         status: true,
+ *         msg: ""
+ *       },
+ *       data: null
+ *     }
+ */
+function unlinkAnimalImage() {return;}
 
