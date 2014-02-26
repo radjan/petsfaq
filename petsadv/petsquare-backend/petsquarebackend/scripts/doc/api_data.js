@@ -31,7 +31,7 @@ define({ api: [
       "examples": [
         {
           "title": "Successful Response Body:",
-          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true, \n       msg: \"\" \n     }, \n     data: null\n   }\n"
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: null\n   }\n"
         }
       ]
     },
@@ -70,6 +70,117 @@ define({ api: [
         {
           "title": "Successful Response Body:",
           "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       sub_type: \"normal\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "post",
+    "url": "/animal/:id/images",
+    "title": "6. Link the Animal with a Image",
+    "version": "1.0.0",
+    "name": "LinkAnimalImage",
+    "group": "Animal",
+    "description": "Link the Animal with a Image",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Animal-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Body",
+            "field": "__Body__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "image_id",
+            "optional": false,
+            "description": "*Required, a existed image_id"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "status"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "description",
+            "optional": false,
+            "description": "description"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n        status: \"halfway\",\n        description: \"XD\",\n        createddatetime: \"2014-02-22 14:45:29\",\n        image: {...},\n        animal: {...},\n        updateddatetime: \"2014-02-22 14:45:29\",\n        id: 1\n      }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "get",
+    "url": "/animal/:id/image/:image_id",
+    "title": "7. Get the Metadata of the Animal-Image Linkage",
+    "version": "1.0.0",
+    "name": "LinkAnimalImage",
+    "group": "Animal",
+    "description": "Show the Metadata of an Animal-Image Linkage",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Animal-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "image_id",
+            "optional": false,
+            "description": "Image-ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n        status: \"halfway\",\n        description: \"XD\",\n        createddatetime: \"2014-02-22 14:45:29\",\n        image: {...},\n        animal: {...},\n        updateddatetime: \"2014-02-22 14:45:29\",\n        id: 1\n      }\n   }\n"
         }
       ]
     },
@@ -373,6 +484,117 @@ define({ api: [
         {
           "title": "Successful Response Body:",
           "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n       status: \"adopted\",\n       description: \"haha\",\n       createddatetime: \"2014-02-19 00:18:28\",\n       owner: null,\n       updateddatetime: \"2014-02-19 00:18:28\",\n       image_assocs: [],\n       type: \"cat\",\n       sub_type: \"normal\",\n       id: 1,\n       finder: {},\n       name: \"pochi\"\n     }\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "delete",
+    "url": "/animal/:id/image/:image_id",
+    "title": "9. Unlink the Animal with a Image",
+    "version": "1.0.0",
+    "name": "UnlinkAnimalImage",
+    "group": "Animal",
+    "description": "Unink the Animal with a Image",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Animal-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "image_id",
+            "optional": false,
+            "description": "Image-ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: null\n   }\n"
+        }
+      ]
+    },
+    "filename": "api/animal.js"
+  },
+  {
+    "type": "put",
+    "url": "/animal/:id/image/:image_id",
+    "title": "8. Update the Metadata of the Animal-Image Linkage",
+    "version": "1.0.0",
+    "name": "UpdateAnimalImageMeta",
+    "group": "Animal",
+    "description": "Update the Metadata of an Animal-Image Linkage",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "QueryString",
+            "field": "__QueryString__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "Animal-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "image_id",
+            "optional": false,
+            "description": "Image-ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Body",
+            "field": "__Body__",
+            "optional": false,
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "status",
+            "optional": false,
+            "description": "status"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "description",
+            "optional": false,
+            "description": "description"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Successful Response Body:",
+          "content": "   HTTP/1.1 200 OK\n   {\n     info: {\n       status: true,\n       msg: \"\"\n     },\n     data: {\n        status: \"halfway\",\n        description: \"XD\",\n        createddatetime: \"2014-02-22 14:45:29\",\n        image: {...},\n        animal: {...},\n        updateddatetime: \"2014-02-22 14:45:29\",\n        id: 1\n      }\n   }\n"
         }
       ]
     },
