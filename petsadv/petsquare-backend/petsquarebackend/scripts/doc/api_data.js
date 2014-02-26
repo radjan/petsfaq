@@ -1339,7 +1339,7 @@ define({ api: [
             "type": "String",
             "field": "type",
             "optional": false,
-            "description": "mission types: rescue, pickup, stay, deliver, adopt"
+            "description": "mission types: rescue, pickup, stay, deliver, adopt, support"
           },
           {
             "group": "Parameter",
@@ -1433,7 +1433,7 @@ define({ api: [
             "type": "String",
             "field": "type",
             "optional": false,
-            "description": "*Required, valid mission types: rescue, pickup, stay, deliver, adopt"
+            "description": "*Required, valid mission types: rescue, pickup, stay, deliver, adopt, support"
           },
           {
             "group": "Parameter",
@@ -1576,7 +1576,7 @@ define({ api: [
             "type": "String",
             "field": "type",
             "optional": false,
-            "description": "*Required but can not change, valid mission types: rescue, pickup, stay, deliver, adopt"
+            "description": "*Required but can not change, valid mission types: rescue, pickup, stay, deliver, adopt, support"
           },
           {
             "group": "Parameter",
