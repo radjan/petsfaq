@@ -61,7 +61,7 @@ function show() {return;}
  * @apiParam {QueryString} __QueryString__ 
  * @apiParam {Number} offset    offset
  * @apiParam {Number} size      size
- * @apiParam {String} type      mission types: rescue, pickup, stay, deliver, adopt
+ * @apiParam {String} type      mission types: rescue, pickup, stay, deliver, adopt, support
  * @apiParam {String} status    mission status
  * @apiParam {Boolean} completed    completed
  * @apiParam {Number} animal_id     animal_id
@@ -127,7 +127,7 @@ function list() {return;}
  * 
  * @apiParam {Body} __Body__
  * @apiParam {String}   name                *Required, mission name
- * @apiParam {String}   type                *Required, valid mission types: rescue, pickup, stay, deliver, adopt
+ * @apiParam {String}   type                *Required, valid mission types: rescue, pickup, stay, deliver, adopt, support
  * @apiParam {String}   status              *Required, status // TBD
  * @apiParam {String}   place               place description 
  * @apiParam {String}   note                note
@@ -187,7 +187,7 @@ function create() {return;}
  * @apiParam {Number}   id                  Mission-ID
  * @apiParam {Body} __Body__
  * @apiParam {String}   name                *Required, mission name 
- * @apiParam {String}   type                *Required but can not change, valid mission types: rescue, pickup, stay, deliver, adopt
+ * @apiParam {String}   type                *Required but can not change, valid mission types: rescue, pickup, stay, deliver, adopt, support
  * @apiParam {String}   status              *Required, status // TBD       
  * @apiParam {String}   place               place description 
  * @apiParam {String}   note                note
