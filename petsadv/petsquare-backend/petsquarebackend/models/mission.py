@@ -96,34 +96,6 @@ class Mission_TB(Base):
 
     @classmethod
     @ModelMethod
-    def list(cls, filattr=None, offset=None, size=None):
-        global DBSession
-        model_list = cls.get_all(filattr=filattr, offset=offset, limit=size)
-        rtn = (True, model_list)
-        return rtn
-
-    @classmethod
-    @ModelMethod
-    def show(cls, id):
-        global DBSession
-        model = cls.get_by_id(id)
-        rtn = (True, model)
-        return rtn
-
-    @classmethod
-    @ModelMethod
-    def update(cls, *args, **kwargs):
-        return cls._update(*args, **kwargs)
-
-    @classmethod
-    @ModelMethod
-    def delete(cls, id):
-        global DBSession
-        rtn = cls.delete_by_id(id)
-        return rtn
-
-    @classmethod
-    @ModelMethod
     def user_missions(cls, user_id, filattr=None, offset=None, size=None):
         global DBSession
         query = DBSession.query(cls)\
@@ -133,6 +105,47 @@ class Mission_TB(Base):
         return (True,
                 cls.query_with_criteria(query, filattr=filattr, offset=offset,
                                         limit=size))
+
+    @classmethod
+    @ModelMethod
+    def link_mission_user(cls, id, user_id, desc_dict):
+        success, assoc_obj = Mission_User_TB.get_associate_obj(id, user_id)
+        if not success and assoc_obj is common.ERROR_MODEL_OBJECT_NOT_FOUND:
+            desc_dict['mission_id'] = id
+            desc_dict['user_id'] = user_id
+            rtn = Mission_User_TB.create(**desc_dict)
+        elif success:
+            rtn = (False, common.ERROR_RESOURCE_EXISTS)
+        else:
+            rtn = (success, assoc_obj)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def show_mission_user_meta(cls, id, user_id):
+        return Mission_User_TB.get_associate_obj(id, user_id)
+
+    @classmethod
+    @ModelMethod
+    def update_user_meta(cls, id, user_id, desc_dict):
+        success, assoc_obj = Mission_User_TB.get_associate_obj(id, user_id)
+        if success and assoc_obj:
+            desc_dict['mission_id'] = id
+            desc_dict['user_id'] = user_id
+            rtn = Mission_User_TB.update(assoc_obj.id, **desc_dict)
+        else:
+            rtn = (success, assoc_obj)
+        return rtn
+
+    @classmethod
+    @ModelMethod
+    def unlink_image(cls, id, user_id):
+        success, assoc_obj = Mission_User_TB.get_associate_obj(id, user_id)
+        if success and assoc_obj:
+            rtn = Mission_User_TB.delete(assoc_obj.id)
+        else:
+            rtn = (success, assoc_obj)
+        return rtn
 
 class MissionRescue_TB(Mission_TB):
     __tablename__ = 'mission_rescue'
@@ -232,13 +245,18 @@ class Mission_User_TB(Base):
 
     @classmethod
     @ModelMethod
-    def create(cls, *args, **kwargs):
-        return cls._create(*args, **kwargs)
-
-    @classmethod
-    @ModelMethod
-    def update(cls, *args, **kwargs):
-        return cls._update(*args, **kwargs)
+    def get_associate_obj(cls, mission_id, user_id):
+        success, items = cls.list(filattr=[('mission_id', mission_id),
+                                           ('user_id', user_id)])
+        if success and items:
+            if len(items) > 1:
+                log.error('get_associate_obj: not unique associate'
+                          ' (mission: %s, user: %s)' % (mission_id, user_id))
+            return (True, items[0])
+        elif success:
+            return (False, common.ERROR_MODEL_OBJECT_NOT_FOUND)
+        else:
+            return (success, items)
 
 def main():
     pass
