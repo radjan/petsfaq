@@ -101,8 +101,7 @@ class BaseMission(object):
 
         if success:
             serv = MissionService(self.request)
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             serv_rtn = serv.list(params=params,
                                  offset=data['offset'],
                                  size=data['size'])
@@ -145,8 +144,7 @@ class BaseMission(object):
 
         if success:
             serv = MissionService(self.request)
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             params['reporter_id'] = data['user_id']
             # TODO use validator
             if 'due_time' in params:
@@ -174,8 +172,7 @@ class BaseMission(object):
             success = False
 
         if success:
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             # TODO use validator
             if 'due_time' in params:
                 params['due_time'] = datetime.strptime(params['due_time'],
@@ -221,8 +218,7 @@ class BaseMission(object):
 
         if success:
             serv = MissionService(self.request)
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             serv_rtn = serv.user_missions(
                                 data['user_id'],
                                 params,

@@ -99,8 +99,7 @@ class BaseAnimal(object):
 
         if success:
             serv = AnimalService(self.request)
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             serv_rtn = serv.list(params=params,
                                  offset=data['offset'],
                                  size=data['size'])
@@ -143,8 +142,7 @@ class BaseAnimal(object):
 
         if success:
             serv = AnimalService(self.request)
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             params['finder_id'] = data['user_id']
             serv_rtn = serv.create(params)
         else:
@@ -169,8 +167,7 @@ class BaseAnimal(object):
 
         if success:
             serv = AnimalService(self.request)
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             serv_rtn = serv.update(id=animalid, data=params)
         else:
             serv_rtn = self._validation_error(data, code)
@@ -217,8 +214,7 @@ class BaseAnimal(object):
 
         if success:
             serv = AnimalService(self.request)
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             serv_rtn = serv.link_image(animal_id, data['image_id'], data)
         else:
             serv_rtn = self._validation_error(data, code)
@@ -267,8 +263,7 @@ class BaseAnimal(object):
 
         if success:
             serv = AnimalService(self.request)
-            params = dict((k, v) for k, v in data.items()
-                                    if k in PARAMS and v is not IGNORE)
+            params = dict((k, v) for k, v in data.items() if k in PARAMS)
             serv_rtn = serv.update_image_meta(animal_id, image_id, data)
         else:
             serv_rtn = self._validation_error(data, code)

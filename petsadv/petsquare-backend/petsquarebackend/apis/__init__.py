@@ -65,6 +65,7 @@ class BaseAPI(Base):
 
             data = dict(target_dict)
             data = schema.to_python(data)
+            data = dict((k, v) for k, v in data.items() if v is not IGNORE)
             data['user_id'] = authn_userid
             rtn = (True, data, 200)
 
@@ -135,6 +136,7 @@ class BaseAPP(Base):
 
             data = dict(target_dict)
             data = schema.to_python(data)
+            data = dict((k, v) for k, v in data.items() if v is not IGNORE)
             data['user_id'] = authn_userid
             rtn = (True, data, 200)
 
