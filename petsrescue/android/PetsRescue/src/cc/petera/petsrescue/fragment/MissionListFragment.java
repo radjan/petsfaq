@@ -47,7 +47,7 @@ public class MissionListFragment extends ListFragment {
             LinearLayout itemLayout = (LinearLayout) convertView;
             TextView nameView = (TextView) itemLayout.findViewById(R.id.text_name);
             TextView typeView = (TextView) itemLayout.findViewById(R.id.text_type);
-            nameView.setText(mission.animal.name);
+            nameView.setText(mission.name);
             typeView.setText(getQuestTypeLabel(mission.type));
 
             return itemLayout;
@@ -138,6 +138,9 @@ public class MissionListFragment extends ListFragment {
             break;
         case Mission.TYPE_ADOPT:
             stringId = R.string.quest_type_adopt;
+            break;
+        default:
+            stringId = R.string.quest_type_unknown;
             break;
         }
         return res.getString(R.string.text_quest_type) + res.getString(stringId);

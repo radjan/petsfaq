@@ -35,7 +35,8 @@
     <string name="quest_type_stay">Stay</string>
     <string name="quest_type_deliver">Deliver</string>
     <string name="quest_type_adopt">Adopt</string>
-
+    <string name="quest_type_unknown">Unknown</string>
+    
     <string name="text_quest_type">Mission: </string>
 
     <string name="button_edit_quest">Edit</string>

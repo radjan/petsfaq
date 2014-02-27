@@ -311,11 +311,11 @@ containing a value of this type.
         public static final int action_settings=0x7f07001b;
         public static final int app_name=0x7f07001a;
         public static final int button_cancel=0x7f070027;
-        public static final int button_cancel_quest=0x7f070037;
-        public static final int button_edit_quest=0x7f070035;
+        public static final int button_cancel_quest=0x7f070038;
+        public static final int button_edit_quest=0x7f070036;
         public static final int button_new_quest=0x7f070028;
         public static final int button_ok=0x7f070029;
-        public static final int button_start_quest=0x7f070036;
+        public static final int button_start_quest=0x7f070037;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
         public static final int com_facebook_internet_permission_error_message=0x7f070013;
@@ -350,7 +350,8 @@ containing a value of this type.
         public static final int quest_type_pickup=0x7f070030;
         public static final int quest_type_rescue=0x7f07002f;
         public static final int quest_type_stay=0x7f070031;
-        public static final int text_about_link=0x7f070038;
+        public static final int quest_type_unknown=0x7f070034;
+        public static final int text_about_link=0x7f070039;
         public static final int text_pet_caught=0x7f070024;
         public static final int text_pet_health=0x7f070023;
         public static final int text_pet_name=0x7f070020;
@@ -358,7 +359,7 @@ containing a value of this type.
         public static final int text_pet_type=0x7f070021;
         public static final int text_quest_location=0x7f070022;
         public static final int text_quest_note=0x7f070026;
-        public static final int text_quest_type=0x7f070034;
+        public static final int text_quest_type=0x7f070035;
         public static final int title_quest_available=0x7f07002b;
         public static final int title_quest_completed=0x7f07002d;
         public static final int title_quest_ongoing=0x7f07002a;

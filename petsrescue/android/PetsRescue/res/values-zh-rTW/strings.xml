@@ -33,6 +33,7 @@
     <string name="quest_type_stay">留</string>
     <string name="quest_type_deliver">送</string>
     <string name="quest_type_adopt">認養</string>
+    <string name="quest_type_unknown">未知</string>
 
     <string name="text_quest_type">任務: </string>
 

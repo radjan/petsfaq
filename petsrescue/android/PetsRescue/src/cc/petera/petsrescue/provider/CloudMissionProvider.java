@@ -12,11 +12,13 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +37,7 @@ public class CloudMissionProvider extends MissionProvider {
     public static final String API_CREATE_MISSION = API_PREFIX + "/missions";
     public static final String API_LIST_MISSION = API_PREFIX + "/missions";
     public static final String API_CREATE_ANIMAL = API_PREFIX + "/animals";
+    public static final String API_LIST_USER_MISSION = API_PREFIX + "/user/me/missions";
 
     class FacebookLoginRunnable implements Runnable {
         class FinishedRunnable implements Runnable {
@@ -138,7 +141,6 @@ public class CloudMissionProvider extends MissionProvider {
             @Override
             public void run() {
                 mListener.onFinished(mMissions);
-                broadcastMissionUpdated();
             }
         }
 
@@ -153,20 +155,46 @@ public class CloudMissionProvider extends MissionProvider {
 
         @Override
         public void run() {
-            //TODO:
+            searchMission(mListener.getContextProvider().getToken(), mFilter, mMissions);
             mListener.getContextProvider().getHandler().post(new FinishedRunnable());
         }
     };
 
     static ExecutorService sExecutor = Executors.newSingleThreadExecutor();
+    static HttpClient sHttpClient = new DefaultHttpClient();
 
+    @Override
+    public void facebookLogin(String fbId, String fbToken, FacebookLoginListener listener) {
+        sExecutor.execute(new FacebookLoginRunnable(fbId, fbToken, listener));
+    }
+
+    @Override
+    public void logout(String token, LogoutListener listener) {
+        sExecutor.execute(new LogoutRunnable(token, listener));
+    }
+
+    @Override
+    public void createMission(Mission mission, CreateMissionListener listener) {
+        sExecutor.execute(new CreateMissionRunnable(mission, listener));
+    }
+
+    @Override
+    public void updateMission(Mission mission, UpdateMissionListener listener) {
+        sExecutor.execute(new UpdateMissionRunnable(mission, listener));
+    }
+
+    @Override
+    public void searchMission(SearchFilter filter, SearchMissionListener listener) {
+        sExecutor.execute(new SearchMissionRunnable(filter, listener));
+    }
+
+    /** Should run in sExecutor thread. */
     String facebookLogin(String fbId, String fbToken) {
         if (null == fbId || 0 == fbId.length() ||
                 null == fbToken || 0 == fbToken.length()) {
             return null;
         }
 
-        HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(CloudMissionProvider.URI_FACEBOOK_LOGIN);
 
         try {
@@ -174,13 +202,14 @@ public class CloudMissionProvider extends MissionProvider {
             params.add(new BasicNameValuePair("fb_id", fbId));
             params.add(new BasicNameValuePair("fb_access_token", fbToken));
             httpPost.setEntity(new UrlEncodedFormEntity(params));
-            HttpResponse response = httpClient.execute(httpPost);
+            HttpResponse response = sHttpClient.execute(httpPost);
             if (null == response) {
                 Log.d(TAG, "Login response=null");
                 return null;
             }
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
+                response.getEntity().consumeContent();
                 Log.d(TAG, "Login response status-code=" + statusCode);
                 return null;
             }
@@ -202,22 +231,17 @@ public class CloudMissionProvider extends MissionProvider {
         return null;
     }
 
-    @Override
-    public void facebookLogin(String fbId, String fbToken, FacebookLoginListener listener) {
-        sExecutor.execute(new FacebookLoginRunnable(fbId, fbToken, listener));
-    }
-
+    /** Should run in sExecutor thread. */
     void logout(String token) {
         if (null == token || 0 == token.length()) {
             return;
         }
 
-        HttpClient httpClient = new DefaultHttpClient();
         //TODO: url encode?
         HttpDelete httpDelete = new HttpDelete(CloudMissionProvider.URI_LOGOUT + "?token=" + token);
 
         try {
-            httpClient.execute(httpDelete);
+            sHttpClient.execute(httpDelete);
         } catch (ClientProtocolException e) {
             Log.d(TAG, e.toString());
         } catch (IOException e) {
@@ -225,23 +249,18 @@ public class CloudMissionProvider extends MissionProvider {
         }
     }
 
-    @Override
-    public void logout(String token, LogoutListener listener) {
-        sExecutor.execute(new LogoutRunnable(token, listener));
-    }
-
-    void putId(JSONObject obj, String key, long id) throws JSONException {
+    static void putId(JSONObject obj, String key, long id) throws JSONException {
         if (INVALID_ID != id) {
             obj.put(key, String.valueOf(id));
         }
     }
 
+    /** Should run in sExecutor thread. */
     long createAnimal(String token, Animal animal) {
         if (INVALID_ID != animal.id) {
             return INVALID_ID;
         }
 
-        HttpClient httpClient = new DefaultHttpClient();
         //TODO: url encode?
         HttpPost httpPost = new HttpPost(API_CREATE_ANIMAL + "?token=" + token);
 
@@ -261,13 +280,14 @@ public class CloudMissionProvider extends MissionProvider {
 
             httpPost.setEntity(new StringEntity(body.toString(), "UTF8"));
             httpPost.setHeader("Content-type", "application/json");
-            HttpResponse response = httpClient.execute(httpPost);
+            HttpResponse response = sHttpClient.execute(httpPost);
             if (null == response) {
                 Log.d(TAG, "Create animal response=null");
                 return INVALID_ID;
             }
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
+                response.getEntity().consumeContent();
                 Log.d(TAG, "Create animal response status-code=" + statusCode);
                 return INVALID_ID;
             }
@@ -290,6 +310,7 @@ public class CloudMissionProvider extends MissionProvider {
         return INVALID_ID;
     }
 
+    /** Should run in sExecutor thread. */
     long createMission(String token, Mission mission) {
         if (INVALID_ID != mission.id) {
             return INVALID_ID;
@@ -303,7 +324,6 @@ public class CloudMissionProvider extends MissionProvider {
             mission.animal.id = animal_id;
         }
 
-        HttpClient httpClient = new DefaultHttpClient();
         //TODO: url encode?
         HttpPost httpPost = new HttpPost(API_CREATE_MISSION + "?token=" + token);
 
@@ -330,13 +350,14 @@ public class CloudMissionProvider extends MissionProvider {
 
             httpPost.setEntity(new StringEntity(body.toString(), "UTF8"));
             httpPost.setHeader("Content-type", "application/json");
-            HttpResponse response = httpClient.execute(httpPost);
+            HttpResponse response = sHttpClient.execute(httpPost);
             if (null == response) {
                 Log.d(TAG, "Create mission response=null");
                 return INVALID_ID;
             }
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
+                response.getEntity().consumeContent();
                 Log.d(TAG, "Create mission response status-code=" + statusCode);
                 return INVALID_ID;
             }
@@ -358,18 +379,38 @@ public class CloudMissionProvider extends MissionProvider {
         return INVALID_ID;
     }
 
-    @Override
-    public void createMission(Mission mission, CreateMissionListener listener) {
-        sExecutor.execute(new CreateMissionRunnable(mission, listener));
-    }
+    /** Should run in sExecutor thread. */
+    void searchMission(String token, SearchFilter filter, ArrayList<Mission> missions) {
+        //TODO: filter?
+        //TODO: url encode?
+        HttpGet httpGet = new HttpGet(API_LIST_USER_MISSION + "?token=" + token);
 
-    @Override
-    public void updateMission(Mission mission, UpdateMissionListener listener) {
-        sExecutor.execute(new UpdateMissionRunnable(mission, listener));
-    }
+        try {
+            HttpResponse response = sHttpClient.execute(httpGet);
+            if (null == response) {
+                Log.d(TAG, "Search mission response=null");
+                return;
+            }
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode != 200) {
+                response.getEntity().consumeContent();
+                Log.d(TAG, "Search mission response status-code=" + statusCode);
+                return;
+            }
 
-    @Override
-    public void searchMission(SearchFilter filter, SearchMissionListener listener) {
-        sExecutor.execute(new SearchMissionRunnable(filter, listener));
+            JSONObject responseObj = new JSONObject(EntityUtils.toString(response.getEntity()));
+            JSONArray dataArray = responseObj.getJSONArray("data");
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject missionObj = dataArray.getJSONObject(i);
+                Mission mission = Mission.fromJSON(missionObj);
+                missions.add(mission);
+            }
+        }
+        catch (ClientProtocolException e) {
+        }
+        catch (IOException e) {
+        }
+        catch (JSONException e) {
+        }
     }
 }
