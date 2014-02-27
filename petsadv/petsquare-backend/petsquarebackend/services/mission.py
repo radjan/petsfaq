@@ -96,6 +96,27 @@ class MissionService(BaseService):
         status['info']['count'] = len(models)
         return status
 
+    @ServiceMethod
+    def link_mission_user(self, id, user_id, desc_dict):
+        success, model = Mission_TB.link_mission_user(id, user_id, desc_dict)
+        return self.serv_rtn(success=success, model=model)
+
+    @ServiceMethod
+    def show_mission_user_meta(self, id, user_id):
+        success, model = Mission_TB.show_mission_user_meta(id, user_id)
+        return self.serv_rtn(success=success, model=model)
+
+    @ServiceMethod
+    def update_mission_user_meta(self, id, user_id, desc_dict=None):
+        if desc_dict is None:
+            desc_dict = {}
+        success, model = Mission_TB.update_mission_user_meta(id, user_id, desc_dict)
+        return self.serv_rtn(success=success, model=model)
+
+    @ServiceMethod
+    def unlink_mission_user(self, id, user_id):
+        success, model = Mission_TB.unlink_mission_user(id, user_id)
+
 def main():
     pass
 
