@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import cc.petera.petsrescue.MainActivity;
 import cc.petera.petsrescue.R;
-import cc.petera.petsrescue.data.SearchFilter;
+import cc.petera.petsrescue.data.SearchMissionFilter;
 import cc.petera.petsrescue.provider.MissionProvider;
 
 public class MissionPagerFragment extends Fragment {
@@ -107,13 +107,13 @@ public class MissionPagerFragment extends Fragment {
 
         mFragments = new MissionListFragment[TAB_COUNT];
         mFragments[TAB_ONGOING] = new MissionListFragment();
-        SearchFilter filter = new SearchFilter();
+        SearchMissionFilter filter = new SearchMissionFilter();
         filter.host_id = ((MainActivity) this.getActivity()).getUserId();
         filter.completed = false;
         mFragments[TAB_ONGOING].setSearchFilter(filter);
 
         mFragments[TAB_AVAILABLE] = new MissionListFragment();
-        filter = new SearchFilter();
+        filter = new SearchMissionFilter();
         filter.host_id = MissionProvider.INVALID_ID;
         filter.completed = false;
         mFragments[TAB_AVAILABLE].setSearchFilter(filter);
@@ -121,7 +121,7 @@ public class MissionPagerFragment extends Fragment {
         mFragments[TAB_TRACKED] = new MissionListFragment();
 
         mFragments[TAB_COMPLETED] = new MissionListFragment();
-        filter = new SearchFilter();
+        filter = new SearchMissionFilter();
         filter.host_id = ((MainActivity) getActivity()).getUserId();
         filter.completed = true;
         mFragments[TAB_COMPLETED].setSearchFilter(filter);

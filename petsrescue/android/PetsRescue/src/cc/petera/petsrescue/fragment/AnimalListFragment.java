@@ -8,29 +8,33 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import cc.petera.petsrescue.MainActivity;
 import cc.petera.petsrescue.R;
+import cc.petera.petsrescue.data.Animal;
 import cc.petera.petsrescue.data.Mission;
-import cc.petera.petsrescue.data.SearchMissionFilter;
+import cc.petera.petsrescue.data.SearchAnimalFilter;
 import cc.petera.petsrescue.provider.ContextProvider;
 import cc.petera.petsrescue.provider.MissionProvider;
 
-public class MissionListFragment extends ListFragment {
+public class AnimalListFragment extends ListFragment {
 
-    class MissionListAdapter extends BaseAdapter {
+    class AnimalListAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return mMissions.size();
+            return mAnimals.size();
         }
         @Override
         public Object getItem(int position) {
-            return mMissions.get(position);
+            return mAnimals.get(position);
         }
         @Override
         public long getItemId(int position) {
@@ -39,16 +43,16 @@ public class MissionListFragment extends ListFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (null == convertView) {
-                convertView = mInflater.inflate(R.layout.item_mission, null);
+                convertView = mInflater.inflate(R.layout.item_animal, null);
             }
 
-            Mission mission = (Mission) getItem(position);
+            Animal animal = (Animal) getItem(position);
 
             LinearLayout itemLayout = (LinearLayout) convertView;
             TextView nameView = (TextView) itemLayout.findViewById(R.id.text_name);
             TextView typeView = (TextView) itemLayout.findViewById(R.id.text_type);
-            nameView.setText(mission.name);
-            typeView.setText(getMissionTypeLabel(mission.type));
+            nameView.setText(animal.name);
+            typeView.setText(getAnimalTypeLabel(animal.type, animal.subtype));
 
             return itemLayout;
         }
@@ -56,9 +60,9 @@ public class MissionListFragment extends ListFragment {
 
     Handler mHandler = new Handler();
     LayoutInflater mInflater;
-    MissionListAdapter mAdapter = new MissionListAdapter();
-    SearchMissionFilter mSearchFilter;
-    ArrayList<Mission> mMissions = new ArrayList<Mission>();
+    AnimalListAdapter mAdapter = new AnimalListAdapter();
+    SearchAnimalFilter mSearchFilter;
+    ArrayList<Animal> mAnimals = new ArrayList<Animal>();
 
     ContextProvider mContextProvider = new ContextProvider() {
         @Override
@@ -75,14 +79,14 @@ public class MissionListFragment extends ListFragment {
         }
     };
 
-    MissionProvider.SearchMissionListener mSearchMissionCompleteListener = new MissionProvider.SearchMissionListener() {
+    MissionProvider.SearchAnimalListener mSearchAnimalCompleteListener = new MissionProvider.SearchAnimalListener() {
         @Override
         public ContextProvider getContextProvider() {
             return mContextProvider;
         }
         @Override
-        public void onFinished(ArrayList<Mission> results) {
-            mMissions = results;
+        public void onFinished(ArrayList<Animal> results) {
+            mAnimals = results;
             mAdapter.notifyDataSetChanged();
         }
     };
@@ -90,7 +94,9 @@ public class MissionListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.setEmptyText(getActivity().getString(R.string.quest_list_empty));
+        this.setEmptyText(getActivity().getString(R.string.animal_list_empty));
+        this.getView().setBackgroundColor(0xFFFFFFFF);
+        this.setHasOptionsMenu(true);
     }
 
     @Override
@@ -102,25 +108,37 @@ public class MissionListFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        MainActivity mainActivity = (MainActivity) this.getActivity();
-        Mission mission = (Mission) this.getListAdapter().getItem(position);
-        mainActivity.showMissionDetailPage(mission);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.animal_list, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //TODO:
+                return false;
+            }
+        });
     }
 
-    public void setSearchFilter(SearchMissionFilter searchFilter) {
-        mSearchFilter = searchFilter;
-        refresh();
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        MainActivity mainActivity = (MainActivity) this.getActivity();
+        Animal animal = (Animal) this.getListAdapter().getItem(position);
+        mainActivity.showAnimalDetailPage(animal);
     }
 
     public void refresh() {
-        if (null == mSearchFilter || null == getActivity()) {
+        if (null == getActivity()) {
             return;
         }
-        ((MainActivity) this.getActivity()).getMissionProvider().searchMission(mSearchFilter, mSearchMissionCompleteListener);
+        ((MainActivity) this.getActivity()).getMissionProvider().searchAnimal(mSearchFilter, mSearchAnimalCompleteListener);
     }
 
-    String getMissionTypeLabel(int type) {
+    String getAnimalTypeLabel(int type, int subtype) {
         Resources res = this.getActivity().getResources();
         int stringId = 0;
         switch (type) {

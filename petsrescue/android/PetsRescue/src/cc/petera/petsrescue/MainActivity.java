@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import cc.petera.petsrescue.data.Animal;
 import cc.petera.petsrescue.data.Mission;
 import cc.petera.petsrescue.fragment.AboutFragment;
+import cc.petera.petsrescue.fragment.AnimalListFragment;
 import cc.petera.petsrescue.fragment.EditMissionFragment;
 import cc.petera.petsrescue.fragment.MainMenuFragment;
 import cc.petera.petsrescue.fragment.MissionDetailFragment;
@@ -38,15 +40,10 @@ public class MainActivity extends FragmentActivity {
     public static final String TAG_NEW_MISSION = "NEW_MISSION";
     public static final String TAG_MISSION_PAGER = "MISSION_PAGER";
     public static final String TAG_MISSION_DETAIL = "MISSION_DETAIL";
+    public static final String TAG_ANIMAL_LIST = "ANIMAL_LIST";
     public static final String TAG_ABOUT = "ABOUT";
 
     public static final int REQUEST_PICK_PHOTO = 1;
-
-    public enum Page {
-        NEW_MISSION,
-        MISSION_PAGER,
-        ABOUT,
-    }
 
     public interface ActivityResultListener {
         void onActivityResult(int resultCode, Intent returnedIntent);
@@ -59,6 +56,7 @@ public class MainActivity extends FragmentActivity {
     MissionPagerFragment mMissionPagerFragment;
     MissionDetailFragment mMissionDetailFragment;
     EditMissionFragment mEditMissionFragment;
+    AnimalListFragment mAnimalListFragment;
     AboutFragment mAboutFragment;
 
     ActivityResultListener mPickPhotoListener;
@@ -247,6 +245,14 @@ public class MainActivity extends FragmentActivity {
         pushFragment(mEditMissionFragment, TAG_MISSION_DETAIL);
     }
 
+    public void showAnimalListPage() {
+        pushFragment(mAnimalListFragment, TAG_ANIMAL_LIST);
+    }
+
+    public void showAnimalDetailPage(Animal animal) {
+        //TODO:
+    }
+
     public void showAboutPage() {
         pushFragment(mAboutFragment, TAG_ABOUT);
     }
@@ -338,6 +344,7 @@ public class MainActivity extends FragmentActivity {
 
         mMissionPagerFragment = new MissionPagerFragment();
         mMissionDetailFragment = new MissionDetailFragment();
+        mAnimalListFragment = new AnimalListFragment();
         mAboutFragment = new AboutFragment();
     }
 
