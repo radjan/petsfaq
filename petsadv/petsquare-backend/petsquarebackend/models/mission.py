@@ -127,7 +127,7 @@ class Mission_TB(Base):
 
     @classmethod
     @ModelMethod
-    def update_user_meta(cls, id, user_id, desc_dict):
+    def update_mission_user_meta(cls, id, user_id, desc_dict):
         success, assoc_obj = Mission_User_TB.get_associate_obj(id, user_id)
         if success and assoc_obj:
             desc_dict['mission_id'] = id
@@ -139,7 +139,7 @@ class Mission_TB(Base):
 
     @classmethod
     @ModelMethod
-    def unlink_image(cls, id, user_id):
+    def unlink_mission_user(cls, id, user_id):
         success, assoc_obj = Mission_User_TB.get_associate_obj(id, user_id)
         if success and assoc_obj:
             rtn = Mission_User_TB.delete(assoc_obj.id)
