@@ -5,10 +5,13 @@
     <string name="app_name">Pets Rescue</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
+    <string name="action_search">Search</string>
+    <string name="action_edit">Edit</string>
 
     <string name="menu_new_quest">Strays found!</string>
     <string name="menu_quest_pager">Action!</string>
-    
+    <string name="menu_animal_list">Animals</string>
+
     <string name="toast_facebook_login_failed">Facebook login failed</string>
 
     <string name="text_pet_name">Name</string>
@@ -29,6 +32,7 @@
     <string name="title_quest_completed">Completed</string>
 
     <string name="quest_list_empty">Empty</string>
+    <string name="animal_list_empty">Empty</string>
 
     <string name="quest_type_rescue">Rescue</string>
     <string name="quest_type_pickup">Pickup</string>
@@ -44,5 +48,4 @@
     <string name="button_cancel_quest">Cancel quest</string>
 
     <string name="text_about_link" translatable="false">http://www.petera.cc</string>
-
 </resources>

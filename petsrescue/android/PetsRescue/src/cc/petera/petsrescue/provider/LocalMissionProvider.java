@@ -3,8 +3,10 @@ package cc.petera.petsrescue.provider;
 import java.util.ArrayList;
 
 import android.util.SparseArray;
+import cc.petera.petsrescue.data.Animal;
 import cc.petera.petsrescue.data.Mission;
-import cc.petera.petsrescue.data.SearchFilter;
+import cc.petera.petsrescue.data.SearchAnimalFilter;
+import cc.petera.petsrescue.data.SearchMissionFilter;
 
 /** Store Missions in memory for test. */
 public class LocalMissionProvider extends MissionProvider {
@@ -76,8 +78,24 @@ public class LocalMissionProvider extends MissionProvider {
         }
     }
 
+    static class SearchAnimalFinishedRunnable implements Runnable {
+        SearchAnimalListener mListener;
+        ArrayList<Animal> mResults;
+
+        public SearchAnimalFinishedRunnable(SearchAnimalListener listener, ArrayList<Animal> results) {
+            mListener = listener;
+            mResults = results;
+        }
+
+        @Override
+        public void run() {
+            mListener.onFinished(mResults);
+        }
+    }
+
     long mNextId = 0;
     SparseArray<Mission> mMissions = new SparseArray<Mission>();
+    SparseArray<Animal> mAnimals = new SparseArray<Animal>();
 
     @Override
     public void facebookLogin(String fbId, String fbToken, FacebookLoginListener listener) {
@@ -104,16 +122,28 @@ public class LocalMissionProvider extends MissionProvider {
     }
 
     @Override
-    public void searchMission(SearchFilter filter, SearchMissionListener listener) {
+    public void searchMission(SearchMissionFilter filter, SearchMissionListener listener) {
         ArrayList<Mission> results = new ArrayList<Mission>();
         for (int i = 0; i < mMissions.size(); i++) {
-            Mission Mission = mMissions.valueAt(i);
-            if (filter.filter(Mission)) {
-                results.add(Mission);
+            Mission mission = mMissions.valueAt(i);
+            if (filter.filter(mission)) {
+                results.add(mission);
             }
         }
 
         listener.getContextProvider().getHandler().post(new SearchMissionFinishedRunnable(listener, results));
+    }
+
+    @Override
+    public void searchAnimal(SearchAnimalFilter filter, SearchAnimalListener listener) {
+        ArrayList<Animal> results = new ArrayList<Animal>();
+        for (int i = 0; i < mAnimals.size(); i++) {
+            Animal animal = mAnimals.valueAt(i);
+            if (filter.filter(animal)) {
+                results.add(animal);
+            }
+        }
+        listener.getContextProvider().getHandler().post(new SearchAnimalFinishedRunnable(listener, results));
     }
 
     long getNewId() {

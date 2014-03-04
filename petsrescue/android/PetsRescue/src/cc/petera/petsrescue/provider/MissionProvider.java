@@ -2,8 +2,10 @@ package cc.petera.petsrescue.provider;
 
 import java.util.ArrayList;
 
+import cc.petera.petsrescue.data.Animal;
 import cc.petera.petsrescue.data.Mission;
-import cc.petera.petsrescue.data.SearchFilter;
+import cc.petera.petsrescue.data.SearchAnimalFilter;
+import cc.petera.petsrescue.data.SearchMissionFilter;
 
 public abstract class MissionProvider {
 
@@ -46,6 +48,11 @@ public abstract class MissionProvider {
         void onFinished(ArrayList<Mission> results);
     }
 
+    public interface SearchAnimalListener {
+        ContextProvider getContextProvider();
+        void onFinished(ArrayList<Animal> results);
+    }
+
     static class MissionUpdatedRunnable implements Runnable {
         Observer mObserver;
 
@@ -75,5 +82,6 @@ public abstract class MissionProvider {
     public abstract void logout(String token, LogoutListener listener);
     public abstract void createMission(Mission Mission, CreateMissionListener listener);
     public abstract void updateMission(Mission Mission, UpdateMissionListener listener);
-    public abstract void searchMission(SearchFilter filter, SearchMissionListener listener);
+    public abstract void searchMission(SearchMissionFilter filter, SearchMissionListener listener);
+    public abstract void searchAnimal(SearchAnimalFilter filter, SearchAnimalListener listener);
 }

@@ -56,6 +56,7 @@ public class MainMenuFragment extends ListFragment {
     MainMenuItem[] mItems = new MainMenuItem[] {
         new MainMenuItem(R.string.menu_new_quest, R.drawable.ic_new_quest),
         new MainMenuItem(R.string.menu_quest_pager, R.drawable.ic_quest_list),
+        new MainMenuItem(R.string.menu_animal_list, R.drawable.ic_animal_list),
     };
 
     @Override
@@ -74,6 +75,9 @@ public class MainMenuFragment extends ListFragment {
             break;
         case 1:
             mainActivity.showMissionPagerPage(MissionPagerFragment.TAB_ONGOING);
+            break;
+        case 2:
+            mainActivity.showAnimalListPage();
             break;
         }
     }

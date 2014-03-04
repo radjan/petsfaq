@@ -4,9 +4,12 @@
     <string name="app_name">寵物救援</string>
     <string name="action_settings">設定</string>
     <string name="action_about">關於</string>
-    
+    <string name="action_search">搜尋</string>
+    <string name="action_edit">編輯</string>
+
     <string name="menu_new_quest">浪貓犬發現!</string>
     <string name="menu_quest_pager">戰隊出動!</string>
+    <string name="menu_animal_list">動物園</string>
 
     <string name="text_pet_name">名字</string>
     <string name="text_pet_type">類型</string>
@@ -26,8 +29,8 @@
     <string name="title_quest_completed">已完成</string>
 
     <string name="quest_list_empty">沒任務</string>
+    <string name="animal_list_empty">沒動物</string>
 
-    
     <string name="quest_type_rescue">救援</string>
     <string name="quest_type_pickup">接</string>
     <string name="quest_type_stay">留</string>
@@ -40,5 +43,4 @@
     <string name="button_edit_quest">編輯</string>
     <string name="button_start_quest">開始任務</string>
     <string name="button_cancel_quest">放棄任務</string>
-
 </resources>

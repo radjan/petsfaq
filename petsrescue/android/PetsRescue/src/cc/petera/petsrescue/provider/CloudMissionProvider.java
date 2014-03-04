@@ -25,7 +25,8 @@ import org.json.JSONObject;
 import android.util.Log;
 import cc.petera.petsrescue.data.Animal;
 import cc.petera.petsrescue.data.Mission;
-import cc.petera.petsrescue.data.SearchFilter;
+import cc.petera.petsrescue.data.SearchAnimalFilter;
+import cc.petera.petsrescue.data.SearchMissionFilter;
 
 public class CloudMissionProvider extends MissionProvider {
     private static final String TAG = "CloudMissionProvider";
@@ -36,8 +37,9 @@ public class CloudMissionProvider extends MissionProvider {
     public static final String API_PREFIX = "http://www.petsfaq.info:6543/api/v1";
     public static final String API_CREATE_MISSION = API_PREFIX + "/missions";
     public static final String API_LIST_MISSION = API_PREFIX + "/missions";
-    public static final String API_CREATE_ANIMAL = API_PREFIX + "/animals";
     public static final String API_LIST_USER_MISSION = API_PREFIX + "/user/me/missions";
+    public static final String API_CREATE_ANIMAL = API_PREFIX + "/animals";
+    public static final String API_LIST_ANIMAL = API_PREFIX + "/animals";
 
     class FacebookLoginRunnable implements Runnable {
         class FinishedRunnable implements Runnable {
@@ -144,11 +146,11 @@ public class CloudMissionProvider extends MissionProvider {
             }
         }
 
-        SearchFilter mFilter;
+        SearchMissionFilter mFilter;
         SearchMissionListener mListener;
         ArrayList<Mission> mMissions = new ArrayList<Mission>();
 
-        public SearchMissionRunnable(SearchFilter filter, SearchMissionListener listener) {
+        public SearchMissionRunnable(SearchMissionFilter filter, SearchMissionListener listener) {
             mFilter = filter;
             mListener = listener;
         }
@@ -156,6 +158,30 @@ public class CloudMissionProvider extends MissionProvider {
         @Override
         public void run() {
             searchMission(mListener.getContextProvider().getToken(), mFilter, mMissions);
+            mListener.getContextProvider().getHandler().post(new FinishedRunnable());
+        }
+    };
+
+    class SearchAnimalRunnable implements Runnable {
+        class FinishedRunnable implements Runnable {
+            @Override
+            public void run() {
+                mListener.onFinished(mAnimals);
+            }
+        }
+
+        SearchAnimalFilter mFilter;
+        SearchAnimalListener mListener;
+        ArrayList<Animal> mAnimals = new ArrayList<Animal>();
+
+        public SearchAnimalRunnable(SearchAnimalFilter filter, SearchAnimalListener listener) {
+            mFilter = filter;
+            mListener = listener;
+        }
+
+        @Override
+        public void run() {
+            searchAnimal(mListener.getContextProvider().getToken(), mFilter, mAnimals);
             mListener.getContextProvider().getHandler().post(new FinishedRunnable());
         }
     };
@@ -184,8 +210,13 @@ public class CloudMissionProvider extends MissionProvider {
     }
 
     @Override
-    public void searchMission(SearchFilter filter, SearchMissionListener listener) {
+    public void searchMission(SearchMissionFilter filter, SearchMissionListener listener) {
         sExecutor.execute(new SearchMissionRunnable(filter, listener));
+    }
+
+    @Override
+    public void searchAnimal(SearchAnimalFilter filter, SearchAnimalListener listener) {
+        sExecutor.execute(new SearchAnimalRunnable(filter, listener));
     }
 
     /** Should run in sExecutor thread. */
@@ -380,7 +411,7 @@ public class CloudMissionProvider extends MissionProvider {
     }
 
     /** Should run in sExecutor thread. */
-    void searchMission(String token, SearchFilter filter, ArrayList<Mission> missions) {
+    void searchMission(String token, SearchMissionFilter filter, ArrayList<Mission> missions) {
         //TODO: filter?
         //TODO: url encode?
         HttpGet httpGet = new HttpGet(API_LIST_USER_MISSION + "?token=" + token);
@@ -404,6 +435,41 @@ public class CloudMissionProvider extends MissionProvider {
                 JSONObject missionObj = dataArray.getJSONObject(i);
                 Mission mission = Mission.fromJSON(missionObj);
                 missions.add(mission);
+            }
+        }
+        catch (ClientProtocolException e) {
+        }
+        catch (IOException e) {
+        }
+        catch (JSONException e) {
+        }
+    }
+
+    /** Should run in sExecutor thread. */
+    public void searchAnimal(String token, SearchAnimalFilter filter, ArrayList<Animal> animals) {
+        //TODO: filter?
+        //TODO: url encode?
+        HttpGet httpGet = new HttpGet(API_LIST_ANIMAL + "?token=" + token);
+
+        try {
+            HttpResponse response = sHttpClient.execute(httpGet);
+            if (null == response) {
+                Log.d(TAG, "Search animal response=null");
+                return;
+            }
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode != 200) {
+                response.getEntity().consumeContent();
+                Log.d(TAG, "Search animal response status-code=" + statusCode);
+                return;
+            }
+
+            JSONObject responseObj = new JSONObject(EntityUtils.toString(response.getEntity()));
+            JSONArray dataArray = responseObj.getJSONArray("data");
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject missionObj = dataArray.getJSONObject(i);
+                Animal animal = Animal.fromJSON(missionObj);
+                animals.add(animal);
             }
         }
         catch (ClientProtocolException e) {

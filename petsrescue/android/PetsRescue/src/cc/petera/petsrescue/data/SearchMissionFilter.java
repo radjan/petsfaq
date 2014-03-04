@@ -1,6 +1,6 @@
 package cc.petera.petsrescue.data;
 
-public class SearchFilter {
+public class SearchMissionFilter {
     public boolean checkHostId = true;
     public long host_id;
     public boolean checkCompleted = true;
