@@ -203,13 +203,13 @@ class ModelMixin(object):
             session.query(cls).filter(cls.id == id).update({
                 attr: value
                 })
-            session.commit()
+            #session.commit()
 
     @classmethod
     def set_attrs(cls, id, attrs, session=DBSession):
         if hasattr(cls, 'id'):
             session.query(cls).filter(cls.id == id).update(attrs)
-            session.commit()
+            #session.commit()
 
     @classmethod
     def union_by_ids(cls, idlist, session=DBSession):
