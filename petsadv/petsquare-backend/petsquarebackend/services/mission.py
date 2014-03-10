@@ -11,6 +11,7 @@ import traceback
 
 from petsquarebackend.services import BaseService
 from petsquarebackend.services import ServiceMethod
+from petsquarebackend.services import ServiceException
 from petsquarebackend.models.mission import (
     Mission_TB,
     MissionRescue_TB,
@@ -37,6 +38,26 @@ TYPE_CLASS = {
         MISSION_ADOPT: MissionAdopt_TB,
         MISSION_SUPPORT: MissionSupport_TB,
     }
+
+# accpted actions
+ACTION_ACCEPT = 'accept'
+ACTION_ASSIGN = 'assign'
+ACTION_COMPLETE = 'complete'
+ACTION_QUIT = 'quit'
+ACTIONS = (ACTION_ACCEPT, ACTION_ASSIGN, ACTION_COMPLETE, ACTION_QUIT)
+
+# predefined mission status
+STATUS_OPEN = 'open'
+STATUS_ACCEPTED = 'accepted'
+STATUS_ASSIGNED = 'assigned'
+STATUS_COMPLETED = 'completed'
+STATUS_CANCELED = 'canceled'
+
+# predefined mision-user status
+STATUS_MU_ACCEPTED = 'accepted'
+STATUS_MU_OWNED = 'owned'
+STATUS_MU_COMPLETED = 'completed'
+STATUS_MU_LEAVED = 'leaved'
 
 class MissionService(BaseService):
     def __init__(self, request):
@@ -116,6 +137,64 @@ class MissionService(BaseService):
     @ServiceMethod
     def unlink_mission_user(self, id, user_id):
         success, model = Mission_TB.unlink_mission_user(id, user_id)
+
+    @ServiceMethod
+    def mission_user_action(self, id, user_id, action, desc_dict=None):
+        # business logic here
+        # TODO object permissions: owner, host
+        if desc_dict is None:
+            desc_dict = {}
+
+        sucess, mission = Mission_TB.show(id)
+        if not success:
+            return self.serv_rtn(success=success, model=mission)
+
+        if action is ACTION_ACCEPT:
+            if mission.status is STATUS_OPEN:
+                success, model = Mission_TB.update(id, status=STATUS_ACCEPTED)
+                if not success:
+                    return self.serv_rtn(success=success, model=model)
+            success, model = Mission_TB.link_mission_user(id, user_id, desc_dict)
+            return self.serv_rtn(success=success, model=model)
+
+        success, meta = Mission_TB.show_mission_user_meta(id, user_id)
+        if not success:
+            raise ServiceException(meta)
+
+        m_update, mu_update = self._mission_user_action(mission, meta, action)
+        desc_dict.update(mu_update)
+        if m_update:
+            success, model = Mission_TB.update(id, **m_update)
+            if not success:
+                return self.serv_rtn(success=success, model=model)
+
+        success, model = Mission_TB.update_mission_user_meta(id, user_id, desc_dict)
+        return self.serv_rtn(success=success, model=model)
+
+    def _mission_user_action_status(self, mission, mission_user, action):
+        m_update = {}
+        mu_update = {}
+        if action is ACTION_ASSIGN:
+            m_update['status'] = STATUS_ASSIGNED
+            mu_update['status'] = STATUS_MU_OWNED
+            mu_update['is_owner'] = True
+        elif action is ACTION_COMPLETE:
+            m_update['status'] = STATUS_COMPLETED
+            mu_update['status'] = STATUS_MU_COMPLETED
+        elif action is ACTION_QUIT:
+            mu_update['status'] = STATUS_MU_LEAVED
+            mu_update['is_owner'] = False
+            if not (set((mu.user_id for mu in mission.accepter_assocs))
+                     - set((mission_user.user_id,))
+                m_update['status'] = STATUS_OPEN
+        else:
+            raise ServiceException(util.return_dict(
+                                    success=False,
+                                    data='',
+                                    info='Unsupported action, must be ' +
+                                         '/'.join(ACTIONS),
+                                    code=404)
+        return m_udpate, mu_update
 
 def main():
     pass
