@@ -12,10 +12,16 @@ import traceback
 from petsquarebackend import common
 from petsquarebackend.common import util
 
+class ServiceException(Exception):
+    def __init__(self, exc_data):
+        self.exc_data = exc_data
+
 def ServiceMethod(func):
     def serv_wrapped(self, *args, **kwargs):
         try:
             status = func(self, *args, **kwargs)
+        except ServiceException, se:
+            status = self.serv_rtn(success=False, model=se.exc_data)
         except Exception, e:
             status = util.return_dict(success=False,
                                       code=common.DEFAULT_ERROR_CODE)
