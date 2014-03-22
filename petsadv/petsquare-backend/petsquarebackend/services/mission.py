@@ -190,8 +190,9 @@ class MissionService(BaseService):
         elif action == ACTION_QUIT:
             mu_update['status'] = STATUS_MU_LEAVED
             mu_update['is_owner'] = False
-            if not (set((mu.user_id for mu in mission.accepter_assocs))
-                     - set((mission_user.user_id,))
+            accepters = set((mu.user_id for mu in mission.accepter_assocs))
+            accepters.discard(mission_user.user_id)
+            if not accepters:
                 m_update['status'] = STATUS_OPEN
         else:
             raise ServiceException(util.return_dict(
