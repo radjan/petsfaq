@@ -5,6 +5,7 @@ angular.module('webFrontendApp')
   	$scope.localImage = {};
   	$scope.init = function(){
   		if ($scope.$parent.currentCheck === undefined) { return; }
+  		$scope.showRightSide = true;
   		var image = $scope.$parent.currentCheck.image;
   		var url = commonApi.getImageUrl(image.id); 
   		$scope.localImage = {
@@ -13,6 +14,14 @@ angular.module('webFrontendApp')
   			description: image.description,
   			url: url
   		};
+
+  		$scope.location = $scope.$parent.currentCheck.location;
+  	}
+  	$scope.showLocationData = function(key){
+  		if (key !== 'id' && key !== 'explorer' && key !== 'longitude') {
+  			return true;
+  		}
+  		return false;
   	}
 
   }]);
