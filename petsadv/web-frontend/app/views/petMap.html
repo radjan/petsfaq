@@ -1,8 +1,9 @@
-<div id="wrapper">
+<div id="container">
 	<div ui-view="leftSide"></div>
+	<div ui-view="rightSide"></div>
 	<a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i>Hello</a>
 
-	<div id="page-content-wrapper">
+	<div id="content">
 		<div id="map" class="row-fluid">
 			<!-- Giving the div an id="map_canvas" fix problems with twitter bootstrap affecting
 			google maps -->
@@ -27,12 +28,5 @@
 		</div>
 	</div>
 
-	<div ui-view="rightSide"></div>
 </div>
 
-<script>
-$("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("active");
-});
-</script>
