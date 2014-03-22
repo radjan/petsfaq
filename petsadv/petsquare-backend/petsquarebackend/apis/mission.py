@@ -31,6 +31,8 @@ PARAMS = ('id', 'name', 'type', 'status', 'animal_id',
           'reporter_id', 'dest_location_id',
           'from_location_id', 'requirement', 'period', 'skill',)
 
+MISSION_USER_PARAMS = ('id', 'status', 'description', 'is_owner',
+                       'mission_id', 'user_id',)
 
 class SchemaMissionsGet(Schema):
     offset      = validators.Int(if_missing=0)
@@ -86,6 +88,21 @@ class SchemaMissionPut(SchemaMissionPost):
     updateddatetime = validators.UnicodeString(if_missing=IGNORE)
     accepter_assocs = validators.UnicodeString(if_missing=IGNORE)
 
+class SchemaMissionUserAction(Schema):
+    # optinal
+    action      = validators.UnicodeString(if_missing=IGNORE)
+    status      = validators.UnicodeString(if_missing=IGNORE)
+    description = validators.UnicodeString(if_missing=IGNORE)
+    is_owner    = validators.StringBool(if_missing=IGNORE)
+
+    # allow these attributes, not interested anyway
+    id          = validators.Int(if_missing=IGNORE)
+    mission_id  = validators.Int(if_missing=IGNORE)
+    user_id     = validators.Int(if_missing=IGNORE)
+    mission     = validators.UnicodeString(if_missing=IGNORE)
+    user        = validators.UnicodeString(if_missing=IGNORE)
+    createddatetime = validators.UnicodeString(if_missing=IGNORE)
+    updateddatetime = validators.UnicodeString(if_missing=IGNORE)
 
 class BaseMission(object):
     """
@@ -230,6 +247,66 @@ class BaseMission(object):
         api_rtn = self.format_return(serv_rtn)
         return api_rtn
 
+    def _mission_user_update(self):
+        """
+        update mission user
+        API: PUT /mission/<id:\d+>/user/<user_id:\d+>
+        handle predefined actions if a action is specified
+        """
+        #validation
+        success, data, code = self.validate(SchemaMissionUserAction)
+
+        try:
+            #get id from route_path
+            mission_id = self.request.matchdict['id'].encode('utf-8', 'ignore')
+            user_id = self.request.matchdict['user_id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = MissionService(self.request)
+            params = dict((k, v) for k, v in data.items() if k in MISSION_USER_PARAMS)
+            params['mission_id'] = mission_id
+            params['user_id'] = user_id
+            action = data.get('action', None)
+            if action:
+                serv_rtn = serv.mission_user_action(
+                                    mission_id,
+                                    user_id,
+                                    action,
+                                    params,)
+            else:
+                serv_rtn = serv.update_mission_user_meta(
+                                    mission_id,
+                                    user_id,
+                                    params,)
+        else:
+            serv_rtn = self._validation_error(data, code)
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
+    def _mission_user_show(self):
+        """
+        show mission user
+        API: GET /mission/<id:\d+>/user/<user_id:\d+>
+        """
+        try:
+            #get id from route_path
+            mission_id = self.request.matchdict['id'].encode('utf-8', 'ignore')
+            user_id = self.request.matchdict['user_id'].encode('utf-8', 'ignore')
+        except Exception, e:
+            success = False
+
+        if success:
+            serv = MissionService(self.request)
+            serv_rtn = serv.unlink_mission_user(mission_id, user_id,)
+        else:
+            serv_rtn = self._validation_error(data, code)
+
+        api_rtn = self.format_return(serv_rtn)
+        return api_rtn
+
 
 @view_defaults(renderer='json')
 class MissionAPI(BaseAPI, BaseMission):
@@ -303,6 +380,18 @@ class MissionAPI(BaseAPI, BaseMission):
         self.XHeaders()
         return self._my_missions()
 
+    @view_config(route_name='mission-user', request_method='PUT')
+    def mission_user_update(self):
+        #for X-domain development
+        self.XHeaders()
+        self._mission_user_update()
+
+    @view_config(route_name='mission-user', request_method='PUT')
+    def mission_user_show(self):
+        #for X-domain development
+        self.XHeaders()
+        self._mission_user_show()
+
 @view_defaults(renderer='json')
 class MissionAPP(BaseAPP, BaseMission):
     @view_config(route_name='app-missions', request_method='GET')
@@ -328,6 +417,14 @@ class MissionAPP(BaseAPP, BaseMission):
     @view_config(route_name='app-my-missions', request_method='GET')
     def my_missions(self):
         return self._my_missions()
+
+    @view_config(route_name='app-mission-user', request_method='PUT')
+    def mission_user_update(self):
+        return self._mission_user_update()
+
+    @view_config(route_name='app-mission-user', request_method='GET')
+    def mission_user_update(self):
+        return self._mission_user_show()
 
 def main():
     pass

@@ -25,6 +25,8 @@ def api_routes(config):
     config.add_route('animal-images', api_prefix + str(main_version) + '/animal/{id:\d+}/images')
     config.add_route('animal-image',  api_prefix + str(main_version) + '/animal/{id:\d+}/image/{image_id:\d+}')
 
+    config.add_route('mission-user',  api_prefix + str(main_version) + '/mission/{id:\d+}/user/{user_id:\d+}')
+
     config.add_route('my-missions',   api_prefix + str(main_version) + '/user/me/missions')
 
 
@@ -44,6 +46,8 @@ def api_routes(config):
 
     config.add_route('app-animal-images',   app_prefix + str(main_version) + '/animal/{id:\d+}/images')
     config.add_route('app-animal-image',    app_prefix + str(main_version) + '/animal/{id:\d+}/image/{image_id:\d+}')
+
+    config.add_route('app-mission-user',    app_prefix + str(main_version) + '/mission/{id:\d+}/user/{user_id:\d+}')
 
     config.add_route('app-showme',    app_prefix + str(main_version) + '/user/me')
     config.add_route('app-user',      app_prefix + str(main_version) + '/user/{id:\d+}')
