@@ -26,7 +26,8 @@ angular.module('webFrontendApp', [
 
     $urlRouterProvider.when('/petMap', '/petMap/main');
     $urlRouterProvider.when('/petMap/', '/petMap/main');
-    
+    $urlRouterProvider.when('/index', '/petMap/main');
+
     $urlRouterProvider.otherwise('/index');
 
     $stateProvider
