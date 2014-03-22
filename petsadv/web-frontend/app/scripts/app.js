@@ -46,6 +46,9 @@ angular.module('webFrontendApp', [
         views: {
           'leftSide':{
             templateUrl: 'views/petMapLeftSide.html',
+          },
+          'rightSide': {
+            templateUrl: 'views/petMapRightSide.html', 
           }
         }
       })
@@ -56,7 +59,8 @@ angular.module('webFrontendApp', [
             templateUrl: 'views/petMapLeftSide.html', 
           },
           'rightSide': {
-            templateUrl: 'views/petMapRightSide.html', 
+            templateUrl: 'views/petMapRightSide.html',
+            controller: 'PetmaprightsideCtrl'
           }
         }
       });

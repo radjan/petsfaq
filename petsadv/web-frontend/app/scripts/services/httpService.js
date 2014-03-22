@@ -73,6 +73,9 @@ angular.module('webFrontendApp')
         return userid;
       },
       getErrorHandleFunc: errorFunc,
+      getBaseUri: function(){
+        return baseUri;
+      },
 
     };
 
