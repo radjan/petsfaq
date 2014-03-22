@@ -23,7 +23,8 @@
 .sidebar-nav {
   position: absolute;
   top: 0;
-  width: 250px;
+  /*width: 250px;*/
+  width: inherit;
   list-style: none;
   margin: 0;
   padding: 0;
