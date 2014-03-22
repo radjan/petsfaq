@@ -9,9 +9,13 @@
 			google maps -->
 			<div>
 				<div id="map_canvas" ui-map="googleMap" class="map-canvas"
-				  ui-event="{'map-click': 'addMarker($event, $params)', 'map-zoom_changed': 'setZoomMessage(googleMap.getZoom())' }"
+				ui-event="{'map-zoom_changed': 'setZoomMessage(googleMap.getZoom())' }"
 				  ui-options="mapOptions">
 				</div>
+				<!-- <div id="map_canvas" ui-map="googleMap" class="map-canvas"
+				ui-event="{'map-click': 'addMarker($event, $params)', 'map-zoom_changed': 'setZoomMessage(googleMap.getZoom())' }"
+				  ui-options="mapOptions">
+				</div> -->
 			</div>
 			<div ng-repeat="marker in googleMarkers" ui-map-marker="googleMarkers[$index]"
 			  ui-event="{'map-click': 'openMarkerInfo(marker, $index)'}">

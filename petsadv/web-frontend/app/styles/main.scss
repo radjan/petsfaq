@@ -35,3 +35,18 @@ body {
     height: 29px;
     width : 29px;
 }
+
+.petMapSideBarNav {
+    border: solid; 
+    border-width: 1px; 
+    border-color: white; 
+    padding: 10px;
+
+    div {
+        color:white;
+        cursor: pointer;
+    }
+    ul > li{
+        cursor: pointer;
+    }
+}

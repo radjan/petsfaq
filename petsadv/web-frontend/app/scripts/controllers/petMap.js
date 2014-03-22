@@ -13,11 +13,12 @@ angular.module('webFrontendApp')
 
   	/******** nav bar **********/
 	$scope.categories = [
-		{title:'最近活動點(check view)', type:'recent'},
-		{title:'歷史活動點', type:'history'},
-		{title:'熱門地點(location view)', type:'hot'}
+		{title:'最近活動點(check view)', type:'recent', show: false},
+		{title:'歷史活動點', type:'history', show: false},
+		{title:'熱門地點(location view)', type:'hot', show: false}, 
 	];
-	$scope.setMarkers = function (type){
+	$scope.setMarkers = function (index, type){
+        $scope.categories[index].show = !$scope.categories[index].show;
         if($scope.type === type) return;
         switch(type){
             case $scope.categories[0].type:
@@ -50,6 +51,8 @@ angular.module('webFrontendApp')
                 $scope.googleMarkers = [];
                 $scope.type = 'main';     
         }
+
+        
 	};
 
     
