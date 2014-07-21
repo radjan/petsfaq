@@ -386,7 +386,7 @@ class MissionAPI(BaseAPI, BaseMission):
         self.XHeaders()
         self._mission_user_update()
 
-    @view_config(route_name='mission-user', request_method='PUT')
+    @view_config(route_name='mission-user', request_method='GET')
     def mission_user_show(self):
         #for X-domain development
         self.XHeaders()

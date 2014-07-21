@@ -203,7 +203,7 @@ class MissionService(BaseService):
                                     data='',
                                     info='Unsupported action, must be ' +
                                          '/'.join(ACTIONS),
-                                    code=404)
+                                    code=404))
         return m_udpate, mu_update
 
 def main():
