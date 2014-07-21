@@ -178,6 +178,9 @@ class MissionService(BaseService):
         return self.serv_rtn(success=success, model=model)
 
     def _mission_user_action_status(self, mission, mission_user, action):
+        '''
+            missioin and mission_user status transittion by action.
+        '''
         m_update = {}
         mu_update = {}
         if action == ACTION_ASSIGN:
