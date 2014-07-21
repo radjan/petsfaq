@@ -1,1 +1,19 @@
-<p>This is the petMapRightSide view.</p>
+<!-- <p>This is the petMapRightSide view.</p> -->
+ <div id="right-sidebar" ng-init="init()">
+	<ul class="sidebar-nav">
+	    <div> <!-- place image -->
+	    	<img ng-src="{{localImage.url}}">
+	    </div>
+	    <div class="petMapSideBarNav"> <!-- place location -->
+	    	<div>地點資訊：</div>
+	    	<ul>
+	    		<li>名字： {{location.name}}</li>
+	    		<li>描述： {{location.description}}</li>
+	    		<li>人氣： {{location.checks.length}}</li>
+	    		<li>地址： {{location.address}}</li>
+	    		<li>建立時間： {{location.createddatetime}}</li>
+	    		<li>上次更改時間： {{location.updateddatetime}}</li>
+	    	</ul>
+	    </div>
+    </ul>
+</div>

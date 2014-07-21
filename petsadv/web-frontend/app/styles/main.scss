@@ -9,7 +9,7 @@ html, body {
 }
 
 body {
-    background: #fafafa;
+    background-color: #272727; //#cfc755; //#fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
 }
@@ -34,4 +34,20 @@ body {
 .user-picture {
     height: 29px;
     width : 29px;
+}
+
+.petMapSideBarNav {
+    border: solid; 
+    border-width: 1px; 
+    border-color: white; 
+    padding: 10px;
+
+    div {
+        color:white;
+        cursor: pointer;
+    }
+    ul > li{
+        cursor: pointer;
+        color: white;
+    }
 }
