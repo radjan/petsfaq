@@ -14,7 +14,7 @@ def return_dict(success=False, data='', info='', code=200):
 
 
 
-def return_tmpObj():
+def return_tmpObj(cls):
     class tmpObj:
         pass
     return tmpObj()
