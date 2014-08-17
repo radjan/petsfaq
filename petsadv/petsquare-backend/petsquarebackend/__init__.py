@@ -15,7 +15,7 @@ from pyramid.session import UnencryptedCookieSessionFactoryConfig
 
 
 #authentication
-from petsquarebackend.authentication import TokenAuthenticationPolicy
+#from petsquarebackend.authentication import TokenAuthenticationPolicy
 from petsquarebackend.authentication import get_app_user
 from pyramid.authorization import ACLAuthorizationPolicy
 
@@ -49,7 +49,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     #authentication / authorization
-    authn_policy = TokenAuthenticationPolicy()
+    #authn_policy = TokenAuthenticationPolicy()
     authz_policy = ACLAuthorizationPolicy()
 
     #sqlalchemy
@@ -62,7 +62,7 @@ def main(global_config, **settings):
     Base.metadata.bind = engine
     #group-level security
     config = Configurator(settings=settings, root_factory='petsquarebackend.models.RootFactory')
-    config.set_authentication_policy(authn_policy)
+    #config.set_authentication_policy(authn_policy)
     config.add_request_method(get_app_user, 'app_user', reify=True)
     config.set_authorization_policy(authz_policy)
 
