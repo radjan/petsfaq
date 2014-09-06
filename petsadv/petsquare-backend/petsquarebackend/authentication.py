@@ -16,25 +16,65 @@ from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.util import DottedNameResolver
 
 from petsquarebackend.services.account import AccountService
+import inspect
+import traceback
 
 @implementer(IAuthenticationPolicy)
 class TokenAuthenticationPolicy(CallbackAuthenticationPolicy):
     def unauthenticated_userid(self, request):
+        """
+        Actually, unauthenticated_userid() has no meaning to
+        TokenAuthenticatedPolicy, just return None
+        """
         return None
 
     def authenticated_userid(self, request):
-        if request.app_user:
-            return request.app_user.id
-        else:
+        """
+        using token value to query database
+        """
+        token = request.params.get('token', None)
+        if not token:
+            return None
+        from petsquarebackend.models.token import Token_TB
+        from petsquarebackend.models import DBSession
+
+        try:
+            model = DBSession.query(Token_TB).filter(Token_TB.token == token)\
+                    .scalar()
+            return None if model == None else model.user.id
+        except Exception, e:
+            err_msg = 'get authenticated_userid fail: %s' % json.dumps(
+                        [str(e), inspect.stack()[0][3],
+                         traceback.format_exc()], 
+                        indent=1)
+            log.error(err_msg)
             return None
 
     def effective_principals(self, request):
         principals = [Everyone]
-        app_user = request.app_user
-        if app_user:
-            principals += [Authenticated, 'u:%s' % app_user.id]
-            principals.append('g:%s' % app_user.group)
-        return principals
+
+        token = request.params.get('token', None)
+        if not token:
+            return None
+        from petsquarebackend.models.token import Token_TB
+        from petsquarebackend.models import DBSession
+
+        try:
+            model = DBSession.query(Token_TB).filter(Token_TB.token == token)\
+                    .scalar()
+            if model == None:
+                return principals
+            else:
+                principals += [Authenticated, 'u:%s' % model.user.id,
+                               'g:%s' % model.user.group.name]
+                return principals
+        except Exception, e:
+            err_msg = 'get effective_principals fail: %s' % json.dumps(
+                        [str(e), inspect.stack()[0][3],
+                         traceback.format_exc()], 
+                        indent=1)
+            log.error(err_msg)
+            return None
 
     def remember(self, request, principal, **wk):
         return []
@@ -42,28 +82,40 @@ class TokenAuthenticationPolicy(CallbackAuthenticationPolicy):
     def forget(self, request):
         return []
 
+def get_user(request):
+    from petsquarebackend.models.accounts import User_TB
+    user_id = request.authenticated_userid
 
-def get_app_user(request):
     try:
-        token = request.params.get('token', None)
-        if not token:
-            return None
-        acc_service = AccountService(request)
-        serv_rtn = acc_service.sso_check(token)
-
-        if serv_rtn['success']:
-            return serv_rtn['data']
-        else:
-            return None
+        model = DBSession.query(User_TB).filter(User_TB.id == user_id).scalar()
+        return None if model == None else model
     except Exception, e:
-        log.error('error: %s' % str(e))
+        err_msg = 'get user obj fail: %s' % json.dumps(
+                    [str(e), inspect.stack()[0][3],
+                     traceback.format_exc()], 
+                    indent=1)
+        log.error(err_msg)
         return None
 
+def get_app_user(request):
+    from petsquarebackend.models.token import Token_TB
+    from petsquarebackend.models import DBSession
+
+    try:
+        model = DBSession.query(Token_TB).filter(Token_TB.token == token)\
+                .scalar()
+        return None if model == None else model.user
+    except Exception, e:
+        err_msg = 'get user obj fail: %s' % json.dumps(
+                    [str(e), inspect.stack()[0][3],
+                     traceback.format_exc()], 
+                    indent=1)
+        log.error(err_msg)
+        return None
 
 def main():
     pass
 
 if __name__ == '__main__':
     main()
-
 

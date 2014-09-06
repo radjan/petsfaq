@@ -17,6 +17,7 @@ from pyramid.session import UnencryptedCookieSessionFactoryConfig
 #authentication
 #from petsquarebackend.authentication import TokenAuthenticationPolicy
 from petsquarebackend.authentication import get_app_user
+from petsquarebackend.authentication import get_user
 from pyramid.authorization import ACLAuthorizationPolicy
 
 #add foreign key setting for sqlite, callback function
@@ -64,6 +65,7 @@ def main(global_config, **settings):
     config = Configurator(settings=settings, root_factory='petsquarebackend.models.RootFactory')
     #config.set_authentication_policy(authn_policy)
     config.add_request_method(get_app_user, 'app_user', reify=True)
+    config.add_request_method(get_user, 'user', reify=True)
     config.set_authorization_policy(authz_policy)
 
 
