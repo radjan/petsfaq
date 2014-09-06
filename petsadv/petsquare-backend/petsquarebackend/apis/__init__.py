@@ -39,33 +39,30 @@ class BaseAPI(Base):
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
-    def validate(self, schema, body=True):
+    def validate(self, schema,
+                 body=True, GET=False, POST=False, json_body=False):
         """
         Handle params sent from web requests
         """
+        if len(self.request.body) == 0:
+            body = False
+        target_dict = dict()
         try:
-            #log.debug('request param: %s' % self.request.params)
-            #log.debug('request body: %s'  % self.request.body)
-            target_dict = dict()
-            to_check_dict = dict(self.request.params.copy())
-            token = to_check_dict.pop('token', None)
-            authn_userid = authenticated_userid(self.request)
-
-            #FIXME: by using
-            #authn_userid = authenticated_userid(self.request)
-            log.warn('default user_id may be used')
-            authn_userid = to_check_dict.pop('user_id', 1)
-
-            if body == True:
-                target_dict.update(to_check_dict)
-                if len(self.request.body) > 0:
-                    target_dict.update(dict(self.request.json_body.copy()))
-            else:
-                target_dict.update(to_check_dict)
-
-            data = dict(target_dict)
+            conditions = ((GET,       self.request.GET),
+                          (POST,      self.request.POST),
+                          (body,      self.request.body),
+                          #(json_body, self.request.json_body)
+                         )
+            for con, var in conditions:
+                if con:
+                    target_dict.update(dict(var))
+           
+            data = target_dict
             data = schema.to_python(data)
-            data['user_id'] = authn_userid
+
+            #FIXME: 
+            #remove the user_id key from the validated result
+            data['user_id'] = self.request.authenticated_userid
             rtn = (True, data, 200)
 
         except Invalid, e:
@@ -112,30 +109,30 @@ class BaseAPP(Base):
             rtn = {'data': status['data'], 'info': status['info']}
         return rtn
 
-    def validate(self, schema, body=True):
+    def validate(self, schema,
+                 body=True, GET=False, POST=False, json_body=False):
         """
         Handle params sent from web requests
         """
+        if len(self.request.body) == 0:
+            body = False
+        target_dict = dict()
         try:
-            #log.debug('request param: %s' % self.request.params)
-            #log.debug('request body: %s'  % self.request.body)
-            target_dict = dict()
-            to_check_dict = dict(self.request.params.copy())
-            token = to_check_dict.pop('token', None)
-            authn_userid = authenticated_userid(self.request)
-            #log.debug('authn_userid pop out???: %s' % authn_userid)
-            #to_check_dict['user_id'] = authn_userid
-
-            if body == True:
-                target_dict.update(to_check_dict)
-                if len(self.request.body) > 0:
-                    target_dict.update(dict(self.request.json_body.copy()))
-            else:
-                target_dict.update(to_check_dict)
-
-            data = dict(target_dict)
+            conditions = ((GET,       self.request.GET),
+                          (POST,      self.request.POST),
+                          (body,      self.request.body),
+                          #(json_body, self.request.json_body)
+                         )
+            for con, var in conditions:
+                if con:
+                    target_dict.update(dict(var))
+           
+            data = target_dict
             data = schema.to_python(data)
-            data['user_id'] = authn_userid
+
+            #FIXME: 
+            #remove the user_id key from the validated result
+            data['user_id'] = self.request.authenticated_userid
             rtn = (True, data, 200)
 
         except Invalid, e:
