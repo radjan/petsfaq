@@ -3,6 +3,16 @@
 __date__= 'Feb 13, 2014 '
 __author__= 'samuel'
 
+"""
+APIs
+
+    GET /app/v1/user/me (show user itself)
+    'app-showme', AccountAPP.showme()
+
+    PUT /app/v1/user/{id} (update user itself)
+    'app-user', AccountAPP.user_update()
+"""
+
 import traceback
 import json
 import logging

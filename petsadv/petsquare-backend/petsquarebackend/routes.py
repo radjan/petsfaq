@@ -27,6 +27,8 @@ def api_routes(config):
 
     config.add_route('my-missions',   api_prefix + str(main_version) + '/user/me/missions')
 
+    config.add_route('weblogin',         api_prefix + str(main_version) + '/session')
+
 
     #app
     config.add_route('app-locations', app_prefix + str(main_version) + '/locations')

@@ -16,8 +16,8 @@ from pyramid.session import UnencryptedCookieSessionFactoryConfig
 
 #authentication
 #from petsquarebackend.authentication import TokenAuthenticationPolicy
+from petsquarebackend.security import get_user
 from petsquarebackend.authentication import get_app_user
-from petsquarebackend.authentication import get_user
 from pyramid.authorization import ACLAuthorizationPolicy
 
 #add foreign key setting for sqlite, callback function
